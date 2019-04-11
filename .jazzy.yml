@@ -1,0 +1,8 @@
+author: Streetography
+author_url: https://twitter.com/ 
+github_url: https://github.com/mikelanza/STPhotoMap
+root_url: https://mikelanza.github.io/STPhotoMap/
+module: STPhotoMap
+output: docs
+theme: fullwidth
+xcodebuild_arguments: [-workspace, 'STPhotoMap.xcworkspace', -scheme, 'STPhotoMap-iOS']
