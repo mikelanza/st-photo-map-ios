@@ -13,6 +13,5 @@
 import UIKit
 
 enum STPhotoMapModels {
-    // MARK: Use cases
     
 }

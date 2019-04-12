@@ -17,5 +17,5 @@ protocol STPhotoMapPresentationLogic {
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
-    weak var viewController: STPhotoMapDisplayLogic?
+    weak var displayer: STPhotoMapDisplayLogic?
 }

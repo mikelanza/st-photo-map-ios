@@ -13,7 +13,7 @@
 import UIKit
 
 @objc protocol STPhotoMapRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    
 }
 
 protocol STPhotoMapDataPassing {
