@@ -15,11 +15,17 @@ import UIKit
 protocol STPhotoMapDisplayLogic: class {
 }
 
-class STPhotoMapViewController: UIViewController, STPhotoMapDisplayLogic {
+public class STPhotoMapViewController: UIViewController, STPhotoMapDisplayLogic {
     var interactor: STPhotoMapBusinessLogic?
     var router: (NSObjectProtocol & STPhotoMapRoutingLogic & STPhotoMapDataPassing)?
     
+    public weak var photoMapView: STPhotoMapView!
+    
     // MARK: Object lifecycle
+    
+    public convenience init() {
+        self.init(nibName: nil, bundle: nil)
+    }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -48,7 +54,39 @@ class STPhotoMapViewController: UIViewController, STPhotoMapDisplayLogic {
     
     // MARK: View lifecycle
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        self.setupSubviews()
+        self.setupSubviewsConstraints()
+    }
+}
+
+// MARK: - Subviews configuration
+
+extension STPhotoMapViewController {
+    private func setupSubviews() {
+        self.setupPhotoMapView()
+    }
+    
+    private func setupPhotoMapView() {
+        let photoMapView = STPhotoMapView()
+        photoMapView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(photoMapView)
+        self.photoMapView = photoMapView
+    }
+}
+
+// MARK: - Constraints configuration
+
+extension STPhotoMapViewController {
+    private func setupSubviewsConstraints() {
+        self.setupPhotoMapViewConstraints()
+    }
+    
+    private func setupPhotoMapViewConstraints() {
+        self.photoMapView?.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.photoMapView?.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.photoMapView?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.photoMapView?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
     }
 }
