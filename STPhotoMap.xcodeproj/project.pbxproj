@@ -17,10 +17,6 @@
 		3549BB8B1DA38C0A00C63030 /* STPhotoMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549BB8A1DA38C0A00C63030 /* STPhotoMapTests.swift */; };
 		3549BB8C1DA38C0A00C63030 /* STPhotoMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549BB8A1DA38C0A00C63030 /* STPhotoMapTests.swift */; };
 		3549BB8D1DA38C0A00C63030 /* STPhotoMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549BB8A1DA38C0A00C63030 /* STPhotoMapTests.swift */; };
-		359649031FB18CC000FC7ADC /* STPhotoMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359649021FB18CBF00FC7ADC /* STPhotoMap.swift */; };
-		359649041FB18CC000FC7ADC /* STPhotoMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359649021FB18CBF00FC7ADC /* STPhotoMap.swift */; };
-		359649051FB18CC000FC7ADC /* STPhotoMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359649021FB18CBF00FC7ADC /* STPhotoMap.swift */; };
-		359649061FB18CC000FC7ADC /* STPhotoMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359649021FB18CBF00FC7ADC /* STPhotoMap.swift */; };
 		85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074132260630E006DA073 /* STPhotoMapPresenter.swift */; };
 		85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074142260630E006DA073 /* STPhotoMapWorker.swift */; };
 		85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074152260630E006DA073 /* STPhotoMapRouter.swift */; };
@@ -67,7 +63,6 @@
 		3549BB701DA38AEF00C63030 /* STPhotoMapTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "STPhotoMapTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3549BB7F1DA38B0000C63030 /* STPhotoMapTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "STPhotoMapTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3549BB8A1DA38C0A00C63030 /* STPhotoMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPhotoMapTests.swift; sourceTree = "<group>"; };
-		359649021FB18CBF00FC7ADC /* STPhotoMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPhotoMap.swift; sourceTree = "<group>"; };
 		85F074132260630E006DA073 /* STPhotoMapPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapPresenter.swift; sourceTree = "<group>"; };
 		85F074142260630E006DA073 /* STPhotoMapWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorker.swift; sourceTree = "<group>"; };
 		85F074152260630E006DA073 /* STPhotoMapRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapRouter.swift; sourceTree = "<group>"; };
@@ -160,7 +155,6 @@
 			isa = PBXGroup;
 			children = (
 				85F07411226062DD006DA073 /* Scenes */,
-				359649011FB18CBF00FC7ADC /* Core */,
 				3549BB541DA38A4000C63030 /* Supporting Files */,
 			);
 			path = Sources;
@@ -199,14 +193,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		359649011FB18CBF00FC7ADC /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				359649021FB18CBF00FC7ADC /* STPhotoMap.swift */,
-			);
-			path = Core;
 			sourceTree = "<group>";
 		};
 		85F07411226062DD006DA073 /* Scenes */ = {
@@ -522,7 +508,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				359649031FB18CC000FC7ADC /* STPhotoMap.swift in Sources */,
 				85F0741D2260630E006DA073 /* STPhotoMapViewController.swift in Sources */,
 				85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */,
 				85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */,
@@ -536,7 +521,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				359649061FB18CC000FC7ADC /* STPhotoMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,7 +528,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				359649041FB18CC000FC7ADC /* STPhotoMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -552,7 +535,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				359649051FB18CC000FC7ADC /* STPhotoMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -926,7 +908,6 @@
 		3549BB791DA38AEF00C63030 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
@@ -942,7 +923,6 @@
 		3549BB7A1DA38AEF00C63030 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
@@ -957,7 +937,6 @@
 		3549BB881DA38B0000C63030 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -974,7 +953,6 @@
 		3549BB891DA38B0000C63030 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

@@ -10,7 +10,5 @@ import XCTest
 @testable import STPhotoMap
 
 class STPhotoMapTests: XCTestCase {
-    func testFrameworkName() {
-        XCTAssertEqual(STPhotoMap.name, "STPhotoMap")
-    }
+    
 }
