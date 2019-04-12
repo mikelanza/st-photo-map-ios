@@ -21,6 +21,12 @@
 		359649041FB18CC000FC7ADC /* STPhotoMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359649021FB18CBF00FC7ADC /* STPhotoMap.swift */; };
 		359649051FB18CC000FC7ADC /* STPhotoMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359649021FB18CBF00FC7ADC /* STPhotoMap.swift */; };
 		359649061FB18CC000FC7ADC /* STPhotoMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359649021FB18CBF00FC7ADC /* STPhotoMap.swift */; };
+		85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074132260630E006DA073 /* STPhotoMapPresenter.swift */; };
+		85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074142260630E006DA073 /* STPhotoMapWorker.swift */; };
+		85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074152260630E006DA073 /* STPhotoMapRouter.swift */; };
+		85F0741C2260630E006DA073 /* STPhotoMapModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074162260630E006DA073 /* STPhotoMapModels.swift */; };
+		85F0741D2260630E006DA073 /* STPhotoMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074172260630E006DA073 /* STPhotoMapViewController.swift */; };
+		85F0741E2260630E006DA073 /* STPhotoMapInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074182260630E006DA073 /* STPhotoMapInteractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +68,12 @@
 		3549BB7F1DA38B0000C63030 /* STPhotoMapTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "STPhotoMapTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3549BB8A1DA38C0A00C63030 /* STPhotoMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPhotoMapTests.swift; sourceTree = "<group>"; };
 		359649021FB18CBF00FC7ADC /* STPhotoMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPhotoMap.swift; sourceTree = "<group>"; };
+		85F074132260630E006DA073 /* STPhotoMapPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapPresenter.swift; sourceTree = "<group>"; };
+		85F074142260630E006DA073 /* STPhotoMapWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorker.swift; sourceTree = "<group>"; };
+		85F074152260630E006DA073 /* STPhotoMapRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapRouter.swift; sourceTree = "<group>"; };
+		85F074162260630E006DA073 /* STPhotoMapModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapModels.swift; sourceTree = "<group>"; };
+		85F074172260630E006DA073 /* STPhotoMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapViewController.swift; sourceTree = "<group>"; };
+		85F074182260630E006DA073 /* STPhotoMapInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapInteractor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +159,7 @@
 		3549BB161DA3890B00C63030 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				85F07411226062DD006DA073 /* Scenes */,
 				359649011FB18CBF00FC7ADC /* Core */,
 				3549BB541DA38A4000C63030 /* Supporting Files */,
 			);
@@ -194,6 +207,27 @@
 				359649021FB18CBF00FC7ADC /* STPhotoMap.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		85F07411226062DD006DA073 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				85F07412226062F1006DA073 /* STPhotoMap */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		85F07412226062F1006DA073 /* STPhotoMap */ = {
+			isa = PBXGroup;
+			children = (
+				85F074132260630E006DA073 /* STPhotoMapPresenter.swift */,
+				85F074142260630E006DA073 /* STPhotoMapWorker.swift */,
+				85F074152260630E006DA073 /* STPhotoMapRouter.swift */,
+				85F074162260630E006DA073 /* STPhotoMapModels.swift */,
+				85F074172260630E006DA073 /* STPhotoMapViewController.swift */,
+				85F074182260630E006DA073 /* STPhotoMapInteractor.swift */,
+			);
+			path = STPhotoMap;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,7 +347,6 @@
 				3549BB5D1DA38ADB00C63030 /* Sources */,
 				3549BB5E1DA38ADB00C63030 /* Frameworks */,
 				3549BB5F1DA38ADB00C63030 /* Resources */,
-				35B7422C1F82A2C700829B21 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -332,7 +365,6 @@
 				3549BB6C1DA38AEF00C63030 /* Sources */,
 				3549BB6D1DA38AEF00C63030 /* Frameworks */,
 				3549BB6E1DA38AEF00C63030 /* Resources */,
-				35B7423A1F82A63600829B21 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -351,7 +383,6 @@
 				3549BB7B1DA38B0000C63030 /* Sources */,
 				3549BB7C1DA38B0000C63030 /* Frameworks */,
 				3549BB7D1DA38B0000C63030 /* Resources */,
-				35B742331F82A60600829B21 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -492,6 +523,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				359649031FB18CC000FC7ADC /* STPhotoMap.swift in Sources */,
+				85F0741D2260630E006DA073 /* STPhotoMapViewController.swift in Sources */,
+				85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */,
+				85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */,
+				85F0741E2260630E006DA073 /* STPhotoMapInteractor.swift in Sources */,
+				85F0741C2260630E006DA073 /* STPhotoMapModels.swift in Sources */,
+				85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -862,9 +899,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)"
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
@@ -879,9 +914,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)"
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
@@ -895,9 +928,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)"
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
@@ -913,9 +944,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)"
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
@@ -931,9 +960,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)"
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -950,9 +977,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)"
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
