@@ -234,9 +234,10 @@ extension STPhotoTileOverlayRenderer {
             return
         }
         
-        let _ = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
             print("Download Image - Error \(error.debugDescription)")
             completion(data, error)
         }
+        dataTask.resume()
     }
 }
