@@ -10,10 +10,6 @@ import Foundation
 import MapKit
 
 public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
-    
-    private var activeDownloads = SynchronizedArray<String>()
-    private var tiles: SynchronizedArray<Tile> = SynchronizedArray()
-    
     private class Tile: NSObject {
         var data: Data
         var keyUrl: String
@@ -26,9 +22,11 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         }
     }
     
+    private var activeDownloads = SynchronizedArray<String>()
+    private var tiles: SynchronizedArray<Tile> = SynchronizedArray()
+    
     init(tileOverlay: MKTileOverlay) {
         super.init(overlay: tileOverlay)
-        
         self.setupObservers()
     }
     
@@ -37,11 +35,15 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
             self.tiles.removeAll()
         }
     }
-    
+}
+
+// MARK: - Drawing methods
+
+extension STPhotoTileOverlayRenderer {
     override public func canDraw(_ mapRect: MKMapRect, zoomScale: MKZoomScale) -> Bool {
         do {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
-            let tileUrls = try self.getTileUrlsFor(path: path)
+            let tileUrls = try self.tileUrlsFor(path: path)
             
             if let _ = self.optionalImageDataForUrl(url: tileUrls.keyUrl) {
                 return true
@@ -58,7 +60,7 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     override public func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
         do {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
-            let tileUrls = try self.getTileUrlsFor(path: path)
+            let tileUrls = try self.tileUrlsFor(path: path)
             
             let imageRef = try self.imageForUrl(url: tileUrls.keyUrl)
             let image = UIImage(cgImage: imageRef)
@@ -71,10 +73,50 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         }
     }
     
+    public func reloadTiles() {
+        DispatchQueue.main.async {
+            self.setNeedsDisplay()
+        }
+    }
+    
+    private func pathForMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale) throws -> MKTileOverlayPath {
+        let tileOverlay = try self.tileOverlay()
+        let factor: CGFloat = tileOverlay.tileSize.width / 256
+        
+        var path: MKTileOverlayPath = MKTileOverlayPath()
+        let x = Int((mapRect.origin.x * Double(zoomScale)) / Double(tileOverlay.tileSize.width / factor))
+        let y = Int((mapRect.origin.y * Double(zoomScale)) / Double(tileOverlay.tileSize.width / factor))
+        let z = Int(log2(zoomScale) + 20)
+        path.x = x >= 0 ? x : 0
+        path.y = y >= 0 ? y : 0
+        path.z = z <= 20 ? z : 20
+        
+        path.contentScaleFactor = self.contentScaleFactor
+        
+        return path
+    }
+    
+    private func setNeedsDisplayInMainThread(_ mapRect: MKMapRect, zoomScale: MKZoomScale) {
+        DispatchQueue.main.async {
+            self.setNeedsDisplay(mapRect, zoomScale: zoomScale)
+        }
+    }
+}
+
+// MARK: - Tile methods
+
+extension STPhotoTileOverlayRenderer {
+    private func tileOverlay() throws -> STPhotoTileOverlay {
+        guard let overlay = self.overlay as? STPhotoTileOverlay else {
+            throw NSError(domain: "No photo tile overlay available", code: 404, userInfo: nil)
+        }
+        return overlay
+    }
+    
     private func loadTile(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext)  {
         do {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
-            let tileUrls = try self.getTileUrlsFor(path: path)
+            let tileUrls = try self.tileUrlsFor(path: path)
             
             if let _ = self.optionalImageDataForUrl(url: tileUrls.keyUrl) {
                 self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
@@ -86,50 +128,16 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         }
     }
     
-    private func downloadTile(mapRect: MKMapRect, zoomScale: MKZoomScale) throws {
-        let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
-        let tileUrls = try self.getTileUrlsFor(path: path)
-        
-        if !self.isDownloadingTile(url: tileUrls.keyUrl) {
-            self.addDownloadTile(url: tileUrls.keyUrl)
-            self.downloadImage(url: tileUrls.downloadUrl) { [weak self]  (data, error) in
-                self?.removeDownloadTile(url: tileUrls.keyUrl)
-                if let imageData = data {
-                    self?.addImageData(data: imageData, forUrl: tileUrls.downloadUrl, keyUrl: tileUrls.keyUrl)
-                }
-                self?.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
-            }
-        } else {
-            self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
-        }
-    }
-    
-    private func setNeedsDisplayInMainThread(_ mapRect: MKMapRect, zoomScale: MKZoomScale) {
-        DispatchQueue.main.async {
-            self.setNeedsDisplay(mapRect, zoomScale: zoomScale)
-        }
-    }
-    
-    private func tileOverlay() throws -> MKTileOverlay {
-        guard let overlay = self.overlay as? MKTileOverlay else {
-            throw NSError(domain: "No tile overlay available", code: 404, userInfo: nil)
-        }
-        return overlay
-    }
-    
-    private func getTileOverlay() throws -> STPhotoTileOverlay {
-        guard let overlay = self.overlay as? STPhotoTileOverlay else {
-            throw NSError(domain: "No photo tile overlay available", code: 404, userInfo: nil)
-        }
-        return overlay
-    }
-    
-    private func getTileUrlsFor(path: MKTileOverlayPath) throws -> (keyUrl: String, downloadUrl: String) {
-        let tileOverlay = try self.getTileOverlay()
+    private func tileUrlsFor(path: MKTileOverlayPath) throws -> (keyUrl: String, downloadUrl: String) {
+        let tileOverlay = try self.tileOverlay()
         let url = tileOverlay.url(forTilePath: path)
         return (url.absoluteString, url.absoluteString)
     }
-    
+}
+
+// MARK: - Image methods
+
+extension STPhotoTileOverlayRenderer {
     private func addImageData(data: Data, forUrl downloadUrl: String, keyUrl: String) {
         if self.tiles.filter({ $0.keyUrl == keyUrl }).count == 0 {
             self.tiles.append(Tile(data: data, keyUrl: keyUrl, downloadUrl: downloadUrl))
@@ -138,8 +146,8 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     
     private func optionalImageDataForUrl(url: String) -> Data? {
         for i in 0..<self.tiles.count {
-            if tiles[i]?.keyUrl == url {
-                return tiles[i]?.data
+            if self.tiles[i]?.keyUrl == url {
+                return self.tiles[i]?.data
             }
         }
         return nil
@@ -162,22 +170,39 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         }
         return image
     }
+}
+
+// MARK: - Download methods
+
+extension STPhotoTileOverlayRenderer {
+    private func downloadImage(url: String?, completion: @escaping (Data?, Error?) -> Void) {
+        guard let urlString = url, let url = URL(string: urlString) else {
+            completion(nil, NSError(domain: "No url for download tile image", code: 404, userInfo: nil))
+            return
+        }
+        
+        let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            completion(data, error)
+        }
+        dataTask.resume()
+    }
     
-    private func pathForMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale) throws -> MKTileOverlayPath {
-        let tileOverlay = try self.tileOverlay()
-        let factor: CGFloat = tileOverlay.tileSize.width / 256
+    private func downloadTile(mapRect: MKMapRect, zoomScale: MKZoomScale) throws {
+        let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
+        let tileUrls = try self.tileUrlsFor(path: path)
         
-        var path: MKTileOverlayPath = MKTileOverlayPath()
-        let x = Int((mapRect.origin.x * Double(zoomScale)) / Double(tileOverlay.tileSize.width / factor))
-        let y = Int((mapRect.origin.y * Double(zoomScale)) / Double(tileOverlay.tileSize.width / factor))
-        let z = Int(log2(zoomScale) + 20)
-        path.x = x >= 0 ? x : 0
-        path.y = y >= 0 ? y : 0
-        path.z = z <= 20 ? z : 20
-        
-        path.contentScaleFactor = self.contentScaleFactor
-        
-        return path
+        if !self.isDownloadingTile(url: tileUrls.keyUrl) {
+            self.addDownloadTile(url: tileUrls.keyUrl)
+            self.downloadImage(url: tileUrls.downloadUrl) { [weak self]  (data, error) in
+                self?.removeDownloadTile(url: tileUrls.keyUrl)
+                if let imageData = data {
+                    self?.addImageData(data: imageData, forUrl: tileUrls.downloadUrl, keyUrl: tileUrls.keyUrl)
+                }
+                self?.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
+            }
+        } else {
+            self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
+        }
     }
     
     private func isDownloadingTile(url: String) -> Bool {
@@ -189,32 +214,6 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     }
     
     private func removeDownloadTile(url: String) {
-        self.activeDownloads.remove(where: { (activeDownloadUrl) -> Bool in
-            activeDownloadUrl == url
-        })
-    }
-    
-    public func reloadTiles() {
-        DispatchQueue.main.async {
-            self.setNeedsDisplay()
-        }
-    }
-}
-
-
-// MARK: Download
-
-extension STPhotoTileOverlayRenderer {
-    private func downloadImage(url: String?, completion: @escaping (Data?, Error?) -> Void) {
-        guard let urlString = url, let url = URL(string: urlString) else {
-            completion(nil, NSError(domain: "No url for download tile image", code: 404, userInfo: nil));
-
-            return
-        }
-        
-        let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            completion(data, error)
-        }
-        dataTask.resume()
+        self.activeDownloads.remove(where: { $0 == url })
     }
 }

@@ -10,9 +10,6 @@ import Foundation
 import MapKit
 
 public class STPhotoTileOverlay: MKTileOverlay {
-    
-    private var model: STPhotoTileOverlayModel
-    
     class STPhotoTileOverlayModel {
         var url: String
         
@@ -21,13 +18,15 @@ public class STPhotoTileOverlay: MKTileOverlay {
         }
     }
     
+    private var model: STPhotoTileOverlayModel
+    
     init(model: STPhotoTileOverlayModel) {
         self.model = model
         super.init(urlTemplate: model.url)
     }
     
     override public func url(forTilePath path: MKTileOverlayPath) -> URL {
-        return buildTileUrl(path: path)
+        return self.buildTileUrl(path: path)
     }
     
     override public func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {

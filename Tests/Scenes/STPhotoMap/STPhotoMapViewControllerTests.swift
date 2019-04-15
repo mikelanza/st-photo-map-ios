@@ -65,6 +65,7 @@ class STPhotoMapViewControllerTests: XCTestCase {
     
     func testIfPhotoMapViewImplementsMKMapViewDelegateMethods() {
         self.loadView()
-        XCTAssert(self.sut.photoMapView.responds(to: #selector(MKMapViewDelegate.mapView(_:regionDidChangeAnimated:))), "The photo map view does not implement mapView(_:regionDidChangeAnimated:)")
+        XCTAssert(self.sut.photoMapView.responds(to: #selector(MKMapViewDelegate.mapView(_:regionDidChangeAnimated:))), "The photo map view does not implement mapView(_:regionDidChangeAnimated:).")
+        XCTAssert(self.sut.photoMapView.responds(to: #selector(MKMapViewDelegate.mapView(_:rendererFor:))), "The photo map view does not implement mapView(_:rendererFor:).")
     }
 }
