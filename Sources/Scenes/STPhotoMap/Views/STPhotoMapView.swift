@@ -48,7 +48,7 @@ extension STPhotoMapView: MKMapViewDelegate {
 // MARK: - Map logic
 
 extension STPhotoMapView {
-    public func addStPhotoTileOverlay(url: String) {
+    public func addTileOverlay(url: String) {
         let model = STPhotoTileOverlay.STPhotoTileOverlayModel(url: url)
         self.stPhotoTileOverlay = STPhotoTileOverlay(model: model)
         self.stPhotoTileOverlay?.canReplaceMapContent = true

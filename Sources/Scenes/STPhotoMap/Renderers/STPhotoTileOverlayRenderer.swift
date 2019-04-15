@@ -93,7 +93,7 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         if !self.isDownloadingTile(url: tileUrls.keyUrl) {
             self.addDownloadTile(url: tileUrls.keyUrl)
             self.downloadImage(url: tileUrls.downloadUrl) { [weak self]  (data, error) in
-                self?.removeDownloadtile(url: tileUrls.keyUrl)
+                self?.removeDownloadTile(url: tileUrls.keyUrl)
                 if let imageData = data {
                     self?.addImageData(data: imageData, forUrl: tileUrls.downloadUrl, keyUrl: tileUrls.keyUrl)
                 }
@@ -124,7 +124,7 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         return overlay
     }
     
-    private func getTileUrlsFor(path: MKTileOverlayPath) throws ->  (keyUrl: String, downloadUrl: String) {
+    private func getTileUrlsFor(path: MKTileOverlayPath) throws -> (keyUrl: String, downloadUrl: String) {
         let tileOverlay = try self.getCacheTileOverlay()
         let url = tileOverlay.url(forTilePath: path)
         return (url.absoluteString, url.absoluteString)
@@ -188,32 +188,10 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         self.activeDownloads.append(url)
     }
     
-    private func removeDownloadtile(url: String) {
+    private func removeDownloadTile(url: String) {
         self.activeDownloads.remove(where: { (activeDownloadUrl) -> Bool in
             activeDownloadUrl == url
         })
-    }
-    
-    func drawGrid(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
-        //print("Rendering at (x, y): (%f, %f) with size (w, h): (%f, %f)", mapRect.origin.x, mapRect.origin.y, mapRect.size.width, mapRect.size.height)
-        let rect: CGRect = self.rect(for: mapRect)
-        //print("CGRect: %@", NSStringFromCGRect(rect))
-        
-        if let tileOverlay = self.overlay as? MKTileOverlay {
-            var path: MKTileOverlayPath = MKTileOverlayPath()
-            path.x = Int((mapRect.origin.x * Double(zoomScale)) / Double(tileOverlay.tileSize.width))
-            path.y = Int((mapRect.origin.y * Double(zoomScale)) / Double(tileOverlay.tileSize.width))
-            path.z = Int(log2(zoomScale) + 20)
-            
-            context.setStrokeColor(UIColor.blue.cgColor)
-            context.setLineWidth(1.0 / zoomScale)
-            context.stroke(rect)
-            
-            UIGraphicsPushContext(context)
-            let text: NSString = NSString(format: "X = %d\nY = %d\nZ = %d", path.x, path.y, path.z)
-            text.draw(in: rect, withAttributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 30.0 / zoomScale), NSAttributedString.Key.foregroundColor: UIColor.black])
-            UIGraphicsPopContext()
-        }
     }
     
     public func reloadTiles() {
