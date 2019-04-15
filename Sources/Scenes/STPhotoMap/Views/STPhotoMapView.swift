@@ -12,6 +12,7 @@ import MapKit
 public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
     
+    private var interactor: STPhotoMapBusinessLogic?
     private var photoTileOverlay: STPhotoTileOverlay?
     
     public convenience init() {
@@ -20,6 +21,7 @@ public class STPhotoMapView: UIView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        self.setup()
         self.setupSubviews()
         self.setupSubviewsConstraints()
     }
@@ -27,6 +29,23 @@ public class STPhotoMapView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: Setup
+    
+    private func setup() {
+        let displayer = self
+        let interactor = STPhotoMapInteractor()
+        let presenter = STPhotoMapPresenter()
+        displayer.interactor = interactor
+        interactor.presenter = presenter
+        presenter.displayer = displayer
+    }
+}
+
+// MARK: - Display logic
+
+extension STPhotoMapView: STPhotoMapDisplayLogic {
+    
 }
 
 // MARK: - MKMapView delegate methods

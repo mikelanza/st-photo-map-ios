@@ -16,7 +16,6 @@ protocol STPhotoMapDisplayLogic: class {
 }
 
 public class STPhotoMapViewController: UIViewController, STPhotoMapDisplayLogic {
-    var interactor: STPhotoMapBusinessLogic?
     var router: (NSObjectProtocol & STPhotoMapRoutingLogic & STPhotoMapDataPassing)?
     
     public weak var photoMapView: STPhotoMapView!
@@ -41,15 +40,9 @@ public class STPhotoMapViewController: UIViewController, STPhotoMapDisplayLogic 
     
     private func setup() {
         let viewController = self
-        let interactor = STPhotoMapInteractor()
-        let presenter = STPhotoMapPresenter()
         let router = STPhotoMapRouter()
-        viewController.interactor = interactor
         viewController.router = router
-        interactor.presenter = presenter
-        presenter.displayer = viewController
         router.viewController = viewController
-        router.dataStore = interactor
     }
     
     // MARK: View lifecycle
