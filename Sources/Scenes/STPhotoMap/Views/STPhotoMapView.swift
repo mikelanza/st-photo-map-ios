@@ -12,6 +12,8 @@ import MapKit
 public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
     
+    private let stPhotoTileOverlay = STPhotoTileOverlay(url: "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg")
+    
     public convenience init() {
         self.init(frame: .zero)
     }
@@ -20,6 +22,8 @@ public class STPhotoMapView: UIView {
         super.init(frame: frame)
         self.setupSubviews()
         self.setupSubviewsConstraints()
+        
+        self.addCacheTileOverlay()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,6 +36,23 @@ public class STPhotoMapView: UIView {
 extension STPhotoMapView: MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
 
+    }
+    
+    public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is STPhotoTileOverlay {
+            return STPhotoTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
+        }
+        
+        return MKOverlayRenderer(overlay: overlay)
+    }
+}
+
+// MARK: - Map logic
+
+extension STPhotoMapView {
+    public func addCacheTileOverlay() {
+        self.stPhotoTileOverlay.canReplaceMapContent = true
+        self.mapView.addOverlay(self.stPhotoTileOverlay, level: .aboveLabels)
     }
 }
 
