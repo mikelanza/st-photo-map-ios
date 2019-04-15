@@ -11,8 +11,8 @@ import MapKit
 
 public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     
-    private var activeDownloads = Array<String>()
-    private var tiles: Array<Tile> = Array()
+    private var activeDownloads = SynchronizedArray<String>()
+    private var tiles: SynchronizedArray<Tile> = SynchronizedArray()
     
     private class Tile: NSObject {
         var data: Data
@@ -138,8 +138,8 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     
     private func optionalImageDataForUrl(url: String) -> Data? {
         for i in 0..<self.tiles.count {
-            if tiles[i].keyUrl == url {
-                return tiles[i].data
+            if tiles[i]?.keyUrl == url {
+                return tiles[i]?.data
             }
         }
         return nil
@@ -189,9 +189,9 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     }
     
     private func removeDownloadtile(url: String) {
-        self.activeDownloads.removeAll { (activeDownloadUrl) -> Bool in
+        self.activeDownloads.remove(where: { (activeDownloadUrl) -> Bool in
             activeDownloadUrl == url
-        }
+        })
     }
     
     func drawGrid(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
@@ -230,6 +230,7 @@ extension STPhotoTileOverlayRenderer {
     private func downloadImage(url: String?, completion: @escaping (Data?, Error?) -> Void) {
         guard let urlString = url, let url = URL(string: urlString) else {
             completion(nil, NSError(domain: "No url for download tile image", code: 404, userInfo: nil));
+
             return
         }
         
