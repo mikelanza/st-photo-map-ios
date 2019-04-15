@@ -42,8 +42,9 @@ public class STPhotoTileOverlay: MKTileOverlay {
     }
     
     private func downloadImage(url: URL, result: @escaping (Data?, Error?) -> Void) {
-        let _ = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
             result(data, error)
         }
+        dataTask.resume()
     }
 }

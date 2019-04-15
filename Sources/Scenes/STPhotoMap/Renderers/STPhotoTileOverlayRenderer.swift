@@ -202,7 +202,7 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
 }
 
 
-// MARK: Download and predownload
+// MARK: Download
 
 extension STPhotoTileOverlayRenderer {
     private func downloadImage(url: String?, completion: @escaping (Data?, Error?) -> Void) {
