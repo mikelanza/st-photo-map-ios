@@ -117,15 +117,15 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         return overlay
     }
     
-    private func getCacheTileOverlay() throws -> STPhotoTileOverlay {
+    private func getTileOverlay() throws -> STPhotoTileOverlay {
         guard let overlay = self.overlay as? STPhotoTileOverlay else {
-            throw NSError(domain: "No cache tile overlay available", code: 404, userInfo: nil)
+            throw NSError(domain: "No photo tile overlay available", code: 404, userInfo: nil)
         }
         return overlay
     }
     
     private func getTileUrlsFor(path: MKTileOverlayPath) throws -> (keyUrl: String, downloadUrl: String) {
-        let tileOverlay = try self.getCacheTileOverlay()
+        let tileOverlay = try self.getTileOverlay()
         let url = tileOverlay.url(forTilePath: path)
         return (url.absoluteString, url.absoluteString)
     }
