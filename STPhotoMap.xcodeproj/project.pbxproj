@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28860DBB2264B79D0015C92B /* URL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28860DBA2264B79D0015C92B /* URL+Parameters.swift */; };
+		28860DBF2264B8240015C92B /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28860DBE2264B8240015C92B /* Parameters.swift */; };
 		28CAAC8622608B47000C0200 /* STPhotoMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8522608B47000C0200 /* STPhotoMapView.swift */; };
 		28CAAC8D22608F52000C0200 /* STPhotoMapViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8922608F52000C0200 /* STPhotoMapViewControllerTests.swift */; };
 		28CAAC8E22608F52000C0200 /* STPhotoMapInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */; };
@@ -55,6 +57,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28860DBA2264B79D0015C92B /* URL+Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Parameters.swift"; sourceTree = "<group>"; };
+		28860DBE2264B8240015C92B /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		28CAAC8522608B47000C0200 /* STPhotoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapView.swift; sourceTree = "<group>"; };
 		28CAAC8922608F52000C0200 /* STPhotoMapViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapViewControllerTests.swift; sourceTree = "<group>"; };
 		28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapInteractorTests.swift; sourceTree = "<group>"; };
@@ -139,6 +143,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28860DB92264B78C0015C92B /* URL */ = {
+			isa = PBXGroup;
+			children = (
+				28860DBA2264B79D0015C92B /* URL+Parameters.swift */,
+			);
+			path = URL;
+			sourceTree = "<group>";
+		};
+		28860DBC2264B8060015C92B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				28860DBD2264B8180015C92B /* Parameters */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		28860DBD2264B8180015C92B /* Parameters */ = {
+			isa = PBXGroup;
+			children = (
+				28860DBE2264B8240015C92B /* Parameters.swift */,
+			);
+			path = Parameters;
+			sourceTree = "<group>";
+		};
 		28CAAC8422608B35000C0200 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +221,7 @@
 		3549BB161DA3890B00C63030 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				28860DBC2264B8060015C92B /* Models */,
 				8529E5632264813500E7CCE5 /* Extensions */,
 				85F07411226062DD006DA073 /* Scenes */,
 				3549BB541DA38A4000C63030 /* Supporting Files */,
@@ -246,6 +275,7 @@
 		8529E5632264813500E7CCE5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				28860DB92264B78C0015C92B /* URL */,
 				8529E5642264813F00E7CCE5 /* Array */,
 			);
 			path = Extensions;
@@ -590,9 +620,11 @@
 				85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */,
 				85F074212260AB89006DA073 /* STPhotoTileOverlay.swift in Sources */,
 				85F0741E2260630E006DA073 /* STPhotoMapInteractor.swift in Sources */,
+				28860DBB2264B79D0015C92B /* URL+Parameters.swift in Sources */,
 				8529E5272263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift in Sources */,
 				85F0741C2260630E006DA073 /* STPhotoMapModels.swift in Sources */,
 				85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */,
+				28860DBF2264B8240015C92B /* Parameters.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

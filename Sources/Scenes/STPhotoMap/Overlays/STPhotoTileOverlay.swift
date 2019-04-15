@@ -10,17 +10,19 @@ import Foundation
 import MapKit
 
 public class STPhotoTileOverlay: MKTileOverlay {
-    class STPhotoTileOverlayModel {
+    public class Model {
         var url: String
+        var parameters: [KeyValue]
         
-        init(url: String) {
+        init(url: String, parameters: [KeyValue]? = nil) {
             self.url = url
+            self.parameters = parameters ?? Parameters.defaultParameters()
         }
     }
     
-    private var model: STPhotoTileOverlayModel
+    private var model: Model
     
-    init(model: STPhotoTileOverlayModel) {
+    init(model: Model) {
         self.model = model
         super.init(urlTemplate: model.url)
     }
@@ -30,7 +32,8 @@ public class STPhotoTileOverlay: MKTileOverlay {
     }
     
     override public func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {
-        let url = self.buildTileUrl(path: path)
+        let tileUrl = self.buildTileUrl(path: path)
+        let url = self.buildTileUrl(url: tileUrl, with: self.model.parameters)
         self.downloadImage(url: url) { (data, error) in
             result(data, error)
         }
@@ -38,6 +41,10 @@ public class STPhotoTileOverlay: MKTileOverlay {
     
     private func buildTileUrl(path: MKTileOverlayPath) -> URL {
         return URL(string: String(format: self.model.url, path.z, path.x, path.y))!
+    }
+    
+    private func buildTileUrl(url: URL, with parameters: [KeyValue]) -> URL {
+        return url.addParameters(parameters)
     }
     
     private func downloadImage(url: URL, result: @escaping (Data?, Error?) -> Void) {
