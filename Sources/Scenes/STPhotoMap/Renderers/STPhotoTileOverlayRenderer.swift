@@ -230,12 +230,10 @@ extension STPhotoTileOverlayRenderer {
     private func downloadImage(url: String?, completion: @escaping (Data?, Error?) -> Void) {
         guard let urlString = url, let url = URL(string: urlString) else {
             completion(nil, NSError(domain: "No url for download tile image", code: 404, userInfo: nil));
-            print("Download Image - No url")
             return
         }
         
         let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            print("Download Image - Error \(error.debugDescription)")
             completion(data, error)
         }
         dataTask.resume()

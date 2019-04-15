@@ -11,11 +11,19 @@ import MapKit
 
 public class STPhotoTileOverlay: MKTileOverlay {
     
-    var url: String
+    private var model: STPhotoTileOverlayModel
     
-    init(url: String) {
-        self.url = url
-        super.init(urlTemplate: url)
+    class STPhotoTileOverlayModel {
+        var url: String
+        
+        init(url: String) {
+            self.url = url
+        }
+    }
+    
+    init(model: STPhotoTileOverlayModel) {
+        self.model = model
+        super.init(urlTemplate: model.url)
     }
     
     override public func url(forTilePath path: MKTileOverlayPath) -> URL {
@@ -30,7 +38,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
     }
     
     private func buildTileUrl(path: MKTileOverlayPath) -> URL {
-        return URL(string: String(format: self.url, path.z, path.x, path.y))!
+        return URL(string: String(format: self.model.url, path.z, path.x, path.y))!
     }
     
     private func downloadImage(url: URL, result: @escaping (Data?, Error?) -> Void) {
