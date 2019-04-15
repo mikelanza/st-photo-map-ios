@@ -9,7 +9,7 @@
 import Foundation
 import MapKit
 
-class STPhotoTileOverlayRenderer: MKOverlayRenderer {
+public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     
     private var activeDownloads = Array<String>()
     private var tiles: Array<Tile> = Array()
@@ -38,7 +38,7 @@ class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         }
     }
     
-    override func canDraw(_ mapRect: MKMapRect, zoomScale: MKZoomScale) -> Bool {
+    override public func canDraw(_ mapRect: MKMapRect, zoomScale: MKZoomScale) -> Bool {
         do {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
             let tileUrls = try self.getTileUrlsFor(path: path)
@@ -55,7 +55,7 @@ class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         return false
     }
     
-    override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
+    override public func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
         do {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
             let tileUrls = try self.getTileUrlsFor(path: path)

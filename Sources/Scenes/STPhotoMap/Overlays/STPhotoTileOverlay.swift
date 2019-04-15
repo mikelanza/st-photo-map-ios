@@ -9,7 +9,7 @@
 import Foundation
 import MapKit
 
-class STPhotoTileOverlay: MKTileOverlay {
+public class STPhotoTileOverlay: MKTileOverlay {
     
     var url: String
     
@@ -18,11 +18,11 @@ class STPhotoTileOverlay: MKTileOverlay {
         super.init(urlTemplate: url)
     }
     
-    override func url(forTilePath path: MKTileOverlayPath) -> URL {
+    override public func url(forTilePath path: MKTileOverlayPath) -> URL {
         return buildTileUrl(path: path)
     }
     
-    override func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {
+    override public func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {
         let url = self.buildTileUrl(path: path)
         self.downloadImage(url: url) { (data, error) in
             result(data, error)
