@@ -246,17 +246,17 @@
 		8529E5632264813500E7CCE5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				8529E5642264813F00E7CCE5 /* Extensions */,
+				8529E5642264813F00E7CCE5 /* Array */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		8529E5642264813F00E7CCE5 /* Extensions */ = {
+		8529E5642264813F00E7CCE5 /* Array */ = {
 			isa = PBXGroup;
 			children = (
 				8529E5652264819100E7CCE5 /* Array+Synchronized.swift */,
 			);
-			path = Extensions;
+			path = Array;
 			sourceTree = "<group>";
 		};
 		85F07411226062DD006DA073 /* Scenes */ = {
