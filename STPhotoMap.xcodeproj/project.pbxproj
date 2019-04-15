@@ -19,12 +19,14 @@
 		3549BB661DA38ADB00C63030 /* STPhotoMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3549BB211DA389CD00C63030 /* STPhotoMap.framework */; };
 		3549BB751DA38AEF00C63030 /* STPhotoMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3549BB481DA389F300C63030 /* STPhotoMap.framework */; };
 		3549BB841DA38B0000C63030 /* STPhotoMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3549BB3B1DA389E800C63030 /* STPhotoMap.framework */; };
+		8529E5272263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8529E5262263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift */; };
 		85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074132260630E006DA073 /* STPhotoMapPresenter.swift */; };
 		85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074142260630E006DA073 /* STPhotoMapWorker.swift */; };
 		85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074152260630E006DA073 /* STPhotoMapRouter.swift */; };
 		85F0741C2260630E006DA073 /* STPhotoMapModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074162260630E006DA073 /* STPhotoMapModels.swift */; };
 		85F0741D2260630E006DA073 /* STPhotoMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074172260630E006DA073 /* STPhotoMapViewController.swift */; };
 		85F0741E2260630E006DA073 /* STPhotoMapInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074182260630E006DA073 /* STPhotoMapInteractor.swift */; };
+		85F074212260AB89006DA073 /* STPhotoTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074202260AB89006DA073 /* STPhotoTileOverlay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,12 +71,14 @@
 		3549BB611DA38ADB00C63030 /* STPhotoMapTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "STPhotoMapTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3549BB701DA38AEF00C63030 /* STPhotoMapTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "STPhotoMapTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3549BB7F1DA38B0000C63030 /* STPhotoMapTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "STPhotoMapTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8529E5262263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoTileOverlayRenderer.swift; sourceTree = "<group>"; };
 		85F074132260630E006DA073 /* STPhotoMapPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapPresenter.swift; sourceTree = "<group>"; };
 		85F074142260630E006DA073 /* STPhotoMapWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorker.swift; sourceTree = "<group>"; };
 		85F074152260630E006DA073 /* STPhotoMapRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapRouter.swift; sourceTree = "<group>"; };
 		85F074162260630E006DA073 /* STPhotoMapModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapModels.swift; sourceTree = "<group>"; };
 		85F074172260630E006DA073 /* STPhotoMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapViewController.swift; sourceTree = "<group>"; };
 		85F074182260630E006DA073 /* STPhotoMapInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapInteractor.swift; sourceTree = "<group>"; };
+		85F074202260AB89006DA073 /* STPhotoTileOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoTileOverlay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +232,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8529E5252263BCCC00E7CCE5 /* Renderers */ = {
+			isa = PBXGroup;
+			children = (
+				8529E5262263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift */,
+			);
+			path = Renderers;
+			sourceTree = "<group>";
+		};
 		85F07411226062DD006DA073 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +251,8 @@
 		85F07412226062F1006DA073 /* STPhotoMap */ = {
 			isa = PBXGroup;
 			children = (
+				8529E5252263BCCC00E7CCE5 /* Renderers */,
+				85F0741F2260AB44006DA073 /* Overlays */,
 				28CAAC8422608B35000C0200 /* Views */,
 				85F074132260630E006DA073 /* STPhotoMapPresenter.swift */,
 				85F074142260630E006DA073 /* STPhotoMapWorker.swift */,
@@ -248,6 +262,14 @@
 				85F074182260630E006DA073 /* STPhotoMapInteractor.swift */,
 			);
 			path = STPhotoMap;
+			sourceTree = "<group>";
+		};
+		85F0741F2260AB44006DA073 /* Overlays */ = {
+			isa = PBXGroup;
+			children = (
+				85F074202260AB89006DA073 /* STPhotoTileOverlay.swift */,
+			);
+			path = Overlays;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -546,7 +568,9 @@
 				85F0741D2260630E006DA073 /* STPhotoMapViewController.swift in Sources */,
 				85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */,
 				85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */,
+				85F074212260AB89006DA073 /* STPhotoTileOverlay.swift in Sources */,
 				85F0741E2260630E006DA073 /* STPhotoMapInteractor.swift in Sources */,
+				8529E5272263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift in Sources */,
 				85F0741C2260630E006DA073 /* STPhotoMapModels.swift in Sources */,
 				85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */,
 			);
