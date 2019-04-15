@@ -13,8 +13,12 @@ public typealias KeyValue = (key: String, value: String)
 public class Parameters {
     public static func defaultParameters() -> [KeyValue] {
         return [
+            ("basemap", "yes"),
             ("shadow", "yes"),
-            ("basemap", "yes")
+            ("sort", "popular"),
+            ("tileSize", "256"),
+            ("pinoptimize", "4"),
+            ("sessionID", UUID().uuidString)
         ]
     }
 }

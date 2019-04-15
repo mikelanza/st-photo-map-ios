@@ -38,7 +38,20 @@ public class STPhotoTileOverlay: MKTileOverlay {
             result(data, error)
         }
     }
-    
+}
+
+// MARK: - Parameters methods
+
+public extension STPhotoTileOverlay {
+    func update(parameter: KeyValue) {
+        self.model.parameters.removeAll(where: { $0 == parameter })
+        self.model.parameters.append(parameter)
+    }
+}
+
+// MARK: - Tile methods
+
+extension STPhotoTileOverlay {
     private func buildTileUrl(path: MKTileOverlayPath) -> URL {
         return URL(string: String(format: self.model.url, path.z, path.x, path.y))!
     }
@@ -46,7 +59,11 @@ public class STPhotoTileOverlay: MKTileOverlay {
     private func buildTileUrl(url: URL, with parameters: [KeyValue]) -> URL {
         return url.addParameters(parameters)
     }
-    
+}
+
+// MARK: - Download methods
+
+extension STPhotoTileOverlay {
     private func downloadImage(url: URL, result: @escaping (Data?, Error?) -> Void) {
         let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
             result(data, error)
