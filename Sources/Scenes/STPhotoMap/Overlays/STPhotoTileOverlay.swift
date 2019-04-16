@@ -14,7 +14,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
         var url: String
         var parameters: [KeyValue]
         
-        init(url: String, parameters: [KeyValue]? = nil) {
+        public init(url: String, parameters: [KeyValue]? = nil) {
             self.url = url
             self.parameters = parameters ?? Parameters.defaultParameters()
         }
