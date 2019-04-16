@@ -9,8 +9,13 @@
 import UIKit
 import MapKit
 
+public protocol STPhotoMapViewDataSource: NSObjectProtocol {
+    func photoMapView() -> STPhotoTileOverlay.Model
+}
+
 public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
+    public weak var dataSource: STPhotoMapViewDataSource!
     
     private var interactor: STPhotoMapBusinessLogic?
     private var photoTileOverlay: STPhotoTileOverlay?
@@ -24,6 +29,8 @@ public class STPhotoMapView: UIView {
         self.setup()
         self.setupSubviews()
         self.setupSubviewsConstraints()
+        
+        self.setupTileOverlay()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -67,8 +74,8 @@ extension STPhotoMapView: MKMapViewDelegate {
 // MARK: - Map logic
 
 extension STPhotoMapView {
-    public func addTileOverlay(model: STPhotoTileOverlay.Model) {
-        self.photoTileOverlay = STPhotoTileOverlay(model: model)
+    private func setupTileOverlay() {
+        self.photoTileOverlay = STPhotoTileOverlay(model: self.dataSource.photoMapView())
         self.photoTileOverlay?.canReplaceMapContent = true
         self.mapView?.addOverlay(self.photoTileOverlay!, level: .aboveLabels)
     }
