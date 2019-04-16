@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 public protocol STPhotoMapViewDataSource: NSObjectProtocol {
-    func photoMapView() -> STPhotoTileOverlay.Model
+    func photoMapView(_ view: STPhotoMapView?, photoTileOverlayModelForUrl url: String, parameters: [KeyValue]?) -> STPhotoTileOverlay.Model
 }
 
 public class STPhotoMapView: UIView {
@@ -47,6 +47,12 @@ public class STPhotoMapView: UIView {
         interactor.presenter = presenter
         presenter.displayer = displayer
     }
+    
+    public override func didMoveToSuperview() {
+        guard let _ = self.dataSource else {
+            fatalError("You can not use STPhotoMapView without setting data source")
+        }
+    }
 }
 
 // MARK: - Display logic
@@ -75,7 +81,9 @@ extension STPhotoMapView: MKMapViewDelegate {
 
 extension STPhotoMapView {
     private func setupTileOverlay() {
-        self.photoTileOverlay = STPhotoTileOverlay(model: self.dataSource.photoMapView())
+        
+        let model = self.dataSource.photoMapView(self, photoTileOverlayModelForUrl: "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg", parameters: Parameters.defaultParameters())
+        self.photoTileOverlay = STPhotoTileOverlay(model: model)
         self.photoTileOverlay?.canReplaceMapContent = true
         self.mapView?.addOverlay(self.photoTileOverlay!, level: .aboveLabels)
     }
