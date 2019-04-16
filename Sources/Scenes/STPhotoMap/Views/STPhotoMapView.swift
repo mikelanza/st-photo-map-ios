@@ -15,14 +15,17 @@ public protocol STPhotoMapViewDataSource: NSObjectProtocol {
 
 public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
-    public weak var dataSource: STPhotoMapViewDataSource! {
-        didSet {
-            self.setupTileOverlay()
-        }
-    }
+    public weak var dataSource: STPhotoMapViewDataSource!
     
     private var interactor: STPhotoMapBusinessLogic?
     private var photoTileOverlay: STPhotoTileOverlay?
+    
+    public convenience init(dataSource: STPhotoMapViewDataSource) {
+        self.init()
+        self.dataSource = dataSource
+        
+        self.setupTileOverlay()
+    }
     
     public convenience init() {
         self.init(frame: .zero)
@@ -48,12 +51,6 @@ public class STPhotoMapView: UIView {
         displayer.interactor = interactor
         interactor.presenter = presenter
         presenter.displayer = displayer
-    }
-    
-    public override func didMoveToSuperview() {
-        guard let _ = self.dataSource else {
-            fatalError("You can not use STPhotoMapView without setting data source")
-        }
     }
 }
 
@@ -83,7 +80,6 @@ extension STPhotoMapView: MKMapViewDelegate {
 
 extension STPhotoMapView {
     private func setupTileOverlay() {
-        
         let model = self.dataSource.photoMapView(self, photoTileOverlayModelForUrl: "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg", parameters: Parameters.defaultParameters())
         self.photoTileOverlay = STPhotoTileOverlay(model: model)
         self.photoTileOverlay?.canReplaceMapContent = true
