@@ -54,6 +54,31 @@ public class STPhotoMapView: UIView {
     }
 }
 
+// MARK: - Input
+
+extension STPhotoMapView {
+    public func updateParameter(parameter: KeyValue) {
+        self.photoTileOverlay?.update(parameter: parameter)
+    }
+    
+    public func reloadTiles() {
+        if let overlay = self.photoTileOverlay, let renderer = self.mapView?.renderer(for: overlay) as? STPhotoTileOverlayRenderer {
+            renderer.reloadTiles()
+        }
+    }
+}
+
+// MARK: - Data Source
+
+extension STPhotoMapView {
+    public func photoMapView(_ view: STPhotoMapView?, photoTileOverlayModelForUrl url: String, parameters: [KeyValue]?) -> STPhotoTileOverlay.Model {
+        if let dataSource = self.dataSource {
+            return dataSource.photoMapView(view, photoTileOverlayModelForUrl: url, parameters: parameters)
+        }
+        return STPhotoTileOverlay.Model(url: url, parameters: parameters)
+    }
+}
+
 // MARK: - Display logic
 
 extension STPhotoMapView: STPhotoMapDisplayLogic {
@@ -80,7 +105,7 @@ extension STPhotoMapView: MKMapViewDelegate {
 
 extension STPhotoMapView {
     private func setupTileOverlay() {
-        let model = self.dataSource.photoMapView(self, photoTileOverlayModelForUrl: "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg", parameters: Parameters.defaultParameters())
+        let model = self.photoMapView(self, photoTileOverlayModelForUrl: "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg", parameters: Parameters.defaultParameters())
         self.photoTileOverlay = STPhotoTileOverlay(model: model)
         self.photoTileOverlay?.canReplaceMapContent = true
         self.mapView?.addOverlay(self.photoTileOverlay!, level: .aboveLabels)
