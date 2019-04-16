@@ -24,16 +24,16 @@ public class STPhotoTileOverlay: MKTileOverlay {
     
     init(model: Model) {
         self.model = model
-        super.init(urlTemplate: model.url)
+        super.init(urlTemplate: nil)
     }
     
     override public func url(forTilePath path: MKTileOverlayPath) -> URL {
-        return self.buildTileUrl(path: path)
+        let tileUrl = self.buildTileUrl(path: path)
+        return self.buildTileUrl(url: tileUrl, with: self.model.parameters)
     }
     
     override public func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {
-        let tileUrl = self.buildTileUrl(path: path)
-        let url = self.buildTileUrl(url: tileUrl, with: self.model.parameters)
+        let url = self.url(forTilePath: path)
         self.downloadImage(url: url) { (data, error) in
             result(data, error)
         }
