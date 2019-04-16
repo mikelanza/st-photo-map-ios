@@ -15,7 +15,11 @@ public protocol STPhotoMapViewDataSource: NSObjectProtocol {
 
 public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
-    public weak var dataSource: STPhotoMapViewDataSource!
+    public weak var dataSource: STPhotoMapViewDataSource! {
+        didSet {
+            self.setupTileOverlay()
+        }
+    }
     
     private var interactor: STPhotoMapBusinessLogic?
     private var photoTileOverlay: STPhotoTileOverlay?
@@ -29,8 +33,6 @@ public class STPhotoMapView: UIView {
         self.setup()
         self.setupSubviews()
         self.setupSubviewsConstraints()
-        
-        self.setupTileOverlay()
     }
     
     required init?(coder aDecoder: NSCoder) {
