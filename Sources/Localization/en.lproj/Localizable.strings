@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  STPhotoMap
+
+  Created by Dimitri Strauneanu on 17/04/2019.
+  Copyright © 2019 mikelanza. All rights reserved.
+*/
+
+"STPhotoMap.no.data.available.title" = "No data available for this level.";
+"STPhotoMap.no.internet.connection.title" = "You have no internet connection.";
+
+"STPhotoMap.data.sources.title" = "Data Sources";
+
+"STPhotoMap.location.level.title" = "Location";
+"STPhotoMap.block.level.title" = "Block";
+"STPhotoMap.neighborhood.level.title" = "Neighborhood";
+"STPhotoMap.city.level.title" = "City";
+"STPhotoMap.county.level.title" = "County";
+"STPhotoMap.state.level.title" = "State/Region";
+"STPhotoMap.country.level.title" = "Country";

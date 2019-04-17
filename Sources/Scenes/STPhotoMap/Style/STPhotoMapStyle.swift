@@ -13,7 +13,7 @@ public class STPhotoMapStyle {
     
     public var progressViewModel: ProgressViewModel
     public var noInternetConnectionViewModel: NoInternetConnectionViewModel
-    public var noGeoDataViewModel: NoGeoDataViewModel
+    public var noDataViewModel: NoDataViewModel
     
     public var entityLevelViewModel: EntityLevelViewModel
     
@@ -22,7 +22,7 @@ public class STPhotoMapStyle {
     private init() {
         self.progressViewModel = ProgressViewModel()
         self.noInternetConnectionViewModel = NoInternetConnectionViewModel()
-        self.noGeoDataViewModel = NoGeoDataViewModel()
+        self.noDataViewModel = NoDataViewModel()
         self.entityLevelViewModel = EntityLevelViewModel()
         self.userLocationButtonModel = UserLocationButtonModel()
     }
@@ -36,14 +36,14 @@ public class STPhotoMapStyle {
         public var show: Bool = true
         public var titleColor: UIColor = UIColor.white
         public var backgroundColor: UIColor = UIColor.red.withAlphaComponent(0.95)
-        public var title: String = ""
+        public var title: String = STPhotoMapLocalization.shared.noInternetConnectionTitle
     }
     
-    public struct NoGeoDataViewModel {
+    public struct NoDataViewModel {
         public var show: Bool = true
         public var titleColor: UIColor = UIColor.white
         public var backgroundColor: UIColor = UIColor.black.withAlphaComponent(0.95)
-        public var title: String = ""
+        public var title: String = STPhotoMapLocalization.shared.noDataAvailableTitle
     }
     
     public struct EntityLevelViewModel {
@@ -51,16 +51,16 @@ public class STPhotoMapStyle {
         public var showDurationInMilliseconds: Int = 1500
         
         public var titleColor: UIColor = UIColor.white
-        public var titleFont: UIFont?
+        public var titleFont: UIFont = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.medium)
         public var backgroundColor: UIColor = UIColor(red: 65/255, green: 171/255, blue: 255/255, alpha: 0.95)
         
-        public var locationTitle: String = ""
-        public var blockTitle: String = ""
-        public var neighborhoodTitle: String = ""
-        public var cityTitle: String = ""
-        public var countyTitle: String = ""
-        public var stateTitle: String = ""
-        public var countryTitle: String = ""
+        public var locationTitle: String = STPhotoMapLocalization.shared.locationLevelTitle
+        public var blockTitle: String = STPhotoMapLocalization.shared.blockLevelTitle
+        public var neighborhoodTitle: String = STPhotoMapLocalization.shared.neighborhoodLevelTitle
+        public var cityTitle: String = STPhotoMapLocalization.shared.cityLevelTitle
+        public var countyTitle: String = STPhotoMapLocalization.shared.countyLevelTitle
+        public var stateTitle: String = STPhotoMapLocalization.shared.stateLevelTitle
+        public var countryTitle: String = STPhotoMapLocalization.shared.countryLevelTitle
         
         public var locationImage: UIImage?
         public var blockImage: UIImage?
