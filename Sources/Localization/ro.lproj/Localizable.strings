@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  STPhotoMap
+
+  Created by Dimitri Strauneanu on 17/04/2019.
+  Copyright © 2019 mikelanza. All rights reserved.
+*/
+
+"STPhotoMap.no.data.available.title" = "Nu există informații pentru acest nivel.";
+"STPhotoMap.no.internet.connection.title" = "Nu ai conexiune la internet.";
+
+"STPhotoMap.data.sources.title" = "Data Sources";
+
+"STPhotoMap.location.level.title" = "Locație";
+"STPhotoMap.block.level.title" = "Bloc";
+"STPhotoMap.neighborhood.level.title" = "Cartier";
+"STPhotoMap.city.level.title" = "Oraș";
+"STPhotoMap.county.level.title" = "Județ";
+"STPhotoMap.state.level.title" = "Regiune";
+"STPhotoMap.country.level.title" = "Țară";
