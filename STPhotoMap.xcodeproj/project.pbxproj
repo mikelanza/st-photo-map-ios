@@ -31,6 +31,7 @@
 		3549BB751DA38AEF00C63030 /* STPhotoMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3549BB481DA389F300C63030 /* STPhotoMap.framework */; };
 		3549BB841DA38B0000C63030 /* STPhotoMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3549BB3B1DA389E800C63030 /* STPhotoMap.framework */; };
 		851864A2226E5F3D00A5C44D /* EntityLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851864A1226E5F3D00A5C44D /* EntityLevel.swift */; };
+		851864A5226E6E7500A5C44D /* MKMapView+VisibleTiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851864A4226E6E7500A5C44D /* MKMapView+VisibleTiles.swift */; };
 		8529E5272263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8529E5262263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift */; };
 		8529E5662264819100E7CCE5 /* Array+Synchronized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8529E5652264819100E7CCE5 /* Array+Synchronized.swift */; };
 		85538D15226703D9007D4A15 /* GeoJSONBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85538D03226703D9007D4A15 /* GeoJSONBoundingBox.swift */; };
@@ -120,6 +121,7 @@
 		3549BB701DA38AEF00C63030 /* STPhotoMapTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "STPhotoMapTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3549BB7F1DA38B0000C63030 /* STPhotoMapTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "STPhotoMapTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		851864A1226E5F3D00A5C44D /* EntityLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityLevel.swift; sourceTree = "<group>"; };
+		851864A4226E6E7500A5C44D /* MKMapView+VisibleTiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+VisibleTiles.swift"; sourceTree = "<group>"; };
 		8529E5262263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoTileOverlayRenderer.swift; sourceTree = "<group>"; };
 		8529E5652264819100E7CCE5 /* Array+Synchronized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Synchronized.swift"; sourceTree = "<group>"; };
 		85538D03226703D9007D4A15 /* GeoJSONBoundingBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoJSONBoundingBox.swift; sourceTree = "<group>"; };
@@ -399,6 +401,14 @@
 			path = "Entity Level";
 			sourceTree = "<group>";
 		};
+		851864A3226E69E100A5C44D /* MKMapView */ = {
+			isa = PBXGroup;
+			children = (
+				851864A4226E6E7500A5C44D /* MKMapView+VisibleTiles.swift */,
+			);
+			path = MKMapView;
+			sourceTree = "<group>";
+		};
 		8529E5252263BCCC00E7CCE5 /* Renderers */ = {
 			isa = PBXGroup;
 			children = (
@@ -410,6 +420,7 @@
 		8529E5632264813500E7CCE5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				851864A3226E69E100A5C44D /* MKMapView */,
 				289B1A15226717DD00B09F7A /* String */,
 				28860DB92264B78C0015C92B /* URL */,
 				8529E5642264813F00E7CCE5 /* Array */,
@@ -925,6 +936,7 @@
 				85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */,
 				85538D1E226703D9007D4A15 /* GeoJSONLineString.swift in Sources */,
 				289B174822670E9400B09F7A /* STEntityLevelView.swift in Sources */,
+				851864A5226E6E7500A5C44D /* MKMapView+VisibleTiles.swift in Sources */,
 				85538D2A226706CF007D4A15 /* Array+Tail.swift in Sources */,
 				28860DBF2264B8240015C92B /* Parameters.swift in Sources */,
 				85538D1A226703D9007D4A15 /* PhotoProperties.swift in Sources */,
