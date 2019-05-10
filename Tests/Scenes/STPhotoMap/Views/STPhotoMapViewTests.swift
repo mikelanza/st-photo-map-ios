@@ -34,6 +34,7 @@ class STPhotoMapViewTests: XCTestCase {
     
     func setupSTPhotoMapView() {
         self.sut = STPhotoMapView()
+        self.sut.translatesAutoresizingMaskIntoConstraints = false
         
         self.interactorSpy = STPhotoMapBusinessLogicSpy()
         self.sut.interactor = self.interactorSpy
