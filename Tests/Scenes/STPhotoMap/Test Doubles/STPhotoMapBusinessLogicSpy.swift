@@ -9,5 +9,9 @@
 @testable import STPhotoMap
 
 class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
-    
+    var shouldUpdateVisibleTilesCalled: Bool = false
+
+    func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
+        self.shouldUpdateVisibleTilesCalled = true
+    }
 }

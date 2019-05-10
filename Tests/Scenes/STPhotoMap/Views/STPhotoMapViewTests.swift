@@ -22,6 +22,8 @@ class STPhotoMapViewTests: XCTestCase {
     override func setUp() {
         super.setUp()
         self.window = UIWindow()
+        self.window.bounds = UIScreen.main.bounds
+        
         self.setupSTPhotoMapView()
     }
     
@@ -42,7 +44,21 @@ class STPhotoMapViewTests: XCTestCase {
     
     func loadView() {
         self.window.addSubview(self.sut)
+        
+        self.setupSubviewsConstraints()
+        
         RunLoop.current.run(until: Date())
+    }
+    
+    private func setupSubviewsConstraints() {
+        self.setupPhotoMapViewConstraints()
+    }
+    
+    private func setupPhotoMapViewConstraints() {
+        self.sut.topAnchor.constraint(equalTo: self.window.topAnchor).isActive = true
+        self.sut.bottomAnchor.constraint(equalTo: self.window.bottomAnchor).isActive = true
+        self.sut.leadingAnchor.constraint(equalTo: self.window.leadingAnchor).isActive = true
+        self.sut.trailingAnchor.constraint(equalTo: self.window.trailingAnchor).isActive = true
     }
     
     // MARK: Test doubles
@@ -84,5 +100,12 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertTrue(self.sut.progressView.isHidden)
         XCTAssertEqual(self.sut.progressView.progress, 0.0)
+    }
+    
+    func testUpdateTilesWhenRegionDidChangeAnimated() {
+        self.loadView()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertTrue(self.interactorSpy.shouldUpdateVisibleTilesCalled)
     }
 }
