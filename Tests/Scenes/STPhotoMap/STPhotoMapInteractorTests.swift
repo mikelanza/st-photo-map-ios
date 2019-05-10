@@ -17,6 +17,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     // MARK: Subject under test
   
     var sut: STPhotoMapInteractor!
+    var presenterSpy: STPhotoMapPresentationLogicSpy!
   
     // MARK: Test lifecycle
   
@@ -33,8 +34,11 @@ class STPhotoMapInteractorTests: XCTestCase {
   
     func setupSTPhotoMapInteractor() {
         self.sut = STPhotoMapInteractor()
+        
+        self.presenterSpy = STPhotoMapPresentationLogicSpy()
+        self.sut.presenter = self.presenterSpy
     }
-  
+    
     // MARK: Test doubles
   
     // MARK: Tests

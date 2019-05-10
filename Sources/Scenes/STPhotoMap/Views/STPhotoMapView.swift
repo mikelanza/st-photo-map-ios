@@ -17,7 +17,10 @@ public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
     public weak var dataSource: STPhotoMapViewDataSource!
     
-    private var interactor: STPhotoMapBusinessLogic?
+    var interactor: STPhotoMapBusinessLogic?
+    
+    weak var progressView: UIProgressView!
+    
     private var photoTileOverlay: STPhotoTileOverlay?
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
@@ -82,7 +85,19 @@ extension STPhotoMapView {
 // MARK: - Display logic
 
 extension STPhotoMapView: STPhotoMapDisplayLogic {
+    func displayLoadingState() {
+        self.progressView?.isHidden = false
+        self.progressView?.setProgress(1.0, animated: true)
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
     
+    func displayNotLoadingState() {
+        self.progressView?.isHidden = true
+        self.progressView?.setProgress(0.0, animated: false)
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -117,6 +132,7 @@ extension STPhotoMapView {
 extension STPhotoMapView {
     private func setupSubviews() {
         self.setupMapView()
+        self.setupProgressView()
     }
     
     private func setupMapView() {
@@ -126,6 +142,15 @@ extension STPhotoMapView {
         self.addSubview(mapView)
         self.mapView = mapView
     }
+    
+    private func setupProgressView() {
+        let view = UIProgressView(progressViewStyle: UIProgressView.Style.bar)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        view.progressTintColor = STPhotoMapStyle.shared.progressViewModel.tintColor
+        self.addSubview(view)
+        self.progressView = view
+    }
 }
 
 // MARK: - Constraints configuration
@@ -133,6 +158,7 @@ extension STPhotoMapView {
 extension STPhotoMapView {
     private func setupSubviewsConstraints() {
         self.setupMapViewConstraints()
+        self.setupProgressViewConstraints()
     }
     
     private func setupMapViewConstraints() {
@@ -140,5 +166,11 @@ extension STPhotoMapView {
         self.mapView?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         self.mapView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         self.mapView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+    }
+    
+    private func setupProgressViewConstraints() {
+        self.progressView?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.progressView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.progressView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     }
 }

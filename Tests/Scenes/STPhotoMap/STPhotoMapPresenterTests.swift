@@ -17,6 +17,7 @@ class STPhotoMapPresenterTests: XCTestCase {
     // MARK: Subject under test
     
     var sut: STPhotoMapPresenter!
+    var displayerSpy: STPhotoMapDisplayLogicSpy!
     
     // MARK: Test lifecycle
     
@@ -33,17 +34,22 @@ class STPhotoMapPresenterTests: XCTestCase {
     
     func setupSTPhotoMapPresenter() {
         self.sut = STPhotoMapPresenter()
+        
+        self.displayerSpy = STPhotoMapDisplayLogicSpy()
+        self.sut.displayer = self.displayerSpy
     }
     
     // MARK: Test doubles
     
     // MARK: Tests
     
-    func testSomething() {
-        // Given
-        
-        // When
-        
-        // Then
+    func testPresentLoadingState() {
+        self.sut.presentLoadingState()
+        XCTAssertTrue(self.displayerSpy.displayLoadingStateCalled)
+    }
+    
+    func testPresentNotLoadingState() {
+        self.sut.presentNotLoadingState()
+        XCTAssertTrue(self.displayerSpy.displayNotLoadingStateCalled)
     }
 }

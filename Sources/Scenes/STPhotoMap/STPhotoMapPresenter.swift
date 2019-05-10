@@ -13,9 +13,18 @@
 import UIKit
 
 protocol STPhotoMapPresentationLogic {
-    
+    func presentLoadingState()
+    func presentNotLoadingState()
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     weak var displayer: STPhotoMapDisplayLogic?
+    
+    func presentLoadingState() {
+        self.displayer?.displayLoadingState()
+    }
+    
+    func presentNotLoadingState() {
+        self.displayer?.displayNotLoadingState()
+    }
 }

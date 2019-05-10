@@ -13,9 +13,11 @@
 import UIKit
 
 protocol STPhotoMapDisplayLogic: class {
+    func displayLoadingState()
+    func displayNotLoadingState()
 }
 
-public class STPhotoMapViewController: UIViewController, STPhotoMapDisplayLogic {
+public class STPhotoMapViewController: UIViewController {
     var router: (NSObjectProtocol & STPhotoMapRoutingLogic & STPhotoMapDataPassing)?
     
     public weak var photoMapView: STPhotoMapView!

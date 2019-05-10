@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2810E6A822852DA100D491C2 /* STPhotoMapViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6A722852DA100D491C2 /* STPhotoMapViewTests.swift */; };
+		2810E6AB22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6AA22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift */; };
+		2810E6AD228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6AC228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift */; };
+		2810E6AF2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6AE2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift */; };
 		28860DBB2264B79D0015C92B /* URL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28860DBA2264B79D0015C92B /* URL+Parameters.swift */; };
 		28860DBF2264B8240015C92B /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28860DBE2264B8240015C92B /* Parameters.swift */; };
 		289B174422670D1F00B09F7A /* STPhotoMapStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289B174322670D1F00B09F7A /* STPhotoMapStyle.swift */; };
@@ -86,6 +90,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2810E6A722852DA100D491C2 /* STPhotoMapViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapViewTests.swift; sourceTree = "<group>"; };
+		2810E6AA22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapPresentationLogicSpy.swift; sourceTree = "<group>"; };
+		2810E6AC228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapDisplayLogicSpy.swift; sourceTree = "<group>"; };
+		2810E6AE2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapBusinessLogicSpy.swift; sourceTree = "<group>"; };
 		28860DBA2264B79D0015C92B /* URL+Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Parameters.swift"; sourceTree = "<group>"; };
 		28860DBE2264B8240015C92B /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		289B174322670D1F00B09F7A /* STPhotoMapStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapStyle.swift; sourceTree = "<group>"; };
@@ -202,6 +210,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2810E6A622852D7E00D491C2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2810E6A722852DA100D491C2 /* STPhotoMapViewTests.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2810E6A922852F8B00D491C2 /* Test Doubles */ = {
+			isa = PBXGroup;
+			children = (
+				2810E6AA22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift */,
+				2810E6AC228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift */,
+				2810E6AE2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift */,
+			);
+			path = "Test Doubles";
+			sourceTree = "<group>";
+		};
 		28860DB92264B78C0015C92B /* URL */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +309,8 @@
 		28CAAC8822608F3F000C0200 /* STPhotoMap */ = {
 			isa = PBXGroup;
 			children = (
+				2810E6A922852F8B00D491C2 /* Test Doubles */,
+				2810E6A622852D7E00D491C2 /* Views */,
 				28CAAC8922608F52000C0200 /* STPhotoMapViewControllerTests.swift */,
 				28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */,
 				28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */,
@@ -931,9 +959,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2810E6AF2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift in Sources */,
+				2810E6A822852DA100D491C2 /* STPhotoMapViewTests.swift in Sources */,
 				28CAAC8E22608F52000C0200 /* STPhotoMapInteractorTests.swift in Sources */,
 				28CAAC8F22608F52000C0200 /* STPhotoMapWorkerTests.swift in Sources */,
 				28CAAC9022608F52000C0200 /* STPhotoMapPresenterTests.swift in Sources */,
+				2810E6AB22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift in Sources */,
+				2810E6AD228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift in Sources */,
 				28CAAC8D22608F52000C0200 /* STPhotoMapViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
