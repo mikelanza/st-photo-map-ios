@@ -21,7 +21,7 @@ class STPhotoMapViewTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        self.window = UIWindow(frame:  UIScreen.main.bounds)
+        self.window = UIWindow(frame: UIScreen.main.bounds)
         
         self.setupSTPhotoMapView()
     }

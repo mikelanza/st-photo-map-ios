@@ -16,21 +16,13 @@ class STPhotoMapCache {
     
     var tiles = SynchronizedArray<Tile>()
     
-    // MARK: Getter
+    // MARK: - Getter
     
     func getTiles(for urls: [String]) -> [Tile] {
-        var cachedTiles = [Tile]()
-        urls.forEach { (keyUrl) in
-            if let cachedTile = self.getTile(for: keyUrl) {
-                cachedTiles.append(cachedTile)
-            }
-        }
-        return cachedTiles
+        return self.tiles.filter({ urls.contains($0.keyUrl) })
     }
     
     func getTile(for keyUrl: String) -> Tile? {
-        return self.tiles.first { (tile) -> Bool in
-            return tile.keyUrl == keyUrl
-        }
+        return self.tiles.first(where: { $0.keyUrl == keyUrl })
     }
 }
