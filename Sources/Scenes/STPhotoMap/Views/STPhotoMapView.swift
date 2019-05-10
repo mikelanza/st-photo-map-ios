@@ -20,6 +20,7 @@ public class STPhotoMapView: UIView {
     var interactor: STPhotoMapBusinessLogic?
     
     weak var progressView: UIProgressView!
+    private weak var entityLevelView: STEntityLevelView!
     
     private var photoTileOverlay: STPhotoTileOverlay?
     
@@ -98,6 +99,19 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+    
+    func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel) {
+        self.showEntityLevelView(title: viewModel.title, image: viewModel.image)
+    }
+    
+    private func showEntityLevelView(title: String?, image: UIImage?) {
+        DispatchQueue.main.async {
+            let model = STEntityLevelView.Model(title: title, image: image)
+            self.setupEntityLevelView(model: model)
+            self.setupEntityLevelViewConstraints()
+            self.entityLevelView?.show()
+        }
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -151,6 +165,15 @@ extension STPhotoMapView {
         self.addSubview(view)
         self.progressView = view
     }
+    
+    private func setupEntityLevelView(model: STEntityLevelView.Model) {
+        let view = STEntityLevelView(model: model)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0.0
+        view.isUserInteractionEnabled = false
+        self.addSubview(view)
+        self.entityLevelView = view
+    }
 }
 
 // MARK: - Constraints configuration
@@ -172,5 +195,12 @@ extension STPhotoMapView {
         self.progressView?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         self.progressView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         self.progressView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+    }
+    
+    private func setupEntityLevelViewConstraints() {
+        self.entityLevelView?.topAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        self.entityLevelView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.entityLevelView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        self.entityLevelView?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
 }

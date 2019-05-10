@@ -15,6 +15,8 @@ import UIKit
 protocol STPhotoMapDisplayLogic: class {
     func displayLoadingState()
     func displayNotLoadingState()
+    
+    func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel)
 }
 
 public class STPhotoMapViewController: UIViewController {

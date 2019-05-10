@@ -18,4 +18,15 @@ enum STPhotoMapModels {
             let tiles: [TileCoordinate]
         }
     }
+    
+    enum EntityZoomLevel {
+        struct Response {
+            let photoProperties: PhotoProperties
+        }
+        
+        struct ViewModel {
+            let title: String?
+            let image: UIImage?
+        }
+    }
 }
