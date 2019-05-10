@@ -605,8 +605,11 @@
 		85F07412226062F1006DA073 /* STPhotoMap */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				284616A0228571D500482303 /* Builders */,
+=======
 				8558E0E622855F2900EF9085 /* Cache */,
+>>>>>>> 6106ca5dfba4d303cc4c7118e4fa4a646225bc21
 				289B1750226714FC00B09F7A /* Localization */,
 				289B174222670D0600B09F7A /* Style */,
 				8529E5252263BCCC00E7CCE5 /* Renderers */,

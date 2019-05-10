@@ -24,6 +24,7 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore {
     var worker: STPhotoMapWorker?
     
     private var visibleTiles: [TileCoordinate] = []
+    private var cache = STPhotoMapCache()
 }
 
 // MARK: Business
