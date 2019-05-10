@@ -50,4 +50,12 @@ class STPhotoMapInteractorTests: XCTestCase {
     
         // Then
     }
+    
+    func testShouldUpdateVisibleTiles() {
+        let tiles: [TileCoordinate] = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        let request = STPhotoMapModels.VisibleTiles.Request(tiles: tiles)
+        self.sut.shouldUpdateVisibleTiles(request: request)
+        
+        XCTAssertEqual(self.sut.visibleTiles.count, 1)
+    }
 }

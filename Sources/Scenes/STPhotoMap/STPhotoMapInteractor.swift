@@ -23,7 +23,7 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore {
     var presenter: STPhotoMapPresentationLogic?
     var worker: STPhotoMapWorker?
     
-    private var visibleTiles: [TileCoordinate] = []
+    var visibleTiles: [TileCoordinate] = []
     private var cache = STPhotoMapCache()
 }
 
