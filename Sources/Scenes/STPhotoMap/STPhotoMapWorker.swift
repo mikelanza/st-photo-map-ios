@@ -12,6 +12,28 @@
 
 import UIKit
 
-class STPhotoMapWorker {
+protocol STPhotoMapWorkerDelegate: class {
+    func successDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
+    func failureDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError)
+}
 
+class STPhotoMapWorker {
+    public var delegate: STPhotoMapWorkerDelegate?
+    private var geojsonTileCachingQueue: OperationQueue
+    
+    init(delegate: STPhotoMapWorkerDelegate? = nil) {
+        self.geojsonTileCachingQueue = OperationQueue()
+        self.geojsonTileCachingQueue.maxConcurrentOperationCount = 12
+    }
+    
+    func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
+        let model = GetGeojsonTileOperationModel.Request(tileCoordinate: tileCoordinate, url: downloadUrl)
+        let operation = GetGeojsonTileOperation(model: model) { result in
+            switch result {
+                case .success(let value): self.delegate?.successDidGetGeojsonTileForCaching(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: value.geoJSONObject); break
+                case .failure(let error): self.delegate?.failureDidGetGeojsonTileForCaching(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: error); break
+            }
+        }
+        self.geojsonTileCachingQueue.addOperation(operation)
+    }
 }
