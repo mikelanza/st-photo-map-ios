@@ -57,6 +57,7 @@
 		85538D38226710C4007D4A15 /* AsynchronousOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85538D37226710C4007D4A15 /* AsynchronousOperation.swift */; };
 		85538D3B2267115E007D4A15 /* TileCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85538D3A2267115E007D4A15 /* TileCoordinate.swift */; };
 		85538D4122671239007D4A15 /* OperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85538D3F22671239007D4A15 /* OperationError.swift */; };
+		8558E0E822855F8B00EF9085 /* STPhotoMapCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8558E0E722855F8B00EF9085 /* STPhotoMapCache.swift */; };
 		85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074132260630E006DA073 /* STPhotoMapPresenter.swift */; };
 		85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074142260630E006DA073 /* STPhotoMapWorker.swift */; };
 		85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F074152260630E006DA073 /* STPhotoMapRouter.swift */; };
@@ -147,6 +148,7 @@
 		85538D37226710C4007D4A15 /* AsynchronousOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsynchronousOperation.swift; sourceTree = "<group>"; };
 		85538D3A2267115E007D4A15 /* TileCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileCoordinate.swift; sourceTree = "<group>"; };
 		85538D3F22671239007D4A15 /* OperationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationError.swift; sourceTree = "<group>"; };
+		8558E0E722855F8B00EF9085 /* STPhotoMapCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapCache.swift; sourceTree = "<group>"; };
 		85F074132260630E006DA073 /* STPhotoMapPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapPresenter.swift; sourceTree = "<group>"; };
 		85F074142260630E006DA073 /* STPhotoMapWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorker.swift; sourceTree = "<group>"; };
 		85F074152260630E006DA073 /* STPhotoMapRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapRouter.swift; sourceTree = "<group>"; };
@@ -574,6 +576,14 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
+		8558E0E622855F2900EF9085 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				8558E0E722855F8B00EF9085 /* STPhotoMapCache.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
 		85F07411226062DD006DA073 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -585,6 +595,7 @@
 		85F07412226062F1006DA073 /* STPhotoMap */ = {
 			isa = PBXGroup;
 			children = (
+				8558E0E622855F2900EF9085 /* Cache */,
 				289B1750226714FC00B09F7A /* Localization */,
 				289B174222670D0600B09F7A /* Style */,
 				8529E5252263BCCC00E7CCE5 /* Renderers */,
@@ -927,6 +938,7 @@
 				85F074212260AB89006DA073 /* STPhotoTileOverlay.swift in Sources */,
 				85538D22226703D9007D4A15 /* GeoJSONGeometryCollection.swift in Sources */,
 				85538D19226703D9007D4A15 /* GeoJSONFeature.swift in Sources */,
+				8558E0E822855F8B00EF9085 /* STPhotoMapCache.swift in Sources */,
 				85F0741E2260630E006DA073 /* STPhotoMapInteractor.swift in Sources */,
 				85538D16226703D9007D4A15 /* GeoJSONParser.swift in Sources */,
 				28860DBB2264B79D0015C92B /* URL+Parameters.swift in Sources */,
