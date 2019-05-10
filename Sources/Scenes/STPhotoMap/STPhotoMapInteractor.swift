@@ -13,6 +13,7 @@
 import UIKit
 
 protocol STPhotoMapBusinessLogic {
+    func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -21,4 +22,14 @@ protocol STPhotoMapDataStore {
 class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore {
     var presenter: STPhotoMapPresentationLogic?
     var worker: STPhotoMapWorker?
+    
+    private var visibleTiles: [TileCoordinate] = []
+}
+
+// MARK: Business
+
+extension STPhotoMapInteractor {
+    func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
+        self.visibleTiles = request.tiles
+    }
 }

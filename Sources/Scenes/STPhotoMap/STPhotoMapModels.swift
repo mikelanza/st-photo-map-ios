@@ -13,5 +13,9 @@
 import UIKit
 
 enum STPhotoMapModels {
-    
+    enum VisibleTiles {
+        struct Request {
+            let tiles: [TileCoordinate]
+        }
+    }
 }
