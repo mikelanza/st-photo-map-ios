@@ -28,8 +28,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
     }
     
     override public func url(forTilePath path: MKTileOverlayPath) -> URL {
-        let tileUrl = self.buildTileUrl(path: path)
-        return self.buildTileUrl(url: tileUrl, with: self.model.parameters)
+        return STPhotoMapUrlBuilder().tileUrl(template: self.model.url, z: path.z, x: path.x, y: path.y, parameters: self.model.parameters)
     }
     
     override public func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {
@@ -46,18 +45,6 @@ public extension STPhotoTileOverlay {
     func update(parameter: KeyValue) {
         self.model.parameters.removeAll(where: { $0 == parameter })
         self.model.parameters.append(parameter)
-    }
-}
-
-// MARK: - Tile methods
-
-extension STPhotoTileOverlay {
-    private func buildTileUrl(path: MKTileOverlayPath) -> URL {
-        return URL(string: String(format: self.model.url, path.z, path.x, path.y))!
-    }
-    
-    private func buildTileUrl(url: URL, with parameters: [KeyValue]) -> URL {
-        return url.addParameters(parameters)
     }
 }
 
