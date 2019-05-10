@@ -101,10 +101,17 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertEqual(self.sut.progressView.progress, 0.0)
     }
     
-    func testUpdateTilesWhenRegionDidChangeAnimated() {
+    func testShouldUpdateVisibleTilesWhenRegionDidChangeAnimated() {
         self.loadView()
         
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
         XCTAssertTrue(self.interactorSpy.shouldUpdateVisibleTilesCalled)
+    }
+    
+    func testShouldCacheGeojsonObjectsWhenRegionDidChangeAnimated() {
+        self.loadView()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertTrue(self.interactorSpy.shouldCacheGeojsonObjectsCalled)
     }
 }

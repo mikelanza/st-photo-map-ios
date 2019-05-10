@@ -17,8 +17,8 @@ public class Parameters {
             (Keys.shadow, "yes"),
             (Keys.sort, "popular"),
             (Keys.tileSize, "256"),
-            (Keys.pinOptimize, "4"),
-            (Keys.sessionId, UUID().uuidString)
+            (Keys.pinOptimize, "4")
+            // TODO - Add sessionId parameter only for the current session!!! (Keys.sessionId, UUID().uuidString)
         ]
     }
     

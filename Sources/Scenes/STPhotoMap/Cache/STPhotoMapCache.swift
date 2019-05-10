@@ -11,10 +11,18 @@ import Foundation
 class STPhotoMapCache {
     struct Tile {
         var keyUrl: String
-        // TODO: Add geo object
+        var geojsonObject: GeoJSONObject?
     }
     
     var tiles = SynchronizedArray<Tile>()
+    
+    func addTile(tile: Tile) {
+        self.tiles.append(tile)
+    }
+    
+    func removeAllTiles() {
+        self.tiles.removeAll()
+    }
     
     // MARK: - Getter
     

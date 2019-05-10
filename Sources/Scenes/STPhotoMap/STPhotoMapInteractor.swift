@@ -14,6 +14,8 @@ import UIKit
 
 protocol STPhotoMapBusinessLogic {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request)
+    
+    func shouldCacheGeojsonObjects()
 }
 
 protocol STPhotoMapDataStore {
@@ -23,8 +25,14 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore {
     var presenter: STPhotoMapPresentationLogic?
     var worker: STPhotoMapWorker?
     
-    var visibleTiles: [TileCoordinate] = []
-    private var cache = STPhotoMapCache()
+    var visibleTiles: [TileCoordinate]
+    var cache: STPhotoMapCache
+    
+    init() {
+        self.visibleTiles = []
+        self.cache = STPhotoMapCache()
+        self.worker = STPhotoMapWorker(delegate: self)
+    }
 }
 
 // MARK: Business
@@ -32,5 +40,26 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore {
 extension STPhotoMapInteractor {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.visibleTiles = request.tiles
+    }
+    
+    func shouldCacheGeojsonObjects() {
+        self.visibleTiles.forEach { tileCoordinate in
+            let geojsonTileUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate)
+            if self.cache.getTile(for: geojsonTileUrl.keyUrl) == nil {
+                self.worker?.getGeojsonTileForCaching(tileCoordinate: tileCoordinate, keyUrl: geojsonTileUrl.keyUrl, downloadUrl: geojsonTileUrl.downloadUrl)
+            }
+        }
+    }
+}
+
+// MARK: - Worker delegate
+
+extension STPhotoMapInteractor: STPhotoMapWorkerDelegate {
+    func successDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
+        self.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+    }
+    
+    func failureDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
+        
     }
 }
