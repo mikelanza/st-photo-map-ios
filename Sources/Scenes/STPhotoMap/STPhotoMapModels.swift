@@ -21,7 +21,7 @@ enum STPhotoMapModels {
     
     enum EntityZoomLevel {
         struct Response {
-            let photoProperties: PhotoProperties
+            let entityLevel: EntityLevel
         }
         
         struct ViewModel {

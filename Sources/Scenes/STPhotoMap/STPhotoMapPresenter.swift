@@ -31,9 +31,8 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     }
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response) {
-        let entityLevel = EntityLevel(rawValue: response.photoProperties.type) ?? .unknown
-        let title: String = self.titleForEntityLevel(entityLevel: entityLevel)
-        let image: UIImage? = self.imageForEntityLevel(entityLevel: entityLevel)
+        let title: String = self.titleForEntityLevel(entityLevel: response.entityLevel)
+        let image: UIImage? = self.imageForEntityLevel(entityLevel: response.entityLevel)
         let viewModel = STPhotoMapModels.EntityZoomLevel.ViewModel(title: title, image: image)
         self.displayer?.displayEntityLevel(viewModel: viewModel)
     }

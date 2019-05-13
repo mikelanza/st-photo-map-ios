@@ -27,11 +27,14 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore {
     
     var visibleTiles: [TileCoordinate]
     var cacheHandler: STPhotoMapCacheHandler
+    var entityLevelHandler: STPhotoMapEntityLevelHandler
     
     init() {
         self.visibleTiles = []
         self.cacheHandler = STPhotoMapCacheHandler()
+        self.entityLevelHandler = STPhotoMapEntityLevelHandler()
         self.worker = STPhotoMapWorker(delegate: self)
+        self.entityLevelHandler.delegate = self
     }
 }
 
@@ -75,6 +78,29 @@ extension STPhotoMapInteractor {
     }
 }
 
+// MARK: Entity Level logic
+
+extension STPhotoMapInteractor {
+    func shouldDetermineEntityLevel() {
+        
+    }
+    
+    func getVisibleCachedTiles() -> [TileCoordinate] {
+        var tiles: [TileCoordinate] = []
+        
+        return tiles
+    }
+}
+
+// MARK: STPhotoMapEntityLevelHandler Delegate
+
+extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
+    func photoMapEntityLevelHandler(newEntityLevel level: EntityLevel) {
+        self.worker?.cancelAllGeojsonEntityLevelOperations()
+        self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
+    }
+}
+
 // MARK: - Worker delegate
 
 extension STPhotoMapInteractor: STPhotoMapWorkerDelegate {
@@ -85,5 +111,13 @@ extension STPhotoMapInteractor: STPhotoMapWorkerDelegate {
     
     func failureDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
         self.cacheHandler.activeDownloads.remove(where: { $0 == keyUrl })
+    }
+    
+    func successDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
+        self.entityLevelHandler.activeDownloads.remove(where: { $0 == keyUrl })
+    }
+    
+    func failureDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
+        self.entityLevelHandler.activeDownloads.remove(where: { $0 == keyUrl })
     }
 }
