@@ -174,6 +174,7 @@ extension STPhotoMapInteractor: STPhotoMapWorkerDelegate {
     }
     
     func successDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
+        self.entityLevelHandler.change(entityLevel: self.getEntityLevel(for: geojsonObject))
         self.entityLevelHandler.activeDownloads.remove(where: { $0 == keyUrl })
     }
     
