@@ -87,17 +87,35 @@ extension STPhotoMapView {
 
 extension STPhotoMapView: STPhotoMapDisplayLogic {
     func displayLoadingState() {
-        self.progressView?.isHidden = false
-        self.progressView?.setProgress(1.0, animated: true)
-        
+        self.shouldShowProgressView()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
+    private func shouldShowProgressView() {
+        if STPhotoMapStyle.shared.progressViewModel.show {
+            self.showProgressView()
+        }
+    }
+    
+    private func showProgressView() {
+        self.progressView?.isHidden = false
+        self.progressView?.setProgress(1.0, animated: true)
+    }
+    
     func displayNotLoadingState() {
+        self.shouldHideProgressView()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
+    private func shouldHideProgressView() {
+        if STPhotoMapStyle.shared.progressViewModel.show {
+            self.hideProgressView()
+        }
+    }
+    
+    private func hideProgressView() {
         self.progressView?.isHidden = true
         self.progressView?.setProgress(0.0, animated: false)
-        
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel) {

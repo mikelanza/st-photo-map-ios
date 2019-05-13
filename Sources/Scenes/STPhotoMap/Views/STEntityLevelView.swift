@@ -48,7 +48,7 @@ public class STEntityLevelView: UIView {
         DispatchQueue.main.async {
             self.fadeIn()
             
-            let duration = STPhotoMapStyle.shared.entityLevelViewModel.showDurationInMilliseconds
+            let duration = STPhotoMapStyle.shared.entityLevelViewModel.showDuration
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(duration), execute: {
                 self.dismiss()
             })
@@ -79,9 +79,9 @@ extension STEntityLevelView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = STPhotoMapStyle.shared.entityLevelViewModel.backgroundColor
-        view.layer.cornerRadius = 8.0
-        view.layer.shadowColor = UIColor(white: 0.0, alpha: 0.2).cgColor
-        view.layer.shadowRadius = 2
+        view.layer.cornerRadius = STPhotoMapStyle.shared.entityLevelViewModel.cornerRadius
+        view.layer.shadowColor = STPhotoMapStyle.shared.entityLevelViewModel.shadowColor
+        view.layer.shadowRadius = STPhotoMapStyle.shared.entityLevelViewModel.shadowRadius
         self.addSubview(view)
         self.containerView = view
     }
