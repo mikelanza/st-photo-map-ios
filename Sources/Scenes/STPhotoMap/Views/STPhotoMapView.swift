@@ -20,7 +20,7 @@ public class STPhotoMapView: UIView {
     var interactor: STPhotoMapBusinessLogic?
     
     weak var progressView: UIProgressView!
-    private weak var entityLevelView: STEntityLevelView!
+    weak var entityLevelView: STEntityLevelView!
     
     private var photoTileOverlay: STPhotoTileOverlay?
     
@@ -105,12 +105,10 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     }
     
     private func showEntityLevelView(title: String?, image: UIImage?) {
-        DispatchQueue.main.async {
-            let model = STEntityLevelView.Model(title: title, image: image)
-            self.setupEntityLevelView(model: model)
-            self.setupEntityLevelViewConstraints()
-            self.entityLevelView?.show()
-        }
+        let model = STEntityLevelView.Model(title: title, image: image)
+        self.setupEntityLevelView(model: model)
+        self.setupEntityLevelViewConstraints()
+        self.entityLevelView?.show()
     }
 }
 

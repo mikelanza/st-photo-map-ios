@@ -52,4 +52,11 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentNotLoadingState()
         XCTAssertTrue(self.displayerSpy.displayNotLoadingStateCalled)
     }
+    
+    func testPresentEntityLevel() {
+        let response = STPhotoMapModels.EntityZoomLevel.Response(photoProperties: PhotoProperties())
+        self.sut.presentEntityLevel(response: response)
+        
+        XCTAssertTrue(self.displayerSpy.displayEntityLevelCalled)
+    }
 }
