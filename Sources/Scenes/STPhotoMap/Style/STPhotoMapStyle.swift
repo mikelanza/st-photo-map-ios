@@ -29,7 +29,7 @@ public class STPhotoMapStyle {
     
     public struct ProgressViewModel {
         public var show: Bool = true
-        public var tintColor: UIColor = UIColor.blue
+        public var tintColor: UIColor = UIColor(red: 65/255, green: 171/255, blue: 255/255, alpha: 1.0)
     }
     
     public struct NoInternetConnectionViewModel {
@@ -48,11 +48,14 @@ public class STPhotoMapStyle {
     
     public struct EntityLevelViewModel {
         public var show: Bool = true
-        public var showDurationInMilliseconds: Int = 1500
+        public var showDuration: Int = 1500 // Milliseconds
         
         public var titleColor: UIColor = UIColor.white
         public var titleFont: UIFont = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.medium)
         public var backgroundColor: UIColor = UIColor(red: 65/255, green: 171/255, blue: 255/255, alpha: 0.95)
+        public var cornerRadius: CGFloat = 8.0
+        public var shadowColor: CGColor = UIColor(white: 0.0, alpha: 0.2).cgColor
+        public var shadowRadius: CGFloat = 2.0
         
         public var locationTitle: String = STPhotoMapLocalization.shared.locationLevelTitle
         public var blockTitle: String = STPhotoMapLocalization.shared.blockLevelTitle
