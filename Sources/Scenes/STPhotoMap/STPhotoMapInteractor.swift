@@ -26,28 +26,51 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore {
     var worker: STPhotoMapWorker?
     
     var visibleTiles: [TileCoordinate]
-    var cache: STPhotoMapCache
+    var cacheHandler: STPhotoMapCacheHandler
     
     init() {
         self.visibleTiles = []
-        self.cache = STPhotoMapCache()
+        self.cacheHandler = STPhotoMapCacheHandler()
         self.worker = STPhotoMapWorker(delegate: self)
     }
 }
 
-// MARK: Business
+// MARK: - Business logic
 
 extension STPhotoMapInteractor {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.visibleTiles = request.tiles
     }
-    
+}
+
+// MARK: - Caching logic
+
+extension STPhotoMapInteractor {
     func shouldCacheGeojsonObjects() {
-        self.visibleTiles.forEach { tileCoordinate in
-            let geojsonTileUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate)
-            if self.cache.getTile(for: geojsonTileUrl.keyUrl) == nil {
-                self.worker?.getGeojsonTileForCaching(tileCoordinate: tileCoordinate, keyUrl: geojsonTileUrl.keyUrl, downloadUrl: geojsonTileUrl.downloadUrl)
+        let tiles = self.prepareTilesForCaching()
+        self.cacheGeojsonObjectsFor(tiles: tiles)
+    }
+    
+    private func prepareTilesForCaching() -> [TileCoordinate] {
+        var tiles: [TileCoordinate] = []
+        for tile in self.visibleTiles {
+            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+            if self.cacheHandler.activeDownloads.contains(url.keyUrl) {
+                continue
             }
+            if self.cacheHandler.cache.getTile(for: url.keyUrl) != nil {
+                continue
+            }
+            tiles.append(tile)
+        }
+        return tiles
+    }
+    
+    private func cacheGeojsonObjectsFor(tiles: [TileCoordinate]) {
+        for tile in tiles {
+            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+            self.cacheHandler.activeDownloads.append(url.keyUrl)
+            self.worker?.getGeojsonTileForCaching(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
         }
     }
 }
@@ -56,10 +79,11 @@ extension STPhotoMapInteractor {
 
 extension STPhotoMapInteractor: STPhotoMapWorkerDelegate {
     func successDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
-        self.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.cacheHandler.activeDownloads.remove(where: { $0 == keyUrl })
     }
     
     func failureDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
-        
+        self.cacheHandler.activeDownloads.remove(where: { $0 == keyUrl })
     }
 }

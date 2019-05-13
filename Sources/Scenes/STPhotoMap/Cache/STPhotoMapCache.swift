@@ -14,7 +14,11 @@ class STPhotoMapCache {
         var geojsonObject: GeoJSONObject?
     }
     
-    var tiles = SynchronizedArray<Tile>()
+    var tiles: SynchronizedArray<Tile>
+    
+    init() {
+        self.tiles = SynchronizedArray<Tile>()
+    }
     
     func addTile(tile: Tile) {
         self.tiles.append(tile)
@@ -23,8 +27,6 @@ class STPhotoMapCache {
     func removeAllTiles() {
         self.tiles.removeAll()
     }
-    
-    // MARK: - Getter
     
     func getTiles(for urls: [String]) -> [Tile] {
         return self.tiles.filter({ urls.contains($0.keyUrl) })
