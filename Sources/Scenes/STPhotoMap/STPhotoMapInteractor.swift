@@ -16,6 +16,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request)
     
     func shouldCacheGeojsonObjects()
+    func shouldDetermineEntityLevel()
 }
 
 protocol STPhotoMapDataStore {
@@ -85,13 +86,69 @@ extension STPhotoMapInteractor {
 
 extension STPhotoMapInteractor {
     func shouldDetermineEntityLevel() {
+        let cachedTiles = self.getVisibleCachedTiles()
         
+        if cachedTiles.count > 0 {
+            self.calculateEntityLevelFor(cachedTiles: cachedTiles)
+        } else {
+            self.entityLevelGeojsonObjectsFor(tiles: self.prepareTilesForEntityLevel())
+        }
+        
+        // TODO: Present loading state
     }
     
-    func getVisibleCachedTiles() -> [TileCoordinate] {
+    func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
+        var cachedTiles: [STPhotoMapCache.Tile] = []
+        for tile in self.visibleTiles {
+            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+            do {
+                let cachedTile = try self.cacheHandler.cache.getTile(for: url.keyUrl)
+                cachedTiles.append(cachedTile)
+            } catch {
+            }
+        }
+        return cachedTiles
+    }
+    
+    func calculateEntityLevelFor(cachedTiles: [STPhotoMapCache.Tile]) {
+        let entityLevel = self.getEntityLevel(for: cachedTiles.first?.geojsonObject)
+        self.entityLevelHandler.change(entityLevel: entityLevel)
+    }
+    
+    func entityLevelGeojsonObjectsFor(tiles: [TileCoordinate]) {
+        tiles.forEach({ self.entityLevelGeojsonObjectsFor(tile: $0) })
+    }
+    
+    private func prepareTilesForEntityLevel() -> [TileCoordinate] {
         var tiles: [TileCoordinate] = []
-        
+        for tile in self.visibleTiles {
+            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+            if self.entityLevelHandler.hasActiveDownload(url.keyUrl) == false {
+                tiles.append(tile)
+            }
+        }
         return tiles
+    }
+    
+    func entityLevelGeojsonObjectsFor(tile: TileCoordinate) {
+        let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+        self.entityLevelHandler.addActiveDownload(url.keyUrl)
+        self.worker?.getGeojsonEntityLevel(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
+    }
+    
+    private func getEntityLevel(for geoJSONObject: GeoJSONObject?) -> EntityLevel {
+        switch geoJSONObject {
+        case let featureCollection as GeoJSONFeatureCollection: return self.getEntityLevel(for: featureCollection.features.first)
+        case let feature as GeoJSONFeature: return self.getEntityLevel(for: feature)
+        default: break
+        }
+        return EntityLevel.unknown
+    }
+    
+    private func getEntityLevel(for feature: GeoJSONFeature?) -> EntityLevel {
+        guard let feature = feature else { return EntityLevel.unknown }
+        guard let type = feature.photoProperties?.type else { return EntityLevel.unknown }
+        return EntityLevel(rawValue: type) ?? .unknown
     }
 }
 

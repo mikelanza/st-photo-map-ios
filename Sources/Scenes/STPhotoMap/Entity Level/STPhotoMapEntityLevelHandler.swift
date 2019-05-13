@@ -22,7 +22,23 @@ class STPhotoMapEntityLevelHandler {
         self.activeDownloads = SynchronizedArray<String>()
     }
     
-    public func change(entityLevel: EntityLevel) {
+    func hasActiveDownload(_ url: String) -> Bool {
+        return self.activeDownloads.contains(url)
+    }
+    
+    func addActiveDownload(_ url: String) {
+        self.activeDownloads.append(url)
+    }
+    
+    func removeActiveDownload(_ url: String) {
+        self.activeDownloads.remove(where: { $0 == url })
+    }
+    
+    func removeAllActiveDownloads() {
+        self.activeDownloads.removeAll()
+    }
+    
+    func change(entityLevel: EntityLevel) {
         if entityLevel != .unknown && self.entityLevel != entityLevel {
             self.entityLevel = entityLevel
             self.delegate?.photoMapEntityLevelHandler(newEntityLevel: self.entityLevel)
