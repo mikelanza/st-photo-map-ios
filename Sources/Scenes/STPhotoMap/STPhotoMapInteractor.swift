@@ -58,23 +58,26 @@ extension STPhotoMapInteractor {
         var tiles: [TileCoordinate] = []
         for tile in self.visibleTiles {
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
-            if self.cacheHandler.activeDownloads.contains(url.keyUrl) {
+            if self.cacheHandler.hasActiveDownload(url.keyUrl) {
                 continue
             }
-            if self.cacheHandler.cache.getTile(for: url.keyUrl) != nil {
-                continue
+            do {
+                let _ = try self.cacheHandler.cache.getTile(for: url.keyUrl)
+            } catch {
+                tiles.append(tile)
             }
-            tiles.append(tile)
         }
         return tiles
     }
     
     private func cacheGeojsonObjectsFor(tiles: [TileCoordinate]) {
-        for tile in tiles {
-            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
-            self.cacheHandler.activeDownloads.append(url.keyUrl)
-            self.worker?.getGeojsonTileForCaching(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
-        }
+        tiles.forEach({ self.cacheGeojsonObjectsFor(tile: $0) })
+    }
+    
+    private func cacheGeojsonObjectsFor(tile: TileCoordinate) {
+        let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+        self.cacheHandler.addActiveDownload(url.keyUrl)
+        self.worker?.getGeojsonTileForCaching(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
     }
 }
 
@@ -106,11 +109,11 @@ extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
 extension STPhotoMapInteractor: STPhotoMapWorkerDelegate {
     func successDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
         self.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
-        self.cacheHandler.activeDownloads.remove(where: { $0 == keyUrl })
+        self.cacheHandler.removeActiveDownload(keyUrl)
     }
     
     func failureDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
-        self.cacheHandler.activeDownloads.remove(where: { $0 == keyUrl })
+        self.cacheHandler.removeActiveDownload(keyUrl)
     }
     
     func successDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
