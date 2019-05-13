@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum STPhotoMapCacheError: Error {
+    case noTileAvailable
+}
+
 class STPhotoMapCache {
     struct Tile {
         var keyUrl: String
@@ -32,7 +36,10 @@ class STPhotoMapCache {
         return self.tiles.filter({ urls.contains($0.keyUrl) })
     }
     
-    func getTile(for keyUrl: String) -> Tile? {
-        return self.tiles.first(where: { $0.keyUrl == keyUrl })
+    func getTile(for keyUrl: String) throws -> Tile {
+        guard let tile = self.tiles.first(where: { $0.keyUrl == keyUrl }) else {
+            throw STPhotoMapCacheError.noTileAvailable
+        }
+        return tile
     }
 }

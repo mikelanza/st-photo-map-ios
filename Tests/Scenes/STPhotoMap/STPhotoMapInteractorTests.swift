@@ -57,7 +57,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     
     func testShouldCacheGeojsonObjectsWhenCacheIsEmpty() {
         self.sut.cacheHandler.cache.removeAllTiles()
-        self.sut.cacheHandler.activeDownloads.removeAll()
+        self.sut.cacheHandler.removeAllActiveDownloads()
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
         let queue = DispatchQueue(label: "queue", attributes: .concurrent)
@@ -76,7 +76,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let tileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         
-        self.sut.cacheHandler.activeDownloads.removeAll()
+        self.sut.cacheHandler.removeAllActiveDownloads()
         self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: nil))
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
@@ -97,7 +97,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         
         self.sut.cacheHandler.cache.removeAllTiles()
-        self.sut.cacheHandler.activeDownloads.append(keyUrl)
+        self.sut.cacheHandler.addActiveDownload(keyUrl)
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
         let queue = DispatchQueue(label: "queue", attributes: .concurrent)
@@ -116,7 +116,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let tileCoordinates = [TileCoordinate(zoom: 10, x: 1, y: 2), TileCoordinate(zoom: 11, x: 2, y: 3)]
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinates.first!).keyUrl
         
-        self.sut.cacheHandler.activeDownloads.append(keyUrl)
+        self.sut.cacheHandler.addActiveDownload(keyUrl)
         self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: nil))
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")

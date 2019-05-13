@@ -10,10 +10,26 @@ import Foundation
 
 class STPhotoMapCacheHandler {
     var cache: STPhotoMapCache
-    var activeDownloads: SynchronizedArray<String>
+    private var activeDownloads: SynchronizedArray<String>
     
     init() {
         self.cache = STPhotoMapCache()
         self.activeDownloads = SynchronizedArray<String>()
+    }
+    
+    func hasActiveDownload(_ url: String) -> Bool {
+        return self.activeDownloads.contains(url)
+    }
+    
+    func addActiveDownload(_ url: String) {
+        self.activeDownloads.append(url)
+    }
+    
+    func removeActiveDownload(_ url: String) {
+        self.activeDownloads.remove(where: { $0 == url })
+    }
+    
+    func removeAllActiveDownloads() {
+        self.activeDownloads.removeAll()
     }
 }
