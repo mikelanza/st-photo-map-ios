@@ -59,12 +59,7 @@ extension STPhotoMapInteractor {
         var tiles: [TileCoordinate] = []
         for tile in self.visibleTiles {
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
-            if self.cacheHandler.hasActiveDownload(url.keyUrl) {
-                continue
-            }
-            do {
-                let _ = try self.cacheHandler.cache.getTile(for: url.keyUrl)
-            } catch {
+            if self.cacheHandler.shouldPrepareTileForCaching(url: url.keyUrl) {
                 tiles.append(tile)
             }
         }

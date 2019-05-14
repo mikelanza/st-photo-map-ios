@@ -32,4 +32,16 @@ class STPhotoMapCacheHandler {
     func removeAllActiveDownloads() {
         self.activeDownloads.removeAll()
     }
+    
+    func shouldPrepareTileForCaching(url: String) -> Bool {
+        if self.hasActiveDownload(url) {
+            return false
+        }
+        do {
+            let _ = try self.cache.getTile(for: url)
+            return false
+        } catch {
+            return true
+        }
+    }
 }
