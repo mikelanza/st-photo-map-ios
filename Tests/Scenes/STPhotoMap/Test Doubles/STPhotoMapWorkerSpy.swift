@@ -10,8 +10,30 @@
 
 class STPhotoMapWorkerSpy: STPhotoMapWorker {
     var getGeojsonTileForCachingCalled: Bool = false
+    var getGeojsonTileForEntityLevelCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
+    }
+    
+    override func getGeojsonEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
+        self.getGeojsonTileForEntityLevelCalled = true
+    }
+}
+
+class STPhotoMapWorkerSuccessWithAsyncSpy: STPhotoMapWorker {
+    var getGeojsonTileForCachingCalled: Bool = false
+    var getGeojsonTileForEntityLevelCalled: Bool = false
+    
+    override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
+        self.getGeojsonTileForCachingCalled = true
+    }
+    
+    override func getGeojsonEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
+        self.getGeojsonTileForEntityLevelCalled = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + Double.random(in: 1..<5)) {
+            //self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: GeoJSON().parse(geoJSON: [:])!)
+        }
     }
 }

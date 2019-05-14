@@ -127,6 +127,13 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldCacheGeojsonObjectsCalled)
     }
     
+    func testShouldDetermineEntityLevelWhenRegionDidChangeAnimated() {
+        self.loadView()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertTrue(self.interactorSpy.shouldDetermineEntityLevelCalled)
+    }
+    
     func testDisplayEntityLevel() {
         self.loadView()
         let viewModel = STPhotoMapModels.EntityZoomLevel.ViewModel(title: STPhotoMapStyle.EntityLevelViewModel().blockTitle, image: STPhotoMapStyle.EntityLevelViewModel().blockImage)

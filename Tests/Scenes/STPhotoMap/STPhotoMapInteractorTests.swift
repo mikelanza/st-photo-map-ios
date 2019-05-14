@@ -131,4 +131,115 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         XCTAssertTrue(self.workerSpy.getGeojsonTileForCachingCalled)
     }
+    
+    func testShouldDetermineEntityLevelWhenCacheIsEmptyAndThereAreNoActiveDownloadsWithSuccess() {
+        self.sut.cacheHandler.cache.removeAllTiles()
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        
+        let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
+        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+        queue.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+        
+        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+    }
+    
+    func testShouldDetermineEntityLevelWhenCacheIsEmptyAndThereAreNoActiveDownloadsWithFailure() {
+        self.sut.cacheHandler.cache.removeAllTiles()
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        
+        let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
+        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+        queue.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+        
+        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+    }
+    
+    func testShouldDetermineEntityLevelWhenCacheIsEmptyAndThereAreActiveDownloads() {
+        let tileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        
+        self.sut.cacheHandler.cache.removeAllTiles()
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        
+        self.sut.entityLevelHandler.addActiveDownload(keyUrl)
+        
+        let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
+        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+        queue.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+        
+        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertFalse(self.workerSpy.getGeojsonTileForEntityLevelCalled)
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+    }
+    
+    func testShouldDetermineEntityLevelWhenCacheIsNotEmptyAndNoActiveDownloads() {
+        let tileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: nil))
+        
+        let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
+        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+        queue.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+        
+        self.sut.visibleTiles = [tileCoordinate]
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertFalse(self.workerSpy.getGeojsonTileForCachingCalled)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+    }
+    
+    func testShouldDetermineEntityLevelWhenCacheIsEmptyAndThereAreMultipleActiveDownloads() {
+        let worker = STPhotoMapWorkerSuccessWithAsyncSpy(delegate: self.sut)
+        self.sut.worker = worker
+        
+        self.sut.cacheHandler.cache.removeAllTiles()
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        
+        let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
+        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+        queue.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+        
+        for _ in 1...20 {
+            self.sut.visibleTiles.append(TileCoordinate(zoom: 10, x: 1, y: 2))
+        }
+        
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertEqual(self.sut.visibleTiles.count, 20)
+        
+        worker.cancelAllGeojsonEntityLevelOperations()
+        
+        XCTAssertEqual(self.sut.entityLevelHandler.activeDownloads.count, 0)
+    }
 }
