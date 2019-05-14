@@ -48,11 +48,11 @@ class STPhotoMapInteractorTests: XCTestCase {
     // MARK: Tests
       
     func testShouldUpdateVisibleTiles() {
-        let tiles: [TileCoordinate] = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        let tiles: [TileCoordinate] = STPhotoMapSeeds.tileCoordinates
         let request = STPhotoMapModels.VisibleTiles.Request(tiles: tiles)
         self.sut.shouldUpdateVisibleTiles(request: request)
         
-        XCTAssertEqual(self.sut.visibleTiles.count, 1)
+        XCTAssertEqual(self.sut.visibleTiles.count, tiles.count)
     }
     
     func testShouldCacheGeojsonObjectsWhenCacheIsEmpty() {
@@ -66,18 +66,19 @@ class STPhotoMapInteractorTests: XCTestCase {
         }
         waitForExpectations(timeout: 1.0)
         
-        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        self.sut.visibleTiles = STPhotoMapSeeds.tileCoordinates
         self.sut.shouldCacheGeojsonObjects()
         
         XCTAssertTrue(self.workerSpy.getGeojsonTileForCachingCalled)
     }
     
-    func testShouldCacheGeojsonObjectsWhenCacheIsNotEmpty() {
-        let tileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
+    func testShouldCacheGeojsonObjectsWhenCacheIsNotEmpty() throws {
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: nil))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
         let queue = DispatchQueue(label: "queue", attributes: .concurrent)
@@ -93,7 +94,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     }
     
     func testShouldCacheGeojsonObjectsWhenCacheIsEmptyAndThereAreActiveDownloads() {
-        let tileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         
         self.sut.cacheHandler.cache.removeAllTiles()
@@ -112,12 +113,13 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.workerSpy.getGeojsonTileForCachingCalled)
     }
     
-    func testShouldCacheGeojsonObjectsWhenCacheIsNotEmptyAndThereAreActiveDownloads() {
-        let tileCoordinates = [TileCoordinate(zoom: 10, x: 1, y: 2), TileCoordinate(zoom: 11, x: 2, y: 3)]
+    func testShouldCacheGeojsonObjectsWhenCacheIsNotEmptyAndThereAreActiveDownloads() throws {
+        let tileCoordinates = STPhotoMapSeeds.tileCoordinates
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinates.first!).keyUrl
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.addActiveDownload(keyUrl)
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: nil))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
         let queue = DispatchQueue(label: "queue", attributes: .concurrent)

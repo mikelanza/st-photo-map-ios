@@ -56,14 +56,10 @@ extension STPhotoMapInteractor {
     }
     
     private func prepareTilesForCaching() -> [TileCoordinate] {
-        var tiles: [TileCoordinate] = []
-        for tile in self.visibleTiles {
+        return self.visibleTiles.filter({ tile -> Bool in
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
-            if self.cacheHandler.shouldPrepareTileForCaching(url: url.keyUrl) {
-                tiles.append(tile)
-            }
-        }
-        return tiles
+            return self.cacheHandler.shouldPrepareTileForCaching(url: url.keyUrl)
+        })
     }
     
     private func cacheGeojsonObjectsFor(tiles: [TileCoordinate]) {

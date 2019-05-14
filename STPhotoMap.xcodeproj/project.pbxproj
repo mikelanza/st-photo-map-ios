@@ -26,6 +26,8 @@
 		28CAAC8F22608F52000C0200 /* STPhotoMapWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */; };
 		28CAAC9022608F52000C0200 /* STPhotoMapPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8C22608F52000C0200 /* STPhotoMapPresenterTests.swift */; };
 		28F5457D2285972800081475 /* STPhotoMapWorkerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F5457C2285972800081475 /* STPhotoMapWorkerSpy.swift */; };
+		28FA365D228AD628000A9E3D /* STPhotoMapSeeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FA365C228AD628000A9E3D /* STPhotoMapSeeds.swift */; };
+		28FA3664228ADD93000A9E3D /* geojson_object.json in Resources */ = {isa = PBXBuildFile; fileRef = 28FA3663228ADD93000A9E3D /* geojson_object.json */; };
 		3549BB501DA38A2000C63030 /* STPhotoMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 3549BB181DA3890B00C63030 /* STPhotoMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3549BB511DA38A2000C63030 /* STPhotoMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 3549BB181DA3890B00C63030 /* STPhotoMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3549BB521DA38A2100C63030 /* STPhotoMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 3549BB181DA3890B00C63030 /* STPhotoMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -116,6 +118,8 @@
 		28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorkerTests.swift; sourceTree = "<group>"; };
 		28CAAC8C22608F52000C0200 /* STPhotoMapPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapPresenterTests.swift; sourceTree = "<group>"; };
 		28F5457C2285972800081475 /* STPhotoMapWorkerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorkerSpy.swift; sourceTree = "<group>"; };
+		28FA365C228AD628000A9E3D /* STPhotoMapSeeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapSeeds.swift; sourceTree = "<group>"; };
+		28FA3663228ADD93000A9E3D /* geojson_object.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geojson_object.json; sourceTree = "<group>"; };
 		3549BB171DA3890B00C63030 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3549BB181DA3890B00C63030 /* STPhotoMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPhotoMap.h; sourceTree = "<group>"; };
 		3549BB211DA389CD00C63030 /* STPhotoMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = STPhotoMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -330,6 +334,8 @@
 		28CAAC8822608F3F000C0200 /* STPhotoMap */ = {
 			isa = PBXGroup;
 			children = (
+				28FA365E228AD7F9000A9E3D /* Resources */,
+				28FA365B228AD619000A9E3D /* Seeds */,
 				2810E6A922852F8B00D491C2 /* Test Doubles */,
 				2810E6A622852D7E00D491C2 /* Views */,
 				28CAAC8922608F52000C0200 /* STPhotoMapViewControllerTests.swift */,
@@ -338,6 +344,22 @@
 				28CAAC8C22608F52000C0200 /* STPhotoMapPresenterTests.swift */,
 			);
 			path = STPhotoMap;
+			sourceTree = "<group>";
+		};
+		28FA365B228AD619000A9E3D /* Seeds */ = {
+			isa = PBXGroup;
+			children = (
+				28FA365C228AD628000A9E3D /* STPhotoMapSeeds.swift */,
+			);
+			path = Seeds;
+			sourceTree = "<group>";
+		};
+		28FA365E228AD7F9000A9E3D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				28FA3663228ADD93000A9E3D /* geojson_object.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		3549BAFB1DA387DB00C63030 = {
@@ -917,6 +939,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28FA3664228ADD93000A9E3D /* geojson_object.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1021,6 +1044,7 @@
 				28CAAC9022608F52000C0200 /* STPhotoMapPresenterTests.swift in Sources */,
 				2810E6AB22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift in Sources */,
 				28F5457D2285972800081475 /* STPhotoMapWorkerSpy.swift in Sources */,
+				28FA365D228AD628000A9E3D /* STPhotoMapSeeds.swift in Sources */,
 				2810E6AD228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift in Sources */,
 				28CAAC8D22608F52000C0200 /* STPhotoMapViewControllerTests.swift in Sources */,
 			);
