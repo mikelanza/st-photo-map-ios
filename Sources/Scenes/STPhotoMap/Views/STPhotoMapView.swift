@@ -216,7 +216,7 @@ extension STPhotoMapView {
     }
     
     private func setupEntityLevelViewConstraints() {
-        self.entityLevelView?.topAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        self.entityLevelView?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         self.entityLevelView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         self.entityLevelView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         self.entityLevelView?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
