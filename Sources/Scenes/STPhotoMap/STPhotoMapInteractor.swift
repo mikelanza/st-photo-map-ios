@@ -183,10 +183,14 @@ extension STPhotoMapInteractor: STPhotoMapWorkerDelegate {
     
     func successDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
         self.entityLevelHandler.change(entityLevel: self.getEntityLevel(for: geojsonObject))
-        self.entityLevelHandler.activeDownloads.remove(where: { $0 == keyUrl })
+        self.entityLevelHandler.removeActiveDownload(keyUrl)
+        
+        self.handleLoadingStateForEntityLevel()
     }
     
     func failureDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
-        self.entityLevelHandler.activeDownloads.remove(where: { $0 == keyUrl })
+        self.entityLevelHandler.removeActiveDownload(keyUrl)
+        
+        self.handleLoadingStateForEntityLevel()
     }
 }
