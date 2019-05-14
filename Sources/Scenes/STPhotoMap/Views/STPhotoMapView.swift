@@ -87,8 +87,10 @@ extension STPhotoMapView {
 
 extension STPhotoMapView: STPhotoMapDisplayLogic {
     func displayLoadingState() {
-        self.shouldShowProgressView()
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        DispatchQueue.main.async {
+            self.shouldShowProgressView()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }
     }
     
     private func shouldShowProgressView() {
@@ -103,8 +105,10 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     }
     
     func displayNotLoadingState() {
-        self.shouldHideProgressView()
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        DispatchQueue.main.async {
+            self.shouldHideProgressView()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }
     }
     
     private func shouldHideProgressView() {
@@ -119,7 +123,9 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     }
     
     func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel) {
-        self.showEntityLevelView(title: viewModel.title, image: viewModel.image)
+        DispatchQueue.main.async {
+            self.showEntityLevelView(title: viewModel.title, image: viewModel.image)
+        }
     }
     
     private func showEntityLevelView(title: String?, image: UIImage?) {
@@ -134,9 +140,12 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
 
 extension STPhotoMapView: MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        self.interactor?.shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request(tiles: mapView.visibleTiles()))
-        self.interactor?.shouldCacheGeojsonObjects()
-        self.interactor?.shouldDetermineEntityLevel()
+        let visibleTiles = mapView.visibleTiles()
+        DispatchQueue.global().async {
+            self.interactor?.shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request(tiles: visibleTiles))
+            self.interactor?.shouldCacheGeojsonObjects()
+            self.interactor?.shouldDetermineEntityLevel()
+        }
     }
     
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {

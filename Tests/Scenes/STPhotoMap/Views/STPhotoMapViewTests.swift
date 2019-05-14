@@ -89,6 +89,12 @@ class STPhotoMapViewTests: XCTestCase {
         self.loadView()
         self.sut.displayLoadingState()
         
+        let waitExpectation = expectation(description: "Waiting for main queue.")
+        DispatchQueue.main.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+        
         XCTAssertFalse(self.sut.progressView.isHidden)
         XCTAssertEqual(self.sut.progressView.progress, 1.0)
     }
@@ -96,6 +102,12 @@ class STPhotoMapViewTests: XCTestCase {
     func testDisplayNotLoadingState() {
         self.loadView()
         self.sut.displayNotLoadingState()
+        
+        let waitExpectation = expectation(description: "Waiting for main queue.")
+        DispatchQueue.main.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
         
         XCTAssertTrue(self.sut.progressView.isHidden)
         XCTAssertEqual(self.sut.progressView.progress, 0.0)
@@ -119,6 +131,12 @@ class STPhotoMapViewTests: XCTestCase {
         self.loadView()
         let viewModel = STPhotoMapModels.EntityZoomLevel.ViewModel(title: STPhotoMapStyle.EntityLevelViewModel().blockTitle, image: STPhotoMapStyle.EntityLevelViewModel().blockImage)
         self.sut.displayEntityLevel(viewModel: viewModel)
+        
+        let waitExpectation = expectation(description: "Waiting for main queue.")
+        DispatchQueue.main.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
         
         XCTAssertNotNil(self.sut.entityLevelView)
     }
