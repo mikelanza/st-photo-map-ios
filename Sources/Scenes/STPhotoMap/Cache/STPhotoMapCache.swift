@@ -15,7 +15,7 @@ enum STPhotoMapCacheError: Error {
 class STPhotoMapCache {
     struct Tile {
         var keyUrl: String
-        var geojsonObject: GeoJSONObject?
+        var geojsonObject: GeoJSONObject
     }
     
     var tiles: SynchronizedArray<Tile>
