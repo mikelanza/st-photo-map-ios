@@ -21,7 +21,7 @@ class STPhotoMapSeeds: NSObject {
     
     func geojsonObject() throws -> GeoJSONObject {
         let bundle = Bundle(for: type(of: self))
-        guard let path = bundle.path(forResource: "geojsonobject", ofType: "json") else {
+        guard let path = bundle.path(forResource: "geojson_object", ofType: "json") else {
             throw STPhotoMapSeedsError.noResourceAvailable
         }
         let url = URL(fileURLWithPath: path)
