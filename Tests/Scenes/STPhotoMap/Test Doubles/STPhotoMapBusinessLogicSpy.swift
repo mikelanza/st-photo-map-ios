@@ -11,6 +11,7 @@
 class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     var shouldUpdateVisibleTilesCalled: Bool = false
     var shouldCacheGeojsonObjectsCalled: Bool = false
+    var shouldDetermineEntityLevelCalled: Bool = false
 
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.shouldUpdateVisibleTilesCalled = true
@@ -18,5 +19,9 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     
     func shouldCacheGeojsonObjects() {
         self.shouldCacheGeojsonObjectsCalled = true
+    }
+    
+    func shouldDetermineEntityLevel() {
+        self.shouldDetermineEntityLevelCalled = true
     }
 }

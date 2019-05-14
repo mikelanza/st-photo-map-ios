@@ -50,8 +50,8 @@ class STPhotoMapWorker {
         let model = GetGeojsonTileOperationModel.Request(tileCoordinate: tileCoordinate, url: downloadUrl)
         let operation = GetGeojsonTileOperation(model: model) { result in
             switch result {
-            case .success(let value): self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: value.geoJSONObject); break
-            case .failure(let error): self.delegate?.failureDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: error); break
+            case .success(let value): self.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: value.geoJSONObject); break
+            case .failure(let error): self.failureDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: error); break
             }
         }
         self.geojsonEntityLevelQueue.addOperation(operation)
@@ -59,5 +59,17 @@ class STPhotoMapWorker {
     
     func cancelAllGeojsonEntityLevelOperations() {
         self.geojsonEntityLevelQueue.cancelAllOperations()
+    }
+    
+    private func successDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
+        DispatchQueue.main.async {
+            self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+        }
+    }
+    
+    private func failureDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
+        DispatchQueue.main.async {
+            self.delegate?.failureDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: error)
+        }
     }
 }

@@ -54,7 +54,7 @@ class STPhotoMapPresenterTests: XCTestCase {
     }
     
     func testPresentEntityLevel() {
-        let response = STPhotoMapModels.EntityZoomLevel.Response(photoProperties: PhotoProperties())
+        let response = STPhotoMapModels.EntityZoomLevel.Response(entityLevel: EntityLevel.block)
         self.sut.presentEntityLevel(response: response)
         
         XCTAssertTrue(self.displayerSpy.displayEntityLevelCalled)

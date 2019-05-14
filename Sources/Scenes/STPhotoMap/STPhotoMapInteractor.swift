@@ -94,10 +94,10 @@ extension STPhotoMapInteractor {
             self.entityLevelGeojsonObjectsFor(tiles: self.prepareTilesForEntityLevel())
         }
         
-        // TODO: Present loading state
+        self.handleLoadingStateForEntityLevel()
     }
     
-    func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
+    private func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
         var cachedTiles: [STPhotoMapCache.Tile] = []
         for tile in self.visibleTiles {
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
@@ -110,15 +110,11 @@ extension STPhotoMapInteractor {
         return cachedTiles
     }
     
-    func calculateEntityLevelFor(cachedTiles: [STPhotoMapCache.Tile]) {
+    private func calculateEntityLevelFor(cachedTiles: [STPhotoMapCache.Tile]) {
         let entityLevel = self.getEntityLevel(for: cachedTiles.first?.geojsonObject)
         self.entityLevelHandler.change(entityLevel: entityLevel)
     }
-    
-    func entityLevelGeojsonObjectsFor(tiles: [TileCoordinate]) {
-        tiles.forEach({ self.entityLevelGeojsonObjectsFor(tile: $0) })
-    }
-    
+
     private func prepareTilesForEntityLevel() -> [TileCoordinate] {
         var tiles: [TileCoordinate] = []
         for tile in self.visibleTiles {
@@ -130,7 +126,11 @@ extension STPhotoMapInteractor {
         return tiles
     }
     
-    func entityLevelGeojsonObjectsFor(tile: TileCoordinate) {
+    private func entityLevelGeojsonObjectsFor(tiles: [TileCoordinate]) {
+        tiles.forEach({ self.entityLevelGeojsonObjectsFor(tile: $0) })
+    }
+    
+    private func entityLevelGeojsonObjectsFor(tile: TileCoordinate) {
         let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
         self.entityLevelHandler.addActiveDownload(url.keyUrl)
         self.worker?.getGeojsonEntityLevel(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
@@ -149,6 +149,14 @@ extension STPhotoMapInteractor {
         guard let feature = feature else { return EntityLevel.unknown }
         guard let type = feature.photoProperties?.type else { return EntityLevel.unknown }
         return EntityLevel(rawValue: type) ?? .unknown
+    }
+    
+    private func handleLoadingStateForEntityLevel() {
+        if self.entityLevelHandler.activeDownloads.count > 0 {
+            self.presenter?.presentLoadingState()
+        } else {
+            self.presenter?.presentNotLoadingState()
+        }
     }
 }
 
