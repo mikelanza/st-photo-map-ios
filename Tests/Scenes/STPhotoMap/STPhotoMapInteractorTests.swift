@@ -48,11 +48,11 @@ class STPhotoMapInteractorTests: XCTestCase {
     // MARK: Tests
       
     func testShouldUpdateVisibleTiles() {
-        let tiles: [TileCoordinate] = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        let tiles: [TileCoordinate] = STPhotoMapSeeds.tileCoordinates
         let request = STPhotoMapModels.VisibleTiles.Request(tiles: tiles)
         self.sut.shouldUpdateVisibleTiles(request: request)
         
-        XCTAssertEqual(self.sut.visibleTiles.count, 1)
+        XCTAssertEqual(self.sut.visibleTiles.count, tiles.count)
     }
     
     func testShouldCacheGeojsonObjectsWhenCacheIsEmpty() {
@@ -66,14 +66,14 @@ class STPhotoMapInteractorTests: XCTestCase {
         }
         waitForExpectations(timeout: 1.0)
         
-        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        self.sut.visibleTiles = STPhotoMapSeeds.tileCoordinates
         self.sut.shouldCacheGeojsonObjects()
         
         XCTAssertTrue(self.workerSpy.getGeojsonTileForCachingCalled)
     }
     
     func testShouldCacheGeojsonObjectsWhenCacheIsNotEmpty() {
-        let tileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         
         self.sut.cacheHandler.removeAllActiveDownloads()
@@ -93,7 +93,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     }
     
     func testShouldCacheGeojsonObjectsWhenCacheIsEmptyAndThereAreActiveDownloads() {
-        let tileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         
         self.sut.cacheHandler.cache.removeAllTiles()
@@ -113,7 +113,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     }
     
     func testShouldCacheGeojsonObjectsWhenCacheIsNotEmptyAndThereAreActiveDownloads() {
-        let tileCoordinates = [TileCoordinate(zoom: 10, x: 1, y: 2), TileCoordinate(zoom: 11, x: 2, y: 3)]
+        let tileCoordinates = STPhotoMapSeeds.tileCoordinates
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinates.first!).keyUrl
         
         self.sut.cacheHandler.addActiveDownload(keyUrl)
