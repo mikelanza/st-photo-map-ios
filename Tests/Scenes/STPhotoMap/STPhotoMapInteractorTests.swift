@@ -135,6 +135,9 @@ class STPhotoMapInteractorTests: XCTestCase {
     }
     
     func testShouldDetermineEntityLevelWhenCacheIsEmptyAndThereAreNoActiveDownloadsWithSuccess() {
+        let worker = STPhotoMapWorkerSuccessSpy(delegate: self.sut)
+        self.sut.worker = worker
+        
         self.sut.cacheHandler.cache.removeAllTiles()
         self.sut.cacheHandler.removeAllActiveDownloads()
         
@@ -148,12 +151,17 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
         self.sut.shouldDetermineEntityLevel()
         
-        XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
-        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
-        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(worker.getGeojsonTileForEntityLevelCalled)
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
     
     func testShouldDetermineEntityLevelWhenCacheIsEmptyAndThereAreNoActiveDownloadsWithFailure() {
+        let worker = STPhotoMapWorkerFailureSpy(delegate: self.sut)
+        self.sut.worker = worker
+        
         self.sut.cacheHandler.cache.removeAllTiles()
         self.sut.cacheHandler.removeAllActiveDownloads()
         
@@ -167,9 +175,11 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
         self.sut.shouldDetermineEntityLevel()
         
-        XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
-        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
-        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(worker.getGeojsonTileForEntityLevelCalled)
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        
+        XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
     }
     
     func testShouldDetermineEntityLevelWhenCacheIsEmptyAndThereAreActiveDownloads() {
@@ -194,14 +204,17 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.workerSpy.getGeojsonTileForEntityLevelCalled)
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
     }
     
-    func testShouldDetermineEntityLevelWhenCacheIsNotEmptyAndNoActiveDownloads() {
+    func testShouldDetermineEntityLevelWhenCacheIsNotEmptyAndNoActiveDownloads() throws {
         let tileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: nil))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
         let queue = DispatchQueue(label: "queue", attributes: .concurrent)
@@ -216,14 +229,17 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.workerSpy.getGeojsonTileForCachingCalled)
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
     
-    func testShouldDetermineEntityLevelWhenCacheIsEmptyAndThereAreMultipleActiveDownloads() {
-        let worker = STPhotoMapWorkerSuccessWithAsyncSpy(delegate: self.sut)
+    func testShouldDetermineEntityLevelWhenNewEntityLevelIsNotChanged() {
+        let worker = STPhotoMapWorkerSuccessSpy(delegate: self.sut)
         self.sut.worker = worker
         
         self.sut.cacheHandler.cache.removeAllTiles()
         self.sut.cacheHandler.removeAllActiveDownloads()
+        
+        self.sut.entityLevelHandler.entityLevel = .city
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
         let queue = DispatchQueue(label: "queue", attributes: .concurrent)
@@ -232,16 +248,39 @@ class STPhotoMapInteractorTests: XCTestCase {
         }
         waitForExpectations(timeout: 1.0)
         
-        for _ in 1...20 {
-            self.sut.visibleTiles.append(TileCoordinate(zoom: 10, x: 1, y: 2))
-        }
-        
+        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
         self.sut.shouldDetermineEntityLevel()
         
-        XCTAssertEqual(self.sut.visibleTiles.count, 20)
+        XCTAssertTrue(worker.getGeojsonTileForEntityLevelCalled)
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
         
-        worker.cancelAllGeojsonEntityLevelOperations()
+        XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
+    }
+    
+    func testShouldDetermineEntityLevelWhenNewEntityLevelIsChanged() {
+        let worker = STPhotoMapWorkerSuccessSpy(delegate: self.sut)
+        self.sut.worker = worker
         
-        XCTAssertEqual(self.sut.entityLevelHandler.activeDownloads.count, 0)
+        self.sut.cacheHandler.cache.removeAllTiles()
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        
+        self.sut.entityLevelHandler.entityLevel = .unknown
+        
+        let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
+        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+        queue.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+        
+        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertTrue(worker.getGeojsonTileForEntityLevelCalled)
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
 }
