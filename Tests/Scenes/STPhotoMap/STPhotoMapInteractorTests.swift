@@ -284,7 +284,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
     
-    func testShouldCacheGeojsonObjectsWhenDownloadedTileIsNotStillVisible() {
+    func testShouldDetermineEntityLevelWhenDownloadedTileIsNotStillVisible() {
         let worker = STPhotoMapWorkerSuccessSpy(delegate: self.sut)
         self.sut.worker = worker
         
