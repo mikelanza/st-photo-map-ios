@@ -142,6 +142,18 @@ extension STPhotoMapInteractor {
         return EntityLevel(rawValue: type) ?? .unknown
     }
     
+    private func didGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, geojsonObject: GeoJSONObject) {
+        if self.isStillTileVisible(tileCoordinate: tileCoordinate) {
+            self.entityLevelHandler.change(entityLevel: self.getEntityLevel(for: geojsonObject))
+            self.worker?.cancelAllGeojsonEntityLevelOperations()
+        }
+        self.handleLoadingStateForEntityLevel()
+    }
+    
+    private func isStillTileVisible(tileCoordinate: TileCoordinate) -> Bool {
+        return self.visibleTiles.contains(tileCoordinate)
+    }
+    
     private func handleLoadingStateForEntityLevel() {
         if self.entityLevelHandler.activeDownloads.count > 0 {
             self.presenter?.presentLoadingState()
@@ -173,10 +185,8 @@ extension STPhotoMapInteractor: STPhotoMapWorkerDelegate {
     }
     
     func successDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
-        self.entityLevelHandler.change(entityLevel: self.getEntityLevel(for: geojsonObject))
         self.entityLevelHandler.removeActiveDownload(keyUrl)
-        
-        self.handleLoadingStateForEntityLevel()
+        self.didGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, geojsonObject: geojsonObject)
     }
     
     func failureDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {

@@ -283,4 +283,25 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
+    
+    func testShouldCacheGeojsonObjectsWhenDownloadedTileIsNotStillVisible() {
+        let worker = STPhotoMapWorkerSuccessSpy(delegate: self.sut)
+        self.sut.worker = worker
+        
+        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        
+        let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
+        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+        queue.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 10.0)
+        
+        self.sut.shouldDetermineEntityLevel()
+        self.sut.visibleTiles.removeAll()
+        
+        XCTAssertTrue(worker.getGeojsonTileForEntityLevelCalled)
+        XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
+    }
+    
 }
