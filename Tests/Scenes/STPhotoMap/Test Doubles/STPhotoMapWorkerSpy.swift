@@ -25,6 +25,8 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     var getGeojsonTileForCachingCalled: Bool = false
     var getGeojsonTileForEntityLevelCalled: Bool = false
     
+    var delay: Int = 0
+    
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
     }
@@ -32,10 +34,14 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     override func getGeojsonEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForEntityLevelCalled = true
         
-        do {
-            let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        if self.delay == 0 {
+            let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
             self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
-        } catch {
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(self.delay)) {
+                let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
+                self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+            }
         }
     }
 }

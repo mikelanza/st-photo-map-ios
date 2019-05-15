@@ -288,6 +288,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         let worker = STPhotoMapWorkerSuccessSpy(delegate: self.sut)
         self.sut.worker = worker
         
+        worker.delay = 1
+        
         self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
         
         let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
@@ -295,7 +297,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         queue.async {
             waitExpectation.fulfill()
         }
-        waitForExpectations(timeout: 10.0)
+        waitForExpectations(timeout: 1.0)
         
         self.sut.shouldDetermineEntityLevel()
         self.sut.visibleTiles.removeAll()
@@ -304,4 +306,22 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
     }
     
+    func testShouldDetermineEntityLevelWhenDownloadedTileIsStillVisible() {
+        let worker = STPhotoMapWorkerSuccessSpy(delegate: self.sut)
+        self.sut.worker = worker
+        
+        self.sut.visibleTiles = [TileCoordinate(zoom: 10, x: 1, y: 2)]
+        
+        let waitExpectation = expectation(description: "Waiting for the synchronized arrays.")
+        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
+        queue.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+        
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertTrue(worker.getGeojsonTileForEntityLevelCalled)
+        XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
+    }
 }
