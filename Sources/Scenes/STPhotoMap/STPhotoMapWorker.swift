@@ -32,7 +32,6 @@ class STPhotoMapWorker {
         self.geojsonTileCachingQueue.maxConcurrentOperationCount = 12
         
         self.geojsonEntityLevelQueue = OperationQueue()
-        self.geojsonEntityLevelQueue.maxConcurrentOperationCount = 12
     }
     
     func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
