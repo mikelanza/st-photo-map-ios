@@ -42,4 +42,8 @@ class STPhotoMapCache {
         }
         return tile
     }
+    
+    func tileCount() -> Int {
+        return self.tiles.count
+    }
 }

@@ -17,7 +17,11 @@ enum STPhotoMapSeedsError: Error {
 class STPhotoMapSeeds: NSObject {
     static let
     tileCoordinate: TileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2),
-    tileCoordinates: [TileCoordinate] = [TileCoordinate(zoom: 10, x: 1, y: 2), TileCoordinate(zoom: 11, x: 2, y: 3)]
+    tileCoordinates: [TileCoordinate] = [
+        TileCoordinate(zoom: 10, x: 1, y: 2),
+        TileCoordinate(zoom: 11, x: 2, y: 3),
+        TileCoordinate(zoom: 12, x: 3, y: 4)
+    ]
     
     func geojsonObject() throws -> GeoJSONObject {
         let bundle = Bundle(for: type(of: self))

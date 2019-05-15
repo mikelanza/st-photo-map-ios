@@ -8,19 +8,6 @@
 
 @testable import STPhotoMap
 
-class STPhotoMapWorkerSpy: STPhotoMapWorker {
-    var getGeojsonTileForCachingCalled: Bool = false
-    var getGeojsonTileForEntityLevelCalled: Bool = false
-    
-    override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
-        self.getGeojsonTileForCachingCalled = true
-    }
-    
-    override func getGeojsonEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
-        self.getGeojsonTileForEntityLevelCalled = true
-    }
-}
-
 class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     var getGeojsonTileForCachingCalled: Bool = false
     var getGeojsonTileForEntityLevelCalled: Bool = false
@@ -29,6 +16,9 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
+        
+        let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
+        self.delegate?.successDidGetGeojsonTileForCaching(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
     }
     
     override func getGeojsonEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
@@ -52,6 +42,7 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
+        self.delegate?.failureDidGetGeojsonTileForCaching(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
     }
     
     override func getGeojsonEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {

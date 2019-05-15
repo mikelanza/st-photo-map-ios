@@ -44,4 +44,8 @@ class STPhotoMapCacheHandler {
             return true
         }
     }
+    
+    func activeDownloadCount() -> Int {
+        return self.activeDownloads.count
+    }
 }

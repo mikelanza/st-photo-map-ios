@@ -42,8 +42,7 @@ class GetGeojsonTileOperation: AsynchronousOperation {
                             self.cannotParseResponseErrorBlock()
                         }
                     }
-                } catch let error {
-                    print("Parsing error: \(error)")
+                } catch {
                     self.cannotParseResponseErrorBlock()
                 }
             } else {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum EntityLevel: String {
+public enum EntityLevel: String {
     case location = "location"
     case block = "block"
     case neighborhood = "neighborhood"
