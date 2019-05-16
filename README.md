@@ -13,6 +13,7 @@
 A map that displays photos
 
 - [Requirements](#requirements)
+- [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
