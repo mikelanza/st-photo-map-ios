@@ -159,7 +159,7 @@ Issues and pull requests are welcome!
 
 ## Author
 
-Streetography [@ ](https://streetography.com/)
+Streetography [@Streetography](https://streetography.com/)
 
 ## License
 
