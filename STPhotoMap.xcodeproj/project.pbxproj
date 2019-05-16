@@ -34,6 +34,7 @@
 		289F27A7228DBA6100741CF7 /* MultiplePhotoClusterAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27A4228DBA6100741CF7 /* MultiplePhotoClusterAnnotation.swift */; };
 		289F27A8228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27A5228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift */; };
 		289F27AA228DBAF100741CF7 /* ClusterLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27A9228DBAF100741CF7 /* ClusterLabelView.swift */; };
+		289F27AC228DBEDF00741CF7 /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27AB228DBEDF00741CF7 /* ClusterAnnotationView.swift */; };
 		28CAAC8622608B47000C0200 /* STPhotoMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8522608B47000C0200 /* STPhotoMapView.swift */; };
 		28CAAC8E22608F52000C0200 /* STPhotoMapInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */; };
 		28CAAC8F22608F52000C0200 /* STPhotoMapWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */; };
@@ -139,6 +140,7 @@
 		289F27A4228DBA6100741CF7 /* MultiplePhotoClusterAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiplePhotoClusterAnnotation.swift; sourceTree = "<group>"; };
 		289F27A5228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiplePhotoClusterAnnotationView.swift; sourceTree = "<group>"; };
 		289F27A9228DBAF100741CF7 /* ClusterLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusterLabelView.swift; sourceTree = "<group>"; };
+		289F27AB228DBEDF00741CF7 /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
 		28CAAC8522608B47000C0200 /* STPhotoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapView.swift; sourceTree = "<group>"; };
 		28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapInteractorTests.swift; sourceTree = "<group>"; };
 		28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorkerTests.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 		289F27A2228DBA5100741CF7 /* Cluster Annotations */ = {
 			isa = PBXGroup;
 			children = (
+				289F27AB228DBEDF00741CF7 /* ClusterAnnotationView.swift */,
 				289F27A9228DBAF100741CF7 /* ClusterLabelView.swift */,
 				289F27A3228DBA6100741CF7 /* MultiplePhotoCalloutView.swift */,
 				289F27A4228DBA6100741CF7 /* MultiplePhotoClusterAnnotation.swift */,
@@ -1073,6 +1076,7 @@
 				85538D2522670507007D4A15 /* STLocation.swift in Sources */,
 				85538D1F226703D9007D4A15 /* GeoJSONPolygon.swift in Sources */,
 				8529E5662264819100E7CCE5 /* Array+Synchronized.swift in Sources */,
+				289F27AC228DBEDF00741CF7 /* ClusterAnnotationView.swift in Sources */,
 				85538D20226703D9007D4A15 /* GeoJSONPoint.swift in Sources */,
 				289B174422670D1F00B09F7A /* STPhotoMapStyle.swift in Sources */,
 				85538D21226703D9007D4A15 /* GeoJSONMultiPolygon.swift in Sources */,

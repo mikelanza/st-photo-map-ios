@@ -166,6 +166,50 @@ extension STPhotoMapView: MKMapViewDelegate {
     public func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
         self.photoTileOverlay?.update(parameter: KeyValue(Parameters.Keys.bbox, mapView.boundingBox().description))
     }
+    
+    public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let photoAnnotation = annotation as? PhotoAnnotation {
+            let view = photoAnnotation.annotationView()
+            view.delegate = self
+            return view
+        } else if let clusterAnnotation = annotation as? MultiplePhotoClusterAnnotation {
+            let view = clusterAnnotation.annotationView()
+            view?.delegate = self
+            return view
+        } else if let clusterAnnotation = annotation as? MKClusterAnnotation {
+            return ClusterAnnotationView(count: clusterAnnotation.memberAnnotations.count, annotation: annotation)
+        }
+        return nil
+    }
+    
+    public func mapView(_ mapView: MKMapView, clusterAnnotationForMemberAnnotations memberAnnotations: [MKAnnotation]) -> MKClusterAnnotation {
+        guard let photoAnnotations = memberAnnotations as? [PhotoAnnotation] else {
+            return MKClusterAnnotation(memberAnnotations: memberAnnotations)
+        }
+        
+        let photoIds = photoAnnotations.compactMap({ $0.model.photoId })
+        return MultiplePhotoClusterAnnotation(photoIds: photoIds, memberAnnotations: memberAnnotations)
+    }
+}
+
+// MARK: - Photo annotation view delegate
+
+extension STPhotoMapView: PhotoAnnotationViewDelegate {
+    func photoAnnotationView(view: PhotoAnnotationView?, didSelect photoImageView: PhotoImageView?) {
+        
+    }
+}
+
+// MARK: - Multiple photo cluster view delegate
+
+extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
+    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, didSelect clusterLabelView: ClusterLabelView?) {
+        
+    }
+    
+    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, didSelect photoImageView: PhotoImageView?, at index: Int) {
+        
+    }
 }
 
 // MARK: - Map logic
