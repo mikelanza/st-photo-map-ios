@@ -155,6 +155,10 @@ extension STPhotoMapView: MKMapViewDelegate {
         
         return MKOverlayRenderer(overlay: overlay)
     }
+    
+    public func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        self.photoTileOverlay?.update(parameter: KeyValue(Parameters.Keys.bbox, mapView.boundingBox().description))
+    }
 }
 
 // MARK: - Map logic

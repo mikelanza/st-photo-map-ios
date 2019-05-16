@@ -32,7 +32,7 @@ public protocol GeoJSONBoundingBox: CustomStringConvertible {
 
 public class BoundingBox: GeoJSONBoundingBox {
     public var description: String {
-        return "BoundingBox: (\n\tminLongitude: \(minLongitude),\n\tminLatitude: \(minLatitude),\n\tmaxLongitude: \(maxLongitude),\n\tmaxLatitude: \(maxLatitude),\n\tcentroid: \(centroid)\n)"
+        return "\(minLongitude),\(minLatitude),\(maxLongitude),\(maxLatitude)"
     }
     
     public var points: [GeodesicPoint]
