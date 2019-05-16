@@ -31,6 +31,14 @@ class STPhotoMapViewTests: XCTestCase {
         super.tearDown()
     }
     
+    private func waitForMainQueue() {
+        let waitExpectation = expectation(description: "Waiting for main queue.")
+        DispatchQueue.main.async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+    }
+    
     // MARK: Test setup
     
     func setupSTPhotoMapView() {
@@ -60,8 +68,6 @@ class STPhotoMapViewTests: XCTestCase {
         self.sut.trailingAnchor.constraint(equalTo: self.window.trailingAnchor).isActive = true
     }
     
-    // MARK: Test doubles
-    
     // MARK: Tests
     
     func testIfPhotoMapViewContainsMapView() {
@@ -89,11 +95,7 @@ class STPhotoMapViewTests: XCTestCase {
         self.loadView()
         self.sut.displayLoadingState()
         
-        let waitExpectation = expectation(description: "Waiting for main queue.")
-        DispatchQueue.main.async {
-            waitExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 1.0)
+        self.waitForMainQueue()
         
         XCTAssertFalse(self.sut.progressView.isHidden)
         XCTAssertEqual(self.sut.progressView.progress, 1.0)
@@ -103,11 +105,7 @@ class STPhotoMapViewTests: XCTestCase {
         self.loadView()
         self.sut.displayNotLoadingState()
         
-        let waitExpectation = expectation(description: "Waiting for main queue.")
-        DispatchQueue.main.async {
-            waitExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 1.0)
+        self.waitForMainQueue()
         
         XCTAssertTrue(self.sut.progressView.isHidden)
         XCTAssertEqual(self.sut.progressView.progress, 0.0)
@@ -139,11 +137,7 @@ class STPhotoMapViewTests: XCTestCase {
         let viewModel = STPhotoMapModels.EntityZoomLevel.ViewModel(title: STPhotoMapStyle.EntityLevelViewModel().blockTitle, image: STPhotoMapStyle.EntityLevelViewModel().blockImage)
         self.sut.displayEntityLevel(viewModel: viewModel)
         
-        let waitExpectation = expectation(description: "Waiting for main queue.")
-        DispatchQueue.main.async {
-            waitExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 1.0)
+        self.waitForMainQueue()
         
         XCTAssertNotNil(self.sut.entityLevelView)
     }

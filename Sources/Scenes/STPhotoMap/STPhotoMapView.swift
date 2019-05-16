@@ -13,6 +13,13 @@ public protocol STPhotoMapViewDataSource: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, photoTileOverlayModelForUrl url: String, parameters: [KeyValue]?) -> STPhotoTileOverlay.Model
 }
 
+protocol STPhotoMapDisplayLogic: class {
+    func displayLoadingState()
+    func displayNotLoadingState()
+    
+    func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel)
+}
+
 public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
     public weak var dataSource: STPhotoMapViewDataSource!
