@@ -12,6 +12,7 @@
 		2810E6AD228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6AC228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift */; };
 		2810E6AF2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6AE2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift */; };
 		2828E5542285C0BB00554417 /* STPhotoMapCacheHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2828E5532285C0BB00554417 /* STPhotoMapCacheHandler.swift */; };
+		282C1083228D52FB0045A123 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282C1082228D52FB0045A123 /* Kingfisher.framework */; };
 		2831D673228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2831D672228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift */; };
 		2831D675228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2831D674228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift */; };
 		2831D678228C776F00C88215 /* GeoJSONFeature+EntityLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2831D677228C776F00C88215 /* GeoJSONFeature+EntityLevel.swift */; };
@@ -107,6 +108,7 @@
 		2810E6AC228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapDisplayLogicSpy.swift; sourceTree = "<group>"; };
 		2810E6AE2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapBusinessLogicSpy.swift; sourceTree = "<group>"; };
 		2828E5532285C0BB00554417 /* STPhotoMapCacheHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapCacheHandler.swift; sourceTree = "<group>"; };
+		282C1082228D52FB0045A123 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		2831D672228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+GeojsonCache.swift"; sourceTree = "<group>"; };
 		2831D674228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+EntityLevel.swift"; sourceTree = "<group>"; };
 		2831D677228C776F00C88215 /* GeoJSONFeature+EntityLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoJSONFeature+EntityLevel.swift"; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				282C1083228D52FB0045A123 /* Kingfisher.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +467,7 @@
 		357D954B1DA3F2B400AEC55F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				282C1082228D52FB0045A123 /* Kingfisher.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -751,6 +755,7 @@
 				3549BB1D1DA389CD00C63030 /* Frameworks */,
 				3549BB1E1DA389CD00C63030 /* Headers */,
 				3549BB1F1DA389CD00C63030 /* Resources */,
+				282C1084228D533B0045A123 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -994,6 +999,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		282C1084228D533B0045A123 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3549BB1C1DA389CD00C63030 /* Sources */ = {
@@ -1266,7 +1293,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1287,7 +1317,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
