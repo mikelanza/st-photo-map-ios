@@ -11,9 +11,13 @@ import Foundation
 extension URL {
     func addParameters(_ parameters: [KeyValue]) -> URL {
         var urlComponents: URLComponents = URLComponents(url: self, resolvingAgainstBaseURL: false)!
-        let queryItems: [URLQueryItem] = parameters.map({ return URLQueryItem(name: $0.key, value: $0.value) })
+        urlComponents.queryItems = parameters.map({ return URLQueryItem(name: $0.key, value: $0.value) })
+        return urlComponents.url!
+    }
         
-        urlComponents.queryItems = queryItems
+    func excludeParameter(_ parameter: KeyValue) -> URL {
+        var urlComponents: URLComponents = URLComponents(url: self, resolvingAgainstBaseURL: false)!
+        urlComponents.queryItems = urlComponents.queryItems?.filter({ $0.name != parameter.key })
         return urlComponents.url!
     }
 }

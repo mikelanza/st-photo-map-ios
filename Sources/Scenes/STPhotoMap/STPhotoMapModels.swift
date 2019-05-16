@@ -13,5 +13,20 @@
 import UIKit
 
 enum STPhotoMapModels {
+    enum VisibleTiles {
+        struct Request {
+            let tiles: [TileCoordinate]
+        }
+    }
     
+    enum EntityZoomLevel {
+        struct Response {
+            let entityLevel: EntityLevel
+        }
+        
+        struct ViewModel {
+            let title: String?
+            let image: UIImage?
+        }
+    }
 }

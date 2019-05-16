@@ -13,9 +13,13 @@
 import UIKit
 
 protocol STPhotoMapDisplayLogic: class {
+    func displayLoadingState()
+    func displayNotLoadingState()
+    
+    func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel)
 }
 
-public class STPhotoMapViewController: UIViewController, STPhotoMapDisplayLogic {
+public class STPhotoMapViewController: UIViewController {
     var router: (NSObjectProtocol & STPhotoMapRoutingLogic & STPhotoMapDataPassing)?
     
     public weak var photoMapView: STPhotoMapView!

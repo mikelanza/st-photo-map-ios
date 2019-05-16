@@ -17,7 +17,11 @@ public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
     public weak var dataSource: STPhotoMapViewDataSource!
     
-    private var interactor: STPhotoMapBusinessLogic?
+    var interactor: STPhotoMapBusinessLogic?
+    
+    weak var progressView: UIProgressView!
+    weak var entityLevelView: STEntityLevelView!
+    
     private var photoTileOverlay: STPhotoTileOverlay?
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
@@ -82,14 +86,66 @@ extension STPhotoMapView {
 // MARK: - Display logic
 
 extension STPhotoMapView: STPhotoMapDisplayLogic {
+    func displayLoadingState() {
+        DispatchQueue.main.async {
+            self.shouldShowProgressView()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }
+    }
     
+    private func shouldShowProgressView() {
+        if STPhotoMapStyle.shared.progressViewModel.show {
+            self.showProgressView()
+        }
+    }
+    
+    private func showProgressView() {
+        self.progressView?.isHidden = false
+        self.progressView?.setProgress(1.0, animated: true)
+    }
+    
+    func displayNotLoadingState() {
+        DispatchQueue.main.async {
+            self.shouldHideProgressView()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }
+    }
+    
+    private func shouldHideProgressView() {
+        if STPhotoMapStyle.shared.progressViewModel.show {
+            self.hideProgressView()
+        }
+    }
+    
+    private func hideProgressView() {
+        self.progressView?.isHidden = true
+        self.progressView?.setProgress(0.0, animated: false)
+    }
+    
+    func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel) {
+        DispatchQueue.main.async {
+            self.showEntityLevelView(title: viewModel.title, image: viewModel.image)
+        }
+    }
+    
+    private func showEntityLevelView(title: String?, image: UIImage?) {
+        let model = STEntityLevelView.Model(title: title, image: image)
+        self.setupEntityLevelView(model: model)
+        self.setupEntityLevelViewConstraints()
+        self.entityLevelView?.show()
+    }
 }
 
 // MARK: - MKMapView delegate methods
 
 extension STPhotoMapView: MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-
+        let visibleTiles = mapView.visibleTiles()
+        DispatchQueue.global().async {
+            self.interactor?.shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request(tiles: visibleTiles))
+            self.interactor?.shouldCacheGeojsonObjects()
+            self.interactor?.shouldDetermineEntityLevel()
+        }
     }
     
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -117,6 +173,7 @@ extension STPhotoMapView {
 extension STPhotoMapView {
     private func setupSubviews() {
         self.setupMapView()
+        self.setupProgressView()
     }
     
     private func setupMapView() {
@@ -126,6 +183,24 @@ extension STPhotoMapView {
         self.addSubview(mapView)
         self.mapView = mapView
     }
+    
+    private func setupProgressView() {
+        let view = UIProgressView(progressViewStyle: UIProgressView.Style.bar)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        view.progressTintColor = STPhotoMapStyle.shared.progressViewModel.tintColor
+        self.addSubview(view)
+        self.progressView = view
+    }
+    
+    private func setupEntityLevelView(model: STEntityLevelView.Model) {
+        let view = STEntityLevelView(model: model)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0.0
+        view.isUserInteractionEnabled = false
+        self.addSubview(view)
+        self.entityLevelView = view
+    }
 }
 
 // MARK: - Constraints configuration
@@ -133,6 +208,7 @@ extension STPhotoMapView {
 extension STPhotoMapView {
     private func setupSubviewsConstraints() {
         self.setupMapViewConstraints()
+        self.setupProgressViewConstraints()
     }
     
     private func setupMapViewConstraints() {
@@ -140,5 +216,18 @@ extension STPhotoMapView {
         self.mapView?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         self.mapView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         self.mapView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+    }
+    
+    private func setupProgressViewConstraints() {
+        self.progressView?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.progressView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.progressView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+    }
+    
+    private func setupEntityLevelViewConstraints() {
+        self.entityLevelView?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.entityLevelView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.entityLevelView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        self.entityLevelView?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
 }
