@@ -22,6 +22,10 @@ A map that displays photos
 - iOS 11.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 10.0+
 
+## Dependencies
+
+- [Kingfisher 5.0+](https://github.com/onevcat/Kingfisher)
+
 ## Installation
 
 ### Dependency Managers
