@@ -8,7 +8,6 @@
 
 import Foundation
 import MapKit
-import Kingfisher
 
 public class STPhotoTileOverlay: MKTileOverlay {
     public class Model {
@@ -34,9 +33,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
     
     override public func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {
         let url = self.url(forTilePath: path)
-        self.downloadImage(url: url) { (data, error) in
-            result(data, error)
-        }
+        url.downloadImage(result: result)
     }
 }
 
@@ -46,20 +43,5 @@ public extension STPhotoTileOverlay {
     func update(parameter: KeyValue) {
         self.model.parameters.removeAll(where: { $0 == parameter })
         self.model.parameters.append(parameter)
-    }
-}
-
-// MARK: - Download methods
-
-extension STPhotoTileOverlay {
-    private func downloadImage(url: URL, result: @escaping (Data?, Error?) -> Void) {
-        DispatchQueue.global().async {
-            KingfisherManager.shared.retrieveImage(with: url, completionHandler: { imageResult in
-                switch imageResult {
-                    case .success(let value): result(value.image.jpegData(compressionQuality: 1.0), nil); break
-                    case .failure(let error): result(nil, error); break
-                }
-            })
-        }
     }
 }
