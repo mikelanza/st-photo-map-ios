@@ -11,13 +11,11 @@ import XCTest
 import MapKit
 
 class STPhotoMapViewTests: XCTestCase {
-    // MARK: Subject under test
-    
     var sut: STPhotoMapView!
     var interactorSpy: STPhotoMapBusinessLogicSpy!
     var window: UIWindow!
     
-    // MARK: Test lifecycle
+    // MARK: - Test lifecycle
     
     override func setUp() {
         super.setUp()
@@ -39,7 +37,7 @@ class STPhotoMapViewTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
-    // MARK: Test setup
+    // MARK: - Test setup
     
     func setupSTPhotoMapView() {
         self.sut = STPhotoMapView()
@@ -68,7 +66,7 @@ class STPhotoMapViewTests: XCTestCase {
         self.sut.trailingAnchor.constraint(equalTo: self.window.trailingAnchor).isActive = true
     }
     
-    // MARK: Tests
+    // MARK: - Tests
     
     func testIfPhotoMapViewContainsMapView() {
         self.loadView()
@@ -93,25 +91,37 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:clusterAnnotationForMemberAnnotations:))), "The photo map view does not implement mapView(_:clusterAnnotationForMemberAnnotations:).")
     }
     
-    func testDisplayLoadingState() {
+    // MARK: - Test map view logic
+    
+    func testShouldReturnPhotoTileOverlayRendererForPhotoTileOverlay() {
         self.loadView()
-        self.sut.displayLoadingState()
         
-        self.waitForMainQueue()
-        
-        XCTAssertFalse(self.sut.progressView.isHidden)
-        XCTAssertEqual(self.sut.progressView.progress, 1.0)
+        let renderer = self.sut.mapView(self.sut.mapView, rendererFor: STPhotoMapSeeds.photoTileOverlay)
+        XCTAssertTrue(renderer is STPhotoTileOverlayRenderer)
     }
     
-    func testDisplayNotLoadingState() {
+    func testShouldReturnPhotoAnnotationViewForPhotoAnnotation() {
         self.loadView()
-        self.sut.displayNotLoadingState()
         
-        self.waitForMainQueue()
-        
-        XCTAssertTrue(self.sut.progressView.isHidden)
-        XCTAssertEqual(self.sut.progressView.progress, 0.0)
+        let annotationView = self.sut.mapView(self.sut.mapView, viewFor: STPhotoMapSeeds.photoAnnotation)
+        XCTAssertTrue(annotationView is PhotoAnnotationView)
     }
+    
+    func testShouldReturnMultiplePhotoClusterAnnotationViewForMultiplePhotoClusterAnnotation() {
+        self.loadView()
+        
+        let annotationView = self.sut.mapView(self.sut.mapView, viewFor: STPhotoMapSeeds.multiplePhotoClusterAnnotation)
+        XCTAssertTrue(annotationView is MultiplePhotoClusterAnnotationView)
+    }
+    
+    func testShouldReturnMultiplePhotoClusterAnnotationForMultiplePhotoAnnotations() {
+        self.loadView()
+        
+        let clusterAnnotation = self.sut.mapView(self.sut.mapView, clusterAnnotationForMemberAnnotations: [STPhotoMapSeeds.photoAnnotation])
+        XCTAssertTrue(clusterAnnotation is MultiplePhotoClusterAnnotation)
+    }
+    
+    // MARK: - Test business logic
     
     func testShouldUpdateVisibleTilesWhenRegionDidChangeAnimated() {
         self.loadView()
@@ -132,6 +142,28 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
         XCTAssertTrue(self.interactorSpy.shouldDetermineEntityLevelCalled)
+    }
+    
+    // MARK: - Test display logic
+    
+    func testDisplayLoadingState() {
+        self.loadView()
+        self.sut.displayLoadingState()
+        
+        self.waitForMainQueue()
+        
+        XCTAssertFalse(self.sut.progressView.isHidden)
+        XCTAssertEqual(self.sut.progressView.progress, 1.0)
+    }
+    
+    func testDisplayNotLoadingState() {
+        self.loadView()
+        self.sut.displayNotLoadingState()
+        
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(self.sut.progressView.isHidden)
+        XCTAssertEqual(self.sut.progressView.progress, 0.0)
     }
     
     func testDisplayEntityLevel() {
