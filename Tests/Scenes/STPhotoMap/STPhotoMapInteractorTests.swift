@@ -17,6 +17,8 @@ class STPhotoMapInteractorTests: XCTestCase {
     var sut: STPhotoMapInteractor!
     var presenterSpy: STPhotoMapPresentationLogicSpy!
     var workerSpy: STPhotoMapWorkerSuccessSpy!
+    
+    var workerDelay: Double = 0.1
   
     // MARK: - Test lifecycle
   
@@ -50,6 +52,15 @@ class STPhotoMapInteractorTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
+    private func waitForWorker(delay: Double) {
+        let waitExpectation = expectation(description: "Waiting for the worker.")
+        let queue = DispatchQueue.global()
+        queue.asyncAfter(deadline: .now() + delay) {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: delay)
+    }
+    
     // MARK: - Tests
       
     func testShouldUpdateVisibleTiles() {
@@ -59,6 +70,54 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.shouldUpdateVisibleTiles(request: request)
         
         XCTAssertEqual(self.sut.visibleTiles.count, tiles.count)
+    }
+    
+    // MARK: - Download image for photo annotation
+    
+    func testShouldDownloadImageForPhotoAnnotationWhenThereIsNoImageForSuccessCase() {
+        self.workerSpy.delay = self.workerDelay
+        
+        let photoAnnotation = STPhotoMapSeeds.photoAnnotation
+        photoAnnotation.image = nil
+        let request = STPhotoMapModels.DownloadPhotoAnnotationImage.Request(photoAnnotation: photoAnnotation)
+        self.sut.shouldDownloadImageForPhotoAnnotation(request: request)
+        
+        XCTAssertNil(photoAnnotation.image)
+        XCTAssertTrue(photoAnnotation.isLoading)
+        XCTAssertTrue(self.workerSpy.downloadImageForPhotoAnnotationCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertFalse(photoAnnotation.isLoading)
+        XCTAssertNotNil(photoAnnotation.image)
+    }
+    
+    func testShouldDownloadImageForPhotoAnnotationWhenThereIsNoImageForFailureCase() {
+        let worker = STPhotoMapWorkerFailureSpy(delegate: self.sut)
+        worker.delay = self.workerDelay
+        self.sut.worker = worker
+        
+        let photoAnnotation = STPhotoMapSeeds.photoAnnotation
+        photoAnnotation.image = nil
+        let request = STPhotoMapModels.DownloadPhotoAnnotationImage.Request(photoAnnotation: photoAnnotation)
+        self.sut.shouldDownloadImageForPhotoAnnotation(request: request)
+        
+        XCTAssertNil(photoAnnotation.image)
+        XCTAssertTrue(photoAnnotation.isLoading)
+        XCTAssertTrue(worker.downloadImageForPhotoAnnotationCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertFalse(photoAnnotation.isLoading)
+        XCTAssertNil(photoAnnotation.image)
+    }
+    
+    func testShouldDownloadImageForPhotoAnnotationWhenThereIsAnImage() {
+        let photoAnnotation = STPhotoMapSeeds.photoAnnotation
+        let request = STPhotoMapModels.DownloadPhotoAnnotationImage.Request(photoAnnotation: photoAnnotation)
+        self.sut.shouldDownloadImageForPhotoAnnotation(request: request)
+        
+        XCTAssertFalse(self.workerSpy.downloadImageForPhotoAnnotationCalled)
     }
     
     // MARK: - Caching geojson objects
@@ -331,12 +390,15 @@ class STPhotoMapInteractorTests: XCTestCase {
     }
     
     func testShouldDetermineEntityLevelWhenDownloadedTileIsNotStillVisible() {
-        self.workerSpy.delay = 1
+        self.workerSpy.delay = self.workerDelay
         self.sut.visibleTiles = [STPhotoMapSeeds.tileCoordinate]
         
         self.waitForSynchronization()
         
         self.sut.shouldDetermineEntityLevel()
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
         self.sut.visibleTiles.removeAll()
         
         XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)

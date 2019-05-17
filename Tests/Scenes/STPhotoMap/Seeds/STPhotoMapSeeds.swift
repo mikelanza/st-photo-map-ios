@@ -23,7 +23,12 @@ class STPhotoMapSeeds: NSObject {
         TileCoordinate(zoom: 12, x: 3, y: 4)
     ]
     static let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 50, longitude: 50)
-    static let photoAnnotation: PhotoAnnotation = PhotoAnnotation(id: "id", coordinate: STPhotoMapSeeds.coordinate)
+    static let photoAnnotation: PhotoAnnotation = {
+        let annotation = PhotoAnnotation(id: "id", coordinate: STPhotoMapSeeds.coordinate)
+        annotation.model.imageUrl = "image_url"
+        annotation.image = UIImage()
+        return annotation
+    }()
     static let multiplePhotoClusterAnnotation = MultiplePhotoClusterAnnotation(photoIds: ["id"], memberAnnotations: [STPhotoMapSeeds.photoAnnotation])
     static let photoTileOverlayModel = STPhotoTileOverlay.Model(url: "url")
     static let photoTileOverlay = STPhotoTileOverlay(model: STPhotoMapSeeds.photoTileOverlayModel)

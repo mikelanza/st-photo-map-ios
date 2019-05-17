@@ -17,6 +17,7 @@ protocol STPhotoMapBusinessLogic {
     
     func shouldCacheGeojsonObjects()
     func shouldDetermineEntityLevel()
+    func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.DownloadPhotoAnnotationImage.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -51,6 +52,13 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
 extension STPhotoMapInteractor {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.visibleTiles = request.tiles
+    }
+    
+    func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.DownloadPhotoAnnotationImage.Request) {
+        if request.photoAnnotation.image == nil {
+            request.photoAnnotation.isLoading = true
+            self.worker?.downloadImageForPhotoAnnotation(request.photoAnnotation)
+        }
     }
 }
 

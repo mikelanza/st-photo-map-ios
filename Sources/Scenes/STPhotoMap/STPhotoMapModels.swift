@@ -53,4 +53,10 @@ enum STPhotoMapModels {
             let annotations: [PhotoAnnotation]
         }
     }
+    
+    enum DownloadPhotoAnnotationImage {
+        struct Request {
+            let photoAnnotation: PhotoAnnotation
+        }
+    }
 }

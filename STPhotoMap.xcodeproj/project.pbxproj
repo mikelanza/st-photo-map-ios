@@ -39,6 +39,7 @@
 		28CAAC8E22608F52000C0200 /* STPhotoMapInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */; };
 		28CAAC8F22608F52000C0200 /* STPhotoMapWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */; };
 		28CAAC9022608F52000C0200 /* STPhotoMapPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8C22608F52000C0200 /* STPhotoMapPresenterTests.swift */; };
+		28DC7FB0228EAC10007C8DC8 /* String+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DC7FAF228EAC10007C8DC8 /* String+DownloadImage.swift */; };
 		28F5457D2285972800081475 /* STPhotoMapWorkerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F5457C2285972800081475 /* STPhotoMapWorkerSpy.swift */; };
 		28FA365D228AD628000A9E3D /* STPhotoMapSeeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FA365C228AD628000A9E3D /* STPhotoMapSeeds.swift */; };
 		28FA3664228ADD93000A9E3D /* geojson_object.json in Resources */ = {isa = PBXBuildFile; fileRef = 28FA3663228ADD93000A9E3D /* geojson_object.json */; };
@@ -148,6 +149,7 @@
 		28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapInteractorTests.swift; sourceTree = "<group>"; };
 		28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorkerTests.swift; sourceTree = "<group>"; };
 		28CAAC8C22608F52000C0200 /* STPhotoMapPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapPresenterTests.swift; sourceTree = "<group>"; };
+		28DC7FAF228EAC10007C8DC8 /* String+DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+DownloadImage.swift"; sourceTree = "<group>"; };
 		28F5457C2285972800081475 /* STPhotoMapWorkerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorkerSpy.swift; sourceTree = "<group>"; };
 		28FA365C228AD628000A9E3D /* STPhotoMapSeeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapSeeds.swift; sourceTree = "<group>"; };
 		28FA3663228ADD93000A9E3D /* geojson_object.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geojson_object.json; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 			isa = PBXGroup;
 			children = (
 				289B1A16226717E700B09F7A /* String+Localized.swift */,
+				28DC7FAF228EAC10007C8DC8 /* String+DownloadImage.swift */,
 			);
 			path = String;
 			sourceTree = "<group>";
@@ -1102,6 +1105,7 @@
 				851864A2226E5F3D00A5C44D /* EntityLevel.swift in Sources */,
 				854AE1AE228E995800C44F1C /* GeoJSONObject+Features.swift in Sources */,
 				85538D1C226703D9007D4A15 /* GeoJSONMultiLineString.swift in Sources */,
+				28DC7FB0228EAC10007C8DC8 /* String+DownloadImage.swift in Sources */,
 				85538D17226703D9007D4A15 /* GeoJSON.swift in Sources */,
 				85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */,
 				289F27A1228DB88300741CF7 /* DefaultReuseIdentifier.swift in Sources */,

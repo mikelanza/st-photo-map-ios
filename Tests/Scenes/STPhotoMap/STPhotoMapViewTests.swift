@@ -144,6 +144,13 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldDetermineEntityLevelCalled)
     }
     
+    func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {
+        self.loadView()
+        
+        let _ = self.sut.mapView(self.sut.mapView, viewFor: STPhotoMapSeeds.photoAnnotation)
+        XCTAssertTrue(self.interactorSpy.shouldDownloadImageForPhotoAnnotationCalled)
+    }
+    
     // MARK: - Test display logic
     
     func testDisplayLoadingState() {

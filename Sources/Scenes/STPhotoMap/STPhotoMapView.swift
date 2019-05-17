@@ -92,6 +92,14 @@ extension STPhotoMapView {
     }
 }
 
+// MARK: - Business logic
+
+extension STPhotoMapView {
+    private func shouldDownloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
+        self.interactor?.shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.DownloadPhotoAnnotationImage.Request(photoAnnotation: photoAnnotation))
+    }
+}
+
 // MARK: - Display logic
 
 extension STPhotoMapView: STPhotoMapDisplayLogic {
@@ -179,6 +187,7 @@ extension STPhotoMapView: MKMapViewDelegate {
         if let photoAnnotation = annotation as? PhotoAnnotation {
             let view = photoAnnotation.annotationView()
             view.delegate = self
+            self.shouldDownloadImageForPhotoAnnotation(photoAnnotation)
             return view
         } else if let clusterAnnotation = annotation as? MultiplePhotoClusterAnnotation {
             let view = clusterAnnotation.annotationView()

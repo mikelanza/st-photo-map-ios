@@ -59,4 +59,11 @@ class STPhotoMapWorker {
     func cancelAllGeojsonEntityLevelOperations() {
         self.geojsonEntityLevelQueue.cancelAllOperations()
     }
+    
+    func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
+        photoAnnotation.model.imageUrl?.downloadImage(result: { (image, error) in
+            photoAnnotation.isLoading = false
+            photoAnnotation.image = image
+        })
+    }
 }
