@@ -12,6 +12,7 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     var displayLoadingStateCalled: Bool = false
     var displayNotLoadingStateCalled: Bool = false
     var displayEntityLevelCalled: Bool = false
+    var displayLocationAnnotationsCalled: Bool = false
     
     func displayLoadingState() {
         self.displayLoadingStateCalled = true
@@ -23,5 +24,9 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     
     func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel) {
         self.displayEntityLevelCalled = true
+    }
+    
+    func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel) {
+        self.displayLocationAnnotationsCalled = true
     }
 }

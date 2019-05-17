@@ -23,13 +23,6 @@ extension STPhotoMapInteractor {
         self.handleLoadingStateForEntityLevel()
     }
     
-    private func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
-        return self.visibleTiles.compactMap({ tile -> STPhotoMapCache.Tile? in
-            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
-            return try? self.cacheHandler.cache.getTile(for: url.keyUrl)
-        })
-    }
-    
     private func calculateEntityLevelFor(cachedTiles: [STPhotoMapCache.Tile]) {
         let entityLevel = cachedTiles.first?.geojsonObject.entityLevel ?? .unknown
         self.entityLevelHandler.change(entityLevel: entityLevel)

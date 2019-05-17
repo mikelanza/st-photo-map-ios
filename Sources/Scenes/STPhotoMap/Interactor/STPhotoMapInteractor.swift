@@ -37,6 +37,13 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
         self.worker = STPhotoMapWorker(delegate: self)
         self.entityLevelHandler.delegate = self
     }
+    
+    internal func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
+        return self.visibleTiles.compactMap({ tile -> STPhotoMapCache.Tile? in
+            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+            return try? self.cacheHandler.cache.getTile(for: url.keyUrl)
+        })
+    }
 }
 
 // MARK: - Business logic

@@ -17,6 +17,8 @@ protocol STPhotoMapPresentationLogic {
     func presentNotLoadingState()
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response)
+    
+    func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -61,5 +63,11 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         case .country: return STPhotoMapStyle.shared.entityLevelViewModel.countryImage
         case .unknown: return nil
         }
+    }
+    
+    func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response) {
+        let annotations: [PhotoAnnotation] = response.annotations.map({ $0.toPhotoAnnotation() })
+        let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: annotations)
+        self.displayer?.displayLocationAnnotations(viewModel: viewModel)
     }
 }

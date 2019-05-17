@@ -353,4 +353,40 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
         XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
+    
+    func testShouldDetermineLocationWhenEntityLevelIsNotLocation() throws {
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.sut.entityLevelHandler.entityLevel = .city
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldDetermineLocation()
+        
+        XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
+    }
+    
+    func testShouldDetermineLocationWhenEntityLevelIsLocation() throws {
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.sut.entityLevelHandler.entityLevel = .location
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldDetermineLocation()
+        
+        XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
+    }
 }

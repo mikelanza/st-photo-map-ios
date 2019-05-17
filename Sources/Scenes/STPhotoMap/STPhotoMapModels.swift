@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import MapKit
 
 enum STPhotoMapModels {
     enum VisibleTiles {
@@ -27,6 +28,29 @@ enum STPhotoMapModels {
         struct ViewModel {
             let title: String?
             let image: UIImage?
+        }
+    }
+    
+    struct Annotation {
+        let id: String
+        let imageUrl: String?
+        let latitude: Double
+        let longitude: Double
+        
+        func toPhotoAnnotation() -> PhotoAnnotation {
+            let pinAnnotation = PhotoAnnotation(id: id, coordinate: CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude))
+            pinAnnotation.model.imageUrl = imageUrl
+            return pinAnnotation
+        }
+    }
+    
+    enum LocationAnnotations {
+        struct Response {
+            let annotations: [Annotation]
+        }
+        
+        struct ViewModel {
+            let annotations: [PhotoAnnotation]
         }
     }
 }
