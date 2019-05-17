@@ -10,6 +10,7 @@ import Foundation
 
 protocol STPhotoMapEntityLevelHandlerDelegate {
     func photoMapEntityLevelHandler(newEntityLevel level: EntityLevel)
+    func photoMapEntityLevelHandler(location level: EntityLevel)
 }
 
 class STPhotoMapEntityLevelHandler {
@@ -41,7 +42,12 @@ class STPhotoMapEntityLevelHandler {
     func change(entityLevel: EntityLevel) {
         if entityLevel != .unknown && self.entityLevel != entityLevel {
             self.entityLevel = entityLevel
-            self.delegate?.photoMapEntityLevelHandler(newEntityLevel: self.entityLevel)
+
+            switch self.entityLevel {
+                case .location: self.delegate?.photoMapEntityLevelHandler(location: .location); break
+                default: self.delegate?.photoMapEntityLevelHandler(newEntityLevel: self.entityLevel);
+            }
+            
         }
     }
 }

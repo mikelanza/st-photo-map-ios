@@ -31,11 +31,13 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     var visibleTiles: [TileCoordinate]
     var cacheHandler: STPhotoMapCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
+    var locationLevelHandler: STPhotoMapLocationLevelHandler
     
     init() {
         self.visibleTiles = []
         self.cacheHandler = STPhotoMapCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
+        self.locationLevelHandler = STPhotoMapLocationLevelHandler()
         self.worker = STPhotoMapWorker(delegate: self)
         self.entityLevelHandler.delegate = self
     }
@@ -68,6 +70,14 @@ extension STPhotoMapInteractor {
 extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
     func photoMapEntityLevelHandler(newEntityLevel level: EntityLevel) {
         self.worker?.cancelAllGeojsonEntityLevelOperations()
+        self.worker?.cancelAllGeojsonLocationLevelOperations()
+        
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
+    }
+    
+    func photoMapEntityLevelHandler(location level: EntityLevel) {
+        self.worker?.cancelAllGeojsonEntityLevelOperations()
+        
+        self.shouldDetermineLocationLevel()
     }
 }

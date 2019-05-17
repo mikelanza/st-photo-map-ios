@@ -14,6 +14,7 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     
     var getGeojsonTileForCachingCalled: Bool = false
     var getGeojsonTileForEntityLevelCalled: Bool = false
+    var getGeojsonLocationLevelCalled: Bool = false
     var downloadImageForPhotoAnnotationCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
@@ -36,6 +37,21 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
             }
         }
     }
+    
+    override func getGeojsonLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
+        self.getGeojsonLocationLevelCalled = true
+        
+        if self.delay == 0 {
+            let geojsonObject = try! STPhotoMapSeeds().locationGeojsonObject()
+            self.delegate?.successDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                let geojsonObject = try! STPhotoMapSeeds().locationGeojsonObject()
+                self.delegate?.successDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+            }
+        }
+    }
+    
     
     override func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
         self.downloadImageForPhotoAnnotationCalled = true

@@ -8,7 +8,7 @@
 
 import Foundation
 
-// MARK: - Location logic
+// MARK: - Location level logic
 
 extension STPhotoMapInteractor {
     func shouldDetermineLocationLevel() {
@@ -16,9 +16,12 @@ extension STPhotoMapInteractor {
         
         let cachedTiles = self.getVisibleCachedTiles()
         self.presentPhotoAnnotationsForCached(tiles: cachedTiles)
+        self.locationLevelGeojsonObjectsFor(tiles: self.prepareTilesForLocationLevel())
     }
     
     private func presentLocationAnnotations(annotations: [STPhotoMapModels.Annotation]) {
+        guard !annotations.isEmpty else { return }
+        
         self.presenter?.presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response(annotations: annotations))
     }
     
@@ -56,5 +59,39 @@ extension STPhotoMapInteractor {
             return STPhotoMapModels.Annotation(id: id, imageUrl: feature.photoProperties?.image250Url,  latitude: point.latitude, longitude: point.longitude)
         }
         return nil
+    }
+    
+    private func prepareTilesForLocationLevel() -> [TileCoordinate] {
+        return self.visibleTiles.filter({ tile -> Bool in
+            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+            return !self.locationLevelHandler.hasActiveDownload(url.keyUrl)
+        })
+    }
+    
+    private func locationLevelGeojsonObjectsFor(tiles: [TileCoordinate]) {
+        tiles.forEach({ self.locationLevelGeojsonObjectsFor(tile: $0) })
+    }
+    
+    private func locationLevelGeojsonObjectsFor(tile: TileCoordinate) {
+        let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+        self.locationLevelHandler.addActiveDownload(url.keyUrl)
+        self.worker?.getGeojsonLocationLevel(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
+    }
+    
+    private func didGetGeojsonTileForLocationLevel(geojsonObject: GeoJSONObject) {
+        guard isLocationLevel() else { return }
+        let annotations = self.getAnnotations(from: geojsonObject)
+        self.presentLocationAnnotations(annotations: annotations)
+    }
+}
+
+extension STPhotoMapInteractor {
+    func successDidGetGeojsonTileForLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
+        self.locationLevelHandler.removeActiveDownload(keyUrl)
+        self.didGetGeojsonTileForLocationLevel(geojsonObject: geojsonObject)
+    }
+    
+    func failureDidGetGeojsonTileForLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
+        self.locationLevelHandler.removeActiveDownload(keyUrl)
     }
 }
