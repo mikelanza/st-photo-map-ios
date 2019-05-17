@@ -143,4 +143,15 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertNotNil(self.sut.entityLevelView)
     }
+    
+    func testDisplayLocationAnnotations() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: STPhotoMapSeeds().photoAnnotations())
+        self.sut.displayLocationAnnotations(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertGreaterThan(self.sut.mapView.annotations.count, 0)
+    }
 }

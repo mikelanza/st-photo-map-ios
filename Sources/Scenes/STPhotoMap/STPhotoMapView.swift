@@ -18,6 +18,8 @@ protocol STPhotoMapDisplayLogic: class {
     func displayNotLoadingState()
     
     func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel)
+    
+    func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -140,6 +142,12 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         self.setupEntityLevelView(model: model)
         self.setupEntityLevelViewConstraints()
         self.entityLevelView?.show()
+    }
+    
+    func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel) {
+        DispatchQueue.main.async {
+            self.mapView?.addAnnotations(viewModel.annotations)
+        }
     }
 }
 

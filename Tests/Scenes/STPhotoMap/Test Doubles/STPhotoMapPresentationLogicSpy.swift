@@ -12,6 +12,7 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentLoadingStateCalled: Bool = false
     var presentNotLoadingStateCalled: Bool = false
     var presentEntityLevelCalled: Bool = false
+    var presentLocationAnnotationsCalled: Bool = false
     
     func presentLoadingState() {
         self.presentLoadingStateCalled = true
@@ -23,5 +24,9 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response) {
         self.presentEntityLevelCalled = true
+    }
+    
+    func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response) {
+        self.presentLocationAnnotationsCalled = true
     }
 }

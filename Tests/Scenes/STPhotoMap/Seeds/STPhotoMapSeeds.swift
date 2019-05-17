@@ -38,4 +38,36 @@ class STPhotoMapSeeds: NSObject {
         }
         return geojsonObject
     }
+    
+    func locationGeojsonObject() throws -> GeoJSONObject {
+        let bundle = Bundle(for: type(of: self))
+        guard let path = bundle.path(forResource: "geojson_object_location", ofType: "json") else {
+            throw STPhotoMapSeedsError.noResourceAvailable
+        }
+        let url = URL(fileURLWithPath: path)
+        let data = try Data(contentsOf: url)
+        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+            throw STPhotoMapSeedsError.noDataAvailable
+        }
+        guard let geojsonObject = GeoJSON().parse(geoJSON: json) else {
+            throw STPhotoMapSeedsError.noObjectAvailable
+        }
+        return geojsonObject
+    }
+    
+    func annotations() -> [STPhotoMapModels.Annotation] {
+        let firstAnnotation = STPhotoMapModels.Annotation(id: "1", imageUrl: "https://strtgrph.s3-us-west-1.amazonaws.com/processed/964d83ac70036166b4fb43c93516ab25_250_250.jpg", latitude: 37.896175586962535, longitude: -122.5092990375)
+        let secondAnnotation = STPhotoMapModels.Annotation(id: "2", imageUrl: "https://strtgrph.s3-us-west-1.amazonaws.com/processed/1575c2eeef87a57256a03b8e6d9d8eec_250_250.jpg", latitude: 37.92717416710873, longitude: -122.51521212095439)
+        return [firstAnnotation, secondAnnotation]
+    }
+    
+    func photoAnnotations() -> [PhotoAnnotation] {
+        var photoAnnotations = [PhotoAnnotation]()
+        let stMapAnnotations = self.annotations()
+        
+        stMapAnnotations.forEach { (stMapAnnotation) in
+            photoAnnotations.append(stMapAnnotation.toPhotoAnnotation())
+        }
+        return photoAnnotations
+    }
 }

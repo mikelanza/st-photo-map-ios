@@ -59,4 +59,11 @@ class STPhotoMapPresenterTests: XCTestCase {
         
         XCTAssertTrue(self.displayerSpy.displayEntityLevelCalled)
     }
+    
+    func testPresentLocationAnnotations() {
+        let response = STPhotoMapModels.LocationAnnotations.Response(annotations: STPhotoMapSeeds().annotations())
+        self.sut.presentLocationAnnotations(response: response)
+        
+        XCTAssertTrue(self.displayerSpy.displayLocationAnnotationsCalled)
+    }
 }
