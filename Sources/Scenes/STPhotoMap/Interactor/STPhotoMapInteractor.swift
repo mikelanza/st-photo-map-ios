@@ -17,6 +17,7 @@ protocol STPhotoMapBusinessLogic {
     
     func shouldCacheGeojsonObjects()
     func shouldDetermineEntityLevel()
+    func shouldDetermineLocationLevel()
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.DownloadPhotoAnnotationImage.Request)
 }
 

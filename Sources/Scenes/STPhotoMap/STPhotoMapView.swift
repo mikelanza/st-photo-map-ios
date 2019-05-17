@@ -168,6 +168,7 @@ extension STPhotoMapView: MKMapViewDelegate {
             self.interactor?.shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request(tiles: visibleTiles))
             self.interactor?.shouldCacheGeojsonObjects()
             self.interactor?.shouldDetermineEntityLevel()
+            self.interactor?.shouldDetermineLocationLevel()
         }
     }
     

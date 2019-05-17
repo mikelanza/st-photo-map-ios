@@ -429,7 +429,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.waitForSynchronization()
         
-        self.sut.shouldDetermineLocation()
+        self.sut.shouldDetermineLocationLevel()
         
         XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
     }
@@ -447,7 +447,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.waitForSynchronization()
         
-        self.sut.shouldDetermineLocation()
+        self.sut.shouldDetermineLocationLevel()
         
         XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
     }

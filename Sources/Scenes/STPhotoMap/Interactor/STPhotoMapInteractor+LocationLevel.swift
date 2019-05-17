@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Location logic
 
 extension STPhotoMapInteractor {
-    func shouldDetermineLocation() {
+    func shouldDetermineLocationLevel() {
         guard isLocationLevel() else { return }
         
         let cachedTiles = self.getVisibleCachedTiles()
