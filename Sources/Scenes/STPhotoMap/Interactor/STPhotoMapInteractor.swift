@@ -18,7 +18,8 @@ protocol STPhotoMapBusinessLogic {
     func shouldCacheGeojsonObjects()
     func shouldDetermineEntityLevel()
     func shouldDetermineLocationLevel()
-    func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.DownloadPhotoAnnotationImage.Request)
+    func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
+    func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -57,10 +58,16 @@ extension STPhotoMapInteractor {
         self.visibleTiles = request.tiles
     }
     
-    func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.DownloadPhotoAnnotationImage.Request) {
+    func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request) {
         if request.photoAnnotation.image == nil {
             request.photoAnnotation.isLoading = true
             self.worker?.downloadImageForPhotoAnnotation(request.photoAnnotation)
+        }
+    }
+    
+    func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request) {
+        if request.photoAnnotation?.isSelected == true {
+            self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: request.photoAnnotation?.model.photoId))
         }
     }
 }

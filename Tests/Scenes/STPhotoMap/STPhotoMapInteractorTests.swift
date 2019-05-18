@@ -79,7 +79,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         let photoAnnotation = STPhotoMapSeeds.photoAnnotation
         photoAnnotation.image = nil
-        let request = STPhotoMapModels.DownloadPhotoAnnotationImage.Request(photoAnnotation: photoAnnotation)
+        let request = STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation)
         self.sut.shouldDownloadImageForPhotoAnnotation(request: request)
         
         XCTAssertNil(photoAnnotation.image)
@@ -99,7 +99,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         let photoAnnotation = STPhotoMapSeeds.photoAnnotation
         photoAnnotation.image = nil
-        let request = STPhotoMapModels.DownloadPhotoAnnotationImage.Request(photoAnnotation: photoAnnotation)
+        let request = STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation)
         self.sut.shouldDownloadImageForPhotoAnnotation(request: request)
         
         XCTAssertNil(photoAnnotation.image)
@@ -114,7 +114,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     
     func testShouldDownloadImageForPhotoAnnotationWhenThereIsAnImage() {
         let photoAnnotation = STPhotoMapSeeds.photoAnnotation
-        let request = STPhotoMapModels.DownloadPhotoAnnotationImage.Request(photoAnnotation: photoAnnotation)
+        let request = STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation)
         self.sut.shouldDownloadImageForPhotoAnnotation(request: request)
         
         XCTAssertFalse(self.workerSpy.downloadImageForPhotoAnnotationCalled)
@@ -416,7 +416,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
     
-    // MARK: Location level
+    // MARK: - Location level
     
     func testShouldDetermineLocationLevelWhenCacheIsNotEmptyAndEntityLevelIsLocationForSuccessCase() throws {
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
@@ -514,5 +514,16 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         XCTAssertTrue(self.workerSpy.getGeojsonLocationLevelCalled)
         XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
+    }
+    
+    // MARK: - Photo annotation selection
+    
+    func testShouldSelectPhotoAnnotationWhenItIsAlreadySelected() {
+        let annotation = STPhotoMapSeeds.photoAnnotation
+        annotation.isSelected = true
+        let request = STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: annotation)
+        self.sut.shouldSelectPhotoAnnotation(request: request)
+        
+        XCTAssertTrue(self.presenterSpy.presentNavigateToPhotoDetailsCalled)
     }
 }
