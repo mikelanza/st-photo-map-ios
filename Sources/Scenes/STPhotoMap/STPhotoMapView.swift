@@ -24,6 +24,8 @@ protocol STPhotoMapDisplayLogic: class {
     func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel)
     func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel)
     func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel)
+    
+    func displayRemoveLocationAnnotations()
 }
 
 public class STPhotoMapView: UIView {
@@ -185,6 +187,13 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
             let visibleAnnotations = self.annotationHandler.getVisibleAnnotations(mapRect: self.mapView.visibleMapRect)
             self.mapView?.addAnnotations(visibleAnnotations)
         }
+    }
+    
+    func displayRemoveLocationAnnotations() {
+        DispatchQueue.main.async {
+            self.mapView?.removeAnnotations(self.annotationHandler.annotations)
+        }
+        self.annotationHandler.removeAllAnnotations()
     }
     
     // MARK: - Photo details navigation

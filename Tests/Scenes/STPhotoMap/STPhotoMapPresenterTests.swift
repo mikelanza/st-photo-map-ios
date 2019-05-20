@@ -73,4 +73,10 @@ class STPhotoMapPresenterTests: XCTestCase {
         
         XCTAssertTrue(self.displayerSpy.displayNavigateToPhotoDetailsCalled)
     }
+    
+    func testPresentRemoveLocationAnnotations() {
+        self.sut.presentRemoveLocationAnnotations()
+        
+        XCTAssertTrue(self.displayerSpy.displayRemoveLocationAnnotationsCalled)
+    }
 }

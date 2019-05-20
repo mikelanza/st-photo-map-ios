@@ -19,6 +19,8 @@ protocol STPhotoMapPresentationLogic {
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response)
     func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response)
     func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response)
+    
+    func presentRemoveLocationAnnotations()
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -74,5 +76,9 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response) {
         let viewModel = STPhotoMapModels.PhotoDetailsNavigation.ViewModel(photoId: response.photoId)
         self.displayer?.displayNavigateToPhotoDetails(viewModel: viewModel)
+    }
+    
+    func presentRemoveLocationAnnotations() {
+        self.displayer?.displayRemoveLocationAnnotations()
     }
 }
