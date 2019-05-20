@@ -21,6 +21,9 @@ protocol STPhotoMapWorkerDelegate: class {
     
     func successDidGetGeojsonTileForLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
     func failureDidGetGeojsonTileForLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError)
+    
+    func successDidGetPhotoForPhotoAnnotation(photoAnnotation: PhotoAnnotation, photo: STPhoto)
+    func failureDidGetPhotoForPhotoAnnotation(photoAnnotation: PhotoAnnotation, error: OperationError)
 }
 
 class STPhotoMapWorker {
@@ -89,7 +92,18 @@ class STPhotoMapWorker {
         self.geojsonLocationLevelQueue.cancelAllOperations()
     }
     
-    func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+    func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
         
+        let model = GetPhotoOperationModel.Request(photoId: photoAnnotation.model.photoId)
+        let operation = GetPhotoOperation(model: model) { result in
+            switch result {
+                case .success(let value): self.delegate?.successDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, photo: value.photo); break
+                case .failure(let error): self.delegate?.failureDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, error: error); break
+            }
+        }
+        
+        queue.addOperation(operation)
     }
 }

@@ -546,8 +546,9 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentNavigateToPhotoDetailsCalled)
     }
     
-    func testShouldSelectPhotoAnnotationWhenItIsNotSelectedAndEntityLevelIsLocation() {
+    func testShouldSelectPhotoAnnotationWhenItIsNotSelectedAndEntityLevelIsLocationForSuccessCase() {
         self.sut.entityLevelHandler.entityLevel = .location
+        self.workerSpy.delay = self.workerDelay
         
         let annotations = STPhotoMapSeeds().photoAnnotations()
         let annotation = annotations.first!
@@ -562,6 +563,36 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+    }
+    
+    func testShouldSelectPhotoAnnotationWhenItIsNotSelectedAndEntityLevelIsLocationForFailureCase() {
+        let worker = STPhotoMapWorkerFailureSpy(delegate: self.sut)
+        worker.delay = self.workerDelay
+        self.sut.worker = worker
+        
+        self.sut.entityLevelHandler.entityLevel = .location
+        
+        let annotations = STPhotoMapSeeds().photoAnnotations()
+        let annotation = annotations.first!
+        let previousAnnotation = annotations.last!
+        previousAnnotation.isSelected = true
+        
+        let request = STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: annotation, previousPhotoAnnotation: previousAnnotation)
+        self.sut.shouldSelectPhotoAnnotation(request: request)
+        
+        XCTAssertTrue(annotation.isSelected)
+        XCTAssertFalse(previousAnnotation.isSelected)
+        
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(worker.getPhotoDetailsForPhotoAnnotationCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
     }
     
     func testShouldSelectPhotoAnnotationWhenItIsNotSelectedAndEntityLevelIsNotLocation() {

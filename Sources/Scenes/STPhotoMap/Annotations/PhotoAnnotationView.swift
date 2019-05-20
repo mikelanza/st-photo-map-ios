@@ -16,7 +16,7 @@ protocol PhotoAnnotationInterface: NSObjectProtocol {
 }
 
 protocol PhotoAnnotationViewDelegate: NSObjectProtocol {
-    func photoAnnotationView(view: PhotoAnnotationView?, with photoAnnotation: PhotoAnnotation?, didSelect photoImageView: PhotoImageView?)
+    func photoAnnotationView(view: PhotoAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?)
 }
 
 class PhotoAnnotationView: MKAnnotationView, DefaultReuseIdentifier {
@@ -103,6 +103,6 @@ extension PhotoAnnotationView: PhotoAnnotationInterface {
 
 extension PhotoAnnotationView: PhotoImageViewDelegate {
     func photoImageView(view: PhotoImageView?, didSelect button: UIButton?) {
-        self.delegate?.photoAnnotationView(view: self, with: self.annotation as? PhotoAnnotation, didSelect: view)
+        self.delegate?.photoAnnotationView(view: self, with: self.annotation as! PhotoAnnotation, didSelect: view)
     }
 }

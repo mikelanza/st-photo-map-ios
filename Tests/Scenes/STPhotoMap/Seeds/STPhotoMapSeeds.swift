@@ -84,4 +84,14 @@ class STPhotoMapSeeds: NSObject {
         annotation.image = UIImage()
         return annotation
     }
+    
+    func photo() -> STPhoto {
+        var photo = STPhoto(id: "photo_id", createdAt: Date())
+        photo.user = self.user()
+        return photo
+    }
+    
+    func user() -> STUser {
+        return STUser(id: "user_id")
+    }
 }

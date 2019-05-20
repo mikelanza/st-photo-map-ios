@@ -19,6 +19,11 @@ struct STPhoto: Codable {
     var fhUsername: String { return self._fhUsername ?? "" }
     private var _fhUsername: String?
     
+    init(id: String, createdAt: Date) {
+        self.id = id
+        self.createdAt = createdAt
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id = "objectId"
         case createdAt = "createdAt"

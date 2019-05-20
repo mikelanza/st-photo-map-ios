@@ -67,8 +67,16 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
         }
     }
     
-    override func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+    override func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
         self.getPhotoDetailsForPhotoAnnotationCalled = true
+        
+        if self.delay == 0 {
+            self.delegate?.successDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, photo: STPhotoMapSeeds().photo())
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                self.delegate?.successDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, photo: STPhotoMapSeeds().photo())
+            }
+        }
     }
 }
 
@@ -104,7 +112,15 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
         }
     }
     
-    override func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+    override func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
         self.getPhotoDetailsForPhotoAnnotationCalled = true
+        
+        if self.delay == 0 {
+            self.delegate?.failureDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, error: OperationError.cannotParseResponse)
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                self.delegate?.failureDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, error: OperationError.cannotParseResponse)
+            }
+        }
     }
 }

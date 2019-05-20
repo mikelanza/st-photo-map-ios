@@ -17,6 +17,10 @@ struct STUser: Codable {
     var lastName: String { return self._lastName ?? "" }
     private var _lastName: String?
     
+    init(id: String) {
+        self.id = id
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id = "objectId"
         case _firstName = "firstName"

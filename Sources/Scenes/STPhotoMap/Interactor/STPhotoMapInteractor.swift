@@ -64,30 +64,6 @@ extension STPhotoMapInteractor {
             self.worker?.downloadImageForPhotoAnnotation(request.photoAnnotation)
         }
     }
-    
-    func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request) {
-        let photoAnnotation = request.photoAnnotation
-        if photoAnnotation?.isSelected == true {
-            self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: photoAnnotation?.model.photoId))
-        } else {
-            self.shouldHandleNonSelectedPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: request.previousPhotoAnnotation)
-            self.shouldGetPhotoDetailsFor(photoAnnotation)
-        }
-    }
-    
-    private func shouldHandleNonSelectedPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?, previousPhotoAnnotation: PhotoAnnotation?) {
-        if self.isLocationLevel() {
-            previousPhotoAnnotation?.isSelected = false
-            photoAnnotation?.isSelected = true
-        }
-    }
-    
-    private func shouldGetPhotoDetailsFor(_ photoAnnotation: PhotoAnnotation?) {
-        if self.isLocationLevel() {
-            self.presenter?.presentLoadingState()
-            self.worker?.getPhotoDetailsForPhotoAnnotation(photoAnnotation)
-        }
-    }
 }
 
 // MARK: - Entity handler delegate
