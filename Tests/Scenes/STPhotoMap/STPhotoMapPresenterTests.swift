@@ -66,4 +66,11 @@ class STPhotoMapPresenterTests: XCTestCase {
         
         XCTAssertTrue(self.displayerSpy.displayLocationAnnotationsCalled)
     }
+    
+    func testPresentNavigateToPhotoDetails() {
+        let response = STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: STPhotoMapSeeds.photoId)
+        self.sut.presentNavigateToPhotoDetails(response: response)
+        
+        XCTAssertTrue(self.displayerSpy.displayNavigateToPhotoDetailsCalled)
+    }
 }

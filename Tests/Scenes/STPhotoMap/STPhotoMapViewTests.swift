@@ -13,6 +13,7 @@ import MapKit
 class STPhotoMapViewTests: XCTestCase {
     var sut: STPhotoMapView!
     var interactorSpy: STPhotoMapBusinessLogicSpy!
+    var delegateSpy: STPhotoMapViewDelegateSpy!
     var window: UIWindow!
     
     // MARK: - Test lifecycle
@@ -45,6 +46,9 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.interactorSpy = STPhotoMapBusinessLogicSpy()
         self.sut.interactor = self.interactorSpy
+        
+        self.delegateSpy = STPhotoMapViewDelegateSpy()
+        self.sut.delegate = self.delegateSpy
     }
     
     func loadView() {
@@ -151,10 +155,21 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldDownloadImageForPhotoAnnotationCalled)
     }
     
+    func testShouldSelectPhotoAnnotationWhenItIsSelected() {
+        self.loadView()
+        
+        let annotation = STPhotoMapSeeds.photoAnnotation
+        let view = PhotoAnnotationView(annotation: annotation)
+        self.sut.photoAnnotationView(view: view, with: annotation, didSelect: nil)
+        
+        XCTAssertTrue(self.interactorSpy.shouldSelectPhotoAnnotationCalled)
+    }
+    
     // MARK: - Test display logic
     
     func testDisplayLoadingState() {
         self.loadView()
+        
         self.sut.displayLoadingState()
         
         self.waitForMainQueue()
@@ -165,6 +180,7 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testDisplayNotLoadingState() {
         self.loadView()
+        
         self.sut.displayNotLoadingState()
         
         self.waitForMainQueue()
@@ -175,6 +191,7 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testDisplayEntityLevel() {
         self.loadView()
+        
         let viewModel = STPhotoMapModels.EntityZoomLevel.ViewModel(title: STPhotoMapStyle.EntityLevelViewModel().blockTitle, image: STPhotoMapStyle.EntityLevelViewModel().blockImage)
         self.sut.displayEntityLevel(viewModel: viewModel)
         
@@ -186,11 +203,21 @@ class STPhotoMapViewTests: XCTestCase {
     func testDisplayLocationAnnotations() {
         self.loadView()
         
-        let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: STPhotoMapSeeds().photoAnnotations())
+        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
+        let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: photoAnnotations)
         self.sut.displayLocationAnnotations(viewModel: viewModel)
         
         self.waitForMainQueue()
         
-        XCTAssertGreaterThan(self.sut.mapView.annotations.count, 0)
+        XCTAssertEqual(self.sut.mapView.annotations.count, photoAnnotations.count)
+    }
+    
+    func testDisplayNavigateToPhotoDetails() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.PhotoDetailsNavigation.ViewModel(photoId: STPhotoMapSeeds.photoId)
+        self.sut.displayNavigateToPhotoDetails(viewModel: viewModel)
+        
+        XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToPhotoDetailsForPhotoIdCalled)
     }
 }

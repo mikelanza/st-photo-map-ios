@@ -16,20 +16,26 @@ enum STPhotoMapSeedsError: Error {
 }
 
 class STPhotoMapSeeds: NSObject {
+    static let photoId: String = "photo_id"
+    static let imageUrl: String = "image_url"
+    
     static let tileCoordinate: TileCoordinate = TileCoordinate(zoom: 10, x: 1, y: 2)
     static let tileCoordinates: [TileCoordinate] = [
         TileCoordinate(zoom: 10, x: 1, y: 2),
         TileCoordinate(zoom: 11, x: 2, y: 3),
         TileCoordinate(zoom: 12, x: 3, y: 4)
     ]
+    
     static let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 50, longitude: 50)
     static let photoAnnotation: PhotoAnnotation = {
-        let annotation = PhotoAnnotation(id: "id", coordinate: STPhotoMapSeeds.coordinate)
-        annotation.model.imageUrl = "image_url"
+        let annotation = PhotoAnnotation(id: STPhotoMapSeeds.photoId, coordinate: STPhotoMapSeeds.coordinate)
+        annotation.model.imageUrl = STPhotoMapSeeds.imageUrl
         annotation.image = UIImage()
         return annotation
     }()
-    static let multiplePhotoClusterAnnotation = MultiplePhotoClusterAnnotation(photoIds: ["id"], memberAnnotations: [STPhotoMapSeeds.photoAnnotation])
+    
+    static let multiplePhotoClusterAnnotation = MultiplePhotoClusterAnnotation(photoIds: [STPhotoMapSeeds.photoId], memberAnnotations: [STPhotoMapSeeds.photoAnnotation])
+    
     static let photoTileOverlayModel = STPhotoTileOverlay.Model(url: "url")
     static let photoTileOverlay = STPhotoTileOverlay(model: STPhotoMapSeeds.photoTileOverlayModel)
     
@@ -72,12 +78,6 @@ class STPhotoMapSeeds: NSObject {
     }
     
     func photoAnnotations() -> [PhotoAnnotation] {
-        var photoAnnotations = [PhotoAnnotation]()
-        let stMapAnnotations = self.annotations()
-        
-        stMapAnnotations.forEach { (stMapAnnotation) in
-            photoAnnotations.append(stMapAnnotation.toPhotoAnnotation())
-        }
-        return photoAnnotations
+        return self.annotations().map({ $0.toPhotoAnnotation() })
     }
 }

@@ -13,18 +13,23 @@ public protocol STPhotoMapViewDataSource: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, photoTileOverlayModelForUrl url: String, parameters: [KeyValue]?) -> STPhotoTileOverlay.Model
 }
 
+public protocol STPhotoMapViewDelegate: NSObjectProtocol {
+    func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?)
+}
+
 protocol STPhotoMapDisplayLogic: class {
     func displayLoadingState()
     func displayNotLoadingState()
     
     func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel)
-    
     func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel)
+    func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
     public weak var mapView: MKMapView!
-    public weak var dataSource: STPhotoMapViewDataSource!
+    public weak var dataSource: STPhotoMapViewDataSource?
+    public weak var delegate: STPhotoMapViewDelegate?
     
     var interactor: STPhotoMapBusinessLogic?
     
@@ -96,13 +101,20 @@ extension STPhotoMapView {
 
 extension STPhotoMapView {
     private func shouldDownloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
-        self.interactor?.shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.DownloadPhotoAnnotationImage.Request(photoAnnotation: photoAnnotation))
+        self.interactor?.shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation))
+    }
+    
+    private func shouldSelectPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+        self.interactor?.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation))
     }
 }
 
 // MARK: - Display logic
 
 extension STPhotoMapView: STPhotoMapDisplayLogic {
+    
+    // MARK: - Loading state
+    
     func displayLoadingState() {
         DispatchQueue.main.async {
             self.shouldShowProgressView()
@@ -120,6 +132,8 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         self.progressView?.isHidden = false
         self.progressView?.setProgress(1.0, animated: true)
     }
+    
+    // MARK: - Not loading state
     
     func displayNotLoadingState() {
         DispatchQueue.main.async {
@@ -139,9 +153,17 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         self.progressView?.setProgress(0.0, animated: false)
     }
     
+    // MARK: - Entity level view
+    
     func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel) {
         DispatchQueue.main.async {
-            self.showEntityLevelView(title: viewModel.title, image: viewModel.image)
+            self.shouldShowEntityLevelView(title: viewModel.title, image: viewModel.image)
+        }
+    }
+    
+    private func shouldShowEntityLevelView(title: String?, image: UIImage?) {
+        if STPhotoMapStyle.shared.entityLevelViewModel.show {
+            self.showEntityLevelView(title: title, image: image)
         }
     }
     
@@ -152,10 +174,18 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         self.entityLevelView?.show()
     }
     
+    // MARK: - Location annotations
+    
     func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel) {
         DispatchQueue.main.async {
             self.mapView?.addAnnotations(viewModel.annotations)
         }
+    }
+    
+    // MARK: - Photo details navigation
+    
+    func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel) {
+        self.delegate?.photoMapView(self, navigateToPhotoDetailsFor: viewModel.photoId)
     }
 }
 
@@ -213,8 +243,8 @@ extension STPhotoMapView: MKMapViewDelegate {
 // MARK: - Photo annotation view delegate
 
 extension STPhotoMapView: PhotoAnnotationViewDelegate {
-    func photoAnnotationView(view: PhotoAnnotationView?, didSelect photoImageView: PhotoImageView?) {
-        
+    func photoAnnotationView(view: PhotoAnnotationView?, with photoAnnotation: PhotoAnnotation?, didSelect photoImageView: PhotoImageView?) {
+        self.shouldSelectPhotoAnnotation(photoAnnotation)
     }
 }
 
