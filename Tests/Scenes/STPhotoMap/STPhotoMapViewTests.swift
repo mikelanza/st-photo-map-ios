@@ -217,6 +217,15 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertEqual(self.sut.mapView.annotations.count, photoAnnotations.count)
     }
     
+    func testDisplayRemoveLocationAnnotations() {
+        self.loadView()
+        
+        self.sut.displayRemoveLocationAnnotations()
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(self.sut.mapView.annotations.isEmpty)
+    }
+    
     func testDisplayNavigateToPhotoDetails() {
         self.loadView()
         

@@ -516,6 +516,21 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
     }
     
+    func testShouldRemoveLocationAnnotationWhenEntityLevelIsNotLocation() {
+        self.sut.cacheHandler.cache.removeAllTiles()
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        
+        self.sut.entityLevelHandler.entityLevel = .unknown
+        self.sut.visibleTiles = [STPhotoMapSeeds.tileCoordinate]
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
+    }
+    
     // MARK: - Photo annotation selection
     
     func testShouldSelectPhotoAnnotationWhenItIsAlreadySelected() {
