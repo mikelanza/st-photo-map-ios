@@ -181,10 +181,9 @@ extension STPhotoTileOverlayRenderer {
             return
         }
         
-        let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        url.downloadImage { (data, error) in
             completion(data, error)
         }
-        dataTask.resume()
     }
     
     private func downloadTile(mapRect: MKMapRect, zoomScale: MKZoomScale) throws {
