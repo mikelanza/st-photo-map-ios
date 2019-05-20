@@ -16,6 +16,7 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     var getGeojsonTileForEntityLevelCalled: Bool = false
     var getGeojsonLocationLevelCalled: Bool = false
     var downloadImageForPhotoAnnotationCalled: Bool = false
+    var getPhotoDetailsForPhotoAnnotationCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
@@ -52,7 +53,6 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
         }
     }
     
-    
     override func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
         self.downloadImageForPhotoAnnotationCalled = true
         
@@ -66,6 +66,10 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
             }
         }
     }
+    
+    override func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+        self.getPhotoDetailsForPhotoAnnotationCalled = true
+    }
 }
 
 class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
@@ -74,6 +78,7 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
     var getGeojsonTileForCachingCalled: Bool = false
     var getGeojsonTileForEntityLevelCalled: Bool = false
     var downloadImageForPhotoAnnotationCalled: Bool = false
+    var getPhotoDetailsForPhotoAnnotationCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
@@ -97,5 +102,9 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
                 photoAnnotation.image = nil
             }
         }
+    }
+    
+    override func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+        self.getPhotoDetailsForPhotoAnnotationCalled = true
     }
 }

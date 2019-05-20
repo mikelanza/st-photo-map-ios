@@ -88,4 +88,8 @@ class STPhotoMapWorker {
     func cancelAllGeojsonLocationLevelOperations() {
         self.geojsonLocationLevelQueue.cancelAllOperations()
     }
+    
+    func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+        
+    }
 }

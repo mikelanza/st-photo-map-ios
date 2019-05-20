@@ -63,6 +63,7 @@ enum STPhotoMapModels {
     enum PhotoAnnotationSelection {
         struct Request {
             let photoAnnotation: PhotoAnnotation?
+            let previousPhotoAnnotation: PhotoAnnotation?
         }
     }
     

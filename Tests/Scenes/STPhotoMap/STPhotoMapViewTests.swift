@@ -107,21 +107,23 @@ class STPhotoMapViewTests: XCTestCase {
     func testShouldReturnPhotoAnnotationViewForPhotoAnnotation() {
         self.loadView()
         
-        let annotationView = self.sut.mapView(self.sut.mapView, viewFor: STPhotoMapSeeds.photoAnnotation)
+        let annotation = STPhotoMapSeeds().photoAnnotation()
+        let annotationView = self.sut.mapView(self.sut.mapView, viewFor: annotation)
         XCTAssertTrue(annotationView is PhotoAnnotationView)
     }
     
     func testShouldReturnMultiplePhotoClusterAnnotationViewForMultiplePhotoClusterAnnotation() {
         self.loadView()
         
-        let annotationView = self.sut.mapView(self.sut.mapView, viewFor: STPhotoMapSeeds.multiplePhotoClusterAnnotation)
+        let annotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation()
+        let annotationView = self.sut.mapView(self.sut.mapView, viewFor: annotation)
         XCTAssertTrue(annotationView is MultiplePhotoClusterAnnotationView)
     }
     
     func testShouldReturnMultiplePhotoClusterAnnotationForMultiplePhotoAnnotations() {
         self.loadView()
         
-        let clusterAnnotation = self.sut.mapView(self.sut.mapView, clusterAnnotationForMemberAnnotations: [STPhotoMapSeeds.photoAnnotation])
+        let clusterAnnotation = self.sut.mapView(self.sut.mapView, clusterAnnotationForMemberAnnotations: STPhotoMapSeeds().photoAnnotations())
         XCTAssertTrue(clusterAnnotation is MultiplePhotoClusterAnnotation)
     }
     
@@ -151,14 +153,15 @@ class STPhotoMapViewTests: XCTestCase {
     func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {
         self.loadView()
         
-        let _ = self.sut.mapView(self.sut.mapView, viewFor: STPhotoMapSeeds.photoAnnotation)
+        let annotation = STPhotoMapSeeds().photoAnnotation()
+        let _ = self.sut.mapView(self.sut.mapView, viewFor: annotation)
         XCTAssertTrue(self.interactorSpy.shouldDownloadImageForPhotoAnnotationCalled)
     }
     
     func testShouldSelectPhotoAnnotationWhenItIsSelected() {
         self.loadView()
         
-        let annotation = STPhotoMapSeeds.photoAnnotation
+        let annotation = STPhotoMapSeeds().photoAnnotation()
         let view = PhotoAnnotationView(annotation: annotation)
         self.sut.photoAnnotationView(view: view, with: annotation, didSelect: nil)
         

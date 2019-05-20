@@ -11,6 +11,7 @@ import MapKit
 
 class STPhotoMapAnnotationHandler {
     var annotations: Array<PhotoAnnotation>
+    var selectedPhotoAnnotation: PhotoAnnotation?
     
     init() {
         self.annotations = Array()

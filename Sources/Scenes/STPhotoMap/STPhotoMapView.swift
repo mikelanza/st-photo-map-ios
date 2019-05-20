@@ -107,8 +107,8 @@ extension STPhotoMapView {
         self.interactor?.shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation))
     }
     
-    private func shouldSelectPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
-        self.interactor?.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation))
+    private func shouldSelectPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?, previousPhotoAnnotation: PhotoAnnotation?) {
+        self.interactor?.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation))
     }
 }
 
@@ -249,7 +249,8 @@ extension STPhotoMapView: MKMapViewDelegate {
 
 extension STPhotoMapView: PhotoAnnotationViewDelegate {
     func photoAnnotationView(view: PhotoAnnotationView?, with photoAnnotation: PhotoAnnotation?, didSelect photoImageView: PhotoImageView?) {
-        self.shouldSelectPhotoAnnotation(photoAnnotation)
+        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
+        self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }
 
