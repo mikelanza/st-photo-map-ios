@@ -202,8 +202,10 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testDisplayLocationAnnotations() {
         self.loadView()
-        
         let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
+        
+        self.sut.mapView.setCenter(photoAnnotations.first!.coordinate, animated: false)
+        
         let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: photoAnnotations)
         self.sut.displayLocationAnnotations(viewModel: viewModel)
         

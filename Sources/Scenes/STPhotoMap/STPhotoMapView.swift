@@ -37,6 +37,7 @@ public class STPhotoMapView: UIView {
     weak var entityLevelView: STEntityLevelView!
     
     private var photoTileOverlay: STPhotoTileOverlay?
+    private var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
         self.init()
@@ -54,6 +55,8 @@ public class STPhotoMapView: UIView {
         self.setup()
         self.setupSubviews()
         self.setupSubviewsConstraints()
+        
+        self.annotationHandler = STPhotoMapAnnotationHandler()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -177,8 +180,10 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     // MARK: - Location annotations
     
     func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel) {
+        self.annotationHandler.addAnnotations(annotations: viewModel.annotations)
         DispatchQueue.main.async {
-            self.mapView?.addAnnotations(viewModel.annotations)
+            let visibleAnnotations = self.annotationHandler.getVisibleAnnotations(mapRect: self.mapView.visibleMapRect)
+            self.mapView?.addAnnotations(visibleAnnotations)
         }
     }
     

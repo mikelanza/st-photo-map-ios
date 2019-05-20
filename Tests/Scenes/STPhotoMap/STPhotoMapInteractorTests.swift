@@ -508,9 +508,9 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.sut.shouldDetermineLocationLevel()
         
-        self.waitForWorker(delay: self.workerDelay)
-        
         self.sut.entityLevelHandler.entityLevel = .city
+        
+        self.waitForWorker(delay: self.workerDelay)
         
         XCTAssertTrue(self.workerSpy.getGeojsonLocationLevelCalled)
         XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
