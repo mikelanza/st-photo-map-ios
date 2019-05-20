@@ -20,7 +20,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
         }
     }
     
-    private var model: Model
+    var model: Model
     
     init(model: Model) {
         self.model = model
@@ -41,7 +41,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
 
 public extension STPhotoTileOverlay {
     func update(parameter: KeyValue) {
-        self.model.parameters.removeAll(where: { $0 == parameter })
+        self.model.parameters.removeAll(where: { $0.key == parameter.key })
         self.model.parameters.append(parameter)
     }
 }

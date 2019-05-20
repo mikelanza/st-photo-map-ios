@@ -38,14 +38,12 @@ public class STPhotoMapView: UIView {
     weak var progressView: UIProgressView!
     weak var entityLevelView: STEntityLevelView!
     
-    private var photoTileOverlay: STPhotoTileOverlay?
+    var photoTileOverlay: STPhotoTileOverlay?
     private var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
         self.init()
         self.dataSource = dataSource
-        
-        self.setupTileOverlay()
     }
     
     public convenience init() {
@@ -59,6 +57,7 @@ public class STPhotoMapView: UIView {
         self.setupSubviewsConstraints()
         
         self.annotationHandler = STPhotoMapAnnotationHandler()
+        self.setupTileOverlay()
     }
     
     required init?(coder aDecoder: NSCoder) {
