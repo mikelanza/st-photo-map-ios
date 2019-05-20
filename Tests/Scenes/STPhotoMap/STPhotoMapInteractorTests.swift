@@ -418,7 +418,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     
     // MARK: Location level
     
-    func testShouldDetermineLocationLevelWhenCacheIsNotEmptyAndEntityLevelIsLocationForSuccessCase() throws {
+    func testShouldDetermineLocationLevelWhenCacheIsNotEmptyAndEntityLevelIsLocation() throws {
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
@@ -436,7 +436,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
     }
     
-    func testShouldDetermineLocationLevelWhenCacheIsNotEmptyAndEntityLevelIsNotLocationForFailureCase() throws {
+    func testShouldDetermineLocationLevelWhenCacheIsNotEmptyAndEntityLevelIsNotLocation() throws {
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
@@ -454,7 +454,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
     }
     
-    func testShouldDetermineLocationLevelWhenCacheIsEmptyAndEntityLevelIsLocationAndThereAreActiveDownloadsForFailureCase() throws {
+    func testShouldDetermineLocationLevelWhenCacheIsEmptyAndEntityLevelIsLocationAndThereAreActiveDownloads() throws {
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
         
@@ -493,7 +493,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
     }
     
-    func testShouldDetermineLocationLevelWhenCacheIsEmptyAndEntityLevelIsNotLocationAfterTileDownloadForFailureCase() {
+    func testShouldDetermineLocationLevelWhenCacheIsEmptyAndEntityLevelIsNotLocationAfterTileDownload() {
         self.workerSpy.delay = self.workerDelay
         
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
