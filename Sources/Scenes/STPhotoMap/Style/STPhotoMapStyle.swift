@@ -67,13 +67,13 @@ public class STPhotoMapStyle {
         public var stateTitle: String = STPhotoMapLocalization.shared.stateLevelTitle
         public var countryTitle: String = STPhotoMapLocalization.shared.countryLevelTitle
         
-        public var locationImage: UIImage?
-        public var blockImage: UIImage?
-        public var neighborhoodImage: UIImage?
-        public var cityImage: UIImage?
-        public var countyImage: UIImage?
-        public var stateImage: UIImage?
-        public var countryImage: UIImage?
+        public var locationImage: UIImage? = UIImage(named: "st_entity_location_level")
+        public var blockImage: UIImage? = UIImage(named: "st_entity_block_level")
+        public var neighborhoodImage: UIImage? = UIImage(named: "st_entity_neighborhood_level")
+        public var cityImage: UIImage? = UIImage(named: "st_entity_city_level")
+        public var countyImage: UIImage? = UIImage(named: "st_entity_county_level")
+        public var stateImage: UIImage? = UIImage(named: "st_entity_state_level")
+        public var countryImage: UIImage? = UIImage(named: "st_entity_country_level")
     }
     
     public struct LocationOverlayViewModel {
