@@ -12,6 +12,8 @@ protocol MultiplePhotoClusterAnnotationInterface: NSObjectProtocol {
     func setImage(photoId: String, image: UIImage?)
     func setIsLoading(photoId: String, isLoading: Bool)
     func setIsSelected(photoId: String, isSelected: Bool)
+    func inflate()
+    func deflate()
 }
 
 protocol MultiplePhotoClusterAnnotationViewDelegate: NSObjectProtocol {
@@ -150,6 +152,14 @@ extension MultiplePhotoClusterAnnotationView: MultiplePhotoClusterAnnotationInte
     
     func setIsSelected(photoId: String, isSelected: Bool) {
         self.calloutView?.setIsSelected(photoId: photoId, isSelected: isSelected)
+    }
+    
+    func inflate() {
+        self.inflate(animated: true)
+    }
+    
+    func deflate() {
+        self.deflate(animated: true)
     }
 }
 

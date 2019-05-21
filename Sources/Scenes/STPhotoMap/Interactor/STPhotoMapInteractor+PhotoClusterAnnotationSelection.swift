@@ -17,6 +17,8 @@ extension STPhotoMapInteractor {
         if zoomLevel == 20 && photoIds.count > 15 {
             self.presenter?.presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response(photoIds: photoIds))
         } else if zoomLevel == 20 || clusterAnnotation.doMemberAnnotationsHaveSameCoordinate() {
+            request.previousClusterAnnotation?.deflate()
+            clusterAnnotation.inflate()
             self.shouldDownloadImagesForPhotoClusterAnnotation(clusterAnnotation)
         }
     }
