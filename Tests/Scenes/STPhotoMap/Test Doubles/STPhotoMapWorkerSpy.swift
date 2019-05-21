@@ -53,16 +53,18 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
         }
     }
     
-    override func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
+    override func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((UIImage?) -> Void)? = nil) {
         self.downloadImageForPhotoAnnotationCalled = true
         
         if self.delay == 0 {
             photoAnnotation.isLoading = false
             photoAnnotation.image = UIImage()
+            completion?(UIImage())
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
                 photoAnnotation.isLoading = false
                 photoAnnotation.image = UIImage()
+                completion?(UIImage())
             }
         }
     }
@@ -98,16 +100,18 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
         self.delegate?.failureDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
     }
     
-    override func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
+    override func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((UIImage?) -> Void)? = nil) {
         self.downloadImageForPhotoAnnotationCalled = true
         
         if self.delay == 0 {
             photoAnnotation.isLoading = false
             photoAnnotation.image = nil
+            completion?(nil)
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
                 photoAnnotation.isLoading = false
                 photoAnnotation.image = nil
+                completion?(nil)
             }
         }
     }

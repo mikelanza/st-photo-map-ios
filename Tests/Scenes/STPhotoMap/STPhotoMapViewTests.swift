@@ -238,7 +238,8 @@ class STPhotoMapViewTests: XCTestCase {
     func testDisplayEntityLevel() {
         self.loadView()
         
-        let viewModel = STPhotoMapModels.EntityZoomLevel.ViewModel(title: STPhotoMapStyle.EntityLevelViewModel().blockTitle, image: STPhotoMapStyle.EntityLevelViewModel().blockImage)
+        let bundle = Bundle(for: type(of: self))
+        let viewModel = STPhotoMapModels.EntityZoomLevel.ViewModel(title: STPhotoMapStyle.EntityLevelViewModel(bundle: bundle).blockTitle, image: STPhotoMapStyle.EntityLevelViewModel(bundle: bundle).blockImage)
         self.sut.displayEntityLevel(viewModel: viewModel)
         
         self.waitForMainQueue()

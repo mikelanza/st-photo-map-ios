@@ -691,12 +691,12 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(previousClusterAnnotationInterfaceSpy.deflateCalled)
         XCTAssertTrue(clusterAnnotationInterfaceSpy.inflateCalled)
         
-        self.wait(delay: self.delay)
-        
         clusterAnnotation.multipleAnnotationModels.forEach { (key, value) in
             XCTAssertTrue(value.isLoading)
             XCTAssertNil(value.image)
         }
+        
+        XCTAssertTrue(clusterAnnotationInterfaceSpy.setIsLoadingCalled)
         
         self.waitForWorker(delay: self.workerDelay)
         
@@ -704,6 +704,9 @@ class STPhotoMapInteractorTests: XCTestCase {
             XCTAssertFalse(value.isLoading)
             XCTAssertNotNil(value.image)
         }
+        
+        XCTAssertTrue(clusterAnnotationInterfaceSpy.setImageCalled)
+        XCTAssertTrue(clusterAnnotationInterfaceSpy.setIsLoadingCalled)
     }
     
     func testShouldSelectPhotoClusterAnnotationWhenZoomLevelIsNotMaximumAndThereAreUnder15ClusterPhotosWithTheSameLocation() {
@@ -726,12 +729,12 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(previousClusterAnnotationInterfaceSpy.deflateCalled)
         XCTAssertTrue(clusterAnnotationInterfaceSpy.inflateCalled)
         
-        self.wait(delay: self.delay)
-        
         clusterAnnotation.multipleAnnotationModels.forEach { (key, value) in
             XCTAssertTrue(value.isLoading)
             XCTAssertNil(value.image)
         }
+        
+        XCTAssertTrue(clusterAnnotationInterfaceSpy.setIsLoadingCalled)
         
         self.waitForWorker(delay: self.workerDelay)
         
@@ -739,6 +742,9 @@ class STPhotoMapInteractorTests: XCTestCase {
             XCTAssertFalse(value.isLoading)
             XCTAssertNotNil(value.image)
         }
+        
+        XCTAssertTrue(clusterAnnotationInterfaceSpy.setImageCalled)
+        XCTAssertTrue(clusterAnnotationInterfaceSpy.setIsLoadingCalled)
     }
     
     func testShouldSelectPhotoClusterAnnotationWhenZoomLevelIsNotMaximumAndClusterPhotosWithDifferentLocation() {

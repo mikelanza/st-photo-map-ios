@@ -28,7 +28,12 @@ extension STPhotoMapInteractor {
     private func shouldDownloadImagesForPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation) {
         clusterAnnotation.multipleAnnotationModels.forEach { (key, value) in
             value.isLoading = true
-            self.worker?.downloadImageForPhotoAnnotation(value)
+            clusterAnnotation.interface?.setIsLoading(photoId: key, isLoading: true)
+            
+            self.worker?.downloadImageForPhotoAnnotation(value, completion: { image in
+                clusterAnnotation.interface?.setIsLoading(photoId: key, isLoading: false)
+                clusterAnnotation.interface?.setImage(photoId: key, image: image)
+            })
         }
     }
 }
