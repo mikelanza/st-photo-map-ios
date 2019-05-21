@@ -1,8 +1,8 @@
 //
-//  STPhotoMapInteractor+SelectPhotoAnnotation.swift
+//  STPhotoMapInteractor+PhotoAnnotationSelection.swift
 //  STPhotoMap-iOS
 //
-//  Created by Dimitri Strauneanu on 20/05/2019.
+//  Created by Dimitri Strauneanu on 21/05/2019.
 //  Copyright © 2019 mikelanza. All rights reserved.
 //
 
