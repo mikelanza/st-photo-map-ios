@@ -24,7 +24,7 @@ public class STPhotoMapStyle {
         self.progressViewModel = ProgressViewModel()
         self.noInternetConnectionViewModel = NoInternetConnectionViewModel()
         self.noDataViewModel = NoDataViewModel()
-        self.entityLevelViewModel = EntityLevelViewModel()
+        self.entityLevelViewModel = EntityLevelViewModel(bundle: Bundle(for: type(of: self)))
         self.locationOverlayViewModel = LocationOverlayViewModel()
         self.userLocationButtonModel = UserLocationButtonModel()
     }
@@ -49,6 +49,8 @@ public class STPhotoMapStyle {
     }
     
     public struct EntityLevelViewModel {
+        public var bundle: Bundle
+        
         public var show: Bool = true
         public var showDuration: Int = 1500 // Milliseconds
         
@@ -67,13 +69,25 @@ public class STPhotoMapStyle {
         public var stateTitle: String = STPhotoMapLocalization.shared.stateLevelTitle
         public var countryTitle: String = STPhotoMapLocalization.shared.countryLevelTitle
         
-        public var locationImage: UIImage? = UIImage(named: "st_entity_location_level")
-        public var blockImage: UIImage? = UIImage(named: "st_entity_block_level")
-        public var neighborhoodImage: UIImage? = UIImage(named: "st_entity_neighborhood_level")
-        public var cityImage: UIImage? = UIImage(named: "st_entity_city_level")
-        public var countyImage: UIImage? = UIImage(named: "st_entity_county_level")
-        public var stateImage: UIImage? = UIImage(named: "st_entity_state_level")
-        public var countryImage: UIImage? = UIImage(named: "st_entity_country_level")
+        public var locationImage: UIImage?
+        public var blockImage: UIImage?
+        public var neighborhoodImage: UIImage?
+        public var cityImage: UIImage?
+        public var countyImage: UIImage?
+        public var stateImage: UIImage?
+        public var countryImage: UIImage?
+        
+        init(bundle: Bundle) {
+            self.bundle = bundle
+            
+            self.locationImage = UIImage(named: "st_entity_location_level", in: bundle, compatibleWith: nil)
+            self.blockImage = UIImage(named: "st_entity_block_level", in: bundle, compatibleWith: nil)
+            self.neighborhoodImage = UIImage(named: "st_entity_neighborhood_level", in: bundle, compatibleWith: nil)
+            self.cityImage = UIImage(named: "st_entity_city_level", in: bundle, compatibleWith: nil)
+            self.countyImage = UIImage(named: "st_entity_county_level", in: bundle, compatibleWith: nil)
+            self.stateImage = UIImage(named: "st_entity_state_level", in: bundle, compatibleWith: nil)
+            self.countryImage = UIImage(named: "st_entity_country_level", in: bundle, compatibleWith: nil)
+        }
     }
     
     public struct LocationOverlayViewModel {
