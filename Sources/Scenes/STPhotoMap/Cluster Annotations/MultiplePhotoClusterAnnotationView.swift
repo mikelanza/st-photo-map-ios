@@ -16,7 +16,7 @@ protocol MultiplePhotoClusterAnnotationInterface: NSObjectProtocol {
 
 protocol MultiplePhotoClusterAnnotationViewDelegate: NSObjectProtocol {
     func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, didSelect clusterLabelView: ClusterLabelView?)
-    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, didSelect photoImageView: PhotoImageView?, at index: Int)
+    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?)
 }
 
 class MultiplePhotoClusterAnnotationView: MKAnnotationView, DefaultReuseIdentifier {
@@ -165,6 +165,8 @@ extension MultiplePhotoClusterAnnotationView: ClusterLabelViewDelegate {
 
 extension MultiplePhotoClusterAnnotationView: MultiplePhotoCalloutViewDelegate {
     func multiplePhotoCalloutView(view: MultiplePhotoCalloutView?, didSelect photoImageView: PhotoImageView?, at index: Int) {
-        self.delegate?.multiplePhotoClusterAnnotationView(view: self, didSelect: photoImageView, at: index)
+        if let clusterAnnotation = self.annotation as? MultiplePhotoClusterAnnotation, let photoAnnotation = clusterAnnotation.annotation(for: index) {
+            self.delegate?.multiplePhotoClusterAnnotationView(view: self, with: photoAnnotation, didSelect: photoImageView)
+        }
     }
 }
