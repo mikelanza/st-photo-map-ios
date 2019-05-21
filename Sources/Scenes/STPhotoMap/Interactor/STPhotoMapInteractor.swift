@@ -91,15 +91,3 @@ extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
         self.shouldDetermineLocationLevel()
     }
 }
-
-extension STPhotoMapInteractor {
-    func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request) {
-        let zoomLevel = request.zoomLevel
-        let clusterAnnotation = request.clusterAnnotation
-        let photoIds = clusterAnnotation.photoIds
-        
-        if zoomLevel == 20 && photoIds.count > 15 {
-            self.presenter?.presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response(photoIds: photoIds))
-        }
-    }
-}
