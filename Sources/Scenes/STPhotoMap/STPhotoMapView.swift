@@ -114,8 +114,8 @@ extension STPhotoMapView {
         self.interactor?.shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation))
     }
     
-    private func shouldSelectPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
-        self.interactor?.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation))
+    private func shouldSelectPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?, photoClusterAnnotation: MultiplePhotoClusterAnnotation?) {
+        self.interactor?.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation, photoClusterAnnotation: photoClusterAnnotation))
     }
     
     private func shouldSelectPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation, previousClusterAnnotation: MultiplePhotoClusterAnnotation?, zoomLevel: Int) {
@@ -322,7 +322,7 @@ extension STPhotoMapView: MKMapViewDelegate {
 
 extension STPhotoMapView: PhotoAnnotationViewDelegate {
     func photoAnnotationView(view: PhotoAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
-        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
+        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation, photoClusterAnnotation: nil)
         self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }
@@ -335,8 +335,8 @@ extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
         self.annotationHandler?.selectedPhotoClusterAnnotation = photoClusterAnnotation
     }
     
-    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
-        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
+    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoClusterAnnotation: MultiplePhotoClusterAnnotation, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
+        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation, photoClusterAnnotation: photoClusterAnnotation)
         self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }

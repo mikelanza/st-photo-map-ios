@@ -196,7 +196,7 @@ class STPhotoMapViewTests: XCTestCase {
         
         let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
         let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: clusterAnnotation.photoIds.count)
-        self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation.annotation(for: 0)!, didSelect: nil)
+        self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, with: clusterAnnotation.annotation(for: 0)!, didSelect: nil)
         
         XCTAssertTrue(self.interactorSpy.shouldSelectPhotoAnnotationCalled)
     }

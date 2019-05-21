@@ -14,15 +14,16 @@ extension STPhotoMapInteractor {
         if photoAnnotation.isSelected == true {
             self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: photoAnnotation.model.photoId))
         } else {
-            self.shouldHandleNonSelectedPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: request.previousPhotoAnnotation)
+            self.shouldHandleNonSelectedPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: request.previousPhotoAnnotation, photoClusterAnnotation: request.photoClusterAnnotation)
             self.shouldGetPhotoDetailsFor(photoAnnotation)
         }
     }
     
-    private func shouldHandleNonSelectedPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
+    private func shouldHandleNonSelectedPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?, photoClusterAnnotation: MultiplePhotoClusterAnnotation?) {
         if self.isLocationLevel() {
             previousPhotoAnnotation?.isSelected = false
             photoAnnotation.isSelected = true
+            photoClusterAnnotation?.interface?.setIsSelected(photoId: photoAnnotation.model.photoId, isSelected: true)
         }
     }
     
