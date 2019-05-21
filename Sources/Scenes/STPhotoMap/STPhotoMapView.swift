@@ -367,7 +367,6 @@ extension STPhotoMapView {
     private func setupLocationOverlayView(model: STLocationOverlayView.Model) {
         let view = STLocationOverlayView(model: model)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.white
         view.delegate = self
         self.addSubview(view)
         self.locationOverlayView = view

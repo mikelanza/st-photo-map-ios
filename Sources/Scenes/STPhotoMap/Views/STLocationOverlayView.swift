@@ -102,9 +102,10 @@ extension STLocationOverlayView {
 
 extension STLocationOverlayView {
     private func setupView() {
-        self.layer.borderWidth = 5.0 / UIScreen.main.scale
-        self.layer.borderColor = UIColor.blue.cgColor
-        self.layer.cornerRadius = 10.0
+        self.backgroundColor = STPhotoMapStyle.shared.locationOverlayViewModel.backgroundColor
+        self.layer.borderWidth = STPhotoMapStyle.shared.locationOverlayViewModel.borderWidth / UIScreen.main.scale
+        self.layer.borderColor = STPhotoMapStyle.shared.locationOverlayViewModel.borderColor
+        self.layer.cornerRadius = STPhotoMapStyle.shared.locationOverlayViewModel.cornerRadius
         self.clipsToBounds = true
     }
     
@@ -131,8 +132,8 @@ extension STLocationOverlayView {
     private func setupTitleLabel() {
         let label = self.label()
         label.text = self.model.title
-        label.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.semibold)
-        label.textColor = UIColor.blue
+        label.font = STPhotoMapStyle.shared.locationOverlayViewModel.titleFont
+        label.textColor = STPhotoMapStyle.shared.locationOverlayViewModel.titleColor
         self.labelContainerView?.addArrangedSubview(label)
         self.titleLabel = label
     }
@@ -140,8 +141,8 @@ extension STLocationOverlayView {
     private func setupTimeLabel() {
         let label = self.label()
         label.text = self.model.time
-        label.font = UIFont.systemFont(ofSize: 13.0)
-        label.textColor = UIColor.darkGray
+        label.font = STPhotoMapStyle.shared.locationOverlayViewModel.timeFont
+        label.textColor = STPhotoMapStyle.shared.locationOverlayViewModel.timeColor
         self.labelContainerView?.addArrangedSubview(label)
         self.timeLabel = label
     }
@@ -149,8 +150,8 @@ extension STLocationOverlayView {
     private func setupDescriptionLabel() {
         let label = self.label()
         label.text = self.model.description
-        label.font = UIFont.systemFont(ofSize: 13.0)
-        label.textColor = UIColor.darkGray
+        label.font = STPhotoMapStyle.shared.locationOverlayViewModel.descriptionFont
+        label.textColor = STPhotoMapStyle.shared.locationOverlayViewModel.descriptionColor
         self.labelContainerView?.addArrangedSubview(label)
         self.descriptionLabel = label
     }
