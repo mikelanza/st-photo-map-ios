@@ -115,7 +115,7 @@ class STPhotoMapViewTests: XCTestCase {
     func testShouldReturnMultiplePhotoClusterAnnotationViewForMultiplePhotoClusterAnnotation() {
         self.loadView()
         
-        let annotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation()
+        let annotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
         let annotationView = self.sut.mapView(self.sut.mapView, viewFor: annotation)
         XCTAssertTrue(annotationView is MultiplePhotoClusterAnnotationView)
     }
@@ -191,16 +191,24 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoDetailsCalled)
     }
     
-    func testShouldSelectPhotoAnnotationWhen() {
+    func testShouldSelectPhotoAnnotationWhenAPhotoFromClusterAnnotationIsSelected() {
         self.loadView()
         
-        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
-        let photoIds = photoAnnotations.map({ $0.model.photoId })
-        let clusterAnnotation = MultiplePhotoClusterAnnotation(photoIds: photoIds, memberAnnotations: photoAnnotations)
-        let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: photoAnnotations.count)
-        self.sut.multiplePhotoClusterAnnotationView(view: view, with: photoAnnotations.first!, didSelect: nil)
+        let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
+        let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: clusterAnnotation.photoIds.count)
+        self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation.annotation(for: 0)!, didSelect: nil)
         
         XCTAssertTrue(self.interactorSpy.shouldSelectPhotoAnnotationCalled)
+    }
+    
+    func testShouldSelectPhotoClusterAnnotationWhenAPhotoClusterAnnotationIsTouchedUpInside() {
+        self.loadView()
+        
+        let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
+        let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: clusterAnnotation.photoIds.count)
+        self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, didSelect: nil)
+        
+        XCTAssertTrue(self.interactorSpy.shouldSelectPhotoClusterAnnotationCalled)
     }
     
     // MARK: - Test display logic
@@ -288,5 +296,15 @@ class STPhotoMapViewTests: XCTestCase {
         self.waitForMainQueue()
         
         XCTAssertNil(self.sut.locationOverlayView)
+    }
+    
+    func testDisplayNavigateToSpecificPhotos() {
+        self.loadView()
+        
+        let photoIds = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5).photoIds
+        let viewModel = STPhotoMapModels.SpecificPhotosNavigation.ViewModel(photoIds: photoIds)
+        self.sut.displayNavigateToSpecificPhotos(viewModel: viewModel)
+        
+        XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToSpecificPhotosForPhotoIdsCalled)
     }
 }

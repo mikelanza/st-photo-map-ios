@@ -15,6 +15,7 @@ public protocol STPhotoMapViewDataSource: NSObjectProtocol {
 
 public protocol STPhotoMapViewDelegate: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?)
+    func photoMapView(_ view: STPhotoMapView?, navigateToSpecificPhotosFor photoIds: [String])
 }
 
 protocol STPhotoMapDisplayLogic: class {
@@ -28,6 +29,7 @@ protocol STPhotoMapDisplayLogic: class {
     func displayRemoveLocationAnnotations()
     func displayLocationOverlay(viewModel: STPhotoMapModels.LocationOverlay.ViewModel)
     func displayRemoveLocationOverlay()
+    func displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -113,6 +115,10 @@ extension STPhotoMapView {
     
     private func shouldSelectPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
         self.interactor?.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation))
+    }
+    
+    private func shouldSelectPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation, previousClusterAnnotation: MultiplePhotoClusterAnnotation?, zoomLevel: Int) {
+        self.interactor?.shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request(clusterAnnotation: clusterAnnotation, previousClusterAnnotation: previousClusterAnnotation, zoomLevel: zoomLevel))
     }
 }
 
@@ -236,6 +242,12 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
             self.removeLocationOverlayView()
         }
     }
+    
+    // MARK: - Specific photos navigation
+    
+    func displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel) {
+        self.delegate?.photoMapView(self, navigateToSpecificPhotosFor: viewModel.photoIds)
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -301,8 +313,9 @@ extension STPhotoMapView: PhotoAnnotationViewDelegate {
 // MARK: - Multiple photo cluster view delegate
 
 extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
-    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, didSelect clusterLabelView: ClusterLabelView?) {
-        
+    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoClusterAnnotation: MultiplePhotoClusterAnnotation, didSelect clusterLabelView: ClusterLabelView?) {
+        self.shouldSelectPhotoClusterAnnotation(photoClusterAnnotation, previousClusterAnnotation: self.annotationHandler?.selectedPhotoClusterAnnotation, zoomLevel: self.mapView.zoomLevel())
+        self.annotationHandler?.selectedPhotoClusterAnnotation = photoClusterAnnotation
     }
     
     func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {

@@ -17,6 +17,7 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentRemoveLocationAnnotationsCalled: Bool = false
     var presentLocationOverlayCalled: Bool = false
     var presentRemoveLocationOverlayCalled: Bool = false
+    var presentNavigateToSpecificPhotosCalled: Bool = false
     
     func presentLoadingState() {
         self.presentLoadingStateCalled = true
@@ -48,5 +49,9 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentRemoveLocationOverlay() {
         self.presentRemoveLocationOverlayCalled = true
+    }
+    
+    func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response) {
+        self.presentNavigateToSpecificPhotosCalled = true
     }
 }

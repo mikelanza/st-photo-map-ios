@@ -656,4 +656,18 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertFalse(self.presenterSpy.presentLocationOverlayCalled)
     }
+    
+    // MARK: - Photo cluster annotation selection
+    
+    func testShouldSelectPhotoClusterAnnotationWhenZoomLevelIsMaximumAndThereAreOver15ClusterPhotos() {
+        let zoomLevel = 20
+        
+        let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 20)
+        let previousClusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
+        
+        let request = STPhotoMapModels.PhotoClusterAnnotationSelection.Request(clusterAnnotation: clusterAnnotation, previousClusterAnnotation: previousClusterAnnotation, zoomLevel: zoomLevel)
+        self.sut.shouldSelectPhotoClusterAnnotation(request: request)
+        
+        XCTAssertTrue(self.presenterSpy.presentNavigateToSpecificPhotosCalled)
+    }
 }

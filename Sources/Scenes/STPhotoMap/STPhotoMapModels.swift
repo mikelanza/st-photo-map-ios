@@ -93,4 +93,26 @@ enum STPhotoMapModels {
             let description: String?
         }
     }
+    
+    enum PhotoClusterAnnotationSelection {
+        struct Request {
+            let clusterAnnotation: MultiplePhotoClusterAnnotation
+            let previousClusterAnnotation: MultiplePhotoClusterAnnotation?
+            let zoomLevel: Int
+        }
+    }
+    
+    enum SpecificPhotosNavigation {
+        struct Request {
+            let photoIds: [String]
+        }
+        
+        struct Response {
+            let photoIds: [String]
+        }
+        
+        struct ViewModel {
+            let photoIds: [String]
+        }
+    }
 }

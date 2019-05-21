@@ -21,6 +21,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
     func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request)
+    func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -88,5 +89,17 @@ extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
         
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
         self.shouldDetermineLocationLevel()
+    }
+}
+
+extension STPhotoMapInteractor {
+    func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request) {
+        let zoomLevel = request.zoomLevel
+        let clusterAnnotation = request.clusterAnnotation
+        let photoIds = clusterAnnotation.photoIds
+        
+        if zoomLevel == 20 && photoIds.count > 15 {
+            self.presenter?.presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response(photoIds: photoIds))
+        }
     }
 }
