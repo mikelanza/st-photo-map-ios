@@ -28,12 +28,6 @@ class STPhotoMapSeeds: NSObject {
     
     static let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 50, longitude: 50)
     
-    func multiplePhotoClusterAnnotation() -> MultiplePhotoClusterAnnotation {
-        let annotations = self.photoAnnotations()
-        let photoIds = annotations.map({ $0.model.photoId })
-        return MultiplePhotoClusterAnnotation(photoIds: photoIds, memberAnnotations: annotations)
-    }
-    
     static let photoTileOverlayModel = STPhotoTileOverlay.Model(url: "url")
     static let photoTileOverlay = STPhotoTileOverlay(model: STPhotoMapSeeds.photoTileOverlayModel)
     
@@ -83,6 +77,16 @@ class STPhotoMapSeeds: NSObject {
         let annotation = self.photoAnnotations().first!
         annotation.image = UIImage()
         return annotation
+    }
+    
+    func multiplePhotoClusterAnnotation(count: Int) -> MultiplePhotoClusterAnnotation {
+        var annotations: [PhotoAnnotation] = []
+        for i in 0..<count {
+            let annotation = PhotoAnnotation(id: String(i), coordinate: STPhotoMapSeeds.coordinate)
+            annotations.append(annotation)
+        }
+        let photoIds = annotations.map({ $0.model.photoId })
+        return MultiplePhotoClusterAnnotation(photoIds: photoIds, memberAnnotations: annotations)
     }
     
     func photo() -> STPhoto {

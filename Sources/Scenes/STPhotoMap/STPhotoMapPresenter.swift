@@ -23,6 +23,7 @@ protocol STPhotoMapPresentationLogic {
     func presentRemoveLocationAnnotations()
     func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
     func presentRemoveLocationOverlay()
+    func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -103,5 +104,9 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     
     func presentRemoveLocationOverlay() {
         self.displayer?.displayRemoveLocationOverlay()
+    }
+    
+    func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response) {
+        self.displayer?.displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel(photoIds: response.photoIds))
     }
 }

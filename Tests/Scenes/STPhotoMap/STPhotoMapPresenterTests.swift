@@ -91,4 +91,11 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentRemoveLocationOverlay()
         XCTAssertTrue(self.displayerSpy.displayRemoveLocationOverlayCalled)
     }
+    
+    func testPresentNavigateToSpecificPhotos() {
+        let photoIds = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 10).photoIds
+        let response = STPhotoMapModels.SpecificPhotosNavigation.Response(photoIds: photoIds)
+        self.sut.presentNavigateToSpecificPhotos(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNavigateToSpecificPhotosCalled)
+    }
 }

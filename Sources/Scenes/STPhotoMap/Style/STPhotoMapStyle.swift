@@ -78,6 +78,16 @@ public class STPhotoMapStyle {
     
     public struct LocationOverlayViewModel {
         public var show: Bool = true
+        public var backgroundColor: UIColor = UIColor.white
+        public var borderWidth: CGFloat = 5.0
+        public var borderColor: CGColor = UIColor(red: 73/255, green: 175/255, blue: 253/255, alpha: 1.0).cgColor
+        public var cornerRadius: CGFloat = 10.0
+        public var titleColor: UIColor = UIColor(red: 53/255, green: 61/255, blue: 75/255, alpha: 1)
+        public var titleFont: UIFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.semibold)
+        public var timeColor: UIColor = UIColor.darkGray
+        public var timeFont: UIFont = UIFont.systemFont(ofSize: 13.0)
+        public var descriptionColor: UIColor = UIColor.darkGray
+        public var descriptionFont: UIFont = UIFont.systemFont(ofSize: 13.0)
     }
     
     public struct UserLocationButtonModel {
