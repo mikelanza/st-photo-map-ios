@@ -10,19 +10,22 @@
 import UIKit
 
 class MultiplePhotoClusterAnnotationInterfaceSpy: NSObject, MultiplePhotoClusterAnnotationInterface {
+    var setImageCalled: Bool = false
+    var setIsLoadingCalled: Bool = false
+    var setIsSelectedCalled: Bool = false
     var inflateCalled: Bool = false
     var deflateCalled: Bool = false
     
     func setImage(photoId: String, image: UIImage?) {
-        
+        self.setImageCalled = true
     }
     
     func setIsLoading(photoId: String, isLoading: Bool) {
-        
+        self.setIsLoadingCalled = true
     }
     
     func setIsSelected(photoId: String, isSelected: Bool) {
-        
+        self.setIsSelectedCalled = true
     }
     
     func inflate() {
