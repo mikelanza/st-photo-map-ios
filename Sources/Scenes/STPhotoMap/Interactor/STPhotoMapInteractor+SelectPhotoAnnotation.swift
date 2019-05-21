@@ -32,11 +32,18 @@ extension STPhotoMapInteractor {
             self.worker?.getPhotoDetailsForPhotoAnnotation(photoAnnotation)
         }
     }
+    
+    private func shouldPresentLocationOverlayFor(_ photo: STPhoto) {
+        if self.isLocationLevel() {
+            self.presenter?.presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response(photo: photo))
+        }
+    }
 }
 
 extension STPhotoMapInteractor {
     func successDidGetPhotoForPhotoAnnotation(photoAnnotation: PhotoAnnotation, photo: STPhoto) {
         self.presenter?.presentNotLoadingState()
+        self.shouldPresentLocationOverlayFor(photo)
     }
     
     func failureDidGetPhotoForPhotoAnnotation(photoAnnotation: PhotoAnnotation, error: OperationError) {

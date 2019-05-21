@@ -26,6 +26,7 @@ protocol STPhotoMapDisplayLogic: class {
     func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel)
     
     func displayRemoveLocationAnnotations()
+    func displayLocationOverlay(viewModel: STPhotoMapModels.LocationOverlay.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -37,6 +38,7 @@ public class STPhotoMapView: UIView {
     
     weak var progressView: UIProgressView!
     weak var entityLevelView: STEntityLevelView!
+    weak var locationOverlayView: STLocationOverlayView!
     
     var photoTileOverlay: STPhotoTileOverlay?
     private var annotationHandler: STPhotoMapAnnotationHandler!
@@ -200,6 +202,33 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel) {
         self.delegate?.photoMapView(self, navigateToPhotoDetailsFor: viewModel.photoId)
     }
+    
+    // MARK: - Location overlay
+    
+    func displayLocationOverlay(viewModel: STPhotoMapModels.LocationOverlay.ViewModel) {
+        DispatchQueue.main.async {
+            self.shouldShowLocationOverlayView(photoId: viewModel.photoId, title: viewModel.title, time: viewModel.time, description: viewModel.description)
+        }
+    }
+    
+    private func shouldShowLocationOverlayView(photoId: String, title: String?, time: String?, description: String?) {
+        if STPhotoMapStyle.shared.locationOverlayViewModel.show {
+            self.showLocationOverlayView(photoId: photoId, title: title, time: time, description: description)
+        }
+    }
+    
+    private func showLocationOverlayView(photoId: String, title: String?, time: String?, description: String?) {
+        self.removeLocationOverlayView()
+        
+        let model = STLocationOverlayView.Model(photoId: photoId, title: title, time: time, description: description)
+        self.setupLocationOverlayView(model: model)
+        self.setupLocationOverlayViewConstraints()
+    }
+    
+    private func removeLocationOverlayView() {
+        self.locationOverlayView?.removeFromSuperview()
+        self.locationOverlayView = nil
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -274,6 +303,14 @@ extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
     }
 }
 
+// MARK: - Location overlay view delegate
+
+extension STPhotoMapView: STLocationOverlayViewDelegate {
+    func locationOverlayView(view: STLocationOverlayView?, didSelectPhoto photoId: String) {
+        
+    }
+}
+
 // MARK: - Map logic
 
 extension STPhotoMapView {
@@ -318,6 +355,15 @@ extension STPhotoMapView {
         self.addSubview(view)
         self.entityLevelView = view
     }
+    
+    private func setupLocationOverlayView(model: STLocationOverlayView.Model) {
+        let view = STLocationOverlayView(model: model)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.white
+        view.delegate = self
+        self.addSubview(view)
+        self.locationOverlayView = view
+    }
 }
 
 // MARK: - Constraints configuration
@@ -346,5 +392,11 @@ extension STPhotoMapView {
         self.entityLevelView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         self.entityLevelView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         self.entityLevelView?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    }
+    
+    private func setupLocationOverlayViewConstraints() {
+        self.locationOverlayView?.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
+        self.locationOverlayView?.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -75).isActive = true
+        self.locationOverlayView?.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30).isActive = true
     }
 }

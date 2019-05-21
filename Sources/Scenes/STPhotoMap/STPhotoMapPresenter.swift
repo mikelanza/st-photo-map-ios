@@ -21,10 +21,19 @@ protocol STPhotoMapPresentationLogic {
     func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response)
     
     func presentRemoveLocationAnnotations()
+    func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     weak var displayer: STPhotoMapDisplayLogic?
+    
+    private var dateFormatter: DateFormatter
+    
+    init() {
+        self.dateFormatter = DateFormatter()
+        self.dateFormatter.dateStyle = .long
+        self.dateFormatter.timeStyle = .none
+    }
     
     func presentLoadingState() {
         self.displayer?.displayLoadingState()
@@ -80,5 +89,14 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     
     func presentRemoveLocationAnnotations() {
         self.displayer?.displayRemoveLocationAnnotations()
+    }
+    
+    func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response) {
+        let photoId: String = response.photo.id
+        let title: String? = response.photo.user?.name ?? response.photo.fhUsername
+        let time: String? = self.dateFormatter.string(from: response.photo.createdAt)
+        let description: String? = response.photo.text
+        let viewModel = STPhotoMapModels.LocationOverlay.ViewModel(photoId: photoId, title: title, time: time, description: description)
+        self.displayer?.displayLocationOverlay(viewModel: viewModel)
     }
 }

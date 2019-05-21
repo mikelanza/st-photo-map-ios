@@ -19,6 +19,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     var workerSpy: STPhotoMapWorkerSuccessSpy!
     
     var workerDelay: Double = 0.1
+    var delay: Double = 0.05
   
     // MARK: - Test lifecycle
   
@@ -54,6 +55,15 @@ class STPhotoMapInteractorTests: XCTestCase {
     
     private func waitForWorker(delay: Double) {
         let waitExpectation = expectation(description: "Waiting for the worker.")
+        let queue = DispatchQueue.global()
+        queue.asyncAfter(deadline: .now() + delay) {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: delay)
+    }
+    
+    private func wait(delay: Double) {
+        let waitExpectation = expectation(description: "Waiting.")
         let queue = DispatchQueue.global()
         queue.asyncAfter(deadline: .now() + delay) {
             waitExpectation.fulfill()
@@ -567,6 +577,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.waitForWorker(delay: self.workerDelay)
         
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentLocationOverlayCalled)
     }
     
     func testShouldSelectPhotoAnnotationWhenItIsNotSelectedAndEntityLevelIsLocationForFailureCase() {
@@ -611,5 +622,31 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertFalse(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
+    }
+    
+    func testShouldSelectPhotoAnnotationWhenItIsNotSelectedAndEntityLevelWillChangeForSuccessCase() {
+        self.sut.entityLevelHandler.entityLevel = .location
+        self.workerSpy.delay = self.workerDelay
+        
+        let annotations = STPhotoMapSeeds().photoAnnotations()
+        let annotation = annotations.first!
+        let previousAnnotation = annotations.last!
+        previousAnnotation.isSelected = true
+        
+        let request = STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: annotation, previousPhotoAnnotation: previousAnnotation)
+        self.sut.shouldSelectPhotoAnnotation(request: request)
+        
+        XCTAssertTrue(annotation.isSelected)
+        XCTAssertFalse(previousAnnotation.isSelected)
+        
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
+        
+        self.wait(delay: self.delay)
+        
+        self.sut.entityLevelHandler.entityLevel = .block
+        
+        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentLocationOverlayCalled)
     }
 }

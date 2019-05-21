@@ -17,6 +17,8 @@ struct STUser: Codable {
     var lastName: String { return self._lastName ?? "" }
     private var _lastName: String?
     
+    var name: String { return String(format: "%@ %@", self.firstName, self.lastName) }
+    
     init(id: String) {
         self.id = id
     }

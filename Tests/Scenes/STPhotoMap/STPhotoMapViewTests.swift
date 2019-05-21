@@ -247,4 +247,15 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToPhotoDetailsForPhotoIdCalled)
     }
+    
+    func testDisplayLocationOverlay() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.LocationOverlay.ViewModel(photoId: STPhotoMapSeeds.photoId, title: "Title", time: "21/05/2019", description: "Description")
+        self.sut.displayLocationOverlay(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertNotNil(self.sut.locationOverlayView)
+    }
 }

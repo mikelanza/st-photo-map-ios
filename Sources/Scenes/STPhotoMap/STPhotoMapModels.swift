@@ -76,4 +76,17 @@ enum STPhotoMapModels {
             let photoId: String?
         }
     }
+    
+    enum LocationOverlay {
+        struct Response {
+            let photo: STPhoto
+        }
+        
+        struct ViewModel {
+            let photoId: String
+            let title: String?
+            let time: String?
+            let description: String?
+        }
+    }
 }

@@ -79,4 +79,11 @@ class STPhotoMapPresenterTests: XCTestCase {
         
         XCTAssertTrue(self.displayerSpy.displayRemoveLocationAnnotationsCalled)
     }
+    
+    func testPresentLocationOverlay() {
+        let response = STPhotoMapModels.LocationOverlay.Response(photo: STPhotoMapSeeds().photo())
+        self.sut.presentLocationOverlay(response: response)
+        
+        XCTAssertTrue(self.displayerSpy.displayLocationOverlayCalled)
+    }
 }

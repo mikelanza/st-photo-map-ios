@@ -16,6 +16,7 @@ public class STPhotoMapStyle {
     public var noDataViewModel: NoDataViewModel
     
     public var entityLevelViewModel: EntityLevelViewModel
+    public var locationOverlayViewModel: LocationOverlayViewModel
     
     public var userLocationButtonModel: UserLocationButtonModel
     
@@ -24,6 +25,7 @@ public class STPhotoMapStyle {
         self.noInternetConnectionViewModel = NoInternetConnectionViewModel()
         self.noDataViewModel = NoDataViewModel()
         self.entityLevelViewModel = EntityLevelViewModel()
+        self.locationOverlayViewModel = LocationOverlayViewModel()
         self.userLocationButtonModel = UserLocationButtonModel()
     }
     
@@ -72,6 +74,10 @@ public class STPhotoMapStyle {
         public var countyImage: UIImage?
         public var stateImage: UIImage?
         public var countryImage: UIImage?
+    }
+    
+    public struct LocationOverlayViewModel {
+        public var show: Bool = true
     }
     
     public struct UserLocationButtonModel {

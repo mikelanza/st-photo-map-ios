@@ -15,6 +15,7 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentLocationAnnotationsCalled: Bool = false
     var presentNavigateToPhotoDetailsCalled: Bool = false
     var presentRemoveLocationAnnotationsCalled: Bool = false
+    var presentLocationOverlayCalled: Bool = false
     
     func presentLoadingState() {
         self.presentLoadingStateCalled = true
@@ -38,5 +39,9 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentRemoveLocationAnnotations() {
         self.presentRemoveLocationAnnotationsCalled = true
+    }
+    
+    func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response) {
+        self.presentLocationOverlayCalled = true
     }
 }
