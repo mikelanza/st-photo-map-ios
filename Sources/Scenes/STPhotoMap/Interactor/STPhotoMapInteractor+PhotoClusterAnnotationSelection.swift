@@ -20,6 +20,8 @@ extension STPhotoMapInteractor {
             request.previousClusterAnnotation?.deflate()
             clusterAnnotation.inflate()
             self.shouldDownloadImagesForPhotoClusterAnnotation(clusterAnnotation)
+        } else {
+            self.presenter?.presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response(coordinate: clusterAnnotation.coordinate))
         }
     }
     

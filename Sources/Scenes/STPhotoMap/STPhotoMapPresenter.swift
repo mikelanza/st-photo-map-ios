@@ -24,6 +24,7 @@ protocol STPhotoMapPresentationLogic {
     func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
     func presentRemoveLocationOverlay()
     func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
+    func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -108,5 +109,10 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     
     func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response) {
         self.displayer?.displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel(photoIds: response.photoIds))
+    }
+    
+    func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response) {
+        let viewModel = STPhotoMapModels.CoordinateZoom.ViewModel(coordinate: response.coordinate)
+        self.displayer?.displayZoomToCoordinate(viewModel: viewModel)
     }
 }

@@ -98,4 +98,10 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentNavigateToSpecificPhotos(response: response)
         XCTAssertTrue(self.displayerSpy.displayNavigateToSpecificPhotosCalled)
     }
+    
+    func testpPresentZoomToCoordinate() {
+        let response = STPhotoMapModels.CoordinateZoom.Response(coordinate: STPhotoMapSeeds.coordinate)
+        self.sut.presentZoomToCoordinate(response: response)
+        XCTAssertTrue(self.displayerSpy.displayZoomToCoordinateCalled)
+    }
 }

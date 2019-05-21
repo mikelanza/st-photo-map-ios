@@ -30,6 +30,7 @@ protocol STPhotoMapDisplayLogic: class {
     func displayLocationOverlay(viewModel: STPhotoMapModels.LocationOverlay.ViewModel)
     func displayRemoveLocationOverlay()
     func displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel)
+    func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -247,6 +248,22 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     
     func displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel) {
         self.delegate?.photoMapView(self, navigateToSpecificPhotosFor: viewModel.photoIds)
+    }
+    
+    // MARK: - Zoom to coordinate
+    
+    func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel) {
+        DispatchQueue.main.async {
+            self.zoomToCoordinate(viewModel.coordinate, latitudeMultiplier: 0.5, longitudeMultiplier: 0.5)
+        }
+    }
+    
+    private func zoomToCoordinate(_ coordinate: CLLocationCoordinate2D, latitudeMultiplier: Double, longitudeMultiplier: Double) {
+        var span = self.mapView.region.span
+        span.latitudeDelta *= latitudeMultiplier
+        span.longitudeDelta *= longitudeMultiplier
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        self.mapView?.setRegion(region, animated: true)
     }
 }
 

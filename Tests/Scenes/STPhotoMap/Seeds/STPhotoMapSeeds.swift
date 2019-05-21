@@ -79,10 +79,16 @@ class STPhotoMapSeeds: NSObject {
         return annotation
     }
     
-    func multiplePhotoClusterAnnotation(count: Int) -> MultiplePhotoClusterAnnotation {
+    func multiplePhotoClusterAnnotation(count: Int, sameCoordinate: Bool = true) -> MultiplePhotoClusterAnnotation {
         var annotations: [PhotoAnnotation] = []
         for i in 0..<count {
-            let annotation = PhotoAnnotation(id: String(i), coordinate: STPhotoMapSeeds.coordinate)
+            var coordinate: CLLocationCoordinate2D
+            if sameCoordinate {
+                coordinate = STPhotoMapSeeds.coordinate
+            } else {
+                coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(50 + i), longitude: CLLocationDegrees(50 + i))
+            }
+            let annotation = PhotoAnnotation(id: String(i), coordinate: coordinate)
             annotations.append(annotation)
         }
         let photoIds = annotations.map({ $0.model.photoId })

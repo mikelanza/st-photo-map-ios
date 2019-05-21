@@ -115,4 +115,14 @@ enum STPhotoMapModels {
             let photoIds: [String]
         }
     }
+    
+    enum CoordinateZoom {
+        struct Response {
+            let coordinate: CLLocationCoordinate2D
+        }
+        
+        struct ViewModel {
+            let coordinate: CLLocationCoordinate2D
+        }
+    }
 }

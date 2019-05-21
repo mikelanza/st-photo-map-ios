@@ -307,4 +307,18 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToSpecificPhotosForPhotoIdsCalled)
     }
+    
+    func testDisplayZoomToCoordinate() {
+        self.loadView()
+        
+        let mapViewSpy = MKMapViewSpy(frame: .zero)
+        self.sut.mapView = mapViewSpy
+        
+        let viewModel = STPhotoMapModels.CoordinateZoom.ViewModel(coordinate: STPhotoMapSeeds.coordinate)
+        self.sut.displayZoomToCoordinate(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(mapViewSpy.setRegionAnimatedCalled)
+    }
 }

@@ -705,4 +705,51 @@ class STPhotoMapInteractorTests: XCTestCase {
             XCTAssertNotNil(value.image)
         }
     }
+    
+    func testShouldSelectPhotoClusterAnnotationWhenZoomLevelIsNotMaximumAndThereAreUnder15ClusterPhotosWithTheSameLocation() {
+        self.workerSpy.delay = self.workerDelay
+        let zoomLevel = 17
+        
+        let clusterAnnotationInterfaceSpy = MultiplePhotoClusterAnnotationInterfaceSpy()
+        let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 10)
+        clusterAnnotation.interface = clusterAnnotationInterfaceSpy
+        
+        let previousClusterAnnotationInterfaceSpy = MultiplePhotoClusterAnnotationInterfaceSpy()
+        let previousClusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
+        previousClusterAnnotation.interface = previousClusterAnnotationInterfaceSpy
+        
+        let request = STPhotoMapModels.PhotoClusterAnnotationSelection.Request(clusterAnnotation: clusterAnnotation, previousClusterAnnotation: previousClusterAnnotation, zoomLevel: zoomLevel)
+        self.sut.shouldSelectPhotoClusterAnnotation(request: request)
+        
+        XCTAssertTrue(self.workerSpy.downloadImageForPhotoAnnotationCalled)
+        
+        XCTAssertTrue(previousClusterAnnotationInterfaceSpy.deflateCalled)
+        XCTAssertTrue(clusterAnnotationInterfaceSpy.inflateCalled)
+        
+        self.wait(delay: self.delay)
+        
+        clusterAnnotation.multipleAnnotationModels.forEach { (key, value) in
+            XCTAssertTrue(value.isLoading)
+            XCTAssertNil(value.image)
+        }
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        clusterAnnotation.multipleAnnotationModels.forEach { (key, value) in
+            XCTAssertFalse(value.isLoading)
+            XCTAssertNotNil(value.image)
+        }
+    }
+    
+    func testShouldSelectPhotoClusterAnnotationWhenZoomLevelIsNotMaximumAndClusterPhotosWithDifferentLocation() {
+        let zoomLevel = 17
+        
+        let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 10, sameCoordinate: false)
+        let previousClusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
+        
+        let request = STPhotoMapModels.PhotoClusterAnnotationSelection.Request(clusterAnnotation: clusterAnnotation, previousClusterAnnotation: previousClusterAnnotation, zoomLevel: zoomLevel)
+        self.sut.shouldSelectPhotoClusterAnnotation(request: request)
+        
+        XCTAssertTrue(self.presenterSpy.presentZoomToCoordinateCalled)
+    }
 }
