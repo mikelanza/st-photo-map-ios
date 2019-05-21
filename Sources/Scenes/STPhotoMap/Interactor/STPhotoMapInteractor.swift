@@ -85,6 +85,7 @@ extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
     func photoMapEntityLevelHandler(location level: EntityLevel) {
         self.worker?.cancelAllGeojsonEntityLevelOperations()
         
+        self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
         self.shouldDetermineLocationLevel()
     }
 }
