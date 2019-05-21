@@ -280,4 +280,13 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertNotNil(self.sut.locationOverlayView)
     }
+    
+    func testDisplayRemoveLocationOverlay() {
+        self.loadView()
+        
+        self.sut.displayRemoveLocationOverlay()
+        self.waitForMainQueue()
+        
+        XCTAssertNil(self.sut.locationOverlayView)
+    }
 }

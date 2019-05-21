@@ -22,6 +22,7 @@ protocol STPhotoMapPresentationLogic {
     
     func presentRemoveLocationAnnotations()
     func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
+    func presentRemoveLocationOverlay()
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -98,5 +99,9 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         let description: String? = response.photo.text
         let viewModel = STPhotoMapModels.LocationOverlay.ViewModel(photoId: photoId, title: title, time: time, description: description)
         self.displayer?.displayLocationOverlay(viewModel: viewModel)
+    }
+    
+    func presentRemoveLocationOverlay() {
+        self.displayer?.displayRemoveLocationOverlay()
     }
 }

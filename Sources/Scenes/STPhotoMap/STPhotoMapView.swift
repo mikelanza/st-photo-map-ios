@@ -27,6 +27,7 @@ protocol STPhotoMapDisplayLogic: class {
     
     func displayRemoveLocationAnnotations()
     func displayLocationOverlay(viewModel: STPhotoMapModels.LocationOverlay.ViewModel)
+    func displayRemoveLocationOverlay()
 }
 
 public class STPhotoMapView: UIView {
@@ -228,6 +229,12 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     private func removeLocationOverlayView() {
         self.locationOverlayView?.removeFromSuperview()
         self.locationOverlayView = nil
+    }
+    
+    func displayRemoveLocationOverlay() {
+        DispatchQueue.main.async {
+            self.removeLocationOverlayView()
+        }
     }
 }
 
