@@ -86,4 +86,9 @@ class STPhotoMapPresenterTests: XCTestCase {
         
         XCTAssertTrue(self.displayerSpy.displayLocationOverlayCalled)
     }
+    
+    func testPresentRemoveLocationOverlay() {
+        self.sut.presentRemoveLocationOverlay()
+        XCTAssertTrue(self.displayerSpy.displayRemoveLocationOverlayCalled)
+    }
 }

@@ -191,6 +191,18 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoDetailsCalled)
     }
     
+    func testShouldSelectPhotoAnnotationWhen() {
+        self.loadView()
+        
+        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
+        let photoIds = photoAnnotations.map({ $0.model.photoId })
+        let clusterAnnotation = MultiplePhotoClusterAnnotation(photoIds: photoIds, memberAnnotations: photoAnnotations)
+        let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: photoAnnotations.count)
+        self.sut.multiplePhotoClusterAnnotationView(view: view, with: photoAnnotations.first!, didSelect: nil)
+        
+        XCTAssertTrue(self.interactorSpy.shouldSelectPhotoAnnotationCalled)
+    }
+    
     // MARK: - Test display logic
     
     func testDisplayLoadingState() {
@@ -267,5 +279,14 @@ class STPhotoMapViewTests: XCTestCase {
         self.waitForMainQueue()
         
         XCTAssertNotNil(self.sut.locationOverlayView)
+    }
+    
+    func testDisplayRemoveLocationOverlay() {
+        self.loadView()
+        
+        self.sut.displayRemoveLocationOverlay()
+        self.waitForMainQueue()
+        
+        XCTAssertNil(self.sut.locationOverlayView)
     }
 }

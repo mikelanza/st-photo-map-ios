@@ -27,6 +27,7 @@ protocol STPhotoMapDisplayLogic: class {
     
     func displayRemoveLocationAnnotations()
     func displayLocationOverlay(viewModel: STPhotoMapModels.LocationOverlay.ViewModel)
+    func displayRemoveLocationOverlay()
 }
 
 public class STPhotoMapView: UIView {
@@ -229,6 +230,12 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         self.locationOverlayView?.removeFromSuperview()
         self.locationOverlayView = nil
     }
+    
+    func displayRemoveLocationOverlay() {
+        DispatchQueue.main.async {
+            self.removeLocationOverlayView()
+        }
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -298,8 +305,9 @@ extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
         
     }
     
-    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, didSelect photoImageView: PhotoImageView?, at index: Int) {
-        
+    func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
+        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
+        self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }
 

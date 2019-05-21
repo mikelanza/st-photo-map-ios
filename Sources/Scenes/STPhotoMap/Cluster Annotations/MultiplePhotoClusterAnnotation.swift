@@ -33,29 +33,28 @@ class MultiplePhotoClusterAnnotation: MKClusterAnnotation {
     }
     
     public func setImage(index: Int, image: UIImage?, photoImageView: PhotoImageView?) {
-        if let annotation = getAnnotation(for: index).1 {
+        if let annotation = self.annotation(for: index) {
             annotation.image = image
             photoImageView?.setImage(image: image)
         }
     }
     
     public func setIsSelected(index: Int, isSelected: Bool, photoImageView: PhotoImageView?) {
-        if let annotation = getAnnotation(for: index).1 {
+        if let annotation = self.annotation(for: index) {
             annotation.isSelected = isSelected
             photoImageView?.setSelected(selected: isSelected)
         }
     }
     
     public func setIsLoading(index: Int, isLoading: Bool, photoImageView: PhotoImageView?) {
-        if let annotation = getAnnotation(for: index).1 {
+        if let annotation = self.annotation(for: index) {
             annotation.isLoading = isLoading
             photoImageView?.setLoading(loading: isLoading)
         }
     }
     
-    func getAnnotation(for index: Int) -> (String, PhotoAnnotation?) {
+    func annotation(for index: Int) -> PhotoAnnotation? {
         let photoId = Array(self.multipleAnnotationModels.keys)[index]
-        let model = self.multipleAnnotationModels[photoId]
-        return (photoId, model)
+        return self.multipleAnnotationModels[photoId]
     }
 }

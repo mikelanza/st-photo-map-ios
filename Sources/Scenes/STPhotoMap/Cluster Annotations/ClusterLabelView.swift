@@ -95,7 +95,7 @@ extension ClusterLabelView {
 
 extension ClusterLabelView {
     @objc func touchUpInsideClusterButton() {
-        self.delegate?.clusterLabelView(view: self, didSelect: button)
+        self.delegate?.clusterLabelView(view: self, didSelect: self.button)
     }
 }
 
