@@ -190,7 +190,7 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     
     func displayRemoveLocationAnnotations() {
         DispatchQueue.main.async {
-            self.mapView?.removeAnnotations(self.annotationHandler.annotations)
+            self.mapView?.removeAnnotations(self.mapView?.annotations ?? [])
         }
         self.annotationHandler.removeAllAnnotations()
     }
