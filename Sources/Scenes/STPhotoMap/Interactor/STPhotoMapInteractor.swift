@@ -79,6 +79,7 @@ extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
         self.worker?.cancelAllGeojsonLocationLevelOperations()
         
         self.presenter?.presentRemoveLocationAnnotations()
+        self.presenter?.presentRemoveLocationOverlay()
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
     }
     
