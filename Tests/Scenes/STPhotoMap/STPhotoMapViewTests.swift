@@ -181,6 +181,16 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldSelectPhotoAnnotationCalled)
     }
     
+    func testShouldNavigateToPhotoDetailsWhenLocationOverlayViewIsTouchedUpInside() {
+        self.loadView()
+        
+        let model = STLocationOverlayView.Model(photoId: STPhotoMapSeeds.photoId, title: "Title", time: "21/05/2019", description: "Description")
+        let view = STLocationOverlayView(model: model)
+        self.sut.locationOverlayView(view: view, didSelectPhoto: STPhotoMapSeeds.photoId)
+        
+        XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoDetailsCalled)
+    }
+    
     // MARK: - Test display logic
     
     func testDisplayLoadingState() {

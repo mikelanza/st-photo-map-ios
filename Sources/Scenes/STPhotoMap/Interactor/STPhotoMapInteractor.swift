@@ -20,6 +20,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldDetermineLocationLevel()
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
+    func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -63,6 +64,10 @@ extension STPhotoMapInteractor {
             request.photoAnnotation.isLoading = true
             self.worker?.downloadImageForPhotoAnnotation(request.photoAnnotation)
         }
+    }
+    
+    func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request) {
+        self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: request.photoId))
     }
 }
 

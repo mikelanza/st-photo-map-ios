@@ -15,6 +15,7 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     var shouldDetermineLocationLevelCalled: Bool = false
     var shouldDownloadImageForPhotoAnnotationCalled: Bool = false
     var shouldSelectPhotoAnnotationCalled: Bool = false
+    var shouldNavigateToPhotoDetailsCalled: Bool = false
 
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.shouldUpdateVisibleTilesCalled = true
@@ -38,5 +39,9 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request) {
         self.shouldSelectPhotoAnnotationCalled = true
+    }
+    
+    func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request) {
+        self.shouldNavigateToPhotoDetailsCalled = true
     }
 }

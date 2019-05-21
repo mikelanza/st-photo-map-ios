@@ -307,7 +307,7 @@ extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
 
 extension STPhotoMapView: STLocationOverlayViewDelegate {
     func locationOverlayView(view: STLocationOverlayView?, didSelectPhoto photoId: String) {
-        
+        self.interactor?.shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request(photoId: photoId))
     }
 }
 

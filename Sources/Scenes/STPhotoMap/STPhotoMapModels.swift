@@ -68,12 +68,16 @@ enum STPhotoMapModels {
     }
     
     enum PhotoDetailsNavigation {
+        struct Request {
+            let photoId: String
+        }
+        
         struct Response {
-            let photoId: String?
+            let photoId: String
         }
         
         struct ViewModel {
-            let photoId: String?
+            let photoId: String
         }
     }
     
