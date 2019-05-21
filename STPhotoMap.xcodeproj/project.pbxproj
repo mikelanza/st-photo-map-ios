@@ -583,6 +583,7 @@
 				8529E5632264813500E7CCE5 /* Extensions */,
 				85F07411226062DD006DA073 /* Scenes */,
 				3549BB541DA38A4000C63030 /* Supporting Files */,
+				854BE3AF22940B8800CA3BE0 /* Assets.xcassets */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -602,7 +603,6 @@
 				3549BB181DA3890B00C63030 /* STPhotoMap.h */,
 				3549BB171DA3890B00C63030 /* Info.plist */,
 				3549BB551DA38A5E00C63030 /* Info-tvOS.plist */,
-				854BE3AF22940B8800CA3BE0 /* Assets.xcassets */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
