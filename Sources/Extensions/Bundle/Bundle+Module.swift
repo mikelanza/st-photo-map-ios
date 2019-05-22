@@ -12,7 +12,8 @@ extension Bundle {
     private static let bundleId = "com.streetography.st.photo.map.ios.STPhotoMap"
     
     static var module: Bundle {
-        guard let path = Bundle.main.path(forResource: "STPhotoMap", ofType: "bundle") else { return .main }
-        return Bundle(path: path) ?? .main
+        let bundle = Bundle(for: self)
+        guard let path = bundle.path(forResource: "STPhotoMap", ofType: "bundle") else { return bundle }
+        return Bundle(path: path) ?? bundle
     }
 }
