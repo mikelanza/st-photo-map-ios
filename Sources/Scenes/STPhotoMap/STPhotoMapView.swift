@@ -23,18 +23,23 @@ protocol STPhotoMapDisplayLogic: class {
     func displayNotLoadingState()
     
     func displayEntityLevel(viewModel: STPhotoMapModels.EntityZoomLevel.ViewModel)
-    func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel)
-    func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel)
     
+    func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel)
     func displayRemoveLocationAnnotations()
+    
     func displayLocationOverlay(viewModel: STPhotoMapModels.LocationOverlay.ViewModel)
     func displayRemoveLocationOverlay()
+    
+    func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel)
     func displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel)
+    
     func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel)
+    
     func displaySelectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
     func displayDeselectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationDeselection.ViewModel)
-    func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel)
+    
     func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel)
+    func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel)
 }
 
 public class STPhotoMapView: UIView {

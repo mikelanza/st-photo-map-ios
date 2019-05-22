@@ -17,18 +17,23 @@ protocol STPhotoMapPresentationLogic {
     func presentNotLoadingState()
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response)
-    func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response)
-    func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response)
     
+    func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response)
     func presentRemoveLocationAnnotations()
+    
+    func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response)
+    func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
+    
     func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
     func presentRemoveLocationOverlay()
-    func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
+    
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response)
+    
     func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
     func presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response)
-    func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response)
+    
     func presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response)
+    func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -42,6 +47,8 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         self.dateFormatter.timeStyle = .none
     }
     
+    // MARK: - Loading / not loading state
+    
     func presentLoadingState() {
         self.displayer?.displayLoadingState()
     }
@@ -49,6 +56,8 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     func presentNotLoadingState() {
         self.displayer?.displayNotLoadingState()
     }
+    
+    // MARK: - Entity level
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response) {
         let title: String = self.titleForEntityLevel(entityLevel: response.entityLevel)
@@ -83,20 +92,19 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         }
     }
     
+    // MARK: - Location annotations
+    
     func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response) {
         let annotations: [PhotoAnnotation] = response.annotations.map({ $0.toPhotoAnnotation() })
         let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: annotations)
         self.displayer?.displayLocationAnnotations(viewModel: viewModel)
     }
     
-    func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response) {
-        let viewModel = STPhotoMapModels.PhotoDetailsNavigation.ViewModel(photoId: response.photoId)
-        self.displayer?.displayNavigateToPhotoDetails(viewModel: viewModel)
-    }
-    
     func presentRemoveLocationAnnotations() {
         self.displayer?.displayRemoveLocationAnnotations()
     }
+    
+    // MARK: - Location overlay
     
     func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response) {
         let photoId: String = response.photo.id
@@ -111,14 +119,25 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         self.displayer?.displayRemoveLocationOverlay()
     }
     
+    // MARK: - Navigation
+    
+    func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response) {
+        let viewModel = STPhotoMapModels.PhotoDetailsNavigation.ViewModel(photoId: response.photoId)
+        self.displayer?.displayNavigateToPhotoDetails(viewModel: viewModel)
+    }
+    
     func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response) {
         self.displayer?.displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel(photoIds: response.photoIds))
     }
+    
+    // MARK: - Zooming
     
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response) {
         let viewModel = STPhotoMapModels.CoordinateZoom.ViewModel(coordinate: response.coordinate)
         self.displayer?.displayZoomToCoordinate(viewModel: viewModel)
     }
+    
+    // MARK: - Photo annotation selection/deselection
     
     func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response) {
         let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: response.photoAnnotation)
@@ -129,6 +148,8 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         let viewModel = STPhotoMapModels.PhotoAnnotationDeselection.ViewModel(photoAnnotation: response.photoAnnotation)
         self.displayer?.displayDeselectPhotoAnnotation(viewModel: viewModel)
     }
+    
+    // MARK: - Photo cluster annotation selection/deselection
     
     func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response) {
         let viewModel = STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel(photoAnnotation: response.photoAnnotation)

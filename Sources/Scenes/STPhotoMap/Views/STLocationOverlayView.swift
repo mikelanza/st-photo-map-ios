@@ -176,7 +176,7 @@ extension STLocationOverlayView {
         imageView.contentMode = .center
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
-        imageView.image = UIImage()
+        imageView.image = STPhotoMapStyle.shared.locationOverlayViewModel.disclosureImage
         self.accessoryView?.addSubview(imageView)
         self.accessoryImageView = imageView
     }

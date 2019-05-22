@@ -88,6 +88,7 @@ public class STPhotoMapStyle {
         public var timeFont: UIFont = UIFont.systemFont(ofSize: 13.0)
         public var descriptionColor: UIColor = UIColor.darkGray
         public var descriptionFont: UIFont = UIFont.systemFont(ofSize: 13.0)
+        public var disclosureImage: UIImage? = UIImage(named: "st_location_overlay_disclosure", in: Bundle.module, compatibleWith: nil)
     }
     
     public struct UserLocationButtonModel {
