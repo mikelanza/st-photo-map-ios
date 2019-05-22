@@ -17,10 +17,37 @@ protocol STPhotoMapPresentationLogic {
     func presentNotLoadingState()
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response)
+    
+    func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response)
+    func presentRemoveLocationAnnotations()
+    
+    func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response)
+    func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
+    
+    func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
+    func presentRemoveLocationOverlay()
+    
+    func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response)
+    
+    func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
+    func presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response)
+    
+    func presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response)
+    func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     weak var displayer: STPhotoMapDisplayLogic?
+    
+    private var dateFormatter: DateFormatter
+    
+    init() {
+        self.dateFormatter = DateFormatter()
+        self.dateFormatter.dateStyle = .long
+        self.dateFormatter.timeStyle = .none
+    }
+    
+    // MARK: - Loading / not loading state
     
     func presentLoadingState() {
         self.displayer?.displayLoadingState()
@@ -29,6 +56,8 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     func presentNotLoadingState() {
         self.displayer?.displayNotLoadingState()
     }
+    
+    // MARK: - Entity level
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response) {
         let title: String = self.titleForEntityLevel(entityLevel: response.entityLevel)
@@ -39,27 +68,96 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     
     private func titleForEntityLevel(entityLevel: EntityLevel) -> String {
         switch entityLevel {
-        case .location: return STPhotoMapStyle.shared.entityLevelViewModel.locationTitle
-        case .block: return STPhotoMapStyle.shared.entityLevelViewModel.blockTitle
-        case .neighborhood: return STPhotoMapStyle.shared.entityLevelViewModel.neighborhoodTitle
-        case .city: return STPhotoMapStyle.shared.entityLevelViewModel.cityTitle
-        case .county: return STPhotoMapStyle.shared.entityLevelViewModel.countyTitle
-        case .state: return STPhotoMapStyle.shared.entityLevelViewModel.stateTitle
-        case .country: return STPhotoMapStyle.shared.entityLevelViewModel.countryTitle
-        case .unknown: return ""
+            case .location: return STPhotoMapStyle.shared.entityLevelViewModel.locationTitle
+            case .block: return STPhotoMapStyle.shared.entityLevelViewModel.blockTitle
+            case .neighborhood: return STPhotoMapStyle.shared.entityLevelViewModel.neighborhoodTitle
+            case .city: return STPhotoMapStyle.shared.entityLevelViewModel.cityTitle
+            case .county: return STPhotoMapStyle.shared.entityLevelViewModel.countyTitle
+            case .state: return STPhotoMapStyle.shared.entityLevelViewModel.stateTitle
+            case .country: return STPhotoMapStyle.shared.entityLevelViewModel.countryTitle
+            case .unknown: return ""
         }
     }
     
     private func imageForEntityLevel(entityLevel: EntityLevel) -> UIImage? {
         switch entityLevel {
-        case .location: return STPhotoMapStyle.shared.entityLevelViewModel.locationImage
-        case .block: return STPhotoMapStyle.shared.entityLevelViewModel.blockImage
-        case .neighborhood: return STPhotoMapStyle.shared.entityLevelViewModel.neighborhoodImage
-        case .city: return STPhotoMapStyle.shared.entityLevelViewModel.cityImage
-        case .county: return STPhotoMapStyle.shared.entityLevelViewModel.countyImage
-        case .state: return STPhotoMapStyle.shared.entityLevelViewModel.stateImage
-        case .country: return STPhotoMapStyle.shared.entityLevelViewModel.countryImage
-        case .unknown: return nil
+            case .location: return STPhotoMapStyle.shared.entityLevelViewModel.locationImage
+            case .block: return STPhotoMapStyle.shared.entityLevelViewModel.blockImage
+            case .neighborhood: return STPhotoMapStyle.shared.entityLevelViewModel.neighborhoodImage
+            case .city: return STPhotoMapStyle.shared.entityLevelViewModel.cityImage
+            case .county: return STPhotoMapStyle.shared.entityLevelViewModel.countyImage
+            case .state: return STPhotoMapStyle.shared.entityLevelViewModel.stateImage
+            case .country: return STPhotoMapStyle.shared.entityLevelViewModel.countryImage
+            case .unknown: return nil
         }
+    }
+    
+    // MARK: - Location annotations
+    
+    func presentLocationAnnotations(response: STPhotoMapModels.LocationAnnotations.Response) {
+        let annotations: [PhotoAnnotation] = response.annotations.map({ $0.toPhotoAnnotation() })
+        let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: annotations)
+        self.displayer?.displayLocationAnnotations(viewModel: viewModel)
+    }
+    
+    func presentRemoveLocationAnnotations() {
+        self.displayer?.displayRemoveLocationAnnotations()
+    }
+    
+    // MARK: - Location overlay
+    
+    func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response) {
+        let photoId: String = response.photo.id
+        let title: String? = response.photo.user?.name ?? response.photo.fhUsername
+        let time: String? = self.dateFormatter.string(from: response.photo.createdAt)
+        let description: String? = response.photo.text
+        let viewModel = STPhotoMapModels.LocationOverlay.ViewModel(photoId: photoId, title: title, time: time, description: description)
+        self.displayer?.displayLocationOverlay(viewModel: viewModel)
+    }
+    
+    func presentRemoveLocationOverlay() {
+        self.displayer?.displayRemoveLocationOverlay()
+    }
+    
+    // MARK: - Navigation
+    
+    func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response) {
+        let viewModel = STPhotoMapModels.PhotoDetailsNavigation.ViewModel(photoId: response.photoId)
+        self.displayer?.displayNavigateToPhotoDetails(viewModel: viewModel)
+    }
+    
+    func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response) {
+        self.displayer?.displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel(photoIds: response.photoIds))
+    }
+    
+    // MARK: - Zooming
+    
+    func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response) {
+        let viewModel = STPhotoMapModels.CoordinateZoom.ViewModel(coordinate: response.coordinate)
+        self.displayer?.displayZoomToCoordinate(viewModel: viewModel)
+    }
+    
+    // MARK: - Photo annotation selection/deselection
+    
+    func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response) {
+        let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displaySelectPhotoAnnotation(viewModel: viewModel)
+    }
+    
+    func presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response) {
+        let viewModel = STPhotoMapModels.PhotoAnnotationDeselection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displayDeselectPhotoAnnotation(viewModel: viewModel)
+    }
+    
+    // MARK: - Photo cluster annotation selection/deselection
+    
+    func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response) {
+        let viewModel = STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displayDeselectPhotoClusterAnnotation(viewModel: viewModel)
+    }
+    
+    func presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response) {
+        let viewModel = STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displaySelectPhotoClusterAnnotation(viewModel: viewModel)
     }
 }

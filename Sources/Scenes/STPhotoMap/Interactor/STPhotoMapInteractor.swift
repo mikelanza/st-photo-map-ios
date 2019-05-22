@@ -16,7 +16,18 @@ protocol STPhotoMapBusinessLogic {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request)
     
     func shouldCacheGeojsonObjects()
+    
     func shouldDetermineEntityLevel()
+    func shouldDetermineLocationLevel()
+    
+    func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
+    
+    func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request)
+    
+    func shouldInflatePhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationInflation.Request)
+    
+    func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
+    func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -29,13 +40,22 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     var visibleTiles: [TileCoordinate]
     var cacheHandler: STPhotoMapCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
+    var locationLevelHandler: STPhotoMapLocationLevelHandler
     
     init() {
         self.visibleTiles = []
         self.cacheHandler = STPhotoMapCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
+        self.locationLevelHandler = STPhotoMapLocationLevelHandler()
         self.worker = STPhotoMapWorker(delegate: self)
         self.entityLevelHandler.delegate = self
+    }
+    
+    internal func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
+        return self.visibleTiles.compactMap({ tile -> STPhotoMapCache.Tile? in
+            let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
+            return try? self.cacheHandler.cache.getTile(for: url.keyUrl)
+        })
     }
 }
 
@@ -45,6 +65,17 @@ extension STPhotoMapInteractor {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.visibleTiles = request.tiles
     }
+    
+    func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request) {
+        if request.photoAnnotation.image == nil {
+            request.photoAnnotation.isLoading = true
+            self.worker?.downloadImageForPhotoAnnotation(request.photoAnnotation)
+        }
+    }
+    
+    func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request) {
+        self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: request.photoId))
+    }
 }
 
 // MARK: - Entity handler delegate
@@ -52,6 +83,17 @@ extension STPhotoMapInteractor {
 extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
     func photoMapEntityLevelHandler(newEntityLevel level: EntityLevel) {
         self.worker?.cancelAllGeojsonEntityLevelOperations()
+        self.worker?.cancelAllGeojsonLocationLevelOperations()
+        
+        self.presenter?.presentRemoveLocationAnnotations()
+        self.presenter?.presentRemoveLocationOverlay()
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
+    }
+    
+    func photoMapEntityLevelHandler(location level: EntityLevel) {
+        self.worker?.cancelAllGeojsonEntityLevelOperations()
+        
+        self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
+        self.shouldDetermineLocationLevel()
     }
 }

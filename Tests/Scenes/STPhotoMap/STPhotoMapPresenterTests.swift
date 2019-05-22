@@ -59,4 +59,73 @@ class STPhotoMapPresenterTests: XCTestCase {
         
         XCTAssertTrue(self.displayerSpy.displayEntityLevelCalled)
     }
+    
+    func testPresentLocationAnnotations() {
+        let response = STPhotoMapModels.LocationAnnotations.Response(annotations: STPhotoMapSeeds().annotations())
+        self.sut.presentLocationAnnotations(response: response)
+        
+        XCTAssertTrue(self.displayerSpy.displayLocationAnnotationsCalled)
+    }
+    
+    func testPresentNavigateToPhotoDetails() {
+        let response = STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: STPhotoMapSeeds.photoId)
+        self.sut.presentNavigateToPhotoDetails(response: response)
+        
+        XCTAssertTrue(self.displayerSpy.displayNavigateToPhotoDetailsCalled)
+    }
+    
+    func testPresentRemoveLocationAnnotations() {
+        self.sut.presentRemoveLocationAnnotations()
+        
+        XCTAssertTrue(self.displayerSpy.displayRemoveLocationAnnotationsCalled)
+    }
+    
+    func testPresentLocationOverlay() {
+        let response = STPhotoMapModels.LocationOverlay.Response(photo: STPhotoMapSeeds().photo())
+        self.sut.presentLocationOverlay(response: response)
+        
+        XCTAssertTrue(self.displayerSpy.displayLocationOverlayCalled)
+    }
+    
+    func testPresentRemoveLocationOverlay() {
+        self.sut.presentRemoveLocationOverlay()
+        XCTAssertTrue(self.displayerSpy.displayRemoveLocationOverlayCalled)
+    }
+    
+    func testPresentNavigateToSpecificPhotos() {
+        let photoIds = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 10).photoIds
+        let response = STPhotoMapModels.SpecificPhotosNavigation.Response(photoIds: photoIds)
+        self.sut.presentNavigateToSpecificPhotos(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNavigateToSpecificPhotosCalled)
+    }
+    
+    func testpPresentZoomToCoordinate() {
+        let response = STPhotoMapModels.CoordinateZoom.Response(coordinate: STPhotoMapSeeds.coordinate)
+        self.sut.presentZoomToCoordinate(response: response)
+        XCTAssertTrue(self.displayerSpy.displayZoomToCoordinateCalled)
+    }
+    
+    func testPresentSelectPhotoAnnotation() {
+        let response = STPhotoMapModels.PhotoAnnotationSelection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentSelectPhotoAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displaySelectPhotoAnnotationCalled)
+    }
+    
+    func testPresentDeselectPhotoAnnotation() {
+        let response = STPhotoMapModels.PhotoAnnotationDeselection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentDeselectPhotoAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displayDeselectPhotoAnnotationCalled)
+    }
+    
+    func testPresentDeselectPhotoClusterAnnotation() {
+        let response = STPhotoMapModels.PhotoClusterAnnotationDeselection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentDeselectPhotoClusterAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displayDeselectPhotoClusterAnnotationCalled)
+    }
+    
+    func testPresentSelectPhotoClusterAnnotation() {
+        let response = STPhotoMapModels.PhotoClusterAnnotationSelection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentSelectPhotoClusterAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displaySelectPhotoClusterAnnotationCalled)
+    }
 }
