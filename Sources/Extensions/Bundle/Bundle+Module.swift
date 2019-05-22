@@ -9,10 +9,8 @@
 import Foundation
 
 public extension Bundle {
-    private static let bundleId = "com.streetography.st.photo.map.ios.STPhotoMap"
-    
     static var module: Bundle {
-        guard let bundle = Bundle(identifier: bundleId) else { return .main }
+        let bundle = Bundle(for: STPhotoMapView.self)
         guard let url = bundle.url(forResource: "STPhotoMap", withExtension: "bundle") else { return bundle }
         return Bundle(url: url) ?? bundle
     }
