@@ -17,30 +17,30 @@ class STPhotoMapLocalization {
     
     struct LocalizedKey {
         static let
-        noDataAvailable = "PhotoMap.no.data.available.title",
-        noInternetConnection = "PhotoMap.no.internet.connection.title",
+        noDataAvailable = "STPhotoMap.no.data.available.title",
+        noInternetConnection = "STPhotoMap.no.internet.connection.title",
         
-        dataSources = "PhotoMap.data.sources.title",
+        dataSources = "STPhotoMap.data.sources.title",
         
-        locationLevel = "PhotoMap.location.level.title",
-        blockLevel = "PhotoMap.block.level.title",
-        neighborhoodLevel = "PhotoMap.neighborhood.level.title",
-        cityLevel = "PhotoMap.city.level.title",
-        countyLevel = "PhotoMap.county.level.title",
-        stateLevel = "PhotoMap.state.level.title",
-        countryLevel = "PhotoMap.country.level.title"
+        locationLevel = "STPhotoMap.location.level.title",
+        blockLevel = "STPhotoMap.block.level.title",
+        neighborhoodLevel = "STPhotoMap.neighborhood.level.title",
+        cityLevel = "STPhotoMap.city.level.title",
+        countyLevel = "STPhotoMap.county.level.title",
+        stateLevel = "STPhotoMap.state.level.title",
+        countryLevel = "STPhotoMap.country.level.title"
     }
     
-    let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized
-    let noInternetConnectionTitle = LocalizedKey.noInternetConnection.localized
+    let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized()
+    let noInternetConnectionTitle = LocalizedKey.noInternetConnection.localized()
     
-    let dataSourcesTitle = LocalizedKey.dataSources.localized
+    let dataSourcesTitle = LocalizedKey.dataSources.localized()
     
-    let locationLevelTitle = LocalizedKey.locationLevel.localized
-    let blockLevelTitle = LocalizedKey.blockLevel.localized
-    let neighborhoodLevelTitle = LocalizedKey.neighborhoodLevel.localized
-    let cityLevelTitle = LocalizedKey.cityLevel.localized
-    let countyLevelTitle = LocalizedKey.countyLevel.localized
-    let stateLevelTitle = LocalizedKey.stateLevel.localized
-    let countryLevelTitle = LocalizedKey.countryLevel.localized
+    let locationLevelTitle = LocalizedKey.locationLevel.localized()
+    let blockLevelTitle = LocalizedKey.blockLevel.localized()
+    let neighborhoodLevelTitle = LocalizedKey.neighborhoodLevel.localized()
+    let cityLevelTitle = LocalizedKey.cityLevel.localized()
+    let countyLevelTitle = LocalizedKey.countyLevel.localized()
+    let stateLevelTitle = LocalizedKey.stateLevel.localized()
+    let countryLevelTitle = LocalizedKey.countryLevel.localized()
 }

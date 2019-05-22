@@ -9,6 +9,14 @@
 import Foundation
 import MapKit
 
+enum STPhotoTileOverlayRendererError: LocalizedError {
+    case noPhotoTileOverlayAvailable
+    case noDataAvailableForUrl(url: String)
+    case noDataProviderAvailableForUrl(url: String)
+    case noImageAvailableForUrl(url: String)
+    case invalidUrl
+}
+
 public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     private class Tile: NSObject {
         var data: Data
@@ -108,7 +116,7 @@ extension STPhotoTileOverlayRenderer {
 extension STPhotoTileOverlayRenderer {
     private func tileOverlay() throws -> STPhotoTileOverlay {
         guard let overlay = self.overlay as? STPhotoTileOverlay else {
-            throw NSError(domain: "No photo tile overlay available", code: 404, userInfo: nil)
+            throw STPhotoTileOverlayRendererError.noPhotoTileOverlayAvailable
         }
         return overlay
     }
@@ -130,8 +138,9 @@ extension STPhotoTileOverlayRenderer {
     
     private func tileUrlsFor(path: MKTileOverlayPath) throws -> (keyUrl: String, downloadUrl: String) {
         let tileOverlay = try self.tileOverlay()
-        let url = tileOverlay.url(forTilePath: path)
-        return (url.absoluteString, url.absoluteString)
+        let downloadUrl = tileOverlay.url(forTilePath: path)
+        let keyUrl = downloadUrl.excludeParameter((Parameters.Keys.bbox, ""))
+        return (keyUrl.absoluteString, downloadUrl.absoluteString)
     }
 }
 
@@ -145,17 +154,12 @@ extension STPhotoTileOverlayRenderer {
     }
     
     private func optionalImageDataForUrl(url: String) -> Data? {
-        for i in 0..<self.tiles.count {
-            if self.tiles[i]?.keyUrl == url {
-                return self.tiles[i]?.data
-            }
-        }
-        return nil
+        return self.tiles.first(where: { $0.keyUrl == url })?.data
     }
     
     private func imageDataForUrl(url: String) throws -> Data {
         guard let data = self.optionalImageDataForUrl(url: url) else {
-            throw NSError(domain: "No data available for url: \(url)", code: 404, userInfo: nil)
+            throw STPhotoTileOverlayRendererError.noDataAvailableForUrl(url: url)
         }
         return data
     }
@@ -163,10 +167,10 @@ extension STPhotoTileOverlayRenderer {
     private func imageForUrl(url: String) throws -> CGImage {
         let data = try self.imageDataForUrl(url: url)
         guard let provider = CGDataProvider(data: data as CFData) else {
-            throw NSError(domain: "No data provider available for url: \(url)", code: 404, userInfo: nil)
+            throw STPhotoTileOverlayRendererError.noDataProviderAvailableForUrl(url: url)
         }
         guard let image = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent) else {
-            throw NSError(domain: "No image available for url: \(url)", code: 404, userInfo: nil)
+            throw STPhotoTileOverlayRendererError.noImageAvailableForUrl(url: url)
         }
         return image
     }
@@ -177,14 +181,13 @@ extension STPhotoTileOverlayRenderer {
 extension STPhotoTileOverlayRenderer {
     private func downloadImage(url: String?, completion: @escaping (Data?, Error?) -> Void) {
         guard let urlString = url, let url = URL(string: urlString) else {
-            completion(nil, NSError(domain: "No url for download tile image", code: 404, userInfo: nil))
+            completion(nil, STPhotoTileOverlayRendererError.invalidUrl)
             return
         }
         
-        let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        url.downloadImage { (data, error) in
             completion(data, error)
         }
-        dataTask.resume()
     }
     
     private func downloadTile(mapRect: MKMapRect, zoomScale: MKZoomScale) throws {

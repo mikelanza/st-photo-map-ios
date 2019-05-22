@@ -13,6 +13,7 @@
 A map that displays photos
 
 - [Requirements](#requirements)
+- [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
@@ -21,6 +22,10 @@ A map that displays photos
 
 - iOS 11.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 10.0+
+
+## Dependencies
+
+- [Kingfisher 5.0+](https://github.com/onevcat/Kingfisher)
 
 ## Installation
 
@@ -154,7 +159,7 @@ Issues and pull requests are welcome!
 
 ## Author
 
-Streetography [@ ](https://twitter.com/ )
+Streetography [@Streetography](https://streetography.com/)
 
 ## License
 

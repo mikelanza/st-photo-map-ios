@@ -18,12 +18,19 @@ protocol STPhotoMapWorkerDelegate: class {
     
     func successDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
     func failureDidGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError)
+    
+    func successDidGetGeojsonTileForLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
+    func failureDidGetGeojsonTileForLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError)
+    
+    func successDidGetPhotoForPhotoAnnotation(photoAnnotation: PhotoAnnotation, photo: STPhoto)
+    func failureDidGetPhotoForPhotoAnnotation(photoAnnotation: PhotoAnnotation, error: OperationError)
 }
 
 class STPhotoMapWorker {
     public var delegate: STPhotoMapWorkerDelegate?
     private var geojsonTileCachingQueue: OperationQueue
     private var geojsonEntityLevelQueue: OperationQueue
+    private var geojsonLocationLevelQueue: OperationQueue
     
     init(delegate: STPhotoMapWorkerDelegate? = nil) {
         self.delegate = delegate
@@ -32,6 +39,9 @@ class STPhotoMapWorker {
         self.geojsonTileCachingQueue.maxConcurrentOperationCount = 12
         
         self.geojsonEntityLevelQueue = OperationQueue()
+        
+        self.geojsonLocationLevelQueue = OperationQueue()
+        self.geojsonLocationLevelQueue.maxConcurrentOperationCount = 12
     }
     
     func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
@@ -58,5 +68,43 @@ class STPhotoMapWorker {
     
     func cancelAllGeojsonEntityLevelOperations() {
         self.geojsonEntityLevelQueue.cancelAllOperations()
+    }
+    
+    func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((_ image: UIImage?) -> Void)? = nil) {
+        photoAnnotation.model.imageUrl?.downloadImage(result: { (image, error) in
+            photoAnnotation.isLoading = false
+            photoAnnotation.image = image
+            completion?(image)
+        })
+    }
+    
+    func getGeojsonLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
+        let model = GetGeojsonTileOperationModel.Request(tileCoordinate: tileCoordinate, url: downloadUrl)
+        let operation = GetGeojsonTileOperation(model: model) { result in
+            switch result {
+            case .success(let value): self.delegate?.successDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: value.geoJSONObject); break
+            case .failure(let error): self.delegate?.failureDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: error); break
+            }
+        }
+        self.geojsonLocationLevelQueue.addOperation(operation)
+    }
+    
+    func cancelAllGeojsonLocationLevelOperations() {
+        self.geojsonLocationLevelQueue.cancelAllOperations()
+    }
+    
+    func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        
+        let model = GetPhotoOperationModel.Request(photoId: photoAnnotation.model.photoId)
+        let operation = GetPhotoOperation(model: model) { result in
+            switch result {
+                case .success(let value): self.delegate?.successDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, photo: value.photo); break
+                case .failure(let error): self.delegate?.failureDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, error: error); break
+            }
+        }
+        
+        queue.addOperation(operation)
     }
 }

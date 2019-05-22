@@ -16,6 +16,7 @@ public class STPhotoMapStyle {
     public var noDataViewModel: NoDataViewModel
     
     public var entityLevelViewModel: EntityLevelViewModel
+    public var locationOverlayViewModel: LocationOverlayViewModel
     
     public var userLocationButtonModel: UserLocationButtonModel
     
@@ -24,6 +25,7 @@ public class STPhotoMapStyle {
         self.noInternetConnectionViewModel = NoInternetConnectionViewModel()
         self.noDataViewModel = NoDataViewModel()
         self.entityLevelViewModel = EntityLevelViewModel()
+        self.locationOverlayViewModel = LocationOverlayViewModel()
         self.userLocationButtonModel = UserLocationButtonModel()
     }
     
@@ -65,13 +67,28 @@ public class STPhotoMapStyle {
         public var stateTitle: String = STPhotoMapLocalization.shared.stateLevelTitle
         public var countryTitle: String = STPhotoMapLocalization.shared.countryLevelTitle
         
-        public var locationImage: UIImage?
-        public var blockImage: UIImage?
-        public var neighborhoodImage: UIImage?
-        public var cityImage: UIImage?
-        public var countyImage: UIImage?
-        public var stateImage: UIImage?
-        public var countryImage: UIImage?
+        public var locationImage: UIImage? = UIImage(named: "st_entity_location_level", in: Bundle.module, compatibleWith: nil)
+        public var blockImage: UIImage? = UIImage(named: "st_entity_block_level", in: Bundle.module, compatibleWith: nil)
+        public var neighborhoodImage: UIImage? = UIImage(named: "st_entity_neighborhood_level", in: Bundle.module, compatibleWith: nil)
+        public var cityImage: UIImage? = UIImage(named: "st_entity_city_level", in: Bundle.module, compatibleWith: nil)
+        public var countyImage: UIImage? = UIImage(named: "st_entity_county_level", in: Bundle.module, compatibleWith: nil)
+        public var stateImage: UIImage? = UIImage(named: "st_entity_state_level", in: Bundle.module, compatibleWith: nil)
+        public var countryImage: UIImage? = UIImage(named: "st_entity_country_level", in: Bundle.module, compatibleWith: nil)
+    }
+    
+    public struct LocationOverlayViewModel {
+        public var show: Bool = true
+        public var backgroundColor: UIColor = UIColor.white
+        public var borderWidth: CGFloat = 5.0
+        public var borderColor: CGColor = UIColor(red: 73/255, green: 175/255, blue: 253/255, alpha: 1.0).cgColor
+        public var cornerRadius: CGFloat = 10.0
+        public var titleColor: UIColor = UIColor(red: 53/255, green: 61/255, blue: 75/255, alpha: 1)
+        public var titleFont: UIFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.semibold)
+        public var timeColor: UIColor = UIColor.darkGray
+        public var timeFont: UIFont = UIFont.systemFont(ofSize: 13.0)
+        public var descriptionColor: UIColor = UIColor.darkGray
+        public var descriptionFont: UIFont = UIFont.systemFont(ofSize: 13.0)
+        public var disclosureImage: UIImage? = UIImage(named: "st_location_overlay_disclosure", in: Bundle.module, compatibleWith: nil)
     }
     
     public struct UserLocationButtonModel {

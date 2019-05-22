@@ -21,7 +21,7 @@ protocol STPhotoMapDataPassing {
 }
 
 class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic, STPhotoMapDataPassing {
-    weak var viewController: STPhotoMapViewController?
+    weak var displayer: STPhotoMapDisplayLogic?
     var dataStore: STPhotoMapDataStore?
     
     // MARK: Routing

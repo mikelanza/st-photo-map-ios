@@ -20,7 +20,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
         }
     }
     
-    private var model: Model
+    var model: Model
     
     init(model: Model) {
         self.model = model
@@ -33,9 +33,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
     
     override public func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {
         let url = self.url(forTilePath: path)
-        self.downloadImage(url: url) { (data, error) in
-            result(data, error)
-        }
+        url.downloadImage(result: result)
     }
 }
 
@@ -43,18 +41,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
 
 public extension STPhotoTileOverlay {
     func update(parameter: KeyValue) {
-        self.model.parameters.removeAll(where: { $0 == parameter })
+        self.model.parameters.removeAll(where: { $0.key == parameter.key })
         self.model.parameters.append(parameter)
-    }
-}
-
-// MARK: - Download methods
-
-extension STPhotoTileOverlay {
-    private func downloadImage(url: URL, result: @escaping (Data?, Error?) -> Void) {
-        let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            result(data, error)
-        }
-        dataTask.resume()
     }
 }

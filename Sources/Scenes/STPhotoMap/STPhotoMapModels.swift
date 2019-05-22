@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import MapKit
 
 enum STPhotoMapModels {
     enum VisibleTiles {
@@ -27,6 +28,145 @@ enum STPhotoMapModels {
         struct ViewModel {
             let title: String?
             let image: UIImage?
+        }
+    }
+    
+    struct Annotation {
+        let id: String
+        let imageUrl: String?
+        let latitude: Double
+        let longitude: Double
+        
+        func toPhotoAnnotation() -> PhotoAnnotation {
+            let pinAnnotation = PhotoAnnotation(id: id, coordinate: CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude))
+            pinAnnotation.model.imageUrl = imageUrl
+            return pinAnnotation
+        }
+    }
+    
+    enum LocationAnnotations {
+        struct Response {
+            let annotations: [Annotation]
+        }
+        
+        struct ViewModel {
+            let annotations: [PhotoAnnotation]
+        }
+    }
+    
+    enum PhotoAnnotationImageDownload {
+        struct Request {
+            let photoAnnotation: PhotoAnnotation
+        }
+    }
+    
+    enum PhotoAnnotationSelection {
+        struct Request {
+            let photoAnnotation: PhotoAnnotation
+            let previousPhotoAnnotation: PhotoAnnotation?
+        }
+        
+        struct Response {
+            let photoAnnotation: PhotoAnnotation?
+        }
+        
+        struct ViewModel {
+            let photoAnnotation: PhotoAnnotation?
+        }
+    }
+    
+    enum PhotoAnnotationDeselection {
+        struct Response {
+            let photoAnnotation: PhotoAnnotation?
+        }
+        
+        struct ViewModel {
+            let photoAnnotation: PhotoAnnotation?
+        }
+    }
+    
+    enum PhotoClusterAnnotationSelection {
+        struct Request {
+            let clusterAnnotation: MultiplePhotoClusterAnnotation
+            let photoAnnotation: PhotoAnnotation
+            let previousPhotoAnnotation: PhotoAnnotation?
+        }
+        
+        struct Response {
+            let photoAnnotation: PhotoAnnotation
+        }
+        
+        struct ViewModel {
+            let photoAnnotation: PhotoAnnotation
+        }
+    }
+    
+    enum PhotoClusterAnnotationDeselection {
+        struct Response {
+            let photoAnnotation: PhotoAnnotation?
+        }
+        
+        struct ViewModel {
+            let photoAnnotation: PhotoAnnotation?
+        }
+    }
+    
+    enum PhotoDetailsNavigation {
+        struct Request {
+            let photoId: String
+        }
+        
+        struct Response {
+            let photoId: String
+        }
+        
+        struct ViewModel {
+            let photoId: String
+        }
+    }
+    
+    enum LocationOverlay {
+        struct Response {
+            let photo: STPhoto
+        }
+        
+        struct ViewModel {
+            let photoId: String
+            let title: String?
+            let time: String?
+            let description: String?
+        }
+    }
+    
+    enum PhotoClusterAnnotationInflation {
+        struct Request {
+            let clusterAnnotation: MultiplePhotoClusterAnnotation
+            let previousClusterAnnotation: MultiplePhotoClusterAnnotation?
+            let zoomLevel: Int
+        }
+    }
+    
+    enum SpecificPhotosNavigation {
+        struct Request {
+            let photoIds: [String]
+        }
+        
+        struct Response {
+            let photoIds: [String]
+        }
+        
+        struct ViewModel {
+            let photoIds: [String]
+        }
+    }
+    
+    enum CoordinateZoom {
+        struct Response {
+            let coordinate: CLLocationCoordinate2D
+        }
+        
+        struct ViewModel {
+            let coordinate: CLLocationCoordinate2D
         }
     }
 }
