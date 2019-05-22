@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Bundle {
+public extension Bundle {
     private static let bundleId = "com.streetography.st.photo.map.ios.STPhotoMap"
     
     static var module: Bundle {
