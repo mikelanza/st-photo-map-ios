@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension Bundle {
+extension Bundle {
     static var module: Bundle {
         let bundle = Bundle(for: STPhotoMapView.self)
         guard let url = bundle.url(forResource: "STPhotoMap", withExtension: "bundle") else { return bundle }
