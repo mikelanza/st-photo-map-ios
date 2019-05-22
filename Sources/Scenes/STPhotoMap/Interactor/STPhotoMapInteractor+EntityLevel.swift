@@ -46,7 +46,7 @@ extension STPhotoMapInteractor {
     }
     
     private func didGetGeojsonTileForEntityLevel(tileCoordinate: TileCoordinate, geojsonObject: GeoJSONObject) {
-        if self.isStillTileVisible(tileCoordinate: tileCoordinate) {
+        if self.isStillTileVisible(tileCoordinate: tileCoordinate) && geojsonObject.entityLevel != EntityLevel.unknown {
             self.entityLevelHandler.change(entityLevel: geojsonObject.entityLevel)
             self.worker?.cancelAllGeojsonEntityLevelOperations()
         }
