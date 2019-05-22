@@ -12,6 +12,7 @@ extension Bundle {
     private static let bundleId = "com.streetography.st.photo.map.ios.STPhotoMap"
     
     static var module: Bundle {
-        return Bundle(identifier: bundleId) ?? .main
+        guard let path = Bundle(identifier: bundleId)?.resourcePath else { return .main }
+        return Bundle(path: path.appending("/STPhotoMap.bundle")) ?? .main
     }
 }
