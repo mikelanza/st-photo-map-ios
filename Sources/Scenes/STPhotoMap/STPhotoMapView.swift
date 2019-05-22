@@ -31,6 +31,10 @@ protocol STPhotoMapDisplayLogic: class {
     func displayRemoveLocationOverlay()
     func displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel)
     func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel)
+    func displaySelectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
+    func displayDeselectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationDeselection.ViewModel)
+    func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel)
+    func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -114,12 +118,16 @@ extension STPhotoMapView {
         self.interactor?.shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation))
     }
     
-    private func shouldSelectPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?, photoClusterAnnotation: MultiplePhotoClusterAnnotation?) {
-        self.interactor?.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation, photoClusterAnnotation: photoClusterAnnotation))
+    private func shouldSelectPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
+        self.interactor?.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation))
     }
     
-    private func shouldSelectPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation, previousClusterAnnotation: MultiplePhotoClusterAnnotation?, zoomLevel: Int) {
-        self.interactor?.shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request(clusterAnnotation: clusterAnnotation, previousClusterAnnotation: previousClusterAnnotation, zoomLevel: zoomLevel))
+    private func shouldInflatePhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation, previousClusterAnnotation: MultiplePhotoClusterAnnotation?, zoomLevel: Int) {
+        self.interactor?.shouldInflatePhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationInflation.Request(clusterAnnotation: clusterAnnotation, previousClusterAnnotation: previousClusterAnnotation, zoomLevel: zoomLevel))
+    }
+    
+    private func shouldSelectPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation, photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
+        self.interactor?.shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request(clusterAnnotation: clusterAnnotation, photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation))
     }
 }
 
@@ -265,6 +273,28 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         let region = MKCoordinateRegion(center: coordinate, span: span)
         self.mapView?.setRegion(region, animated: true)
     }
+    
+    // MARK: - Photo annotation selection/deselection
+    
+    func displaySelectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel) {
+        viewModel.photoAnnotation?.isSelected = true
+    }
+    
+    func displayDeselectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationDeselection.ViewModel) {
+        viewModel.photoAnnotation?.isSelected = false
+    }
+    
+    // MARK: - Photo cluster annotation selection/deselection
+    
+    func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel) {
+        self.annotationHandler?.selectedPhotoClusterAnnotation?.interface?.setIsSelected(photoId: viewModel.photoAnnotation.model.photoId, isSelected: true)
+    }
+    
+    func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel) {
+        if let annotation = viewModel.photoAnnotation {
+            self.annotationHandler?.selectedPhotoClusterAnnotation?.interface?.setIsSelected(photoId: annotation.model.photoId, isSelected: false)
+        }
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -322,7 +352,7 @@ extension STPhotoMapView: MKMapViewDelegate {
 
 extension STPhotoMapView: PhotoAnnotationViewDelegate {
     func photoAnnotationView(view: PhotoAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
-        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation, photoClusterAnnotation: nil)
+        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
         self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }
@@ -331,12 +361,12 @@ extension STPhotoMapView: PhotoAnnotationViewDelegate {
 
 extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
     func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoClusterAnnotation: MultiplePhotoClusterAnnotation, didSelect clusterLabelView: ClusterLabelView?) {
-        self.shouldSelectPhotoClusterAnnotation(photoClusterAnnotation, previousClusterAnnotation: self.annotationHandler?.selectedPhotoClusterAnnotation, zoomLevel: self.mapView.zoomLevel())
+        self.shouldInflatePhotoClusterAnnotation(photoClusterAnnotation, previousClusterAnnotation: self.annotationHandler?.selectedPhotoClusterAnnotation, zoomLevel: self.mapView.zoomLevel())
         self.annotationHandler?.selectedPhotoClusterAnnotation = photoClusterAnnotation
     }
     
     func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoClusterAnnotation: MultiplePhotoClusterAnnotation, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
-        self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation, photoClusterAnnotation: photoClusterAnnotation)
+        self.shouldSelectPhotoClusterAnnotation(photoClusterAnnotation, photoAnnotation: photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
         self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }

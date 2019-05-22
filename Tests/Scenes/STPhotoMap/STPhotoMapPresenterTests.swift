@@ -104,4 +104,28 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentZoomToCoordinate(response: response)
         XCTAssertTrue(self.displayerSpy.displayZoomToCoordinateCalled)
     }
+    
+    func testPresentSelectPhotoAnnotation() {
+        let response = STPhotoMapModels.PhotoAnnotationSelection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentSelectPhotoAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displaySelectPhotoAnnotationCalled)
+    }
+    
+    func testPresentDeselectPhotoAnnotation() {
+        let response = STPhotoMapModels.PhotoAnnotationDeselection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentDeselectPhotoAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displayDeselectPhotoAnnotationCalled)
+    }
+    
+    func testPresentDeselectPhotoClusterAnnotation() {
+        let response = STPhotoMapModels.PhotoClusterAnnotationDeselection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentDeselectPhotoClusterAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displayDeselectPhotoClusterAnnotationCalled)
+    }
+    
+    func testPresentSelectPhotoClusterAnnotation() {
+        let response = STPhotoMapModels.PhotoClusterAnnotationSelection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentSelectPhotoClusterAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displaySelectPhotoClusterAnnotationCalled)
+    }
 }

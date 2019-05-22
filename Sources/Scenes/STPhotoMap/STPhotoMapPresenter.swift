@@ -25,6 +25,10 @@ protocol STPhotoMapPresentationLogic {
     func presentRemoveLocationOverlay()
     func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response)
+    func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
+    func presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response)
+    func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response)
+    func presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -114,5 +118,25 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response) {
         let viewModel = STPhotoMapModels.CoordinateZoom.ViewModel(coordinate: response.coordinate)
         self.displayer?.displayZoomToCoordinate(viewModel: viewModel)
+    }
+    
+    func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response) {
+        let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displaySelectPhotoAnnotation(viewModel: viewModel)
+    }
+    
+    func presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response) {
+        let viewModel = STPhotoMapModels.PhotoAnnotationDeselection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displayDeselectPhotoAnnotation(viewModel: viewModel)
+    }
+    
+    func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response) {
+        let viewModel = STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displayDeselectPhotoClusterAnnotation(viewModel: viewModel)
+    }
+    
+    func presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response) {
+        let viewModel = STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displaySelectPhotoClusterAnnotation(viewModel: viewModel)
     }
 }

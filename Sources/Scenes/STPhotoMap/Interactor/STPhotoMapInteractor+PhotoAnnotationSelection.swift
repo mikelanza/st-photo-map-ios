@@ -14,27 +14,27 @@ extension STPhotoMapInteractor {
         if photoAnnotation.isSelected == true {
             self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: photoAnnotation.model.photoId))
         } else {
-            self.shouldHandleNonSelectedPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: request.previousPhotoAnnotation, photoClusterAnnotation: request.photoClusterAnnotation)
+            self.shouldHandleNonSelectedPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: request.previousPhotoAnnotation)
             self.shouldGetPhotoDetailsFor(photoAnnotation)
         }
     }
     
-    private func shouldHandleNonSelectedPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?, photoClusterAnnotation: MultiplePhotoClusterAnnotation?) {
+    private func shouldHandleNonSelectedPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
         if self.isLocationLevel() {
-            previousPhotoAnnotation?.isSelected = false
-            photoAnnotation.isSelected = true
-            photoClusterAnnotation?.interface?.setIsSelected(photoId: photoAnnotation.model.photoId, isSelected: true)
+            self.presenter?.presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response(photoAnnotation: previousPhotoAnnotation))
+            self.presenter?.presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response(photoAnnotation: previousPhotoAnnotation))
+            self.presenter?.presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response(photoAnnotation: photoAnnotation))
         }
     }
     
-    private func shouldGetPhotoDetailsFor(_ photoAnnotation: PhotoAnnotation) {
+    func shouldGetPhotoDetailsFor(_ photoAnnotation: PhotoAnnotation) {
         if self.isLocationLevel() {
             self.presenter?.presentLoadingState()
             self.worker?.getPhotoDetailsForPhotoAnnotation(photoAnnotation)
         }
     }
     
-    private func shouldPresentLocationOverlayFor(_ photo: STPhoto) {
+    func shouldPresentLocationOverlayFor(_ photo: STPhoto) {
         if self.isLocationLevel() {
             self.presenter?.presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response(photo: photo))
         }

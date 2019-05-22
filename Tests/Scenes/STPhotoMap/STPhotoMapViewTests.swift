@@ -198,17 +198,17 @@ class STPhotoMapViewTests: XCTestCase {
         let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: clusterAnnotation.photoIds.count)
         self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, with: clusterAnnotation.annotation(for: 0)!, didSelect: nil)
         
-        XCTAssertTrue(self.interactorSpy.shouldSelectPhotoAnnotationCalled)
+        XCTAssertTrue(self.interactorSpy.shouldSelectPhotoClusterAnnotationCalled)
     }
     
-    func testShouldSelectPhotoClusterAnnotationWhenAPhotoClusterAnnotationIsTouchedUpInside() {
+    func testShouldInflatePhotoClusterAnnotationWhenAPhotoClusterAnnotationIsTouchedUpInside() {
         self.loadView()
         
         let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
         let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: clusterAnnotation.photoIds.count)
         self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, didSelect: nil)
         
-        XCTAssertTrue(self.interactorSpy.shouldSelectPhotoClusterAnnotationCalled)
+        XCTAssertTrue(self.interactorSpy.shouldInflatePhotoClusterAnnotationCalled)
     }
     
     // MARK: - Test display logic
@@ -320,5 +320,30 @@ class STPhotoMapViewTests: XCTestCase {
         self.waitForMainQueue()
         
         XCTAssertTrue(mapViewSpy.setRegionAnimatedCalled)
+    }
+    
+    func testDisplaySelectPhotoAnnotation() {
+        self.loadView()
+        
+        let photoAnnotation = STPhotoMapSeeds().photoAnnotation()
+        XCTAssertFalse(photoAnnotation.isSelected)
+        
+        let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: photoAnnotation)
+        self.sut.displaySelectPhotoAnnotation(viewModel: viewModel)
+        
+        XCTAssertTrue(photoAnnotation.isSelected)
+    }
+    
+    func testDisplayDeselectPhotoAnnotation() {
+        self.loadView()
+        
+        let photoAnnotation = STPhotoMapSeeds().photoAnnotation()
+        photoAnnotation.isSelected = true
+        XCTAssertTrue(photoAnnotation.isSelected)
+        
+        let viewModel = STPhotoMapModels.PhotoAnnotationDeselection.ViewModel(photoAnnotation: photoAnnotation)
+        self.sut.displayDeselectPhotoAnnotation(viewModel: viewModel)
+        
+        XCTAssertFalse(photoAnnotation.isSelected)
     }
 }

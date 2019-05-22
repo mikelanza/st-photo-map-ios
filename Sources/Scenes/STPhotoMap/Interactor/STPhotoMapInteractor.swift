@@ -21,6 +21,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
     func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request)
+    func shouldInflatePhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationInflation.Request)
     func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request)
 }
 

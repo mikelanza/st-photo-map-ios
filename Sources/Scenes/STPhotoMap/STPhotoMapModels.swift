@@ -64,7 +64,50 @@ enum STPhotoMapModels {
         struct Request {
             let photoAnnotation: PhotoAnnotation
             let previousPhotoAnnotation: PhotoAnnotation?
-            let photoClusterAnnotation: MultiplePhotoClusterAnnotation?
+        }
+        
+        struct Response {
+            let photoAnnotation: PhotoAnnotation?
+        }
+        
+        struct ViewModel {
+            let photoAnnotation: PhotoAnnotation?
+        }
+    }
+    
+    enum PhotoAnnotationDeselection {
+        struct Response {
+            let photoAnnotation: PhotoAnnotation?
+        }
+        
+        struct ViewModel {
+            let photoAnnotation: PhotoAnnotation?
+        }
+    }
+    
+    enum PhotoClusterAnnotationSelection {
+        struct Request {
+            let clusterAnnotation: MultiplePhotoClusterAnnotation
+            let photoAnnotation: PhotoAnnotation
+            let previousPhotoAnnotation: PhotoAnnotation?
+        }
+        
+        struct Response {
+            let photoAnnotation: PhotoAnnotation
+        }
+        
+        struct ViewModel {
+            let photoAnnotation: PhotoAnnotation
+        }
+    }
+    
+    enum PhotoClusterAnnotationDeselection {
+        struct Response {
+            let photoAnnotation: PhotoAnnotation?
+        }
+        
+        struct ViewModel {
+            let photoAnnotation: PhotoAnnotation?
         }
     }
     
@@ -95,7 +138,7 @@ enum STPhotoMapModels {
         }
     }
     
-    enum PhotoClusterAnnotationSelection {
+    enum PhotoClusterAnnotationInflation {
         struct Request {
             let clusterAnnotation: MultiplePhotoClusterAnnotation
             let previousClusterAnnotation: MultiplePhotoClusterAnnotation?

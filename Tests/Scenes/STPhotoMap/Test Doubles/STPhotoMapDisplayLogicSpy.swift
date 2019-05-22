@@ -19,6 +19,10 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     var displayRemoveLocationOverlayCalled: Bool = false
     var displayNavigateToSpecificPhotosCalled: Bool = false
     var displayZoomToCoordinateCalled: Bool = false
+    var displaySelectPhotoAnnotationCalled: Bool = false
+    var displayDeselectPhotoAnnotationCalled: Bool = false
+    var displayDeselectPhotoClusterAnnotationCalled: Bool = false
+    var displaySelectPhotoClusterAnnotationCalled: Bool = false
     
     func displayLoadingState() {
         self.displayLoadingStateCalled = true
@@ -58,5 +62,21 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     
     func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel) {
         self.displayZoomToCoordinateCalled = true
+    }
+    
+    func displaySelectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel) {
+        self.displaySelectPhotoAnnotationCalled = true
+    }
+    
+    func displayDeselectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationDeselection.ViewModel) {
+        self.displayDeselectPhotoAnnotationCalled = true
+    }
+    
+    func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel) {
+        self.displayDeselectPhotoClusterAnnotationCalled = true
+    }
+    
+    func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel) {
+        self.displaySelectPhotoClusterAnnotationCalled = true
     }
 }

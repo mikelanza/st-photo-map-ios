@@ -10,30 +10,21 @@ import Foundation
 
 extension STPhotoMapInteractor {
     func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request) {
-        let zoomLevel = request.zoomLevel
-        let clusterAnnotation = request.clusterAnnotation
-        let photoIds = clusterAnnotation.photoIds
-        
-        if zoomLevel == 20 && photoIds.count > 15 {
-            self.presenter?.presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response(photoIds: photoIds))
-        } else if zoomLevel == 20 || clusterAnnotation.doMemberAnnotationsHaveSameCoordinate() {
-            request.previousClusterAnnotation?.deflate()
-            clusterAnnotation.inflate()
-            self.shouldDownloadImagesForPhotoClusterAnnotation(clusterAnnotation)
+        let photoAnnotation = request.photoAnnotation
+        if photoAnnotation.isSelected == true {
+            self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: photoAnnotation.model.photoId))
         } else {
-            self.presenter?.presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response(coordinate: clusterAnnotation.coordinate))
+            self.shouldHandleNonSelectedPhotoClusterAnnotation(request.clusterAnnotation, photoAnnotation: photoAnnotation, previousPhotoAnnotation: request.previousPhotoAnnotation)
+            self.shouldGetPhotoDetailsFor(photoAnnotation)
         }
     }
     
-    private func shouldDownloadImagesForPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation) {
-        clusterAnnotation.multipleAnnotationModels.forEach { (key, value) in
-            value.isLoading = true
-            clusterAnnotation.interface?.setIsLoading(photoId: key, isLoading: true)
-            
-            self.worker?.downloadImageForPhotoAnnotation(value, completion: { image in
-                clusterAnnotation.interface?.setIsLoading(photoId: key, isLoading: false)
-                clusterAnnotation.interface?.setImage(photoId: key, image: image)
-            })
+    private func shouldHandleNonSelectedPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation, photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
+        if self.isLocationLevel() {
+            self.presenter?.presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response(photoAnnotation: previousPhotoAnnotation))
+            self.presenter?.presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response(photoAnnotation: previousPhotoAnnotation))
+            self.presenter?.presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response(photoAnnotation: photoAnnotation))
+            self.presenter?.presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response(photoAnnotation: photoAnnotation))
         }
     }
 }
