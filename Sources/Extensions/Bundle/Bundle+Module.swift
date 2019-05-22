@@ -8,9 +8,11 @@
 
 import Foundation
 
-public extension Bundle {
+extension Bundle {
+    private static let bundleId = "com.streetography.st.photo.map.ios.STPhotoMap"
+    
     static var module: Bundle {
-        let bundle = Bundle(for: self)
+        guard let bundle = Bundle(identifier: bundleId) else { return .main }
         guard let url = bundle.url(forResource: "STPhotoMap", withExtension: "bundle") else { return bundle }
         return Bundle(url: url) ?? bundle
     }
