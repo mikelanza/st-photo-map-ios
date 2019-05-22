@@ -31,16 +31,16 @@ class STPhotoMapLocalization {
         countryLevel = "PhotoMap.country.level.title"
     }
     
-    let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized
-    let noInternetConnectionTitle = LocalizedKey.noInternetConnection.localized
+    let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized()
+    let noInternetConnectionTitle = LocalizedKey.noInternetConnection.localized()
     
-    let dataSourcesTitle = LocalizedKey.dataSources.localized
+    let dataSourcesTitle = LocalizedKey.dataSources.localized()
     
-    let locationLevelTitle = LocalizedKey.locationLevel.localized
-    let blockLevelTitle = LocalizedKey.blockLevel.localized
-    let neighborhoodLevelTitle = LocalizedKey.neighborhoodLevel.localized
-    let cityLevelTitle = LocalizedKey.cityLevel.localized
-    let countyLevelTitle = LocalizedKey.countyLevel.localized
-    let stateLevelTitle = LocalizedKey.stateLevel.localized
-    let countryLevelTitle = LocalizedKey.countryLevel.localized
+    let locationLevelTitle = LocalizedKey.locationLevel.localized()
+    let blockLevelTitle = LocalizedKey.blockLevel.localized()
+    let neighborhoodLevelTitle = LocalizedKey.neighborhoodLevel.localized()
+    let cityLevelTitle = LocalizedKey.cityLevel.localized()
+    let countyLevelTitle = LocalizedKey.countyLevel.localized()
+    let stateLevelTitle = LocalizedKey.stateLevel.localized()
+    let countryLevelTitle = LocalizedKey.countryLevel.localized()
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		280F4B6E2294E0E1006C6E27 /* Bundle+Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280F4B6D2294E0E1006C6E27 /* Bundle+Module.swift */; };
 		2810E6A822852DA100D491C2 /* STPhotoMapViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6A722852DA100D491C2 /* STPhotoMapViewTests.swift */; };
 		2810E6AB22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6AA22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift */; };
 		2810E6AD228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810E6AC228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift */; };
@@ -133,6 +134,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		280F4B6D2294E0E1006C6E27 /* Bundle+Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Module.swift"; sourceTree = "<group>"; };
 		2810E6A722852DA100D491C2 /* STPhotoMapViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapViewTests.swift; sourceTree = "<group>"; };
 		2810E6AA22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapPresentationLogicSpy.swift; sourceTree = "<group>"; };
 		2810E6AC228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapDisplayLogicSpy.swift; sourceTree = "<group>"; };
@@ -297,6 +299,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		280F4B6C2294E0D4006C6E27 /* Bundle */ = {
+			isa = PBXGroup;
+			children = (
+				280F4B6D2294E0E1006C6E27 /* Bundle+Module.swift */,
+			);
+			path = Bundle;
+			sourceTree = "<group>";
+		};
 		2810E6A922852F8B00D491C2 /* Test Doubles */ = {
 			isa = PBXGroup;
 			children = (
@@ -652,6 +662,7 @@
 		8529E5632264813500E7CCE5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				280F4B6C2294E0D4006C6E27 /* Bundle */,
 				28833D7122940F8C0098A833 /* CLLocationCoordinate2D */,
 				28833D6E22940ECF0098A833 /* MKClusterAnnotation */,
 				2858AE122292947600A01C4E /* DateFormatter */,
@@ -1224,6 +1235,7 @@
 				85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */,
 				85BC155D228947EA00872FA7 /* STPhotoMapEntityLevelHandler.swift in Sources */,
 				85538D352267107C007D4A15 /* GetGeojsonTileOperation.swift in Sources */,
+				280F4B6E2294E0E1006C6E27 /* Bundle+Module.swift in Sources */,
 				85538D15226703D9007D4A15 /* GeoJSONBoundingBox.swift in Sources */,
 				85538D4122671239007D4A15 /* OperationError.swift in Sources */,
 				851864A2226E5F3D00A5C44D /* EntityLevel.swift in Sources */,

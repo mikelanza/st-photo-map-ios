@@ -59,7 +59,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         queue.asyncAfter(deadline: .now() + delay) {
             waitExpectation.fulfill()
         }
-        waitForExpectations(timeout: delay)
+        waitForExpectations(timeout: 1.0)
     }
     
     private func wait(delay: Double) {
@@ -68,7 +68,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         queue.asyncAfter(deadline: .now() + delay) {
             waitExpectation.fulfill()
         }
-        waitForExpectations(timeout: delay)
+        waitForExpectations(timeout: 1.0)
     }
     
     // MARK: - Tests
