@@ -13,7 +13,7 @@ extension Bundle {
     
     static var module: Bundle {
         let bundle = Bundle(for: self)
-        guard let path = bundle.path(forResource: "STPhotoMap", ofType: "bundle") else { return bundle }
+        guard let path = bundle.path(forResource: "STPhotoMap-iOS", ofType: "bundle") else { return bundle }
         return Bundle(path: path) ?? bundle
     }
 }
