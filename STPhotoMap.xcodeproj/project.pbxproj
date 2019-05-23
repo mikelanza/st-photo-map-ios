@@ -26,6 +26,13 @@
 		2858AE0C2292920800A01C4E /* GetPhotoOperationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2858AE0B2292920800A01C4E /* GetPhotoOperationModel.swift */; };
 		2858AE0E2292924C00A01C4E /* GetPhotoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2858AE0D2292924C00A01C4E /* GetPhotoOperation.swift */; };
 		2858AE142292948200A01C4E /* DateFormatter+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2858AE132292948200A01C4E /* DateFormatter+ISO8601.swift */; };
+		28628954229635150033AFD3 /* STCarouselOverlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28628953229635150033AFD3 /* STCarouselOverlayModel.swift */; };
+		28628956229637790033AFD3 /* STCarouselOverlayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28628955229637790033AFD3 /* STCarouselOverlayLabel.swift */; };
+		28628958229637F70033AFD3 /* STCarouselOverlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28628957229637F70033AFD3 /* STCarouselOverlayButton.swift */; };
+		2862895A229638CE0033AFD3 /* STCarouselOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28628959229638CE0033AFD3 /* STCarouselOverlay.swift */; };
+		2862896322963A890033AFD3 /* MKOverlay+MapPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2862896222963A890033AFD3 /* MKOverlay+MapPoint.swift */; };
+		2862896522963B350033AFD3 /* STCarouselOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2862896422963B350033AFD3 /* STCarouselOverlayRenderer.swift */; };
+		2862896722963E780033AFD3 /* STCarouselOverlayGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2862896622963E780033AFD3 /* STCarouselOverlayGenerator.swift */; };
 		28833D7022940EDD0098A833 /* MKClusterAnnotation+SameCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28833D6F22940EDD0098A833 /* MKClusterAnnotation+SameCoordinate.swift */; };
 		28833D7322940F9B0098A833 /* CLLocationCoordinate2D+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28833D7222940F9B0098A833 /* CLLocationCoordinate2D+Equatable.swift */; };
 		28833D7522941A9B0098A833 /* STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28833D7422941A9B0098A833 /* STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift */; };
@@ -154,6 +161,13 @@
 		2858AE0B2292920800A01C4E /* GetPhotoOperationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoOperationModel.swift; sourceTree = "<group>"; };
 		2858AE0D2292924C00A01C4E /* GetPhotoOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoOperation.swift; sourceTree = "<group>"; };
 		2858AE132292948200A01C4E /* DateFormatter+ISO8601.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+ISO8601.swift"; sourceTree = "<group>"; };
+		28628953229635150033AFD3 /* STCarouselOverlayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayModel.swift; sourceTree = "<group>"; };
+		28628955229637790033AFD3 /* STCarouselOverlayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayLabel.swift; sourceTree = "<group>"; };
+		28628957229637F70033AFD3 /* STCarouselOverlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayButton.swift; sourceTree = "<group>"; };
+		28628959229638CE0033AFD3 /* STCarouselOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlay.swift; sourceTree = "<group>"; };
+		2862896222963A890033AFD3 /* MKOverlay+MapPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKOverlay+MapPoint.swift"; sourceTree = "<group>"; };
+		2862896422963B350033AFD3 /* STCarouselOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayRenderer.swift; sourceTree = "<group>"; };
+		2862896622963E780033AFD3 /* STCarouselOverlayGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayGenerator.swift; sourceTree = "<group>"; };
 		28833D6F22940EDD0098A833 /* MKClusterAnnotation+SameCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKClusterAnnotation+SameCoordinate.swift"; sourceTree = "<group>"; };
 		28833D7222940F9B0098A833 /* CLLocationCoordinate2D+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Equatable.swift"; sourceTree = "<group>"; };
 		28833D7422941A9B0098A833 /* STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift"; sourceTree = "<group>"; };
@@ -402,6 +416,27 @@
 				2858AE132292948200A01C4E /* DateFormatter+ISO8601.swift */,
 			);
 			path = DateFormatter;
+			sourceTree = "<group>";
+		};
+		28628952229635020033AFD3 /* Carousel */ = {
+			isa = PBXGroup;
+			children = (
+				28628959229638CE0033AFD3 /* STCarouselOverlay.swift */,
+				28628953229635150033AFD3 /* STCarouselOverlayModel.swift */,
+				28628955229637790033AFD3 /* STCarouselOverlayLabel.swift */,
+				28628957229637F70033AFD3 /* STCarouselOverlayButton.swift */,
+				2862896422963B350033AFD3 /* STCarouselOverlayRenderer.swift */,
+				2862896622963E780033AFD3 /* STCarouselOverlayGenerator.swift */,
+			);
+			path = Carousel;
+			sourceTree = "<group>";
+		};
+		2862896122963A750033AFD3 /* MKOverlay */ = {
+			isa = PBXGroup;
+			children = (
+				2862896222963A890033AFD3 /* MKOverlay+MapPoint.swift */,
+			);
+			path = MKOverlay;
 			sourceTree = "<group>";
 		};
 		28833D6E22940ECF0098A833 /* MKClusterAnnotation */ = {
@@ -665,6 +700,7 @@
 		8529E5632264813500E7CCE5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2862896122963A750033AFD3 /* MKOverlay */,
 				280F4B6C2294E0D4006C6E27 /* Bundle */,
 				28833D7122940F8C0098A833 /* CLLocationCoordinate2D */,
 				28833D6E22940ECF0098A833 /* MKClusterAnnotation */,
@@ -864,6 +900,7 @@
 		85F07412226062F1006DA073 /* STPhotoMap */ = {
 			isa = PBXGroup;
 			children = (
+				28628952229635020033AFD3 /* Carousel */,
 				854AE1AF228EC40900C44F1C /* Location Level */,
 				289F27A2228DBA5100741CF7 /* Cluster Annotations */,
 				289F2798228DB76D00741CF7 /* Annotations */,
@@ -1213,17 +1250,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2862896322963A890033AFD3 /* MKOverlay+MapPoint.swift in Sources */,
 				85538D332267107C007D4A15 /* GetGeojsonTileOperationRequestBuilder.swift in Sources */,
 				2858AE142292948200A01C4E /* DateFormatter+ISO8601.swift in Sources */,
 				28833D7322940F9B0098A833 /* CLLocationCoordinate2D+Equatable.swift in Sources */,
 				85538D342267107C007D4A15 /* GetGeojsonTileOperationModel.swift in Sources */,
 				28CAAC8622608B47000C0200 /* STPhotoMapView.swift in Sources */,
+				2862895A229638CE0033AFD3 /* STCarouselOverlay.swift in Sources */,
 				28833D7722941ACA0098A833 /* STPhotoMapInteractor+PhotoAnnotationSelection.swift in Sources */,
 				85538D2522670507007D4A15 /* STLocation.swift in Sources */,
 				85538D1F226703D9007D4A15 /* GeoJSONPolygon.swift in Sources */,
 				8529E5662264819100E7CCE5 /* Array+Synchronized.swift in Sources */,
 				289F27AC228DBEDF00741CF7 /* ClusterAnnotationView.swift in Sources */,
 				2858AE0C2292920800A01C4E /* GetPhotoOperationModel.swift in Sources */,
+				28628958229637F70033AFD3 /* STCarouselOverlayButton.swift in Sources */,
 				85538D20226703D9007D4A15 /* GeoJSONPoint.swift in Sources */,
 				2858AE0122928DC200A01C4E /* STPhoto.swift in Sources */,
 				289B174422670D1F00B09F7A /* STPhotoMapStyle.swift in Sources */,
@@ -1259,7 +1299,9 @@
 				289F279E228DB7BA00741CF7 /* PhotoImageView.swift in Sources */,
 				85F0741E2260630E006DA073 /* STPhotoMapInteractor.swift in Sources */,
 				85538D16226703D9007D4A15 /* GeoJSONParser.swift in Sources */,
+				28628956229637790033AFD3 /* STCarouselOverlayLabel.swift in Sources */,
 				2828E5542285C0BB00554417 /* STPhotoMapCacheHandler.swift in Sources */,
+				28628954229635150033AFD3 /* STCarouselOverlayModel.swift in Sources */,
 				28860DBB2264B79D0015C92B /* URL+Parameters.swift in Sources */,
 				8529E5272263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift in Sources */,
 				85538D1D226703D9007D4A15 /* GeoJSONMultiPoint.swift in Sources */,
@@ -1273,6 +1315,7 @@
 				854AE1B1228EC7D200C44F1C /* STPhotoMapLocationLevelHandler.swift in Sources */,
 				289B174822670E9400B09F7A /* STEntityLevelView.swift in Sources */,
 				28833D7022940EDD0098A833 /* MKClusterAnnotation+SameCoordinate.swift in Sources */,
+				2862896522963B350033AFD3 /* STCarouselOverlayRenderer.swift in Sources */,
 				851864A5226E6E7500A5C44D /* MKMapView+VisibleTiles.swift in Sources */,
 				854AE1A9228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift in Sources */,
 				2831D678228C776F00C88215 /* GeoJSONFeature+EntityLevel.swift in Sources */,
@@ -1281,6 +1324,7 @@
 				2828E93A228D5DD100EAB0B6 /* URL+DownloadImage.swift in Sources */,
 				289F27A8228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift in Sources */,
 				289F279B228DB78E00741CF7 /* PhotoAnnotation.swift in Sources */,
+				2862896722963E780033AFD3 /* STCarouselOverlayGenerator.swift in Sources */,
 				85538D2A226706CF007D4A15 /* Array+Tail.swift in Sources */,
 				28860DBF2264B8240015C92B /* Parameters.swift in Sources */,
 				85538D1A226703D9007D4A15 /* PhotoProperties.swift in Sources */,
