@@ -43,7 +43,7 @@ protocol STPhotoMapDisplayLogic: class {
 }
 
 public class STPhotoMapView: UIView {
-    public weak var mapView: MKMapView!
+    public weak var mapView: STActionMapView!
     public weak var dataSource: STPhotoMapViewDataSource?
     public weak var delegate: STPhotoMapViewDelegate?
     
@@ -54,6 +54,7 @@ public class STPhotoMapView: UIView {
     weak var locationOverlayView: STLocationOverlayView!
     
     var photoTileOverlay: STPhotoTileOverlay?
+    var carouselOverlay: STCarouselOverlay?
     private var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
@@ -101,6 +102,12 @@ extension STPhotoMapView {
     public func reloadTiles() {
         if let overlay = self.photoTileOverlay, let renderer = self.mapView?.renderer(for: overlay) as? STPhotoTileOverlayRenderer {
             renderer.reloadTiles()
+        }
+    }
+    
+    public func reloadCarouselOverlay() {
+        if let overlay = self.carouselOverlay, let renderer = self.mapView?.renderer(for: overlay) as? STCarouselOverlayRenderer {
+            renderer.reload()
         }
     }
 }
@@ -395,6 +402,22 @@ extension STPhotoMapView {
     }
 }
 
+// MARK: - Actions
+
+extension STPhotoMapView: STActionMapViewDelegate {
+    func actionMapView(mapView: STActionMapView?, didSelect carouselOverlay: STCarouselOverlay, atLocation location: STLocation) {
+        
+    }
+    
+    func actionMapView(mapView: STActionMapView?, didSelect tileCoordinate: TileCoordinate, atLocation location: STLocation) {
+        
+    }
+    
+    func actionMapView(mapView: STActionMapView?, didSelectCarouselPhoto photoId: String, atLocation location: STLocation) {
+        
+    }
+}
+
 // MARK: - Subviews configuration
 
 extension STPhotoMapView {
@@ -404,9 +427,10 @@ extension STPhotoMapView {
     }
     
     private func setupMapView() {
-        let mapView = MKMapView()
+        let mapView = STActionMapView()
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.delegate = self
+        mapView.actionMapViewDelegate = self
         self.addSubview(mapView)
         self.mapView = mapView
     }

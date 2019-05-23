@@ -311,7 +311,7 @@ class STPhotoMapViewTests: XCTestCase {
     func testDisplayZoomToCoordinate() {
         self.loadView()
         
-        let mapViewSpy = MKMapViewSpy(frame: .zero)
+        let mapViewSpy = STActionMapViewSpy(frame: .zero)
         self.sut.mapView = mapViewSpy
         
         let viewModel = STPhotoMapModels.CoordinateZoom.ViewModel(coordinate: STPhotoMapSeeds.coordinate)

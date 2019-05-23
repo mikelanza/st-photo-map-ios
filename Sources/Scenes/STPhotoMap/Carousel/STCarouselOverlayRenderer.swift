@@ -59,7 +59,7 @@ class STCarouselOverlayRenderer: MKOverlayRenderer {
 // MARK: - Auxiliary
 
 extension STCarouselOverlayRenderer {
-    func reloadTiles() {
+    func reload() {
         DispatchQueue.main.async {
             self.setNeedsDisplay()
         }
