@@ -86,6 +86,11 @@
 		8529E5662264819100E7CCE5 /* Array+Synchronized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8529E5652264819100E7CCE5 /* Array+Synchronized.swift */; };
 		8547A675229BA58F00BBF0C5 /* WKTReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A673229BA58F00BBF0C5 /* WKTReader.swift */; };
 		8547A676229BA58F00BBF0C5 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A674229BA58F00BBF0C5 /* Tokenizer.swift */; };
+		8547A67B229BA75000BBF0C5 /* GetGeoEntityOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A678229BA75000BBF0C5 /* GetGeoEntityOperation.swift */; };
+		8547A67C229BA75000BBF0C5 /* GetGeoEntityRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A679229BA75000BBF0C5 /* GetGeoEntityRequestBuilder.swift */; };
+		8547A67D229BA75000BBF0C5 /* GetGeoEntityOperationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A67A229BA75000BBF0C5 /* GetGeoEntityOperationModel.swift */; };
+		8547A680229BA9BC00BBF0C5 /* GeoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A67F229BA9BC00BBF0C5 /* GeoEntity.swift */; };
+		8547A682229BB23400BBF0C5 /* GeoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A681229BB23400BBF0C5 /* GeoLabel.swift */; };
 		854AE1A9228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854AE1A8228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift */; };
 		854AE1AB228E93B200C44F1C /* geojson_object_location.json in Resources */ = {isa = PBXBuildFile; fileRef = 854AE1AA228E93B100C44F1C /* geojson_object_location.json */; };
 		854AE1AE228E995800C44F1C /* GeoJSONObject+Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854AE1AC228E993E00C44F1C /* GeoJSONObject+Features.swift */; };
@@ -235,6 +240,11 @@
 		8529E5652264819100E7CCE5 /* Array+Synchronized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Synchronized.swift"; sourceTree = "<group>"; };
 		8547A673229BA58F00BBF0C5 /* WKTReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKTReader.swift; sourceTree = "<group>"; };
 		8547A674229BA58F00BBF0C5 /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
+		8547A678229BA75000BBF0C5 /* GetGeoEntityOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetGeoEntityOperation.swift; sourceTree = "<group>"; };
+		8547A679229BA75000BBF0C5 /* GetGeoEntityRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetGeoEntityRequestBuilder.swift; sourceTree = "<group>"; };
+		8547A67A229BA75000BBF0C5 /* GetGeoEntityOperationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetGeoEntityOperationModel.swift; sourceTree = "<group>"; };
+		8547A67F229BA9BC00BBF0C5 /* GeoEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoEntity.swift; sourceTree = "<group>"; };
+		8547A681229BB23400BBF0C5 /* GeoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoLabel.swift; sourceTree = "<group>"; };
 		854AE1A8228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+LocationLevel.swift"; sourceTree = "<group>"; };
 		854AE1AA228E93B100C44F1C /* geojson_object_location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geojson_object_location.json; sourceTree = "<group>"; };
 		854AE1AC228E993E00C44F1C /* GeoJSONObject+Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoJSONObject+Features.swift"; sourceTree = "<group>"; };
@@ -501,6 +511,7 @@
 		28860DBC2264B8060015C92B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8547A67E229BA9B700BBF0C5 /* Geo Entity */,
 				288D2C052296F26E008D568C /* Repeating Timer */,
 				2832A7BB2296C0820039320E /* Carousel */,
 				2858AE0222928ECD00A01C4E /* User */,
@@ -788,6 +799,25 @@
 			path = WKT;
 			sourceTree = "<group>";
 		};
+		8547A677229BA73600BBF0C5 /* Geo Entity */ = {
+			isa = PBXGroup;
+			children = (
+				8547A678229BA75000BBF0C5 /* GetGeoEntityOperation.swift */,
+				8547A67A229BA75000BBF0C5 /* GetGeoEntityOperationModel.swift */,
+				8547A679229BA75000BBF0C5 /* GetGeoEntityRequestBuilder.swift */,
+			);
+			path = "Geo Entity";
+			sourceTree = "<group>";
+		};
+		8547A67E229BA9B700BBF0C5 /* Geo Entity */ = {
+			isa = PBXGroup;
+			children = (
+				8547A681229BB23400BBF0C5 /* GeoLabel.swift */,
+				8547A67F229BA9BC00BBF0C5 /* GeoEntity.swift */,
+			);
+			path = "Geo Entity";
+			sourceTree = "<group>";
+		};
 		854AE1AF228EC40900C44F1C /* Location Level */ = {
 			isa = PBXGroup;
 			children = (
@@ -888,6 +918,7 @@
 		85538D2D22671021007D4A15 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				8547A677229BA73600BBF0C5 /* Geo Entity */,
 				2858AE052292919200A01C4E /* Photo */,
 				85538D2E2267107B007D4A15 /* Geojson Tile */,
 			);
@@ -1322,6 +1353,7 @@
 				85538D342267107C007D4A15 /* GetGeojsonTileOperationModel.swift in Sources */,
 				28CAAC8622608B47000C0200 /* STPhotoMapView.swift in Sources */,
 				2862895A229638CE0033AFD3 /* STCarouselOverlay.swift in Sources */,
+				8547A682229BB23400BBF0C5 /* GeoLabel.swift in Sources */,
 				28833D7722941ACA0098A833 /* STPhotoMapInteractor+PhotoAnnotationSelection.swift in Sources */,
 				85538D2522670507007D4A15 /* STLocation.swift in Sources */,
 				85538D1F226703D9007D4A15 /* GeoJSONPolygon.swift in Sources */,
@@ -1340,6 +1372,7 @@
 				289B1A17226717E700B09F7A /* String+Localized.swift in Sources */,
 				2858AE0E2292924C00A01C4E /* GetPhotoOperation.swift in Sources */,
 				8547A675229BA58F00BBF0C5 /* WKTReader.swift in Sources */,
+				8547A67D229BA75000BBF0C5 /* GetGeoEntityOperationModel.swift in Sources */,
 				85538D18226703D9007D4A15 /* GeoJSONType.swift in Sources */,
 				85F0741B2260630E006DA073 /* STPhotoMapRouter.swift in Sources */,
 				85BC155D228947EA00872FA7 /* STPhotoMapEntityLevelHandler.swift in Sources */,
@@ -1359,6 +1392,7 @@
 				289F27A1228DB88300741CF7 /* DefaultReuseIdentifier.swift in Sources */,
 				289F27A6228DBA6100741CF7 /* MultiplePhotoCalloutView.swift in Sources */,
 				289B17522267150800B09F7A /* STPhotoMapLocalization.swift in Sources */,
+				8547A67C229BA75000BBF0C5 /* GetGeoEntityRequestBuilder.swift in Sources */,
 				85F074212260AB89006DA073 /* STPhotoTileOverlay.swift in Sources */,
 				85538D22226703D9007D4A15 /* GeoJSONGeometryCollection.swift in Sources */,
 				85538D19226703D9007D4A15 /* GeoJSONFeature.swift in Sources */,
@@ -1378,6 +1412,7 @@
 				85538D1D226703D9007D4A15 /* GeoJSONMultiPoint.swift in Sources */,
 				85F0741C2260630E006DA073 /* STPhotoMapModels.swift in Sources */,
 				85F074192260630E006DA073 /* STPhotoMapPresenter.swift in Sources */,
+				8547A680229BA9BC00BBF0C5 /* GeoEntity.swift in Sources */,
 				2858AE0422928EE100A01C4E /* STUser.swift in Sources */,
 				85538D1E226703D9007D4A15 /* GeoJSONLineString.swift in Sources */,
 				2832A7C02296C1F70039320E /* MKMapRect+Coordinates.swift in Sources */,
@@ -1405,6 +1440,7 @@
 				85DDB924228DA08400A9BC61 /* MKMapView+BoundingBox.swift in Sources */,
 				2831D67B228C789000C88215 /* GeoJSONObject+EntityLevel.swift in Sources */,
 				85538D1B226703D9007D4A15 /* GeoJSONFeatureCollection.swift in Sources */,
+				8547A67B229BA75000BBF0C5 /* GetGeoEntityOperation.swift in Sources */,
 				85538D38226710C4007D4A15 /* AsynchronousOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
