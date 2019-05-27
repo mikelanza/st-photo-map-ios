@@ -91,6 +91,8 @@
 		8547A67D229BA75000BBF0C5 /* GetGeoEntityOperationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A67A229BA75000BBF0C5 /* GetGeoEntityOperationModel.swift */; };
 		8547A680229BA9BC00BBF0C5 /* GeoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A67F229BA9BC00BBF0C5 /* GeoEntity.swift */; };
 		8547A682229BB23400BBF0C5 /* GeoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A681229BB23400BBF0C5 /* GeoLabel.swift */; };
+		8547A686229BB81100BBF0C5 /* Array+BestFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A685229BB81100BBF0C5 /* Array+BestFeature.swift */; };
+		8547A688229BBC8600BBF0C5 /* MKMapRect+OverlapPercentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8547A687229BBC8600BBF0C5 /* MKMapRect+OverlapPercentage.swift */; };
 		854AE1A9228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854AE1A8228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift */; };
 		854AE1AB228E93B200C44F1C /* geojson_object_location.json in Resources */ = {isa = PBXBuildFile; fileRef = 854AE1AA228E93B100C44F1C /* geojson_object_location.json */; };
 		854AE1AE228E995800C44F1C /* GeoJSONObject+Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854AE1AC228E993E00C44F1C /* GeoJSONObject+Features.swift */; };
@@ -245,6 +247,8 @@
 		8547A67A229BA75000BBF0C5 /* GetGeoEntityOperationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetGeoEntityOperationModel.swift; sourceTree = "<group>"; };
 		8547A67F229BA9BC00BBF0C5 /* GeoEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoEntity.swift; sourceTree = "<group>"; };
 		8547A681229BB23400BBF0C5 /* GeoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoLabel.swift; sourceTree = "<group>"; };
+		8547A685229BB81100BBF0C5 /* Array+BestFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+BestFeature.swift"; sourceTree = "<group>"; };
+		8547A687229BBC8600BBF0C5 /* MKMapRect+OverlapPercentage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapRect+OverlapPercentage.swift"; sourceTree = "<group>"; };
 		854AE1A8228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+LocationLevel.swift"; sourceTree = "<group>"; };
 		854AE1AA228E93B100C44F1C /* geojson_object_location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geojson_object_location.json; sourceTree = "<group>"; };
 		854AE1AC228E993E00C44F1C /* GeoJSONObject+Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoJSONObject+Features.swift"; sourceTree = "<group>"; };
@@ -407,6 +411,7 @@
 			children = (
 				2832A7BF2296C1F70039320E /* MKMapRect+Coordinates.swift */,
 				2832A7C12296C2140039320E /* MKMapRect+Area.swift */,
+				8547A687229BBC8600BBF0C5 /* MKMapRect+OverlapPercentage.swift */,
 			);
 			path = MKMapRect;
 			sourceTree = "<group>";
@@ -778,6 +783,7 @@
 			children = (
 				8529E5652264819100E7CCE5 /* Array+Synchronized.swift */,
 				85538D29226706CF007D4A15 /* Array+Tail.swift */,
+				8547A685229BB81100BBF0C5 /* Array+BestFeature.swift */,
 			);
 			path = Array;
 			sourceTree = "<group>";
@@ -1406,6 +1412,7 @@
 				286289692296422A0033AFD3 /* STActionMapView.swift in Sources */,
 				28628956229637790033AFD3 /* STCarouselOverlayLabel.swift in Sources */,
 				2828E5542285C0BB00554417 /* STPhotoMapCacheHandler.swift in Sources */,
+				8547A688229BBC8600BBF0C5 /* MKMapRect+OverlapPercentage.swift in Sources */,
 				28628954229635150033AFD3 /* STCarouselOverlayModel.swift in Sources */,
 				28860DBB2264B79D0015C92B /* URL+Parameters.swift in Sources */,
 				8529E5272263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift in Sources */,
@@ -1429,6 +1436,7 @@
 				289F27AA228DBAF100741CF7 /* ClusterLabelView.swift in Sources */,
 				289F279C228DB78E00741CF7 /* PhotoAnnotationView.swift in Sources */,
 				2828E93A228D5DD100EAB0B6 /* URL+DownloadImage.swift in Sources */,
+				8547A686229BB81100BBF0C5 /* Array+BestFeature.swift in Sources */,
 				289F27A8228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift in Sources */,
 				289F279B228DB78E00741CF7 /* PhotoAnnotation.swift in Sources */,
 				2862896722963E780033AFD3 /* STCarouselOverlayGenerator.swift in Sources */,
