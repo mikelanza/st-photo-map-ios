@@ -11,15 +11,8 @@ import MapKit
 
 extension Array where Element: GeoJSONObject {
     func feature(atLocation location: STLocation) -> GeoJSONFeature? {
-        let features = self.flatMap { (geojsonObject) -> [GeoJSONFeature] in
-            geojsonObject.features()
-        }
+        let features: [GeoJSONFeature] = self.flatMap({ $0.features() })
         
-        for feature in features {
-            if feature.contains(location: location) {
-                return feature
-            }
-        }
-        return nil
+        return features.filter({ $0.contains(location: location) }).first
     }
 }

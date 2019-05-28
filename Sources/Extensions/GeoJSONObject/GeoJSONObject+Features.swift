@@ -11,10 +11,9 @@ import Foundation
 extension GeoJSONObject {
     func features() -> [GeoJSONFeature] {
         switch self {
-        case let featureCollection as GeoJSONFeatureCollection: return featureCollection.features
-        case let feature as GeoJSONFeature: return [feature]
-        default: break
+            case let featureCollection as GeoJSONFeatureCollection: return featureCollection.features
+            case let feature as GeoJSONFeature: return [feature]
+            default: return []
         }
-        return []
     }
 }

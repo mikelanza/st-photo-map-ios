@@ -11,16 +11,14 @@ import MapKit
 
 extension Array where Element: GeoJSONObject {
     func bestFeature(mapRect: MKMapRect) -> GeoJSONFeature? {
-        var features = self.flatMap { (geojsonObject) -> [GeoJSONFeature] in
-            geojsonObject.features()
-        }
-        
-        features.sort { (lht, rht) -> Bool in
-            return mapRect.overlapPercentage(mapRect: lht.objectBoundingBox?.mapRect()) > mapRect.overlapPercentage(mapRect: rht.objectBoundingBox?.mapRect())
-                && lht.objectBoundingBox?.mapRect().area() ?? 0 > rht.objectBoundingBox?.mapRect().area() ?? 0
-                && lht.photoProperties?.photoCount ?? 0 > rht.photoProperties?.photoCount ?? 0
-        }
-        
+        var features: [GeoJSONFeature] = self.flatMap({ $0.features() })
+        features.sort(by: { self.compare(lht: $0, rht: $1, for: mapRect)})
         return features.first
+    }
+    
+    private func compare(lht: GeoJSONFeature, rht: GeoJSONFeature, for mapRect: MKMapRect) -> Bool {
+        return mapRect.overlapPercentage(mapRect: lht.objectBoundingBox?.mapRect()) > mapRect.overlapPercentage(mapRect: rht.objectBoundingBox?.mapRect()) &&
+            lht.objectBoundingBox?.mapRect().area() ?? 0 > rht.objectBoundingBox?.mapRect().area() ?? 0 &&
+            lht.photoProperties?.photoCount ?? 0 > rht.photoProperties?.photoCount ?? 0
     }
 }

@@ -11,15 +11,9 @@ import Foundation
 extension GeoJSONGeometry {
     func contains(location: STLocation) -> Bool {
         switch self {
-        case let polygon as GeoJSONPolygon: return polygon.isLocationInsidePolygon(location: location)
-        case let multiPolygon as GeoJSONMultiPolygon:
-            for polygon in multiPolygon.polygons {
-                if polygon.isLocationInsidePolygon(location: location) {
-                    return true
-                }
-            }
-        default: break
+            case let polygon as GeoJSONPolygon: return polygon.isLocationInsidePolygon(location: location)
+            case let multiPolygon as GeoJSONMultiPolygon: return multiPolygon.polygons.filter({ $0.isLocationInsidePolygon(location: location)}).first != nil
+            default: return false
         }
-        return false
     }
 }

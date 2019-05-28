@@ -18,11 +18,6 @@ extension GeoJSONFeature {
             return false
         }
         
-        for geometry in geometries {
-            if geometry.contains(location: location) {
-                return true
-            }
-        }
-        return false
+        return geometries.filter({ $0.contains(location: location)}).first != nil
     }
 }
