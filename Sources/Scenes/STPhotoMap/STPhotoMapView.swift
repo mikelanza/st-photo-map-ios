@@ -40,6 +40,8 @@ protocol STPhotoMapDisplayLogic: class {
     
     func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel)
     func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel)
+    
+    func displayRemoveCarousel()
 }
 
 public class STPhotoMapView: UIView {
@@ -305,6 +307,15 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel) {
         if let annotation = viewModel.photoAnnotation {
             self.annotationHandler?.selectedPhotoClusterAnnotation?.interface?.setIsSelected(photoId: annotation.model.photoId, isSelected: false)
+        }
+    }
+    
+    // MARK: - Carousel
+    
+    func displayRemoveCarousel() {
+        DispatchQueue.main.async {
+            let carouselOverlays = self.mapView.overlays.filter({ $0 is STCarouselOverlay })
+            self.mapView.removeOverlays(carouselOverlays)
         }
     }
 }

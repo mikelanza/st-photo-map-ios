@@ -346,4 +346,19 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertFalse(photoAnnotation.isSelected)
     }
+    
+    func testDisplayRemoveCarousel() {
+        self.loadView()
+        
+        let overlay = STCarouselOverlay.init(polygon: nil, polyline: nil, model: STCarouselOverlayModel())
+        self.sut.mapView.addOverlay(overlay)
+        
+        self.sut.displayRemoveCarousel()
+        
+        self.waitForMainQueue()
+        
+        for overlay in self.sut.mapView.overlays {
+            XCTAssertFalse(overlay is STCarouselOverlay)
+        }
+    }
 }

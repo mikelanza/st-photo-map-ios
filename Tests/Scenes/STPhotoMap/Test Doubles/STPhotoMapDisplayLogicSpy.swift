@@ -23,6 +23,7 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     var displayDeselectPhotoAnnotationCalled: Bool = false
     var displayDeselectPhotoClusterAnnotationCalled: Bool = false
     var displaySelectPhotoClusterAnnotationCalled: Bool = false
+    var displayRemoveCarouselCalled: Bool = false
     
     func displayLoadingState() {
         self.displayLoadingStateCalled = true
@@ -78,5 +79,9 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     
     func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel) {
         self.displaySelectPhotoClusterAnnotationCalled = true
+    }
+    
+    func displayRemoveCarousel() {
+        self.displayRemoveCarouselCalled = true
     }
 }

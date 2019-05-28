@@ -87,11 +87,14 @@ extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
         
         self.presenter?.presentRemoveLocationAnnotations()
         self.presenter?.presentRemoveLocationOverlay()
+        self.presenter?.presentRemoveCarousel()
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
     }
     
     func photoMapEntityLevelHandler(location level: EntityLevel) {
         self.worker?.cancelAllGeojsonEntityLevelOperations()
+        
+        self.presenter?.presentRemoveCarousel()
         
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
         self.shouldDetermineLocationLevel()

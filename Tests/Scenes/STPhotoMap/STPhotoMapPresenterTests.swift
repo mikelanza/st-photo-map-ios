@@ -128,4 +128,10 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentSelectPhotoClusterAnnotation(response: response)
         XCTAssertTrue(self.displayerSpy.displaySelectPhotoClusterAnnotationCalled)
     }
+    
+    func testPresentRemoveCarousel() {
+        self.sut.presentRemoveCarousel()
+        
+        XCTAssertTrue(self.displayerSpy.displayRemoveCarouselCalled)
+    }
 }

@@ -308,7 +308,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
-
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
 
@@ -327,7 +327,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(worker.getGeojsonTileForEntityLevelCalled)
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
-
+        XCTAssertFalse(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
     }
 
@@ -348,6 +348,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.workerSpy.getGeojsonTileForEntityLevelCalled)
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
     }
 
@@ -367,6 +368,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.workerSpy.getGeojsonTileForCachingCalled)
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
 
@@ -384,7 +386,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
-
+        XCTAssertFalse(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
     }
 
@@ -402,7 +404,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
-
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
     }
 
@@ -420,6 +422,8 @@ class STPhotoMapInteractorTests: XCTestCase {
 
         XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
         XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
+        
+        XCTAssertFalse(self.presenterSpy.presentRemoveCarouselCalled)
     }
 
     func testShouldDetermineEntityLevelWhenDownloadedTileIsStillVisible() {
@@ -431,6 +435,8 @@ class STPhotoMapInteractorTests: XCTestCase {
 
         XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
         XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
     }
 
     // MARK: - Location level
