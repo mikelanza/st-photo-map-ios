@@ -887,4 +887,13 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertFalse(self.presenterSpy.presentLocationOverlayCalled)
     }
+    
+    // MARK: - Carousel
+    
+    func testShouldDetermineCarouselWhenEntityLevelIsLocation () {
+        self.sut.entityLevelHandler.entityLevel = .location
+        self.sut.shouldDetermineCarousel()
+        
+        XCTAssertFalse(self.presenterSpy.presentCarouselCalled)
+    }
 }

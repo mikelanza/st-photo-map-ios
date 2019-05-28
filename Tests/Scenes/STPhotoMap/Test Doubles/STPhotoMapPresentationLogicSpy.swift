@@ -24,6 +24,7 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentDeselectPhotoClusterAnnotationCalled: Bool = false
     var presentSelectPhotoClusterAnnotationCalled: Bool = false
     var presentRemoveCarouselCalled: Bool = false
+    var presentCarouselCalled: Bool = false
     
     func presentLoadingState() {
         self.presentLoadingStateCalled = true
@@ -83,5 +84,9 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentRemoveCarousel() {
         self.presentRemoveCarouselCalled = true
+    }
+    
+    func presentCarousel(response: STPhotoMapModels.CarouselOverlay.Response) {
+        self.presentCarouselCalled = true
     }
 }

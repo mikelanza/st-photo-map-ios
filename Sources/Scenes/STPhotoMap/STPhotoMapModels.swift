@@ -169,4 +169,14 @@ enum STPhotoMapModels {
             let coordinate: CLLocationCoordinate2D
         }
     }
+    
+    enum CarouselOverlay {
+        struct Response {
+            let carousel: STCarouselOverlay
+        }
+        
+        struct ViewModel {
+            let carousel: STCarouselOverlay
+        }
+    }
 }

@@ -19,6 +19,7 @@ protocol STPhotoMapBusinessLogic {
     
     func shouldDetermineEntityLevel()
     func shouldDetermineLocationLevel()
+    func shouldDetermineCarousel()
     
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
     

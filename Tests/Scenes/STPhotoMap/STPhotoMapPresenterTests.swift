@@ -129,6 +129,8 @@ class STPhotoMapPresenterTests: XCTestCase {
         XCTAssertTrue(self.displayerSpy.displaySelectPhotoClusterAnnotationCalled)
     }
     
+    // MARK: - Carousel
+    
     func testPresentRemoveCarousel() {
         self.sut.presentRemoveCarousel()
         
