@@ -18,6 +18,8 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     var shouldNavigateToPhotoDetailsCalled: Bool = false
     var shouldInflatePhotoClusterAnnotationCalled: Bool = false
     var shouldSelectPhotoClusterAnnotationCalled: Bool = false
+    var shouldNavigateToPhotoCollectionCalled: Bool = false
+    var shouldSelectCarouselCalled: Bool = false
     var shouldDetermineCarouselCalled: Bool = false
 
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
@@ -56,7 +58,15 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
         self.shouldSelectPhotoClusterAnnotationCalled = true
     }
     
-    func shouldDetermineCarousel() {
+    func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request) {
+        self.shouldNavigateToPhotoCollectionCalled = true
+    }
+    
+    func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request) {
+        self.shouldSelectCarouselCalled = true
+    }
+    
+    func shouldDetermineCarousel(request: STPhotoMapModels.CarouselDetermination.Request) {
         self.shouldDetermineCarouselCalled = true
     }
 }

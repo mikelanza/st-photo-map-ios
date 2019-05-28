@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 
 extension Array where Element: GeoJSONObject {
-    func feature(atLocation location: STLocation) -> GeoJSONFeature? {
+    public func feature(atLocation location: STLocation) -> GeoJSONFeature? {
         let features: [GeoJSONFeature] = self.flatMap({ $0.features() })
         
         return features.filter({ $0.contains(location: location) }).first

@@ -11,6 +11,7 @@
 class STPhotoMapViewDelegateSpy: NSObject, STPhotoMapViewDelegate {
     var photoMapViewNavigateToPhotoDetailsForPhotoIdCalled: Bool = false
     var photoMapViewNavigateToSpecificPhotosForPhotoIdsCalled: Bool = false
+    var photoMapViewNavigateToPhotoCollectionForLocationEntityLevelCalled: Bool = false
     
     func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?) {
         self.photoMapViewNavigateToPhotoDetailsForPhotoIdCalled = true
@@ -18,5 +19,9 @@ class STPhotoMapViewDelegateSpy: NSObject, STPhotoMapViewDelegate {
     
     func photoMapView(_ view: STPhotoMapView?, navigateToSpecificPhotosFor photoIds: [String]) {
         self.photoMapViewNavigateToSpecificPhotosForPhotoIdsCalled = true
+    }
+    
+    func photoMapView(_ view: STPhotoMapView?, navigateToPhotoCollectionFor location: STLocation, entityLevel: EntityLevel) {
+        self.photoMapViewNavigateToPhotoCollectionForLocationEntityLevelCalled = true
     }
 }

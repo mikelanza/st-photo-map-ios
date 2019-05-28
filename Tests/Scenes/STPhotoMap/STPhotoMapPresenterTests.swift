@@ -133,7 +133,18 @@ class STPhotoMapPresenterTests: XCTestCase {
     
     func testPresentRemoveCarousel() {
         self.sut.presentRemoveCarousel()
-        
         XCTAssertTrue(self.displayerSpy.displayRemoveCarouselCalled)
+    }
+    
+    func testPresentNavigateToPhotoCollection() {
+        let response = STPhotoMapModels.PhotoCollectionNavigation.Response(location: STPhotoMapSeeds.location, entityLevel: EntityLevel.block)
+        self.sut.presentNavigateToPhotoCollection(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNavigateToPhotoCollectionCalled)
+    }
+    
+    func testPresentNewCarousel() {
+        let response = STPhotoMapModels.NewCarousel.Response(carousel: STCarousel())
+        self.sut.presentNewCarousel(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNewCarouselCalled)
     }
 }

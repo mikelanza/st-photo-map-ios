@@ -160,6 +160,23 @@ enum STPhotoMapModels {
         }
     }
     
+    enum PhotoCollectionNavigation {
+        struct Request {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+        
+        struct Response {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+        
+        struct ViewModel {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+    }
+    
     enum CoordinateZoom {
         struct Response {
             let coordinate: CLLocationCoordinate2D
@@ -170,13 +187,26 @@ enum STPhotoMapModels {
         }
     }
     
-    enum CarouselOverlay {
+    enum CarouselSelection {
+        struct Request {
+            let tileCoordinate: TileCoordinate
+            let location: STLocation
+        }
+    }
+    
+    enum NewCarousel {
         struct Response {
-            let carousel: STCarouselOverlay
+            let carousel: STCarousel
         }
         
         struct ViewModel {
-            let carousel: STCarouselOverlay
+            let overlays: [STCarouselOverlay]
+        }
+    }
+    
+    enum CarouselDetermination {
+        struct Request {
+            let mapRect: MKMapRect
         }
     }
 }

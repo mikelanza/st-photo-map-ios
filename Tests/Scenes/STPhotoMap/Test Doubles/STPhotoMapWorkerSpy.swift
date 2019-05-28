@@ -17,6 +17,8 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     var getGeojsonLocationLevelCalled: Bool = false
     var downloadImageForPhotoAnnotationCalled: Bool = false
     var getPhotoDetailsForPhotoAnnotationCalled: Bool = false
+    var getGeoEntityForEntityCalled: Bool = false
+    var cancelAllGeoEntityOperationsCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
@@ -80,6 +82,22 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
             }
         }
     }
+    
+    override func getGeoEntityForEntity(_ entityId: String, entityLevel: EntityLevel) {
+        self.getGeoEntityForEntityCalled = true
+        
+        if self.delay == 0 {
+            self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: STPhotoMapSeeds().geoEntity())
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: STPhotoMapSeeds().geoEntity())
+            }
+        }
+    }
+    
+    override func cancelAllGeoEntityOperations() {
+        self.cancelAllGeoEntityOperationsCalled = true
+    }
 }
 
 class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
@@ -89,6 +107,7 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
     var getGeojsonTileForEntityLevelCalled: Bool = false
     var downloadImageForPhotoAnnotationCalled: Bool = false
     var getPhotoDetailsForPhotoAnnotationCalled: Bool = false
+    var getGeoEntityForEntityCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
@@ -124,6 +143,18 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
                 self.delegate?.failureDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, error: OperationError.cannotParseResponse)
+            }
+        }
+    }
+    
+    override func getGeoEntityForEntity(_ entityId: String, entityLevel: EntityLevel) {
+        self.getGeoEntityForEntityCalled = true
+        
+        if self.delay == 0 {
+            self.delegate?.failureDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, error: OperationError.cannotParseResponse)
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                self.delegate?.failureDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, error: OperationError.cannotParseResponse)
             }
         }
     }

@@ -54,4 +54,8 @@ class STCarouselOverlay: NSObject, MKOverlay {
     func containsCoordinate(coordinate: CLLocationCoordinate2D) -> Bool {
         return self.containsMapPoint(MKMapPoint(coordinate))
     }
+    
+    func entityLevel() -> EntityLevel {
+        return EntityLevel.from(value: self.model.type)
+    }
 }

@@ -27,6 +27,7 @@ class STPhotoMapSeeds: NSObject {
     ]
     
     static let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 50, longitude: 50)
+    static let location: STLocation = STLocation.from(coordinate: coordinate)
     
     static let photoTileOverlayModel = STPhotoTileOverlay.Model(url: "url")
     static let photoTileOverlay = STPhotoTileOverlay(model: STPhotoMapSeeds.photoTileOverlayModel)
@@ -103,5 +104,18 @@ class STPhotoMapSeeds: NSObject {
     
     func user() -> STUser {
         return STUser(id: "user_id")
+    }
+    
+    func geoEntity() -> GeoEntity {
+        let boundingBox: BoundingBox = BoundingBox(boundingCoordinates: (minLongitude: 0, minLatitude: 0, maxLongitude: 0, maxLatitude: 0))
+        return GeoEntity(id: 1, boundingBox: boundingBox)
+    }
+    
+    func carouselOverlay() -> STCarouselOverlay {
+        return STCarouselOverlay(polygon: nil, polyline: nil, model: STCarouselOverlayModel())
+    }
+    
+    func carouselOverlays() -> [STCarouselOverlay] {
+        return [self.carouselOverlay()]
     }
 }

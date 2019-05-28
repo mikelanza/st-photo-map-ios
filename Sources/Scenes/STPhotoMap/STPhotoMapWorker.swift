@@ -24,6 +24,12 @@ protocol STPhotoMapWorkerDelegate: class {
     
     func successDidGetPhotoForPhotoAnnotation(photoAnnotation: PhotoAnnotation, photo: STPhoto)
     func failureDidGetPhotoForPhotoAnnotation(photoAnnotation: PhotoAnnotation, error: OperationError)
+    
+    func successDidGetGeoEntityForEntity(entityId: String, entityLevel: EntityLevel, geoEntity: GeoEntity)
+    func failureDidGetGeoEntityForEntity(entityId: String, entityLevel: EntityLevel, error: OperationError)
+    
+    func successDidGetGeojsonTileForDeterminingCarousel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
+    func failureDidGetGeojsonTileForDeterminingCarousel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError)
 }
 
 class STPhotoMapWorker {
@@ -31,6 +37,8 @@ class STPhotoMapWorker {
     private var geojsonTileCachingQueue: OperationQueue
     private var geojsonEntityLevelQueue: OperationQueue
     private var geojsonLocationLevelQueue: OperationQueue
+    private var geojsonTileDeterminingCarouselQueue: OperationQueue
+    private var geoEntityQueue: OperationQueue
     
     init(delegate: STPhotoMapWorkerDelegate? = nil) {
         self.delegate = delegate
@@ -42,6 +50,12 @@ class STPhotoMapWorker {
         
         self.geojsonLocationLevelQueue = OperationQueue()
         self.geojsonLocationLevelQueue.maxConcurrentOperationCount = 12
+        
+        self.geoEntityQueue = OperationQueue()
+        self.geoEntityQueue.maxConcurrentOperationCount = 1
+        
+        self.geojsonTileDeterminingCarouselQueue = OperationQueue()
+        self.geojsonTileDeterminingCarouselQueue.maxConcurrentOperationCount = 12
     }
     
     func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
@@ -106,5 +120,35 @@ class STPhotoMapWorker {
         }
         
         queue.addOperation(operation)
+    }
+    
+    func getGeoEntityForEntity(_ entityId: String, entityLevel: EntityLevel) {
+        let model = GetGeoEntityOperationModel.Request(entityId: entityId, entity: entityLevel, page: 0, limit: 10)
+        let operation = GetGeoEntityOperation(model: model) { result in
+            switch result {
+                case .success(let value): self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: value.geoEntity); break
+                case .failure(let error): self.delegate?.failureDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, error: error); break
+            }
+        }
+        self.geoEntityQueue.addOperation(operation)
+    }
+    
+    func cancelAllGeoEntityOperations() {
+        self.geoEntityQueue.cancelAllOperations()
+    }
+    
+    func getGeojsonTileForDeterminingCarousel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
+        let model = GetGeojsonTileOperationModel.Request(tileCoordinate: tileCoordinate, url: downloadUrl)
+        let operation = GetGeojsonTileOperation(model: model) { result in
+            switch result {
+            case .success(let value): self.delegate?.successDidGetGeojsonTileForDeterminingCarousel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: value.geoJSONObject); break
+            case .failure(let error): self.delegate?.failureDidGetGeojsonTileForDeterminingCarousel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: error); break
+            }
+        }
+        self.geojsonTileDeterminingCarouselQueue.addOperation(operation)
+    }
+    
+    func cancelAllGeojsonTileForDeterminingCarouselOperations() {
+        self.geojsonTileDeterminingCarouselQueue.cancelAllOperations()
     }
 }

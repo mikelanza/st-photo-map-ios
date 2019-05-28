@@ -17,4 +17,8 @@ public enum EntityLevel: String {
     case state = "state"
     case country = "country"
     case unknown = ""
+    
+    static func from(value: String) -> EntityLevel {
+        return EntityLevel(rawValue: value) ?? .unknown
+    }
 }

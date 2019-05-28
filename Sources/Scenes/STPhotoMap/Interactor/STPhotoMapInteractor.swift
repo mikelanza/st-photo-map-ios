@@ -19,16 +19,18 @@ protocol STPhotoMapBusinessLogic {
     
     func shouldDetermineEntityLevel()
     func shouldDetermineLocationLevel()
-    func shouldDetermineCarousel()
+    func shouldDetermineCarousel(request: STPhotoMapModels.CarouselDetermination.Request)
     
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
     
     func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request)
+    func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request)
     
     func shouldInflatePhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationInflation.Request)
     
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
     func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request)
+    func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -42,12 +44,14 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     var cacheHandler: STPhotoMapCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
     var locationLevelHandler: STPhotoMapLocationLevelHandler
+    let carouselHandler: STPhotoMapCarouselHandler
     
     init() {
         self.visibleTiles = []
         self.cacheHandler = STPhotoMapCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
         self.locationLevelHandler = STPhotoMapLocationLevelHandler()
+        self.carouselHandler = STPhotoMapCarouselHandler()
         self.worker = STPhotoMapWorker(delegate: self)
         self.entityLevelHandler.delegate = self
     }
@@ -76,6 +80,10 @@ extension STPhotoMapInteractor {
     
     func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request) {
         self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: request.photoId))
+    }
+    
+    func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request) {
+        self.presenter?.presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response(location: request.location, entityLevel: request.entityLevel))
     }
 }
 

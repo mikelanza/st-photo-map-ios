@@ -16,6 +16,7 @@ public protocol STPhotoMapViewDataSource: NSObjectProtocol {
 public protocol STPhotoMapViewDelegate: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?)
     func photoMapView(_ view: STPhotoMapView?, navigateToSpecificPhotosFor photoIds: [String])
+    func photoMapView(_ view: STPhotoMapView?, navigateToPhotoCollectionFor location: STLocation, entityLevel: EntityLevel)
 }
 
 protocol STPhotoMapDisplayLogic: class {
@@ -32,6 +33,7 @@ protocol STPhotoMapDisplayLogic: class {
     
     func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel)
     func displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel)
+    func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel)
     
     func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel)
     
@@ -42,6 +44,7 @@ protocol STPhotoMapDisplayLogic: class {
     func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel)
     
     func displayRemoveCarousel()
+    func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -318,6 +321,18 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
             self.mapView.removeOverlays(carouselOverlays)
         }
     }
+    
+    func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel) {
+        DispatchQueue.main.async {
+            self.mapView.addOverlays(viewModel.overlays)
+        }
+    }
+    
+    // MARK: - Photo collection navigation
+    
+    func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel) {
+        self.delegate?.photoMapView(self, navigateToPhotoCollectionFor: viewModel.location, entityLevel: viewModel.entityLevel)
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -417,15 +432,15 @@ extension STPhotoMapView {
 
 extension STPhotoMapView: STActionMapViewDelegate {
     func actionMapView(mapView: STActionMapView?, didSelect carouselOverlay: STCarouselOverlay, atLocation location: STLocation) {
-        
+        self.interactor?.shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request(location: location, entityLevel: carouselOverlay.entityLevel()))
     }
     
     func actionMapView(mapView: STActionMapView?, didSelect tileCoordinate: TileCoordinate, atLocation location: STLocation) {
-        
+        self.interactor?.shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request(tileCoordinate: tileCoordinate, location: location))
     }
     
     func actionMapView(mapView: STActionMapView?, didSelectCarouselPhoto photoId: String, atLocation location: STLocation) {
-        
+        self.interactor?.shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request(photoId: photoId))
     }
 }
 

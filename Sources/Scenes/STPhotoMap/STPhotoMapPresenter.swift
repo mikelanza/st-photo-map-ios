@@ -23,6 +23,7 @@ protocol STPhotoMapPresentationLogic {
     
     func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response)
     func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
+    func presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response)
     
     func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
     func presentRemoveLocationOverlay()
@@ -36,7 +37,7 @@ protocol STPhotoMapPresentationLogic {
     func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response)
     
     func presentRemoveCarousel()
-    func presentCarousel(response: STPhotoMapModels.CarouselOverlay.Response)
+    func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -133,6 +134,10 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         self.displayer?.displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel(photoIds: response.photoIds))
     }
     
+    func presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response) {
+        self.displayer?.displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel(location: response.location, entityLevel: response.entityLevel))
+    }
+    
     // MARK: - Zooming
     
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response) {
@@ -170,7 +175,8 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         self.displayer?.displayRemoveCarousel()
     }
     
-    func presentCarousel(response: STPhotoMapModels.CarouselOverlay.Response) {
-        
+    func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response) {
+        let viewModel = STPhotoMapModels.NewCarousel.ViewModel(overlays: response.carousel.overlays)
+        self.displayer?.displayNewCarousel(viewModel: viewModel)
     }
 }
