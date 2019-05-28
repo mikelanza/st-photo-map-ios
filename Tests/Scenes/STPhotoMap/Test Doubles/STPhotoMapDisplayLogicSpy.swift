@@ -25,6 +25,7 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     var displaySelectPhotoClusterAnnotationCalled: Bool = false
     var displayRemoveCarouselCalled: Bool = false
     var displayNavigateToPhotoCollectionCalled: Bool = false
+    var displayNewCarouselCalled: Bool = false
     
     func displayLoadingState() {
         self.displayLoadingStateCalled = true
@@ -88,5 +89,9 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     
     func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel) {
         self.displayNavigateToPhotoCollectionCalled = true
+    }
+    
+    func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel) {
+        self.displayNewCarouselCalled = true
     }
 }

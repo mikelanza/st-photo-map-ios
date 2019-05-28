@@ -227,6 +227,13 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoCollectionCalled)
     }
     
+    func testShouldSelectCarouselWhenATileOverlayIsSelected() {
+        self.loadView()
+        
+        self.sut.actionMapView(mapView: self.sut.mapView, didSelect: STPhotoMapSeeds.tileCoordinate, atLocation: STPhotoMapSeeds.location)
+        XCTAssertTrue(self.interactorSpy.shouldSelectCarouselCalled)
+    }
+    
     // MARK: - Test display logic
     
     func testDisplayLoadingState() {
@@ -366,8 +373,7 @@ class STPhotoMapViewTests: XCTestCase {
     func testDisplayRemoveCarousel() {
         self.loadView()
         
-        let overlay = STCarouselOverlay.init(polygon: nil, polyline: nil, model: STCarouselOverlayModel())
-        self.sut.mapView.addOverlay(overlay)
+        self.sut.mapView.addOverlay(STPhotoMapSeeds().carouselOverlay())
         
         self.sut.displayRemoveCarousel()
         
@@ -385,5 +391,22 @@ class STPhotoMapViewTests: XCTestCase {
         self.sut.displayNavigateToPhotoCollection(viewModel: viewModel)
         
         XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToPhotoCollectionForLocationEntityLevelCalled)
+    }
+    
+    func testDisplayNewCarousel() {
+        self.loadView()
+        
+        self.sut.mapView.removeOverlays(self.sut.mapView.overlays)
+        XCTAssertEqual(self.sut.mapView.overlays.count, 0)
+        
+        let viewModel = STPhotoMapModels.NewCarousel.ViewModel(overlays: STPhotoMapSeeds().carouselOverlays())
+        self.sut.displayNewCarousel(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertEqual(self.sut.mapView.overlays.count, 1)
+        for overlay in self.sut.mapView.overlays {
+            XCTAssertTrue(overlay is STCarouselOverlay)
+        }
     }
 }

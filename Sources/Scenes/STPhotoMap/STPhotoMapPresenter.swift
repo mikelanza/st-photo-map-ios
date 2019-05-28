@@ -37,6 +37,7 @@ protocol STPhotoMapPresentationLogic {
     func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response)
     
     func presentRemoveCarousel()
+    func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -172,5 +173,10 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     
     func presentRemoveCarousel() {
         self.displayer?.displayRemoveCarousel()
+    }
+    
+    func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response) {
+        let viewModel = STPhotoMapModels.NewCarousel.ViewModel(overlays: response.carousel.overlays)
+        self.displayer?.displayNewCarousel(viewModel: viewModel)
     }
 }

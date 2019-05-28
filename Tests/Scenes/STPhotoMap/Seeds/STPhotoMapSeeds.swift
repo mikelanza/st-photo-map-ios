@@ -105,4 +105,17 @@ class STPhotoMapSeeds: NSObject {
     func user() -> STUser {
         return STUser(id: "user_id")
     }
+    
+    func geoEntity() -> GeoEntity {
+        let boundingBox: BoundingBox = BoundingBox(boundingCoordinates: (minLongitude: 0, minLatitude: 0, maxLongitude: 0, maxLatitude: 0))
+        return GeoEntity(id: 1, boundingBox: boundingBox)
+    }
+    
+    func carouselOverlay() -> STCarouselOverlay {
+        return STCarouselOverlay(polygon: nil, polyline: nil, model: STCarouselOverlayModel())
+    }
+    
+    func carouselOverlays() -> [STCarouselOverlay] {
+        return [self.carouselOverlay()]
+    }
 }

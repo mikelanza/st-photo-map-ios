@@ -20,12 +20,8 @@ class STPhotoMapCarouselHandler {
         }
     }
     
-    func updateCarousel(geoJSONObject: GeoJSONObject, entityId: Int, name: String) {
-        let overlays = STCarouselOverlayGenerator().carouselOverlaysForGeoJSONObject(geoJSONObject: geoJSONObject)
-        
-        self.carousel.entityId = entityId
-        self.carousel.name = name
-        self.carousel.overlays = overlays
+    func updateCarouselFor(geoEntity: GeoEntity) {
+        self.carousel = geoEntity.toCarousel()
         
         self.updateBiggestCarouselOverlay()
         self.updateCarouselOverlays()

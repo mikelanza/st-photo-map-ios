@@ -29,6 +29,7 @@ protocol STPhotoMapBusinessLogic {
     
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
     func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request)
+    func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -42,12 +43,14 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     var cacheHandler: STPhotoMapCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
     var locationLevelHandler: STPhotoMapLocationLevelHandler
+    let carouselHandler: STPhotoMapCarouselHandler
     
     init() {
         self.visibleTiles = []
         self.cacheHandler = STPhotoMapCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
         self.locationLevelHandler = STPhotoMapLocationLevelHandler()
+        self.carouselHandler = STPhotoMapCarouselHandler()
         self.worker = STPhotoMapWorker(delegate: self)
         self.entityLevelHandler.delegate = self
     }

@@ -44,6 +44,7 @@ protocol STPhotoMapDisplayLogic: class {
     func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel)
     
     func displayRemoveCarousel()
+    func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -321,6 +322,12 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         }
     }
     
+    func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel) {
+        DispatchQueue.main.async {
+            self.mapView.addOverlays(viewModel.overlays)
+        }
+    }
+    
     // MARK: - Photo collection navigation
     
     func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel) {
@@ -429,7 +436,7 @@ extension STPhotoMapView: STActionMapViewDelegate {
     }
     
     func actionMapView(mapView: STActionMapView?, didSelect tileCoordinate: TileCoordinate, atLocation location: STLocation) {
-        
+        self.interactor?.shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request(tileCoordinate: tileCoordinate, location: location))
     }
     
     func actionMapView(mapView: STActionMapView?, didSelectCarouselPhoto photoId: String, atLocation location: STLocation) {

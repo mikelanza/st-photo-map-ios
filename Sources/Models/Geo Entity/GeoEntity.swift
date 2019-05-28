@@ -11,14 +11,19 @@ import Foundation
 public struct GeoEntity {
     var id: Int
     var name: String?
-    var entityLevel: EntityLevel
+    var entityLevel: EntityLevel = .unknown
     var boundingBox: BoundingBox
     var center: Coordinate?
     var geoJSONPolygons = Array<GeoJSONPolygon>()
-    var area: Double? = 0
+    var area: Double = 0
     
     var geoJSONObject: GeoJSONObject?
-    var numberOfPhotos: Int?
-    var photos = Array<STPhoto>()
+    var photoCount: Int = 0
+    var photos: [STPhoto] = []
     var label: GeoLabel?
+    
+    init(id: Int, boundingBox: BoundingBox) {
+        self.id = id
+        self.boundingBox = boundingBox
+    }
 }

@@ -186,4 +186,21 @@ enum STPhotoMapModels {
             let coordinate: CLLocationCoordinate2D
         }
     }
+    
+    enum CarouselSelection {
+        struct Request {
+            let tileCoordinate: TileCoordinate
+            let location: STLocation
+        }
+    }
+    
+    enum NewCarousel {
+        struct Response {
+            let carousel: STCarousel
+        }
+        
+        struct ViewModel {
+            let overlays: [STCarouselOverlay]
+        }
+    }
 }

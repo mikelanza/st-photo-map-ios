@@ -10,7 +10,7 @@ import Foundation
 
 enum GetGeoEntityOperationModel {
     struct Request {
-        let entityId: Int
+        let entityId: String
         var entity: EntityLevel
         var page: Int
         var limit: Int
@@ -107,12 +107,23 @@ enum GetGeoEntityOperationModel {
                geoJSONObject = try WKTReader().read(string: geom)
             }
             
-            let numberOfPhotos: Int? = self.numberOfPhotos != nil ? Int( self.numberOfPhotos!) : 0
+            let numberOfPhotos: Int = self.numberOfPhotos != nil ? Int(self.numberOfPhotos!) ?? 0 : 0
             
             let photos = self.photos?.compactMap({$0.toSTPhoto()}) ?? []
             let geoLabel = self.geoLabel(label: self.label)
+            
+            var geoEntity = GeoEntity(id: id, boundingBox: boundingBox)
+            geoEntity.name = self.name
+            geoEntity.entityLevel = entityLevel
+            geoEntity.center = self.center?.toCoordinate()
+            geoEntity.geoJSONPolygons = []
+            geoEntity.area = self.area ?? 0
+            geoEntity.geoJSONObject = geoJSONObject
+            geoEntity.photoCount = numberOfPhotos
+            geoEntity.photos = photos
+            geoEntity.label = geoLabel
 
-            return GeoEntity(id: id, name: self.name, entityLevel: entityLevel, boundingBox: boundingBox, center: self.center?.toCoordinate(), geoJSONPolygons: [], area: self.area, geoJSONObject: geoJSONObject, numberOfPhotos: numberOfPhotos, photos: photos, label: geoLabel)
+            return geoEntity
         }
         
         private func geoLabel(label: Label?) -> GeoLabel? {
@@ -174,7 +185,7 @@ enum GetGeoEntityOperationModel {
         
         func toCoordinate() -> Coordinate? {
             guard let latitude = lat, let longitude = lng else {
-                    return nil
+                return nil
             }
             return Coordinate(longitude: longitude, latitude: latitude)
         }

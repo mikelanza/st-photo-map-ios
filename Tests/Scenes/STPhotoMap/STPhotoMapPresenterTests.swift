@@ -139,4 +139,10 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentNavigateToPhotoCollection(response: response)
         XCTAssertTrue(self.displayerSpy.displayNavigateToPhotoCollectionCalled)
     }
+    
+    func testPresentNewCarousel() {
+        let response = STPhotoMapModels.NewCarousel.Response(carousel: STCarousel())
+        self.sut.presentNewCarousel(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNewCarouselCalled)
+    }
 }

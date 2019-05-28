@@ -34,6 +34,7 @@ class STCarousel {
     var shouldDrawTutorialLabel: Bool = false
     var numberOfTutorialTextUpdates: Int = 1
     
+    var photos: [STPhoto] = []
     var downloadedPhotos: [Photo] = []
     var currentPhoto: Photo?
     
