@@ -82,11 +82,20 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertEqual(self.sut.visibleTiles.count, tiles.count)
     }
     
+    // MARK: - Navigation tests
+    
     func testShouldNavigateToPhotoDetails() {
         let request = STPhotoMapModels.PhotoDetailsNavigation.Request(photoId: STPhotoMapSeeds.photoId)
         self.sut.shouldNavigateToPhotoDetails(request: request)
         
         XCTAssertTrue(self.presenterSpy.presentNavigateToPhotoDetailsCalled)
+    }
+    
+    func testShouldNavigateToPhotoCollection() {
+        let request = STPhotoMapModels.PhotoCollectionNavigation.Request(location: STPhotoMapSeeds.location, entityLevel: EntityLevel.block)
+        self.sut.shouldNavigateToPhotoCollection(request: request)
+        
+        XCTAssertTrue(self.presenterSpy.presentNavigateToPhotoCollectionCalled)
     }
 
     // MARK: - Download image for photo annotation

@@ -160,6 +160,23 @@ enum STPhotoMapModels {
         }
     }
     
+    enum PhotoCollectionNavigation {
+        struct Request {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+        
+        struct Response {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+        
+        struct ViewModel {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+    }
+    
     enum CoordinateZoom {
         struct Response {
             let coordinate: CLLocationCoordinate2D

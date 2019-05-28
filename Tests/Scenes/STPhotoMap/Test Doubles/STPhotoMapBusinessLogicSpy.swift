@@ -18,6 +18,7 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     var shouldNavigateToPhotoDetailsCalled: Bool = false
     var shouldInflatePhotoClusterAnnotationCalled: Bool = false
     var shouldSelectPhotoClusterAnnotationCalled: Bool = false
+    var shouldNavigateToPhotoCollectionCalled: Bool = false
 
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.shouldUpdateVisibleTilesCalled = true
@@ -53,5 +54,9 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     
     func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request) {
         self.shouldSelectPhotoClusterAnnotationCalled = true
+    }
+    
+    func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request) {
+        self.shouldNavigateToPhotoCollectionCalled = true
     }
 }

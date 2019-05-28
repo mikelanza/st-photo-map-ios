@@ -214,8 +214,17 @@ class STPhotoMapViewTests: XCTestCase {
     func testShouldNavigateToPhotoDetailsWhenACarouselPhotoIsSelected() {
         self.loadView()
         
-        self.sut.actionMapView(mapView: self.sut.mapView, didSelectCarouselPhoto: STPhotoMapSeeds.photoId, atLocation: STLocation.from(coordinate: STPhotoMapSeeds.coordinate))
+        self.sut.actionMapView(mapView: self.sut.mapView, didSelectCarouselPhoto: STPhotoMapSeeds.photoId, atLocation: STPhotoMapSeeds.location)
         XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoDetailsCalled)
+    }
+    
+    func testShouldNavigateToPhotoCollectionWhenACarouselOverlayIsSelected() {
+        self.loadView()
+        
+        let overlay = STCarouselOverlay(polygon: nil, polyline: nil, model: STCarouselOverlayModel())
+        self.sut.actionMapView(mapView: self.sut.mapView, didSelect: overlay, atLocation: STPhotoMapSeeds.location)
+        
+        XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoCollectionCalled)
     }
     
     // MARK: - Test display logic
@@ -367,5 +376,14 @@ class STPhotoMapViewTests: XCTestCase {
         for overlay in self.sut.mapView.overlays {
             XCTAssertFalse(overlay is STCarouselOverlay)
         }
+    }
+    
+    func testDisplayNavigateToPhotoCollection() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.PhotoCollectionNavigation.ViewModel(location: STPhotoMapSeeds.location, entityLevel: EntityLevel.block)
+        self.sut.displayNavigateToPhotoCollection(viewModel: viewModel)
+        
+        XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToPhotoCollectionForLocationEntityLevelCalled)
     }
 }

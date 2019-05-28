@@ -23,6 +23,7 @@ protocol STPhotoMapPresentationLogic {
     
     func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response)
     func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
+    func presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response)
     
     func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
     func presentRemoveLocationOverlay()
@@ -130,6 +131,10 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     
     func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response) {
         self.displayer?.displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel(photoIds: response.photoIds))
+    }
+    
+    func presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response) {
+        self.displayer?.displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel(location: response.location, entityLevel: response.entityLevel))
     }
     
     // MARK: - Zooming

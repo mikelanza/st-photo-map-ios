@@ -27,6 +27,7 @@ class STPhotoMapSeeds: NSObject {
     ]
     
     static let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 50, longitude: 50)
+    static let location: STLocation = STLocation.from(coordinate: coordinate)
     
     static let photoTileOverlayModel = STPhotoTileOverlay.Model(url: "url")
     static let photoTileOverlay = STPhotoTileOverlay(model: STPhotoMapSeeds.photoTileOverlayModel)

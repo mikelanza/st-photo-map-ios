@@ -23,6 +23,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
     
     func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request)
+    func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request)
     
     func shouldInflatePhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationInflation.Request)
     
@@ -75,6 +76,10 @@ extension STPhotoMapInteractor {
     
     func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request) {
         self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: request.photoId))
+    }
+    
+    func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request) {
+        self.presenter?.presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response(location: request.location, entityLevel: request.entityLevel))
     }
 }
 
