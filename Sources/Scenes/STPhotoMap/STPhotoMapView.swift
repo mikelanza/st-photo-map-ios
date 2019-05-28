@@ -425,7 +425,7 @@ extension STPhotoMapView: STActionMapViewDelegate {
     }
     
     func actionMapView(mapView: STActionMapView?, didSelectCarouselPhoto photoId: String, atLocation location: STLocation) {
-        
+        self.interactor?.shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request(photoId: photoId))
     }
 }
 

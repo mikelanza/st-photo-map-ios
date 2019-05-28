@@ -211,6 +211,13 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldInflatePhotoClusterAnnotationCalled)
     }
     
+    func testShouldNavigateToPhotoDetailsWhenACarouselPhotoIsSelected() {
+        self.loadView()
+        
+        self.sut.actionMapView(mapView: self.sut.mapView, didSelectCarouselPhoto: STPhotoMapSeeds.photoId, atLocation: STLocation.from(coordinate: STPhotoMapSeeds.coordinate))
+        XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoDetailsCalled)
+    }
+    
     // MARK: - Test display logic
     
     func testDisplayLoadingState() {
