@@ -1,5 +1,5 @@
 //
-//  GetEntityOperationModel.swift
+//  GetGeoEntityOperationModel.swift
 //  STPhotoMap-iOS
 //
 //  Created by Crasneanu Cristian on 23/01/2019.

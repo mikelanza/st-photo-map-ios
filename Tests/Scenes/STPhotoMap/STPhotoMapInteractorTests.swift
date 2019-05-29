@@ -928,4 +928,79 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
     }
+    
+    func testShouldSelectCarouselWhenCacheIsNotEmptyForFailureCase() throws {
+        let worker = STPhotoMapWorkerFailureSpy(delegate: self.sut)
+        worker.delay = self.workerDelay
+        self.sut.worker = worker
+        
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.waitForSynchronization()
+        
+        let request = STPhotoMapModels.CarouselSelection.Request(tileCoordinate: tileCoordinate, location: STLocation.from(coordinate: coordinate))
+        self.sut.shouldSelectCarousel(request: request)
+        
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(worker.cancelAllGeoEntityOperationsCalled)
+        XCTAssertTrue(worker.getGeoEntityForEntityCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+    }
+    
+    func testShouldSelectCarouselWhenCacheIsEmptyForSuccessCase() {
+        self.workerSpy.delay = self.workerDelay
+        
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        let request = STPhotoMapModels.CarouselSelection.Request(tileCoordinate: tileCoordinate, location: STLocation.from(coordinate: coordinate))
+        self.sut.shouldSelectCarousel(request: request)
+        
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.cancelAllGeojsonCarouselOperationsCalled)
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+                
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertTrue(self.workerSpy.getGeoEntityForEntityCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testShouldSelectCarouselWhenCacheIsEmptyForFailureCase() {
+        let worker = STPhotoMapWorkerFailureSpy(delegate: self.sut)
+        worker.delay = self.workerDelay
+        self.sut.worker = worker
+        
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        let request = STPhotoMapModels.CarouselSelection.Request(tileCoordinate: tileCoordinate, location: STLocation.from(coordinate: coordinate))
+        self.sut.shouldSelectCarousel(request: request)
+        
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(worker.cancelAllGeojsonCarouselOperationsCalled)
+        XCTAssertTrue(worker.getGeojsonTileForCarouselCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+    }
 }
