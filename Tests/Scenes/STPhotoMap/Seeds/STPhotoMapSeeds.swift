@@ -98,6 +98,7 @@ class STPhotoMapSeeds: NSObject {
     
     func photo() -> STPhoto {
         var photo = STPhoto(id: "photo_id", createdAt: Date())
+        photo.imageUrl = "https://strtgrph.s3-us-west-1.amazonaws.com/processed/964d83ac70036166b4fb43c93516ab25_250_250.jpg"
         photo.user = self.user()
         return photo
     }
@@ -108,7 +109,12 @@ class STPhotoMapSeeds: NSObject {
     
     func geoEntity() -> GeoEntity {
         let boundingBox: BoundingBox = BoundingBox(boundingCoordinates: (minLongitude: 0, minLatitude: 0, maxLongitude: 0, maxLatitude: 0))
-        return GeoEntity(id: 1, boundingBox: boundingBox)
+        var geoEntity = GeoEntity(id: 1, boundingBox: boundingBox)
+        let photos = [self.photo()]
+        geoEntity.photos = photos
+        geoEntity.photoCount = photos.count
+        geoEntity.entityLevel = .city
+        return geoEntity
     }
     
     func carouselOverlay() -> STCarouselOverlay {

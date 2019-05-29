@@ -17,6 +17,7 @@ extension GeoEntity {
         carousel.photoCount = self.photoCount
         carousel.photos = self.photos
         carousel.currentPhoto = self.photos.map({ STCarousel.Photo(id: $0.id, image: nil) }).first
+        carousel.downloadedPhotos = []
         carousel.overlays = self.carouselOverlays()
         carousel.titleLabel = self.carouselTitleLabel()
         return carousel

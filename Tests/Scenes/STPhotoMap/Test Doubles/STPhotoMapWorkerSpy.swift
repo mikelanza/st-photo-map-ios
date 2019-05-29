@@ -21,6 +21,7 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     var cancelAllGeoEntityOperationsCalled: Bool = false
     var getGeojsonTileForCarouselSelectionCalled: Bool = false
     var cancelAllGeojsonCarouselSelectionOperationsCalled: Bool = false
+    var getImageForPhotoCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
@@ -118,6 +119,18 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     override func cancelAllGeojsonCarouselSelectionOperations() {
         self.cancelAllGeojsonCarouselSelectionOperationsCalled = true
     }
+    
+    override func getImageForPhoto(photo: STPhoto) {
+        self.getImageForPhotoCalled = true
+        
+        if self.delay == 0 {
+            self.delegate?.successDidGetImageForPhoto(photo: photo, image: UIImage())
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                self.delegate?.successDidGetImageForPhoto(photo: photo, image: UIImage())
+            }
+        }
+    }
 }
 
 class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
@@ -131,6 +144,7 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
     var cancelAllGeoEntityOperationsCalled: Bool = false
     var getGeojsonTileForCarouselSelectionCalled: Bool = false
     var cancelAllGeojsonCarouselSelectionOperationsCalled: Bool = false
+    var getImageForPhotoCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
@@ -200,5 +214,17 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
     
     override func cancelAllGeojsonCarouselSelectionOperations() {
         self.cancelAllGeojsonCarouselSelectionOperationsCalled = true
+    }
+    
+    override func getImageForPhoto(photo: STPhoto) {
+        self.getImageForPhotoCalled = true
+        
+        if self.delay == 0 {
+            self.delegate?.successDidGetImageForPhoto(photo: photo, image: nil)
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                self.delegate?.successDidGetImageForPhoto(photo: photo, image: nil)
+            }
+        }
     }
 }

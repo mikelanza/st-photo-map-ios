@@ -33,6 +33,8 @@ protocol STPhotoMapWorkerDelegate: class {
     
     func successDidGetGeojsonTileForDeterminingCarousel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
     func failureDidGetGeojsonTileForDeterminingCarousel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError)
+    
+    func successDidGetImageForPhoto(photo: STPhoto, image: UIImage?)
 }
 
 class STPhotoMapWorker {
@@ -172,5 +174,12 @@ class STPhotoMapWorker {
     
     func cancelAllGeojsonTileForDeterminingCarouselOperations() {
         self.geojsonTileDeterminingCarouselQueue.cancelAllOperations()
+    }
+    
+    func getImageForPhoto(photo: STPhoto) {
+        let url = photo.image650Url ?? photo.image750Url ?? photo.image1200Url ?? photo.imageUrl
+        url?.downloadImage(result: { (image, _) in
+            self.delegate?.successDidGetImageForPhoto(photo: photo, image: image)
+        })
     }
 }

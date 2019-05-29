@@ -6,7 +6,7 @@
 //  Copyright © 2019 mikelanza. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension STPhotoMapInteractor {
     func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request) {
@@ -41,6 +41,8 @@ extension STPhotoMapInteractor {
         self.presenter?.presentRemoveCarousel()
         
         self.carouselHandler.updateCarouselFor(geoEntity: geoEntity)
+        self.carouselHandler.carousel.photos.forEach({ self.worker?.getImageForPhoto(photo: $0) })
+        
         self.presenter?.presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response(carousel: self.carouselHandler.carousel))
     }
     
@@ -59,5 +61,11 @@ extension STPhotoMapInteractor {
     
     func failureDidGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, error: OperationError) {
         self.presenter?.presentNotLoadingState()
+    }
+}
+
+extension STPhotoMapInteractor {
+    func successDidGetImageForPhoto(photo: STPhoto, image: UIImage?) {
+        self.carouselHandler.addDownloadedCarouselPhoto(STCarousel.Photo(id: photo.id, image: image))
     }
 }
