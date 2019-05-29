@@ -19,7 +19,7 @@ extension STPhotoMapInteractor {
         let cachedTiles = self.getVisibleCachedTiles()
         let geojsonObjects = cachedTiles.compactMap({ $0.geojsonObject })
         if let feature = self.bestFeature(mapRect: request.mapRect, geojsonObjects: geojsonObjects) {
-            self.shouldGetEntityForFeature(feature)
+            self.shouldGetGeoEntityForFeature(feature)
         } else {
             self.geojsonObjectsForDeterminingCarousel(tiles: self.prepareTilesForDeterminingCarousel(cachedTiles: cachedTiles))
         }
@@ -35,7 +35,7 @@ extension STPhotoMapInteractor {
     
     private func geojsonObjectForDeterminingCarousel(tile: TileCoordinate) {
         let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
-        //self.carouselHandler.addActiveDownload(url.keyUrl)
+        self.carouselHandler.addActiveDownload(url.keyUrl)
         self.worker?.getGeojsonTileForDeterminingCarousel(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
     }
     

@@ -12,9 +12,12 @@ class STPhotoMapCarouselHandler {
     var carousel: STCarousel
     var timer: RepeatingTimer
     
+    var activeDownloads: SynchronizedArray<String>
+    
     init() {
         self.carousel = STCarousel()
         self.timer = RepeatingTimer(timeInterval: 3)
+        self.activeDownloads = SynchronizedArray<String>()
         self.timer.eventHandler = {
             self.reloadCarousel()
         }
@@ -34,6 +37,22 @@ class STPhotoMapCarouselHandler {
     private func reloadCarousel() {
         self.updateCarouselTutorialText()
         self.updateCarouselPhoto()
+    }
+    
+    func hasActiveDownload(_ url: String) -> Bool {
+        return self.activeDownloads.contains(url)
+    }
+    
+    func addActiveDownload(_ url: String) {
+        self.activeDownloads.append(url)
+    }
+    
+    func removeActiveDownload(_ url: String) {
+        self.activeDownloads.remove(where: { $0 == url })
+    }
+    
+    func removeAllActiveDownloads() {
+        self.activeDownloads.removeAll()
     }
 }
 
