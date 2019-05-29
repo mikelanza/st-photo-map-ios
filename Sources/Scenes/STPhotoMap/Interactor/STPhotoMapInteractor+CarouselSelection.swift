@@ -16,7 +16,7 @@ extension STPhotoMapInteractor {
             let feature = cachedTile.geojsonObject.features().filter({ $0.contains(location: request.location) }).first
             self.shouldGetGeoEntityForFeature(feature)
         } catch {
-            self.shouldGetGeojsonTileForCarousel(tileCoordinate: request.tileCoordinate, location: request.location, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
+            self.shouldGetGeojsonTileForCarouselSelection(tileCoordinate: request.tileCoordinate, location: request.location, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
         }
     }
     
@@ -28,10 +28,10 @@ extension STPhotoMapInteractor {
         }
     }
     
-    private func shouldGetGeojsonTileForCarousel(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String) {
+    private func shouldGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String) {
         self.presenter?.presentLoadingState()
-        self.worker?.cancelAllGeojsonCarouselOperations()
-        self.worker?.getGeojsonTileForCarousel(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl)
+        self.worker?.cancelAllGeojsonCarouselSelectionOperations()
+        self.worker?.getGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl)
     }
 }
 
@@ -50,14 +50,14 @@ extension STPhotoMapInteractor {
 }
 
 extension STPhotoMapInteractor {
-    func successDidGetGeojsonTileForCarousel(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
+    func successDidGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
         self.presenter?.presentNotLoadingState()
         
         let feature = geojsonObject.features().filter({ $0.contains(location: location) }).first
         self.shouldGetGeoEntityForFeature(feature)
     }
     
-    func failureDidGetGeojsonTileForCarousel(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, error: OperationError) {
+    func failureDidGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, error: OperationError) {
         self.presenter?.presentNotLoadingState()
     }
 }

@@ -968,8 +968,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.shouldSelectCarousel(request: request)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
-        XCTAssertTrue(self.workerSpy.cancelAllGeojsonCarouselOperationsCalled)
-        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselCalled)
+        XCTAssertTrue(self.workerSpy.cancelAllGeojsonCarouselSelectionOperationsCalled)
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselSelectionCalled)
         
         self.wait(delay: self.workerDelay + self.delay)
                 
@@ -996,8 +996,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.shouldSelectCarousel(request: request)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
-        XCTAssertTrue(worker.cancelAllGeojsonCarouselOperationsCalled)
-        XCTAssertTrue(worker.getGeojsonTileForCarouselCalled)
+        XCTAssertTrue(worker.cancelAllGeojsonCarouselSelectionOperationsCalled)
+        XCTAssertTrue(worker.getGeojsonTileForCarouselSelectionCalled)
         
         self.waitForWorker(delay: self.workerDelay)
         
