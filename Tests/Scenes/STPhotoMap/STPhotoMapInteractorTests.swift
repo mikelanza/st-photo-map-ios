@@ -1079,7 +1079,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.waitForSynchronization()
         
-        let visibleMapRect = MKMapRect(origin: MKMapPoint(x: 42967523.50826951, y: 103663604.03855672), size: MKMapSize(width: 24549.9074100554, height: 26923.767084509134))
+        let visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
         
         let request = STPhotoMapModels.CarouselDetermination.Request(mapRect: visibleMapRect)
         self.sut.shouldDetermineCarousel(request: request)
@@ -1095,7 +1095,96 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
     }
     
-    func testShouldDetermineCarouselWhenCacheIsEmpty() {
+    func testShouldDetermineCarouselWhenCacheIsEmptyAndThereAreActiveDownloads() throws {
+        self.workerSpy.delay = self.workerDelay
         
+        let geoEntity = try! STPhotoMapSeeds().geoEntity()
+        self.sut.carouselHandler.updateCarouselFor(geoEntity: geoEntity)
+        
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.visibleTiles = [tileCoordinate]
+        self.sut.carouselHandler.addActiveDownload(keyUrl)
+        
+        self.waitForSynchronization()
+        
+        let visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
+        
+        let request = STPhotoMapModels.CarouselDetermination.Request(mapRect: visibleMapRect)
+        self.sut.shouldDetermineCarousel(request: request)
+        
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertFalse(self.workerSpy.getGeoEntityForEntityCalled)
+        XCTAssertFalse(self.workerSpy.getGeojsonTileForCarouselDeterminationCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testShouldDetermineCarouselWhenCacheIsEmptyAndThereAreNoActiveDownloadsAndFeatureNoFulfillOverlapConditions() throws {
+        self.workerSpy.delay = self.workerDelay
+        
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.waitForSynchronization()
+        
+        let geojsonObjectMapRect = try! STPhotoMapSeeds().geojsonObject().objectBoundingBox!.mapRect()
+        let visibleMapRect = geojsonObjectMapRect.offsetBy(dx: geojsonObjectMapRect.maxX, dy: geojsonObjectMapRect.maxY)
+        
+        let request = STPhotoMapModels.CarouselDetermination.Request(mapRect: visibleMapRect)
+        self.sut.shouldDetermineCarousel(request: request)
+        
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselDeterminationCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertFalse(self.workerSpy.cancelAllGeojsonCarouselDeterminationOperationsCalled)
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertFalse(self.workerSpy.getGeoEntityForEntityCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testShouldDetermineCarouselWhenCacheIsEmptyAndThereAreNoActiveDownloadsAndFeatureFulfillOverlapConditions() throws {
+        self.workerSpy.delay = self.workerDelay
+        
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.waitForSynchronization()
+        
+        let visibleMapRect = try! STPhotoMapSeeds().geojsonObject().objectBoundingBox!.mapRect()
+        
+        let request = STPhotoMapModels.CarouselDetermination.Request(mapRect: visibleMapRect)
+        self.sut.shouldDetermineCarousel(request: request)
+    
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselDeterminationCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertTrue(self.workerSpy.cancelAllGeojsonCarouselDeterminationOperationsCalled)
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertTrue(self.workerSpy.getGeoEntityForEntityCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
     }
 }
