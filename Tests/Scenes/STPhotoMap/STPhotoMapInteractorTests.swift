@@ -1027,8 +1027,11 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
     }
     
-    func testShouldDetermineCarouselWhenCacheIsNotEmptyForSuccessCase() throws {
+    func testShouldDetermineCarouselWhenActualCarouselShouldNotBeChanged() throws {
         self.workerSpy.delay = self.workerDelay
+        
+        let geoEntity = try! STPhotoMapSeeds().geoEntity()
+        self.sut.carouselHandler.updateCarouselFor(geoEntity: geoEntity)
         
         let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
         let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
@@ -1042,7 +1045,41 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.waitForSynchronization()
         
-        let request = STPhotoMapModels.CarouselDetermination.Request(mapRect: MKMapRect(origin: MKMapPoint(coordinate), size: MKMapSize.init(width: 1000, height: 1000)))
+        let request = STPhotoMapModels.CarouselDetermination.Request(mapRect: geoEntity.boundingBox.mapRect())
+        self.sut.shouldDetermineCarousel(request: request)
+        
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertFalse(self.workerSpy.getGeoEntityForEntityCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testShouldDetermineCarouselWhenActualCarouselShouldBeChanged() throws {
+        self.workerSpy.delay = self.workerDelay
+        
+        let geoEntity = try! STPhotoMapSeeds().geoEntity()
+        self.sut.carouselHandler.updateCarouselFor(geoEntity: geoEntity)
+        
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.waitForSynchronization()
+        
+        let visibleMapRect = MKMapRect(origin: MKMapPoint(x: 42967523.50826951, y: 103663604.03855672), size: MKMapSize(width: 24549.9074100554, height: 26923.767084509134))
+        
+        let request = STPhotoMapModels.CarouselDetermination.Request(mapRect: visibleMapRect)
         self.sut.shouldDetermineCarousel(request: request)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
@@ -1054,5 +1091,9 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testShouldDetermineCarouselWhenCacheIsEmpty() {
+        
     }
 }

@@ -87,12 +87,12 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     
     override func getGeoEntityForEntity(_ entityId: String, entityLevel: EntityLevel) {
         self.getGeoEntityForEntityCalled = true
-        
+        let geoEntity = try! STPhotoMapSeeds().geoEntity()
         if self.delay == 0 {
-            self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: STPhotoMapSeeds().geoEntity())
+            self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: geoEntity)
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
-                self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: STPhotoMapSeeds().geoEntity())
+                self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: geoEntity)
             }
         }
     }

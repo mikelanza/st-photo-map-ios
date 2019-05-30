@@ -106,9 +106,22 @@ class STPhotoMapSeeds: NSObject {
         return STUser(id: "user_id")
     }
     
-    func geoEntity() -> GeoEntity {
-        let boundingBox: BoundingBox = BoundingBox(boundingCoordinates: (minLongitude: 0, minLatitude: 0, maxLongitude: 0, maxLatitude: 0))
-        return GeoEntity(id: 1, boundingBox: boundingBox)
+    func geoEntity() throws -> GeoEntity {
+        let bundle = Bundle(for: type(of: self))
+        guard let path = bundle.path(forResource: "geo_entity", ofType: "json") else {
+            throw STPhotoMapSeedsError.noResourceAvailable
+        }
+        let url = URL(fileURLWithPath: path)
+        let data = try Data(contentsOf: url)
+    
+        let decoder = JSONDecoder()
+        let decodedResponse = try decoder.decode(GetGeoEntityOperationModel.DecodedResponse.self, from: data)
+        
+        let geoEntities: [GeoEntity] = try decodedResponse.result.map({ try $0.toGeoEntity()})
+        guard let geoEntity = geoEntities.first else {
+            throw NSError(domain: "Result is empty.", code: 404, userInfo: nil)
+        }
+        return geoEntity
     }
     
     func carouselOverlay() -> STCarouselOverlay {
