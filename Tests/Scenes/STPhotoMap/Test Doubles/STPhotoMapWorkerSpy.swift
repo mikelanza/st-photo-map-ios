@@ -19,8 +19,9 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     var getPhotoDetailsForPhotoAnnotationCalled: Bool = false
     var getGeoEntityForEntityCalled: Bool = false
     var cancelAllGeoEntityOperationsCalled: Bool = false
-    var getGeojsonTileForCarouselCalled: Bool = false
-    var cancelAllGeojsonCarouselOperationsCalled: Bool = false
+    var getGeojsonTileForCarouselSelectionCalled: Bool = false
+    var cancelAllGeojsonCarouselSelectionOperationsCalled: Bool = false
+    var getImageForPhotoCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
@@ -101,22 +102,34 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
         self.cancelAllGeoEntityOperationsCalled = true
     }
     
-    override func getGeojsonTileForCarousel(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String) {
-        self.getGeojsonTileForCarouselCalled = true
+    override func getGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String) {
+        self.getGeojsonTileForCarouselSelectionCalled = true
         
         if self.delay == 0 {
             let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
-            self.delegate?.successDidGetGeojsonTileForCarousel(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+            self.delegate?.successDidGetGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
                 let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
-                self.delegate?.successDidGetGeojsonTileForCarousel(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+                self.delegate?.successDidGetGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
             }
         }
     }
     
-    override func cancelAllGeojsonCarouselOperations() {
-        self.cancelAllGeojsonCarouselOperationsCalled = true
+    override func cancelAllGeojsonCarouselSelectionOperations() {
+        self.cancelAllGeojsonCarouselSelectionOperationsCalled = true
+    }
+    
+    override func getImageForPhoto(photo: STPhoto) {
+        self.getImageForPhotoCalled = true
+        
+        if self.delay == 0 {
+            self.delegate?.successDidGetImageForPhoto(photo: photo, image: UIImage())
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                self.delegate?.successDidGetImageForPhoto(photo: photo, image: UIImage())
+            }
+        }
     }
 }
 
@@ -129,8 +142,9 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
     var getPhotoDetailsForPhotoAnnotationCalled: Bool = false
     var getGeoEntityForEntityCalled: Bool = false
     var cancelAllGeoEntityOperationsCalled: Bool = false
-    var getGeojsonTileForCarouselCalled: Bool = false
-    var cancelAllGeojsonCarouselOperationsCalled: Bool = false
+    var getGeojsonTileForCarouselSelectionCalled: Bool = false
+    var cancelAllGeojsonCarouselSelectionOperationsCalled: Bool = false
+    var getImageForPhotoCalled: Bool = false
     
     override func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCachingCalled = true
@@ -186,19 +200,31 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
         self.cancelAllGeoEntityOperationsCalled = true
     }
     
-    override func getGeojsonTileForCarousel(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String) {
-        self.getGeojsonTileForCarouselCalled = true
+    override func getGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String) {
+        self.getGeojsonTileForCarouselSelectionCalled = true
         
         if self.delay == 0 {
-            self.delegate?.failureDidGetGeojsonTileForCarousel(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
+            self.delegate?.failureDidGetGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
-                self.delegate?.failureDidGetGeojsonTileForCarousel(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
+                self.delegate?.failureDidGetGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
             }
         }
     }
     
-    override func cancelAllGeojsonCarouselOperations() {
-        self.cancelAllGeojsonCarouselOperationsCalled = true
+    override func cancelAllGeojsonCarouselSelectionOperations() {
+        self.cancelAllGeojsonCarouselSelectionOperationsCalled = true
+    }
+    
+    override func getImageForPhoto(photo: STPhoto) {
+        self.getImageForPhotoCalled = true
+        
+        if self.delay == 0 {
+            self.delegate?.successDidGetImageForPhoto(photo: photo, image: nil)
+        } else {
+            DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
+                self.delegate?.successDidGetImageForPhoto(photo: photo, image: nil)
+            }
+        }
     }
 }

@@ -925,6 +925,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.waitForWorker(delay: self.workerDelay)
         
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.getImageForPhotoCalled)
         XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
     }
@@ -968,8 +969,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.shouldSelectCarousel(request: request)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
-        XCTAssertTrue(self.workerSpy.cancelAllGeojsonCarouselOperationsCalled)
-        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselCalled)
+        XCTAssertTrue(self.workerSpy.cancelAllGeojsonCarouselSelectionOperationsCalled)
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselSelectionCalled)
         
         self.wait(delay: self.workerDelay + self.delay)
                 
@@ -980,6 +981,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.waitForWorker(delay: self.workerDelay)
         
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.getImageForPhotoCalled)
         XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
     }
@@ -996,8 +998,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.shouldSelectCarousel(request: request)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
-        XCTAssertTrue(worker.cancelAllGeojsonCarouselOperationsCalled)
-        XCTAssertTrue(worker.getGeojsonTileForCarouselCalled)
+        XCTAssertTrue(worker.cancelAllGeojsonCarouselSelectionOperationsCalled)
+        XCTAssertTrue(worker.getGeojsonTileForCarouselSelectionCalled)
         
         self.waitForWorker(delay: self.workerDelay)
         
@@ -1086,7 +1088,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.workerSpy.cancelAllGeoEntityOperationsCalled)
         XCTAssertTrue(self.workerSpy.getGeoEntityForEntityCalled)
         
-        self.waitForWorker(delay: self.workerDelay)
+        self.wait(delay: self.workerDelay + self.delay)
         
         XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)

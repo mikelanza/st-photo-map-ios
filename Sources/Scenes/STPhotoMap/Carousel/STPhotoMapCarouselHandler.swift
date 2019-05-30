@@ -16,8 +16,8 @@ class STPhotoMapCarouselHandler {
     
     init() {
         self.carousel = STCarousel()
-        self.timer = RepeatingTimer(timeInterval: 3)
         self.activeDownloads = SynchronizedArray<String>()
+        self.timer = RepeatingTimer(timeInterval: 3)
         self.timer.eventHandler = {
             self.reloadCarousel()
         }

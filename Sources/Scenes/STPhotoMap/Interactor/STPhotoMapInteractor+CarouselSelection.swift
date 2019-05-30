@@ -6,7 +6,7 @@
 //  Copyright © 2019 mikelanza. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension STPhotoMapInteractor {
     func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request) {
@@ -16,7 +16,7 @@ extension STPhotoMapInteractor {
             let feature = cachedTile.geojsonObject.features().filter({ $0.contains(location: request.location) }).first
             self.shouldGetGeoEntityForFeature(feature)
         } catch {
-            self.shouldGetGeojsonTileForCarousel(tileCoordinate: request.tileCoordinate, location: request.location, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
+            self.shouldGetGeojsonTileForCarouselSelection(tileCoordinate: request.tileCoordinate, location: request.location, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
         }
     }
     
@@ -28,10 +28,10 @@ extension STPhotoMapInteractor {
         }
     }
     
-    private func shouldGetGeojsonTileForCarousel(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String) {
+    private func shouldGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String) {
         self.presenter?.presentLoadingState()
-        self.worker?.cancelAllGeojsonCarouselOperations()
-        self.worker?.getGeojsonTileForCarousel(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl)
+        self.worker?.cancelAllGeojsonCarouselSelectionOperations()
+        self.worker?.getGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: location, keyUrl: keyUrl, downloadUrl: downloadUrl)
     }
 }
 
@@ -41,6 +41,8 @@ extension STPhotoMapInteractor {
         self.presenter?.presentRemoveCarousel()
         
         self.carouselHandler.updateCarouselFor(geoEntity: geoEntity)
+        self.carouselHandler.carousel.photos.forEach({ self.worker?.getImageForPhoto(photo: $0) })
+        
         self.presenter?.presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response(carousel: self.carouselHandler.carousel))
     }
     
@@ -50,14 +52,20 @@ extension STPhotoMapInteractor {
 }
 
 extension STPhotoMapInteractor {
-    func successDidGetGeojsonTileForCarousel(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
+    func successDidGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
         self.presenter?.presentNotLoadingState()
         
         let feature = geojsonObject.features().filter({ $0.contains(location: location) }).first
         self.shouldGetGeoEntityForFeature(feature)
     }
     
-    func failureDidGetGeojsonTileForCarousel(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, error: OperationError) {
+    func failureDidGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, error: OperationError) {
         self.presenter?.presentNotLoadingState()
+    }
+}
+
+extension STPhotoMapInteractor {
+    func successDidGetImageForPhoto(photo: STPhoto, image: UIImage?) {
+        self.carouselHandler.addDownloadedCarouselPhoto(STCarousel.Photo(id: photo.id, image: image))
     }
 }
