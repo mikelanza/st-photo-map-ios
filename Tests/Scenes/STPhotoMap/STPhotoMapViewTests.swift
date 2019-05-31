@@ -104,6 +104,13 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(renderer is STPhotoTileOverlayRenderer)
     }
     
+    func testShouldReturnCarouselOverlayRendererForCarouselOverlay() {
+        self.loadView()
+        
+        let renderer = self.sut.mapView(self.sut.mapView, rendererFor: STPhotoMapSeeds().carouselOverlay())
+        XCTAssertTrue(renderer is STCarouselOverlayRenderer)
+    }
+    
     func testShouldReturnPhotoAnnotationViewForPhotoAnnotation() {
         self.loadView()
         

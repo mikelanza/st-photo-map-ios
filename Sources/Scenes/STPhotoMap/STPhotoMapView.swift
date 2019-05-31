@@ -354,6 +354,10 @@ extension STPhotoMapView: MKMapViewDelegate {
             return STPhotoTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
         }
         
+        if overlay is STCarouselOverlay {
+            return STCarouselOverlayRenderer(carouselOverlay: overlay as! STCarouselOverlay, visibleMapRect: mapView.visibleMapRect)
+        }
+        
         return MKOverlayRenderer(overlay: overlay)
     }
     
