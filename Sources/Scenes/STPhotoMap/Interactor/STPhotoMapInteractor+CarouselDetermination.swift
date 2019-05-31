@@ -50,9 +50,20 @@ extension STPhotoMapInteractor {
     }
     
     private func compare(lht: GeoJSONFeature, rht: GeoJSONFeature, for mapRect: MKMapRect) -> Bool {
-        return mapRect.overlapPercentage(mapRect: lht.objectBoundingBox?.mapRect()) > mapRect.overlapPercentage(mapRect: rht.objectBoundingBox?.mapRect()) &&
-            lht.objectBoundingBox?.mapRect().area() ?? 0 > rht.objectBoundingBox?.mapRect().area() ?? 0 &&
-            lht.photoProperties?.photoCount ?? 0 > rht.photoProperties?.photoCount ?? 0
+        let lhtPercentage = mapRect.overlapPercentage(mapRect: lht.objectBoundingBox?.mapRect())
+        let rhtPercentage = mapRect.overlapPercentage(mapRect: rht.objectBoundingBox?.mapRect())
+        let lhtArea = lht.objectBoundingBox?.mapRect().area() ?? 0
+        let rhtArea = rht.objectBoundingBox?.mapRect().area() ?? 0
+        let lhtPhotoCount = lht.photoProperties?.photoCount ?? 0
+        let rhtPhotoCount = rht.photoProperties?.photoCount ?? 0
+        
+        if lhtPercentage == rhtPercentage {
+            if lhtArea == rhtArea {
+                return lhtPhotoCount > rhtPhotoCount
+            }
+            return lhtArea > rhtArea
+        }
+        return lhtPercentage > rhtPercentage
     }
     
     private func getVisibleNotCachedTiles() -> [TileCoordinate] {
