@@ -71,7 +71,7 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
         self.shouldSelectCarouselCalled = true
     }
     
-    func shouldDetermineCarousel(request: STPhotoMapModels.CarouselDetermination.Request) {
+    func shouldDetermineCarousel() {
         self.shouldDetermineCarouselCalled = true
     }
 }

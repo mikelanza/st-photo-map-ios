@@ -123,15 +123,15 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
         self.cancelAllGeojsonCarouselSelectionOperationsCalled = true
     }
     
-    override func getGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, mapRect: MKMapRect, keyUrl: String, downloadUrl: String) {
+    override func getGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCarouselDeterminationCalled = true
         
         let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
         if self.delay == 0 {
-            self.delegate?.successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, mapRect: mapRect, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+            self.delegate?.successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
-                self.delegate?.successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, mapRect: mapRect, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+                self.delegate?.successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
             }
         }
     }
@@ -238,14 +238,14 @@ class STPhotoMapWorkerFailureSpy: STPhotoMapWorker {
         self.cancelAllGeojsonCarouselSelectionOperationsCalled = true
     }
     
-    override func getGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, mapRect: MKMapRect, keyUrl: String, downloadUrl: String) {
+    override func getGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         self.getGeojsonTileForCarouselDeterminationCalled = true
         
         if self.delay == 0 {
-            self.delegate?.failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, mapRect: mapRect, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
+            self.delegate?.failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
-                self.delegate?.failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, mapRect: mapRect, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
+                self.delegate?.failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.cannotParseResponse)
             }
         }
     }

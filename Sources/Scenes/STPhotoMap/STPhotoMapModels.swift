@@ -209,10 +209,4 @@ enum STPhotoMapModels {
             let overlays: [STCarouselOverlay]
         }
     }
-    
-    enum CarouselDetermination {
-        struct Request {
-            let mapRect: MKMapRect
-        }
-    }
 }

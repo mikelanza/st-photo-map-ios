@@ -12,16 +12,16 @@ import MapKit
 // MARK: - Determine carousel
 
 extension STPhotoMapInteractor {
-    func shouldDetermineCarousel(request: STPhotoMapModels.CarouselDetermination.Request) {
+    func shouldDetermineCarousel() {
         guard entityLevelHandler.entityLevel != .location else { return }
-        guard self.carouselHandler.carousel.shouldChange(mapRect: request.mapRect) == true else { return }
+        guard self.carouselHandler.carousel.shouldChange(mapRect: self.visibleMapRect) == true else { return }
         
         let cachedTiles = self.getVisibleCachedTiles()
         let geojsonObjects = cachedTiles.compactMap({ $0.geojsonObject })
-        if let feature = self.bestFeature(mapRect: request.mapRect, geojsonObjects: geojsonObjects) {
+        if let feature = self.bestFeature(mapRect: self.visibleMapRect, geojsonObjects: geojsonObjects) {
             self.shouldGetGeoEntityForFeature(feature)
         } else {
-            self.geojsonObjectsForDeterminingCarousel(tiles: self.prepareTilesForDeterminingCarousel(cachedTiles: cachedTiles), mapRect: request.mapRect)
+            self.geojsonObjectsForDeterminingCarousel(tiles: self.prepareTilesForDeterminingCarousel(cachedTiles: cachedTiles))
         }
     }
     
@@ -33,14 +33,14 @@ extension STPhotoMapInteractor {
         })
     }
     
-    private func geojsonObjectsForDeterminingCarousel(tiles: [TileCoordinate], mapRect: MKMapRect) {
-        tiles.forEach({ self.geojsonObjectForDeterminingCarousel(tile: $0, mapRect: mapRect) })
+    private func geojsonObjectsForDeterminingCarousel(tiles: [TileCoordinate]) {
+        tiles.forEach({ self.geojsonObjectForDeterminingCarousel(tile: $0) })
     }
     
-    private func geojsonObjectForDeterminingCarousel(tile: TileCoordinate, mapRect: MKMapRect) {
+    private func geojsonObjectForDeterminingCarousel(tile: TileCoordinate) {
         let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
         self.carouselHandler.addActiveDownload(url.keyUrl)
-        self.worker?.getGeojsonTileForCarouselDetermination(tileCoordinate: tile, mapRect: mapRect, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
+        self.worker?.getGeojsonTileForCarouselDetermination(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
     }
     
     private func bestFeature(mapRect: MKMapRect, geojsonObjects: [GeoJSONObject]) -> GeoJSONFeature? {
@@ -74,11 +74,11 @@ extension STPhotoMapInteractor {
         })
     }
     
-    private func didDownloadGeojsonTileForDeterminingCarousel(mapRect: MKMapRect, keyUrl: String, geojsonObject: GeoJSONObject) {
+    private func didDownloadGeojsonTileForDeterminingCarousel(keyUrl: String, geojsonObject: GeoJSONObject) {
         self.carouselHandler.removeActiveDownload(keyUrl)
         
-        let feature = self.bestFeature(mapRect: mapRect, geojsonObjects: [geojsonObject])
-        if mapRect.overlapPercentage(mapRect: feature?.objectBoundingBox?.mapRect()) > 80 {
+        let feature = self.bestFeature(mapRect: self.visibleMapRect, geojsonObjects: [geojsonObject])
+        if self.visibleMapRect.overlapPercentage(mapRect: feature?.objectBoundingBox?.mapRect()) > 80 {
             self.worker?.cancelAllGeojsonTileForCarouselDeterminationOperations()
             self.carouselHandler.removeAllActiveDownloads()
             self.shouldGetGeoEntityForFeature(feature)
@@ -87,11 +87,11 @@ extension STPhotoMapInteractor {
 }
 
 extension STPhotoMapInteractor {    
-    func successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, mapRect: MKMapRect, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
-        self.didDownloadGeojsonTileForDeterminingCarousel(mapRect: mapRect, keyUrl: keyUrl, geojsonObject: geojsonObject)
+    func successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
+        self.didDownloadGeojsonTileForDeterminingCarousel(keyUrl: keyUrl, geojsonObject: geojsonObject)
     }
     
-    func failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, mapRect: MKMapRect, keyUrl: String, downloadUrl: String, error: OperationError) {
+    func failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {
         self.carouselHandler.removeActiveDownload(keyUrl)
     }
 }

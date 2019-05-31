@@ -32,8 +32,8 @@ protocol STPhotoMapWorkerDelegate: class {
     func successDidGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
     func failureDidGetGeojsonTileForCarouselSelection(tileCoordinate: TileCoordinate, location: STLocation, keyUrl: String, downloadUrl: String, error: OperationError)
     
-    func successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, mapRect: MKMapRect, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
-    func failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, mapRect: MKMapRect, keyUrl: String, downloadUrl: String, error: OperationError)
+    func successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)
+    func failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError)
     
     func successDidGetImageForPhoto(photo: STPhoto, image: UIImage?)
 }
@@ -162,12 +162,12 @@ class STPhotoMapWorker {
         self.geoEntityQueue.cancelAllOperations()
     }
     
-    func getGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, mapRect: MKMapRect, keyUrl: String, downloadUrl: String) {
+    func getGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
         let model = GetGeojsonTileOperationModel.Request(tileCoordinate: tileCoordinate, url: downloadUrl)
         let operation = GetGeojsonTileOperation(model: model) { result in
             switch result {
-            case .success(let value): self.delegate?.successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, mapRect: mapRect, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: value.geoJSONObject); break
-            case .failure(let error): self.delegate?.failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, mapRect: mapRect, keyUrl: keyUrl, downloadUrl: downloadUrl, error: error); break
+            case .success(let value): self.delegate?.successDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: value.geoJSONObject); break
+            case .failure(let error): self.delegate?.failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: error); break
             }
         }
         self.geojsonTileCarouselDeterminationQueue.addOperation(operation)
