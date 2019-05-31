@@ -345,6 +345,7 @@ extension STPhotoMapView: MKMapViewDelegate {
             self.interactor?.shouldCacheGeojsonObjects()
             self.interactor?.shouldDetermineEntityLevel()
             self.interactor?.shouldDetermineLocationLevel()
+            self.interactor?.shouldDetermineCarousel(request: STPhotoMapModels.CarouselDetermination.Request(mapRect: self.mapView.visibleMapRect))
         }
     }
     
