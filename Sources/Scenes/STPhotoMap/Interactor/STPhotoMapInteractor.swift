@@ -11,9 +11,11 @@
 //
 
 import UIKit
+import MapKit
 
 protocol STPhotoMapBusinessLogic {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request)
+    func shouldUpdateVisibleMapRect(request: STPhotoMapModels.VisibleMapRect.Request)
     
     func shouldCacheGeojsonObjects()
     
@@ -41,6 +43,7 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     var worker: STPhotoMapWorker?
     
     var visibleTiles: [TileCoordinate]
+    var visibleMapRect: MKMapRect
     var cacheHandler: STPhotoMapCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
     var locationLevelHandler: STPhotoMapLocationLevelHandler
@@ -48,6 +51,7 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     
     init() {
         self.visibleTiles = []
+        self.visibleMapRect = MKMapRect()
         self.cacheHandler = STPhotoMapCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
         self.locationLevelHandler = STPhotoMapLocationLevelHandler()
@@ -71,6 +75,10 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
 extension STPhotoMapInteractor {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.visibleTiles = request.tiles
+    }
+    
+    func shouldUpdateVisibleMapRect(request: STPhotoMapModels.VisibleMapRect.Request) {
+        self.visibleMapRect = request.mapRect
     }
     
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request) {

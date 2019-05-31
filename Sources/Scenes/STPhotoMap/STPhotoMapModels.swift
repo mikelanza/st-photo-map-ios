@@ -20,6 +20,12 @@ enum STPhotoMapModels {
         }
     }
     
+    enum VisibleMapRect {
+        struct Request {
+            let mapRect: MKMapRect
+        }
+    }
+    
     enum EntityZoomLevel {
         struct Response {
             let entityLevel: EntityLevel

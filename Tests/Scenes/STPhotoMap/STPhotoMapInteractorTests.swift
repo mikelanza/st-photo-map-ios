@@ -83,6 +83,18 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertEqual(self.sut.visibleTiles.count, tiles.count)
     }
     
+    func testShouldUpdateVisibleMapRect() {
+        let mapRect = MKMapRect.init(origin: MKMapPoint(STPhotoMapSeeds.coordinate), size: MKMapSize(width: 100, height: 100))
+        
+        let request = STPhotoMapModels.VisibleMapRect.Request(mapRect: mapRect)
+        self.sut.shouldUpdateVisibleMapRect(request: request)
+    
+        XCTAssertEqual(self.sut.visibleMapRect.height, mapRect.height)
+        XCTAssertEqual(self.sut.visibleMapRect.width, mapRect.width)
+        XCTAssertEqual(self.sut.visibleMapRect.origin.x, mapRect.origin.x)
+        XCTAssertEqual(self.sut.visibleMapRect.origin.y, mapRect.origin.y)
+    }
+    
     // MARK: - Navigation tests
     
     func testShouldNavigateToPhotoDetails() {
