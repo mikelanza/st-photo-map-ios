@@ -147,4 +147,9 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentNewCarousel(response: response)
         XCTAssertTrue(self.displayerSpy.displayNewCarouselCalled)
     }
+    
+    func testPresentReloadCarousel() {
+        self.sut.presentReloadCarousel()
+        XCTAssertTrue(self.displayerSpy.displayReloadCarouselCalled)
+    }
 }

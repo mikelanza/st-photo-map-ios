@@ -38,6 +38,7 @@ protocol STPhotoMapPresentationLogic {
     
     func presentRemoveCarousel()
     func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response)
+    func presentReloadCarousel()
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -178,5 +179,9 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response) {
         let viewModel = STPhotoMapModels.NewCarousel.ViewModel(overlays: response.carousel.overlays)
         self.displayer?.displayNewCarousel(viewModel: viewModel)
+    }
+    
+    func presentReloadCarousel() {
+        self.displayer?.displayReloadCarousel()
     }
 }

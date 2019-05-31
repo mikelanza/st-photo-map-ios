@@ -8,11 +8,17 @@
 
 import Foundation
 
+protocol STPhotoMapCarouselHandlerDelegate: class {
+    func carouselHandler(handler: STPhotoMapCarouselHandler?, reloadCarousel carousel: STCarousel)
+}
+
 class STPhotoMapCarouselHandler {
     var carousel: STCarousel
     var timer: RepeatingTimer
     
     var activeDownloads: SynchronizedArray<String>
+    
+    weak var delegate: STPhotoMapCarouselHandlerDelegate?
     
     init() {
         self.carousel = STCarousel()
@@ -20,7 +26,9 @@ class STPhotoMapCarouselHandler {
         self.timer = RepeatingTimer(timeInterval: 3)
         self.timer.eventHandler = {
             self.reloadCarousel()
+            self.delegate?.carouselHandler(handler: self, reloadCarousel: self.carousel)
         }
+        self.timer.resume()
     }
     
     func updateCarouselFor(geoEntity: GeoEntity) {
@@ -79,6 +87,9 @@ extension STPhotoMapCarouselHandler {
         self.carousel.overlays.forEach { overlay in
             overlay.model.location = location
             overlay.model.radius = titleLabel.radius
+            overlay.model.name = self.carousel.name
+            overlay.model.photoCount = self.carousel.photoCount
+            overlay.model.type = self.carousel.entityLevel.rawValue
             
             if self.carousel.photoCount == 1 {
                 overlay.model.shouldDrawEntityButton = false
@@ -127,8 +138,8 @@ extension STPhotoMapCarouselHandler {
             photo = self.carousel.downloadedPhotos[optional: index + 1]
         }
         
+        self.carousel.currentPhoto = photo
         if let photo = photo {
-            self.carousel.currentPhoto = photo
             self.updateCarouselOverlaysWith(photo)
         }
     }

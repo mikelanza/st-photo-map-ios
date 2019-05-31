@@ -45,6 +45,7 @@ protocol STPhotoMapDisplayLogic: class {
     
     func displayRemoveCarousel()
     func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel)
+    func displayReloadCarousel()
 }
 
 public class STPhotoMapView: UIView {
@@ -59,7 +60,7 @@ public class STPhotoMapView: UIView {
     weak var locationOverlayView: STLocationOverlayView!
     
     var photoTileOverlay: STPhotoTileOverlay?
-    var carouselOverlay: STCarouselOverlay?
+    var carouselOverlays: [STCarouselOverlay] = []
     private var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
@@ -110,8 +111,8 @@ extension STPhotoMapView {
         }
     }
     
-    public func reloadCarouselOverlay() {
-        if let overlay = self.carouselOverlay, let renderer = self.mapView?.renderer(for: overlay) as? STCarouselOverlayRenderer {
+    public func reloadCarouselOverlays() {
+        if let overlay = self.carouselOverlays.first, let renderer = self.mapView?.renderer(for: overlay) as? STCarouselOverlayRenderer {
             renderer.reload()
         }
     }
@@ -319,12 +320,20 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         DispatchQueue.main.async {
             let carouselOverlays = self.mapView.overlays.filter({ $0 is STCarouselOverlay })
             self.mapView.removeOverlays(carouselOverlays)
+            self.carouselOverlays.removeAll()
         }
     }
     
     func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel) {
         DispatchQueue.main.async {
             self.mapView.addOverlays(viewModel.overlays)
+            self.carouselOverlays = viewModel.overlays
+        }
+    }
+    
+    func displayReloadCarousel() {
+        DispatchQueue.main.async {
+            self.reloadCarouselOverlays()
         }
     }
     

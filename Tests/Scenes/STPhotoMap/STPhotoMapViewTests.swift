@@ -380,6 +380,10 @@ class STPhotoMapViewTests: XCTestCase {
     func testDisplayRemoveCarousel() {
         self.loadView()
         
+        self.sut.mapView.removeOverlays(self.sut.mapView.overlays)
+        
+        let overlay = STPhotoMapSeeds().carouselOverlay()
+        self.sut.carouselOverlays = [overlay]
         self.sut.mapView.addOverlay(STPhotoMapSeeds().carouselOverlay())
         
         self.sut.displayRemoveCarousel()
@@ -389,6 +393,9 @@ class STPhotoMapViewTests: XCTestCase {
         for overlay in self.sut.mapView.overlays {
             XCTAssertFalse(overlay is STCarouselOverlay)
         }
+        
+        XCTAssertEqual(self.sut.carouselOverlays.count, 0)
+        XCTAssertEqual(self.sut.mapView.overlays.count, 0)
     }
     
     func testDisplayNavigateToPhotoCollection() {
@@ -403,6 +410,7 @@ class STPhotoMapViewTests: XCTestCase {
     func testDisplayNewCarousel() {
         self.loadView()
         
+        self.sut.carouselOverlays.removeAll()
         self.sut.mapView.removeOverlays(self.sut.mapView.overlays)
         XCTAssertEqual(self.sut.mapView.overlays.count, 0)
         
@@ -411,9 +419,11 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.waitForMainQueue()
         
-        XCTAssertEqual(self.sut.mapView.overlays.count, 1)
         for overlay in self.sut.mapView.overlays {
             XCTAssertTrue(overlay is STCarouselOverlay)
         }
+        
+        XCTAssertEqual(self.sut.carouselOverlays.count, 1)
+        XCTAssertEqual(self.sut.mapView.overlays.count, 1)
     }
 }

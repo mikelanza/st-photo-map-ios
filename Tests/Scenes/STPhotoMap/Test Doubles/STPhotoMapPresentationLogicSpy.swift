@@ -26,6 +26,7 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentRemoveCarouselCalled: Bool = false
     var presentNavigateToPhotoCollectionCalled: Bool = false
     var presentNewCarouselCalled: Bool = false
+    var presentReloadCarouselCalled: Bool = false
     
     func presentLoadingState() {
         self.presentLoadingStateCalled = true
@@ -93,5 +94,9 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response) {
         self.presentNewCarouselCalled = true
+    }
+    
+    func presentReloadCarousel() {
+        self.presentReloadCarouselCalled = true
     }
 }

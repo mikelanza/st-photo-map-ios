@@ -53,7 +53,9 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
         self.locationLevelHandler = STPhotoMapLocationLevelHandler()
         self.carouselHandler = STPhotoMapCarouselHandler()
         self.worker = STPhotoMapWorker(delegate: self)
+        
         self.entityLevelHandler.delegate = self
+        self.carouselHandler.delegate = self
     }
     
     internal func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {

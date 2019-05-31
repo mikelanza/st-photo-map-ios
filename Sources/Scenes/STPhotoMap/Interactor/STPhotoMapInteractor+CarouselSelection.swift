@@ -35,6 +35,12 @@ extension STPhotoMapInteractor {
     }
 }
 
+extension STPhotoMapInteractor: STPhotoMapCarouselHandlerDelegate {
+    func carouselHandler(handler: STPhotoMapCarouselHandler?, reloadCarousel carousel: STCarousel) {
+        self.presenter?.presentReloadCarousel()
+    }
+}
+
 extension STPhotoMapInteractor {
     func successDidGetGeoEntityForEntity(entityId: String, entityLevel: EntityLevel, geoEntity: GeoEntity) {
         self.presenter?.presentNotLoadingState()
