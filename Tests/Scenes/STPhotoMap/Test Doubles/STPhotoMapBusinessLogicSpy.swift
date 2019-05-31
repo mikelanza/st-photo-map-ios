@@ -10,6 +10,7 @@
 
 class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     var shouldUpdateVisibleTilesCalled: Bool = false
+    var shouldUpdateVisibleMapRect: Bool = false
     var shouldCacheGeojsonObjectsCalled: Bool = false
     var shouldDetermineEntityLevelCalled: Bool = false
     var shouldDetermineLocationLevelCalled: Bool = false
@@ -24,6 +25,10 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
 
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.shouldUpdateVisibleTilesCalled = true
+    }
+    
+    func shouldUpdateVisibleMapRect(request: STPhotoMapModels.VisibleMapRect.Request) {
+        self.shouldUpdateVisibleMapRect = true
     }
     
     func shouldCacheGeojsonObjects() {
