@@ -8,6 +8,12 @@
 
 import Foundation
 
+enum GetGeoEntityOperationModelError: LocalizedError {
+    case noGeoEntityIdAvailable
+    case noGeoEntityLevelAvailable
+    case noGeoEntityBboxAvailable
+}
+
 enum GetGeoEntityOperationModel {
     struct Request {
         let entityId: String
@@ -93,13 +99,13 @@ enum GetGeoEntityOperationModel {
         
         func toGeoEntity() throws -> GeoEntity {
             guard let id = self.id else {
-                throw NSError(domain: "No id available for geo entity.", code: 404, userInfo: nil)
+                throw GetGeoEntityOperationModelError.noGeoEntityIdAvailable
             }
             guard let entity = self.entity, let entityLevel = EntityLevel.init(rawValue: entity) else {
-                throw NSError(domain: "No entity level available for geo entity.", code: 404, userInfo: nil)
+                throw GetGeoEntityOperationModelError.noGeoEntityLevelAvailable
             }
             guard let boundingBox = self.bbox?.toBoundingBox() else {
-                throw NSError(domain: "No bounding box available for geo entity.", code: 404, userInfo: nil)
+                throw GetGeoEntityOperationModelError.noGeoEntityBboxAvailable
             }
             
             var geoJSONObject: GeoJSONObject?

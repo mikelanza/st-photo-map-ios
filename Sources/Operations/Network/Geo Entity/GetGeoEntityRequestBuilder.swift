@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum GetGeoEntityRequestBuilderError: LocalizedError {
+    case invalidUrl(url: String)
+}
+
 class GetGeoEntityRequestBuilder {
     
     let urlString = "https://tiles.streetography.com/bboxmongo"
@@ -27,7 +31,7 @@ class GetGeoEntityRequestBuilder {
         urlComponents?.queryItems = self.parameters?.map({ URLQueryItem(name: $0.key, value: "\($0.value)") })
         
         guard let url = urlComponents?.url else {
-            throw NSError(domain: "Invalid url: \(self.urlString)", code: 404, userInfo: nil)
+            throw GetGeoEntityRequestBuilderError.invalidUrl(url: self.urlString)
         }
         var request = URLRequest(url: url)
         request.httpMethod = self.httpMethod

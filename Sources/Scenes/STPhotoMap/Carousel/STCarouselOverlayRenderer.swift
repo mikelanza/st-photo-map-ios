@@ -8,6 +8,12 @@
 
 import MapKit
 
+enum STCarouselOverlayRendererError: LocalizedError {
+    case noOverlayPathAvailable
+    case noOverlayPointAvailable
+    case noImageAvailable
+}
+
 class STCarouselOverlayRenderer: MKOverlayRenderer {
     private let carouselOverlay: STCarouselOverlay
     private var carouselOverlayLabel: STCarouselOverlayLabel
@@ -71,7 +77,7 @@ extension STCarouselOverlayRenderer {
         } else if let polygon = self.carouselOverlay.polygon {
             return self.pathForPoints(points: polygon.points(), pointCount: polygon.pointCount)
         }
-        throw NSError(domain: "No overlay path available.", code: 404, userInfo: nil)
+        throw STCarouselOverlayRendererError.noOverlayPathAvailable
     }
     
     private func pathForPoints(points: UnsafeMutablePointer<MKMapPoint>, pointCount: Int) -> CGPath {
@@ -122,7 +128,7 @@ extension STCarouselOverlayRenderer {
     
     private func point(points: [CGPoint], in rect: CGRect) throws -> CGPoint {
         guard let point = points.first(where: { $0.y == rect.maxY }) else {
-            throw NSError(domain: "No overlay point available.", code: 404, userInfo: nil)
+            throw STCarouselOverlayRendererError.noOverlayPointAvailable
         }
         return point
     }
@@ -252,7 +258,7 @@ extension STCarouselOverlayRenderer {
     
     private func drawOverlayImage(_ rect: CGRect, in context: CGContext) throws {
         guard let image = self.carouselOverlay.model.photoImage else {
-            throw NSError(domain: "No image available.", code: 404, userInfo: nil)
+            throw STCarouselOverlayRendererError.noImageAvailable
         }
         
         try self.clipImage(context)

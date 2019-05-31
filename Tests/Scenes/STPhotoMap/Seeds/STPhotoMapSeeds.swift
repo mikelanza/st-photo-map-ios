@@ -121,7 +121,7 @@ class STPhotoMapSeeds: NSObject {
         
         let geoEntities: [GeoEntity] = try decodedResponse.result.map({ try $0.toGeoEntity()})
         guard let geoEntity = geoEntities.first else {
-            throw NSError(domain: "Result is empty.", code: 404, userInfo: nil)
+            throw STPhotoMapSeedsError.noObjectAvailable
         }
         return geoEntity
     }
