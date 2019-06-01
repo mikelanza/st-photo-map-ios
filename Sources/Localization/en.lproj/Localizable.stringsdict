@@ -5,8 +5,8 @@
 	<key>STPhotoMap.photo.count</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@STPhotoMap.photo.count@</string>
-		<key>STPhotoMap.photo.count</key>
+		<string>%#@photo_count@</string>
+		<key>photo_count</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
