@@ -684,7 +684,9 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.sut.entityLevelHandler.entityLevel = .block
         
-        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertFalse(self.presenterSpy.presentLocationOverlayCalled)
     }
     
@@ -906,7 +908,9 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.sut.entityLevelHandler.entityLevel = .block
         
-        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertFalse(self.presenterSpy.presentLocationOverlayCalled)
     }
     
@@ -980,22 +984,22 @@ class STPhotoMapInteractorTests: XCTestCase {
         let request = STPhotoMapModels.CarouselSelection.Request(tileCoordinate: tileCoordinate, location: STLocation.from(coordinate: coordinate))
         self.sut.shouldSelectCarousel(request: request)
         
-        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.workerSpy.cancelAllGeojsonCarouselSelectionOperationsCalled)
         XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselSelectionCalled)
         
         self.wait(delay: self.workerDelay + self.delay)
-                
-        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        
         XCTAssertTrue(self.workerSpy.cancelAllGeoEntityOperationsCalled)
         XCTAssertTrue(self.workerSpy.getGeoEntityForEntityCalled)
         
         self.waitForWorker(delay: self.workerDelay)
         
-        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
         XCTAssertTrue(self.workerSpy.getImageForPhotoCalled)
         XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
+        
+        XCTAssertEqual(self.presenterSpy.presentLoadingStateCalledCount, 2)
+        XCTAssertEqual(self.presenterSpy.presentNotLoadingStateCalledCount, 2)
     }
     
     func testShouldSelectCarouselWhenCacheIsEmptyForFailureCase() {
@@ -1034,9 +1038,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.cacheHandler.removeAllActiveDownloads()
         self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
+        self.sut.visibleMapRect = MKMapRect(origin: MKMapPoint(coordinate), size: MKMapSize.init(width: 1000, height: 1000))
         
-        let request = STPhotoMapModels.VisibleMapRect.Request(mapRect: MKMapRect(origin: MKMapPoint(coordinate), size: MKMapSize.init(width: 1000, height: 1000)))
-        self.sut.shouldUpdateVisibleMapRect(request: request)
         self.sut.shouldDetermineCarousel()
         
         XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
@@ -1057,11 +1060,10 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.cacheHandler.removeAllActiveDownloads()
         self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
+        self.sut.visibleMapRect = geoEntity.boundingBox.mapRect()
         
         self.waitForSynchronization()
         
-        let request = STPhotoMapModels.VisibleMapRect.Request(mapRect: geoEntity.boundingBox.mapRect())
-        self.sut.shouldUpdateVisibleMapRect(request: request)
         self.sut.shouldDetermineCarousel()
         
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
@@ -1090,13 +1092,10 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.cacheHandler.removeAllActiveDownloads()
         self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
+        self.sut.visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
         
         self.waitForSynchronization()
         
-        let visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
-        
-        let request = STPhotoMapModels.VisibleMapRect.Request(mapRect: visibleMapRect)
-        self.sut.shouldUpdateVisibleMapRect(request: request)
         self.sut.shouldDetermineCarousel()
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
@@ -1122,13 +1121,10 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.cacheHandler.removeAllActiveDownloads()
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.carouselHandler.addActiveDownload(keyUrl)
+        self.sut.visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
         
         self.waitForSynchronization()
         
-        let visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
-        
-        let request = STPhotoMapModels.VisibleMapRect.Request(mapRect: visibleMapRect)
-        self.sut.shouldUpdateVisibleMapRect(request: request)
         self.sut.shouldDetermineCarousel()
         
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
@@ -1150,13 +1146,12 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.cacheHandler.removeAllActiveDownloads()
         self.sut.visibleTiles = [tileCoordinate]
         
-        self.waitForSynchronization()
-        
         let geojsonObjectMapRect = try! STPhotoMapSeeds().geojsonObject().objectBoundingBox!.mapRect()
         let visibleMapRect = geojsonObjectMapRect.offsetBy(dx: geojsonObjectMapRect.maxX, dy: geojsonObjectMapRect.maxY)
+        self.sut.visibleMapRect = visibleMapRect
         
-        let request = STPhotoMapModels.VisibleMapRect.Request(mapRect: visibleMapRect)
-        self.sut.shouldUpdateVisibleMapRect(request: request)
+        self.waitForSynchronization()
+        
         self.sut.shouldDetermineCarousel()
         
         XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselDeterminationCalled)
@@ -1181,13 +1176,10 @@ class STPhotoMapInteractorTests: XCTestCase {
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         self.sut.cacheHandler.removeAllActiveDownloads()
         self.sut.visibleTiles = [tileCoordinate]
+        self.sut.visibleMapRect = try! STPhotoMapSeeds().geojsonObject().objectBoundingBox!.mapRect()
         
         self.waitForSynchronization()
         
-        let visibleMapRect = try! STPhotoMapSeeds().geojsonObject().objectBoundingBox!.mapRect()
-        
-        let request = STPhotoMapModels.VisibleMapRect.Request(mapRect: visibleMapRect)
-        self.sut.shouldUpdateVisibleMapRect(request: request)
         self.sut.shouldDetermineCarousel()
     
         XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselDeterminationCalled)

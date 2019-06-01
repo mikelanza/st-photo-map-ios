@@ -28,12 +28,17 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentNewCarouselCalled: Bool = false
     var presentReloadCarouselCalled: Bool = false
     
+    var presentLoadingStateCalledCount: Int = 0
+    var presentNotLoadingStateCalledCount: Int = 0
+    
     func presentLoadingState() {
         self.presentLoadingStateCalled = true
+        self.presentLoadingStateCalledCount += 1
     }
     
     func presentNotLoadingState() {
         self.presentNotLoadingStateCalled = true
+        self.presentNotLoadingStateCalledCount += 1
     }
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response) {
