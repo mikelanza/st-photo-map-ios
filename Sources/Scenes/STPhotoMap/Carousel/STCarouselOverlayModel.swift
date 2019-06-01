@@ -38,16 +38,11 @@ struct STCarouselOverlayModel {
         self.alpha = 1.0
     }
     
-    func entityTitle() -> NSString {
-        let photosTitle = STPhotoMapLocalization.shared.photoCountTitle(self.photoCount)
-        let preposition = self.type == EntityLevel.block.rawValue ? "on" : "in"
-        let title: String
-        if self.type != EntityLevel.block.rawValue {
-            title = self.name
-        } else {
-            title = String(format: "this %@", self.type)
+    func entityTitle() -> String {
+        let photoCountTitle = STPhotoMapLocalization.shared.photoCountTitle(self.photoCount)
+        if self.type == EntityLevel.block.rawValue {
+            return STPhotoMapLocalization.shared.carouselBlockEntityTitle(photoCountTitle: photoCountTitle)
         }
-        
-        return NSString(format: "%@ %@\n%@", photosTitle, preposition, title)
+        return STPhotoMapLocalization.shared.carouselEntityTitle(photoCountTitle: photoCountTitle, entityName: self.name)
     }
 }

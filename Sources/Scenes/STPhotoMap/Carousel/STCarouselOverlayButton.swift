@@ -17,6 +17,10 @@ class STCarouselOverlayButton {
         self.text = text
     }
     
+    init(text: String) {
+        self.text = NSString(string: text)
+    }
+    
     func draw(_ context: CGContext, at point: CGPoint, in rect: CGRect, visibleMapRect: MKMapRect, zoomScale: MKZoomScale) -> CGRect {
         let textFontSize = self.fontSize
         let textRect = self.textRect(point, fontSize: textFontSize, zoomScale: zoomScale)

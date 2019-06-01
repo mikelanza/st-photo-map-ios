@@ -33,7 +33,10 @@ class STPhotoMapLocalization {
         photoCount = "STPhotoMap.photo.count",
         
         photoDetailsTutorial = "STPhotoMap.photo.details.tutorial",
-        entitySelectionTutorial = "STPhotoMap.entity.selection.tutorial"
+        entitySelectionTutorial = "STPhotoMap.entity.selection.tutorial",
+        
+        carouselBlockEntityTitle = "STPhotoMap.carousel.block.entity.title",
+        carouselEntityTitle = "STPhotoMap.carousel.entity.title"
     }
     
     let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized()
@@ -57,5 +60,13 @@ class STPhotoMapLocalization {
     
     func entitySelectionTutorial(entityLevel: String) -> String {
         return String.localizedStringWithFormat(LocalizedKey.entitySelectionTutorial.localized(), entityLevel)
+    }
+    
+    func carouselBlockEntityTitle(photoCountTitle: String) -> String {
+        return String(format: LocalizedKey.carouselBlockEntityTitle.localized(), photoCountTitle)
+    }
+    
+    func carouselEntityTitle(photoCountTitle: String, entityName: String) -> String {
+        return String(format: LocalizedKey.carouselEntityTitle.localized(), photoCountTitle, entityName)
     }
 }
