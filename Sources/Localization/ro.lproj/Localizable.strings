@@ -22,5 +22,5 @@
 "STPhotoMap.photo.details.tutorial" = "Apasă pe o poză aici \nca să vezi detalii";
 "STPhotoMap.entity.selection.tutorial" = "Apasă pe un alt %@ \nca să-l selectezi";
 
-"STPhotoMap.carousel.block.entity.title" = "%@ în acest bloc";
-"STPhotoMap.carousel.entity.title" = "%@ în %@";
+"STPhotoMap.carousel.block.entity.title" = "%@ în \nacest bloc";
+"STPhotoMap.carousel.entity.title" = "%@ în \n%@";

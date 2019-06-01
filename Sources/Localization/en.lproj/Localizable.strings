@@ -22,5 +22,5 @@
 "STPhotoMap.photo.details.tutorial" = "Tap a photo here \nto show details";
 "STPhotoMap.entity.selection.tutorial" = "Tap another %@ \nto select it";
 
-"STPhotoMap.carousel.block.entity.title" = "%@ on this block";
-"STPhotoMap.carousel.entity.title" = "%@ in %@";
+"STPhotoMap.carousel.block.entity.title" = "%@ on \nthis block";
+"STPhotoMap.carousel.entity.title" = "%@ in \n%@";
