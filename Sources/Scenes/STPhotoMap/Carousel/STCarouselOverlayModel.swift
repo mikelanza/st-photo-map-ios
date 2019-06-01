@@ -39,7 +39,7 @@ struct STCarouselOverlayModel {
     }
     
     func entityTitle() -> NSString {
-        let photosTitle = "\(self.photoCount) Photos" // TODO: - Add localized photo count!
+        let photosTitle = STPhotoMapLocalization.shared.photoCountTitle(self.photoCount)
         let preposition = self.type == EntityLevel.block.rawValue ? "on" : "in"
         let title: String
         if self.type != EntityLevel.block.rawValue {

@@ -71,7 +71,7 @@ extension STPhotoMapCarouselHandler {
         let biggestOverlay = self.carousel.overlays.max(by: { return $0.boundingMapRect.area() < $1.boundingMapRect.area() })
         biggestOverlay?.model.shouldDrawEntityButton = true
         biggestOverlay?.model.shouldDrawTutorialLabel = self.carousel.shouldDrawTutorialLabel
-        biggestOverlay?.model.tutorialText = "" // TODO: - Add localized text!
+        biggestOverlay?.model.tutorialText = STPhotoMapLocalization.shared.photoDetailsTutorial
     }
 }
 
@@ -114,7 +114,7 @@ extension STPhotoMapCarouselHandler {
         
         let biggestOverlay = self.carousel.overlays.max(by: { return $0.boundingMapRect.area() < $1.boundingMapRect.area() })
         if self.carousel.numberOfTutorialTextUpdates == 1 {
-            biggestOverlay?.model.tutorialText = ""
+            biggestOverlay?.model.tutorialText = STPhotoMapLocalization.shared.entitySelectionTutorial(entityLevel: self.carousel.entityLevel.rawValue)
             self.carousel.numberOfTutorialTextUpdates -= 1
         } else if self.carousel.numberOfTutorialTextUpdates == 0 {
             biggestOverlay?.model.tutorialText = ""

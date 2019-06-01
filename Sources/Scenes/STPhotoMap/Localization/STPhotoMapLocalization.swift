@@ -28,7 +28,12 @@ class STPhotoMapLocalization {
         cityLevel = "STPhotoMap.city.level.title",
         countyLevel = "STPhotoMap.county.level.title",
         stateLevel = "STPhotoMap.state.level.title",
-        countryLevel = "STPhotoMap.country.level.title"
+        countryLevel = "STPhotoMap.country.level.title",
+        
+        photoCount = "STPhotoMap.photo.count",
+        
+        photoDetailsTutorial = "STPhotoMap.photo.details.tutorial",
+        entitySelectionTutorial = "STPhotoMap.entity.selection.tutorial"
     }
     
     let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized()
@@ -43,4 +48,14 @@ class STPhotoMapLocalization {
     let countyLevelTitle = LocalizedKey.countyLevel.localized()
     let stateLevelTitle = LocalizedKey.stateLevel.localized()
     let countryLevelTitle = LocalizedKey.countryLevel.localized()
+    
+    let photoDetailsTutorial = LocalizedKey.photoDetailsTutorial.localized()
+    
+    func photoCountTitle(_ count: Int) -> String {
+        return String.localizedStringWithFormat(LocalizedKey.photoCount.localized(), count)
+    }
+    
+    func entitySelectionTutorial(entityLevel: String) -> String {
+        return String.localizedStringWithFormat(LocalizedKey.entitySelectionTutorial.localized(), entityLevel)
+    }
 }

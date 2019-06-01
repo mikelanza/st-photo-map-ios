@@ -18,3 +18,6 @@
 "STPhotoMap.county.level.title" = "County";
 "STPhotoMap.state.level.title" = "State/Region";
 "STPhotoMap.country.level.title" = "Country";
+
+"STPhotoMap.photo.details.tutorial" = "Tap a photo here \nto show details";
+"STPhotoMap.entity.selection.tutorial" = "Tap another %@ \nto select it";
