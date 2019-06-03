@@ -47,7 +47,13 @@ class PhotoAnnotation: NSObject, MKAnnotation {
         }
     }
     
-    var clusterize: Bool = true
+    var clusterize: Bool = true {
+        didSet {
+            DispatchQueue.main.async {
+                self.interface?.setClusterize(clusterize: self.clusterize)
+            }
+        }
+    }
     
     weak var interface: PhotoAnnotationInterface?
     
@@ -71,5 +77,6 @@ class PhotoAnnotation: NSObject, MKAnnotation {
         self.image = annotation.image
         self.isLoading = annotation.isLoading
         self.isSelected = annotation.isSelected
+        self.clusterize = annotation.clusterize
     }
 }
