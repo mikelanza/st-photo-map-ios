@@ -30,7 +30,7 @@ extension STPhotoMapInteractor {
     }
     
     private func presentPhotoAnnotationsForCached(tiles:  [STPhotoMapCache.Tile]) {
-        var annotations =  [STPhotoMapModels.Annotation]()
+        var annotations = [STPhotoMapModels.Annotation]()
         for tile in tiles {
             let tileAnnotations = self.getAnnotations(from: tile.geojsonObject)
             if tileAnnotations.isEmpty == false {
