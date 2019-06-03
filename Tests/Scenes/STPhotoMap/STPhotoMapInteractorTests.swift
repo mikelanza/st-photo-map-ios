@@ -474,22 +474,65 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
         XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
     }
+    
+    func testShouldDetermineEntityLevelWhenNewEntityLevelIsLocation() throws {
+        workerSpy.geojsonObject = try! STPhotoMapSeeds().locationGeojsonObject()
 
-    func testShouldDetermineEntityLevelWhenDownloadedTileIsNotStillVisible() {
-        self.workerSpy.delay = self.workerDelay
+        let geoEntity = try! STPhotoMapSeeds().geoEntity()
+        self.sut.cacheHandler.cache.removeAllTiles()
+        self.sut.cacheHandler.removeAllActiveDownloads()
+
+        self.sut.entityLevelHandler.entityLevel = .unknown
         self.sut.visibleTiles = [STPhotoMapSeeds.tileCoordinate]
+        self.sut.visibleMapRect = geoEntity.boundingBox.mapRect()
+
+        self.sut.cacheHandler.removeAllActiveDownloads()
 
         self.waitForSynchronization()
 
         self.sut.shouldDetermineEntityLevel()
 
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertTrue(self.presenterSpy.presentEntityLevelCalled)
+
         self.waitForWorker(delay: self.workerDelay)
 
-        self.sut.visibleTiles.removeAll()
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertFalse(self.workerSpy.getGeoEntityForEntityCalled)
 
-        XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
-        XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
+        self.waitForWorker(delay: self.workerDelay)
+
+        XCTAssertFalse(self.workerSpy.getImageForPhotoCalled)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
+
+        self.waitForWorker(delay: self.workerDelay)
         
+        XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
+    }
+
+    func testShouldDetermineEntityLevelWhenDownloadedTileIsNotStillVisible() {
+        self.workerSpy.delay = self.workerDelay
+        
+        self.sut.visibleTiles = [STPhotoMapSeeds.tileCoordinate]
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldDetermineEntityLevel()
+        
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForEntityLevelCalled)
+        
+        self.wait(delay: self.delay)
+        
+        self.sut.visibleTiles.removeAll()
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertFalse(self.presenterSpy.presentEntityLevelCalled)
         XCTAssertFalse(self.presenterSpy.presentRemoveCarouselCalled)
     }
 

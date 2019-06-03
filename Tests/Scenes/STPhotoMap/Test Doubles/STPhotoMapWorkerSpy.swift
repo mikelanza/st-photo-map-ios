@@ -12,6 +12,7 @@ import MapKit
 
 class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
     var delay: Double = 0
+    var geojsonObject = try! STPhotoMapSeeds().geojsonObject()
     
     var getGeojsonTileForCachingCalled: Bool = false
     var getGeojsonTileForEntityLevelCalled: Bool = false
@@ -37,12 +38,10 @@ class STPhotoMapWorkerSuccessSpy: STPhotoMapWorker {
         self.getGeojsonTileForEntityLevelCalled = true
         
         if self.delay == 0 {
-            let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
-            self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+            self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: self.geojsonObject)
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
-                let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
-                self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+                self.delegate?.successDidGetGeojsonTileForEntityLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: self.geojsonObject)
             }
         }
     }
