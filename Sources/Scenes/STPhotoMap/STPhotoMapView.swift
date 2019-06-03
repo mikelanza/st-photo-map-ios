@@ -349,8 +349,10 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
 extension STPhotoMapView: MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let visibleTiles = mapView.visibleTiles()
+        let visibleMapRect = mapView.visibleMapRect
+        
         DispatchQueue.global().async {
-            self.interactor?.shouldUpdateVisibleMapRect(request: STPhotoMapModels.VisibleMapRect.Request(mapRect: self.mapView.visibleMapRect))
+            self.interactor?.shouldUpdateVisibleMapRect(request: STPhotoMapModels.VisibleMapRect.Request(mapRect: visibleMapRect))
             self.interactor?.shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request(tiles: visibleTiles))
             self.interactor?.shouldCacheGeojsonObjects()
             self.interactor?.shouldDetermineEntityLevel()
