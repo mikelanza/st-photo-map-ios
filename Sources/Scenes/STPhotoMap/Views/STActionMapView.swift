@@ -85,4 +85,22 @@ public class STActionMapView: MKMapView {
         let location = STLocation.from(coordinate: coordinate)
         self.actionMapViewDelegate?.actionMapView(mapView: self, didSelect: tile, atLocation: location)
     }
+    
+    // MARK: - Annotations
+    
+    func updateAnnotation(_ photoAnnotation: PhotoAnnotation) {
+        var existentAnnotation: PhotoAnnotation?
+        
+        self.annotations.forEach { annotation in
+            if let annotation = annotation as? PhotoAnnotation, annotation.model.photoId == photoAnnotation.model.photoId {
+                existentAnnotation = annotation
+            }
+        }
+        
+        if let existentAnnotation = existentAnnotation {
+            existentAnnotation.updateFor(photoAnnotation)
+        } else {
+            self.addAnnotation(photoAnnotation)
+        }
+    }
 }

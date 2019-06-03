@@ -46,6 +46,8 @@ protocol STPhotoMapDisplayLogic: class {
     func displayRemoveCarousel()
     func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel)
     func displayReloadCarousel()
+    
+    func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -61,7 +63,7 @@ public class STPhotoMapView: UIView {
     
     var photoTileOverlay: STPhotoTileOverlay?
     var carouselOverlays: [STCarouselOverlay] = []
-    private var annotationHandler: STPhotoMapAnnotationHandler!
+    var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
         self.init()
@@ -300,6 +302,16 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     
     func displayDeselectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationDeselection.ViewModel) {
         viewModel.photoAnnotation?.isSelected = false
+    }
+    
+    func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel) {
+        DispatchQueue.main.async {
+            if let annotation = viewModel.photoAnnotation {
+                self.annotationHandler?.selectedPhotoAnnotation = annotation
+                self.annotationHandler?.updateAnnotation(annotation: annotation)
+                self.mapView?.updateAnnotation(annotation)
+            }
+        }
     }
     
     // MARK: - Photo cluster annotation selection/deselection

@@ -45,6 +45,10 @@ class PhotoAnnotationView: MKAnnotationView, DefaultReuseIdentifier {
         super.prepareForReuse()
         self.setIsLoading(isLoading: false)
     }
+    
+    func setClusterize(clusterize: Bool) {
+        self.clusteringIdentifier = clusterize ? self.reuseIdentifier : nil
+    }
 }
 
 // MARK: - Subviews configuration

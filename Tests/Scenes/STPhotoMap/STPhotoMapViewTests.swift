@@ -461,4 +461,47 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertEqual(self.sut.carouselOverlays.count, 1)
         XCTAssertEqual(self.sut.mapView.overlays.count, 1)
     }
+    
+    func testDisplayNewSelectedPhotoAnnotationWhenThereAreNoPhotoAnnotationsOnMap() {
+        self.loadView()
+        
+        let photoAnnotation = STPhotoMapSeeds().photoAnnotation()
+        self.sut.annotationHandler.removeAllAnnotations()
+        self.sut.mapView.removeAnnotations(self.sut.mapView.annotations)
+        
+        let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: photoAnnotation)
+        self.sut.displayNewSelectedPhotoAnnotation(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertEqual(self.sut.annotationHandler.annotations.count, 1)
+        XCTAssertEqual(self.sut.mapView.annotations.count, 1)
+        
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, photoAnnotation)
+    }
+    
+    func testDisplayNewSelectedPhotoAnnotationWhenThereArePhotoAnnotationsOnMap() {
+        self.loadView()
+        
+        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
+        let firstPhotoAnnotation = photoAnnotations.first!
+        let secondPhotoAnnotation = photoAnnotations.last!
+        
+        self.sut.annotationHandler.addAnnotation(annotation: firstPhotoAnnotation)
+        self.sut.mapView.addAnnotation(firstPhotoAnnotation)
+        
+        let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: secondPhotoAnnotation)
+        self.sut.displayNewSelectedPhotoAnnotation(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertEqual(self.sut.annotationHandler.annotations.count, 2)
+        XCTAssertEqual(self.sut.mapView.annotations.count, 2)
+        
+        let annotation = self.sut.annotationHandler.annotations.filter({ $0.model.photoId == secondPhotoAnnotation.model.photoId }).first
+        XCTAssertNotNil(annotation)
+        
+        XCTAssertEqual(annotation, secondPhotoAnnotation)
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, secondPhotoAnnotation)
+    }
 }

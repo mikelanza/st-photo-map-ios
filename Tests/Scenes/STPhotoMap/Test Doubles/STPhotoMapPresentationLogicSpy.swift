@@ -27,6 +27,7 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentNavigateToPhotoCollectionCalled: Bool = false
     var presentNewCarouselCalled: Bool = false
     var presentReloadCarouselCalled: Bool = false
+    var presentNewSelectedPhotoAnnotationCalled: Bool = false
     
     var presentLoadingStateCalledCount: Int = 0
     var presentNotLoadingStateCalledCount: Int = 0
@@ -103,5 +104,9 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentReloadCarousel() {
         self.presentReloadCarouselCalled = true
+    }
+    
+    func presentNewSelectedPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response) {
+        self.presentNewSelectedPhotoAnnotationCalled = true
     }
 }

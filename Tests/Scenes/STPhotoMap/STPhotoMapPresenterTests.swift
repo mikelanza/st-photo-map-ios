@@ -129,8 +129,6 @@ class STPhotoMapPresenterTests: XCTestCase {
         XCTAssertTrue(self.displayerSpy.displaySelectPhotoClusterAnnotationCalled)
     }
     
-    // MARK: - Carousel
-    
     func testPresentRemoveCarousel() {
         self.sut.presentRemoveCarousel()
         XCTAssertTrue(self.displayerSpy.displayRemoveCarouselCalled)
@@ -151,5 +149,11 @@ class STPhotoMapPresenterTests: XCTestCase {
     func testPresentReloadCarousel() {
         self.sut.presentReloadCarousel()
         XCTAssertTrue(self.displayerSpy.displayReloadCarouselCalled)
+    }
+    
+    func testPresentNewSelectedPhotoAnnotation() {
+        let response = STPhotoMapModels.PhotoAnnotationSelection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentNewSelectedPhotoAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNewSelectedPhotoAnnotationCalled)
     }
 }

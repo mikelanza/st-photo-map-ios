@@ -25,11 +25,15 @@ class STPhotoMapAnnotationHandler {
     }
     
     func addAnnotation(annotation: PhotoAnnotation) {
-        let savedAnnotation = self.annotations.first { (photoAnnotation) -> Bool in
-            photoAnnotation.model.photoId == annotation.model.photoId
+        if self.annotations.first(where: { $0.model.photoId == annotation.model.photoId }) == nil {
+            self.annotations.append(annotation)
         }
-        
-        if savedAnnotation == nil {
+    }
+    
+    func updateAnnotation(annotation: PhotoAnnotation) {
+        if let existentAnnotation = self.annotations.first(where: { $0.model.photoId == annotation.model.photoId }) {
+            existentAnnotation.updateFor(annotation)
+        } else {
             self.annotations.append(annotation)
         }
     }

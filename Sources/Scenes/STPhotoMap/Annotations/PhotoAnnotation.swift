@@ -47,6 +47,8 @@ class PhotoAnnotation: NSObject, MKAnnotation {
         }
     }
     
+    var clusterize: Bool = true
+    
     weak var interface: PhotoAnnotationInterface?
     
     init(id: String, coordinate: CLLocationCoordinate2D) {
@@ -59,6 +61,15 @@ class PhotoAnnotation: NSObject, MKAnnotation {
         self.interface = view
         view.setImage(image: self.image)
         view.setIsLoading(isLoading: self.isLoading)
+        view.setClusterize(clusterize: self.clusterize)
         return view
+    }
+    
+    func updateFor(_ annotation: PhotoAnnotation) {
+        self.model.photoId = annotation.model.photoId
+        self.model.imageUrl = annotation.model.imageUrl
+        self.image = annotation.image
+        self.isLoading = annotation.isLoading
+        self.isSelected = annotation.isSelected
     }
 }
