@@ -31,11 +31,10 @@ class STPhotoMapAnnotationHandler {
     }
     
     func updateAnnotation(annotation: PhotoAnnotation) {
-        if let existentAnnotation = self.annotations.first(where: { $0.model.photoId == annotation.model.photoId }) {
-            existentAnnotation.updateFor(annotation)
-        } else {
-            self.annotations.append(annotation)
+        if let index = self.annotations.firstIndex(where: { $0.model.photoId == annotation.model.photoId }) {
+            self.annotations.remove(at: index)
         }
+        self.annotations.append(annotation)
     }
     
     func getVisibleAnnotations(mapRect: MKMapRect) -> [PhotoAnnotation] {
