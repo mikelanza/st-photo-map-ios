@@ -26,6 +26,12 @@ enum STPhotoMapModels {
         }
     }
     
+    enum SelectedPhotoAnnotation {
+        struct Request {
+            let annotation: PhotoAnnotation?
+        }
+    }
+    
     enum EntityZoomLevel {
         struct Response {
             let entityLevel: EntityLevel

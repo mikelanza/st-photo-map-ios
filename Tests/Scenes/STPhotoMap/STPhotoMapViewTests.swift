@@ -221,6 +221,8 @@ class STPhotoMapViewTests: XCTestCase {
         self.sut.photoAnnotationView(view: view, with: annotation, didSelect: nil)
         
         XCTAssertTrue(self.interactorSpy.shouldSelectPhotoAnnotationCalled)
+        XCTAssertTrue(self.interactorSpy.shouldUpdateSelectedPhotoAnnotationCalled)
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, annotation)
     }
     
     func testShouldNavigateToPhotoDetailsWhenLocationOverlayViewIsTouchedUpInside() {
@@ -237,10 +239,13 @@ class STPhotoMapViewTests: XCTestCase {
         self.loadView()
         
         let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
+        let photoAnnotation = clusterAnnotation.annotation(for: 0)!
         let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: clusterAnnotation.photoIds.count)
-        self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, with: clusterAnnotation.annotation(for: 0)!, didSelect: nil)
+        self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, with: photoAnnotation, didSelect: nil)
         
         XCTAssertTrue(self.interactorSpy.shouldSelectPhotoClusterAnnotationCalled)
+        XCTAssertTrue(self.interactorSpy.shouldUpdateSelectedPhotoAnnotationCalled)
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, photoAnnotation)
     }
     
     func testShouldInflatePhotoClusterAnnotationWhenAPhotoClusterAnnotationIsTouchedUpInside() {
@@ -251,6 +256,7 @@ class STPhotoMapViewTests: XCTestCase {
         self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, didSelect: nil)
         
         XCTAssertTrue(self.interactorSpy.shouldInflatePhotoClusterAnnotationCalled)
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoClusterAnnotation, clusterAnnotation)
     }
     
     func testShouldNavigateToPhotoDetailsWhenACarouselPhotoIsSelected() {

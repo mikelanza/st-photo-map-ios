@@ -95,6 +95,16 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertEqual(self.sut.visibleMapRect.origin.y, mapRect.origin.y)
     }
     
+    func testShouldUpdateSelectedPhotoAnnotation() {
+        let annotations = STPhotoMapSeeds().photoAnnotations()
+        self.sut.selectedPhotoAnnotation = annotations.first
+        
+        let request = STPhotoMapModels.SelectedPhotoAnnotation.Request(annotation: annotations.last)
+        self.sut.shouldUpdateSelectedPhotoAnnotation(request: request)
+        
+        XCTAssertEqual(self.sut.selectedPhotoAnnotation, annotations.last)
+    }
+    
     // MARK: - Navigation tests
     
     func testShouldNavigateToPhotoDetails() {

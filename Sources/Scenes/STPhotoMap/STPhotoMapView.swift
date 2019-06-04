@@ -149,6 +149,10 @@ extension STPhotoMapView {
     private func shouldSelectPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation, photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
         self.interactor?.shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request(clusterAnnotation: clusterAnnotation, photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation))
     }
+    
+    private func shouldUpdateSelectedPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+        self.interactor?.shouldUpdateSelectedPhotoAnnotation(request: STPhotoMapModels.SelectedPhotoAnnotation.Request(annotation: photoAnnotation))
+    }
 }
 
 // MARK: - Display logic
@@ -420,6 +424,7 @@ extension STPhotoMapView: MKMapViewDelegate {
 extension STPhotoMapView: PhotoAnnotationViewDelegate {
     func photoAnnotationView(view: PhotoAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
         self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
+        self.shouldUpdateSelectedPhotoAnnotation(photoAnnotation)
         self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }
@@ -434,6 +439,7 @@ extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
     
     func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoClusterAnnotation: MultiplePhotoClusterAnnotation, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
         self.shouldSelectPhotoClusterAnnotation(photoClusterAnnotation, photoAnnotation: photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
+        self.shouldUpdateSelectedPhotoAnnotation(photoAnnotation)
         self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }
