@@ -16,6 +16,7 @@ public protocol STPhotoMapViewDataSource: NSObjectProtocol {
 public protocol STPhotoMapViewDelegate: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?)
     func photoMapView(_ view: STPhotoMapView?, navigateToSpecificPhotosFor photoIds: [String])
+    func photoMapView(_ view: STPhotoMapView?, navigateToPhotoCollectionFor location: STLocation, entityLevel: EntityLevel)
 }
 
 protocol STPhotoMapDisplayLogic: class {
@@ -32,6 +33,7 @@ protocol STPhotoMapDisplayLogic: class {
     
     func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel)
     func displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel)
+    func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel)
     
     func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel)
     
@@ -40,10 +42,16 @@ protocol STPhotoMapDisplayLogic: class {
     
     func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel)
     func displayDeselectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationDeselection.ViewModel)
+    
+    func displayRemoveCarousel()
+    func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel)
+    func displayReloadCarousel()
+    
+    func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
-    public weak var mapView: MKMapView!
+    public weak var mapView: STActionMapView!
     public weak var dataSource: STPhotoMapViewDataSource?
     public weak var delegate: STPhotoMapViewDelegate?
     
@@ -54,7 +62,8 @@ public class STPhotoMapView: UIView {
     weak var locationOverlayView: STLocationOverlayView!
     
     var photoTileOverlay: STPhotoTileOverlay?
-    private var annotationHandler: STPhotoMapAnnotationHandler!
+    var carouselOverlays: [STCarouselOverlay] = []
+    var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
         self.init()
@@ -103,6 +112,12 @@ extension STPhotoMapView {
             renderer.reloadTiles()
         }
     }
+    
+    public func reloadCarouselOverlays() {
+        if let overlay = self.carouselOverlays.first, let renderer = self.mapView?.renderer(for: overlay) as? STCarouselOverlayRenderer {
+            renderer.reload()
+        }
+    }
 }
 
 // MARK: - Data Source
@@ -133,6 +148,10 @@ extension STPhotoMapView {
     
     private func shouldSelectPhotoClusterAnnotation(_ clusterAnnotation: MultiplePhotoClusterAnnotation, photoAnnotation: PhotoAnnotation, previousPhotoAnnotation: PhotoAnnotation?) {
         self.interactor?.shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request(clusterAnnotation: clusterAnnotation, photoAnnotation: photoAnnotation, previousPhotoAnnotation: previousPhotoAnnotation))
+    }
+    
+    private func shouldUpdateSelectedPhotoAnnotation(_ photoAnnotation: PhotoAnnotation?) {
+        self.interactor?.shouldUpdateSelectedPhotoAnnotation(request: STPhotoMapModels.SelectedPhotoAnnotation.Request(annotation: photoAnnotation))
     }
 }
 
@@ -204,8 +223,8 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     // MARK: - Location annotations
     
     func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel) {
-        self.annotationHandler.addAnnotations(annotations: viewModel.annotations)
         DispatchQueue.main.async {
+            self.annotationHandler.addAnnotations(annotations: viewModel.annotations)
             let visibleAnnotations = self.annotationHandler.getVisibleAnnotations(mapRect: self.mapView.visibleMapRect)
             self.mapView?.addAnnotations(visibleAnnotations)
         }
@@ -213,9 +232,9 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     
     func displayRemoveLocationAnnotations() {
         DispatchQueue.main.async {
+            self.annotationHandler.removeAllAnnotations()
             self.mapView?.removeAnnotations(self.mapView?.annotations ?? [])
         }
-        self.annotationHandler.removeAllAnnotations()
     }
     
     // MARK: - Photo details navigation
@@ -289,6 +308,16 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         viewModel.photoAnnotation?.isSelected = false
     }
     
+    func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel) {
+        DispatchQueue.main.async {
+            if let annotation = viewModel.photoAnnotation {
+                self.annotationHandler?.selectedPhotoAnnotation = annotation
+                self.annotationHandler?.updateAnnotation(annotation: annotation)
+                self.mapView?.updateAnnotation(annotation)
+            }
+        }
+    }
+    
     // MARK: - Photo cluster annotation selection/deselection
     
     func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel) {
@@ -300,6 +329,35 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
             self.annotationHandler?.selectedPhotoClusterAnnotation?.interface?.setIsSelected(photoId: annotation.model.photoId, isSelected: false)
         }
     }
+    
+    // MARK: - Carousel
+    
+    func displayRemoveCarousel() {
+        DispatchQueue.main.async {
+            let carouselOverlays = self.mapView.overlays.filter({ $0 is STCarouselOverlay })
+            self.mapView.removeOverlays(carouselOverlays)
+            self.carouselOverlays.removeAll()
+        }
+    }
+    
+    func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel) {
+        DispatchQueue.main.async {
+            self.mapView.addOverlays(viewModel.overlays)
+            self.carouselOverlays = viewModel.overlays
+        }
+    }
+    
+    func displayReloadCarousel() {
+        DispatchQueue.main.async {
+            self.reloadCarouselOverlays()
+        }
+    }
+    
+    // MARK: - Photo collection navigation
+    
+    func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel) {
+        self.delegate?.photoMapView(self, navigateToPhotoCollectionFor: viewModel.location, entityLevel: viewModel.entityLevel)
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -307,17 +365,26 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
 extension STPhotoMapView: MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let visibleTiles = mapView.visibleTiles()
+        let visibleMapRect = mapView.visibleMapRect
+        
         DispatchQueue.global().async {
+            self.interactor?.shouldUpdateVisibleMapRect(request: STPhotoMapModels.VisibleMapRect.Request(mapRect: visibleMapRect))
             self.interactor?.shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request(tiles: visibleTiles))
             self.interactor?.shouldCacheGeojsonObjects()
             self.interactor?.shouldDetermineEntityLevel()
             self.interactor?.shouldDetermineLocationLevel()
+            self.interactor?.shouldDetermineCarousel()
+            self.interactor?.shouldDetermineSelectedPhotoAnnotation()
         }
     }
     
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is STPhotoTileOverlay {
             return STPhotoTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
+        }
+        
+        if overlay is STCarouselOverlay {
+            return STCarouselOverlayRenderer(carouselOverlay: overlay as! STCarouselOverlay, visibleMapRect: mapView.visibleMapRect)
         }
         
         return MKOverlayRenderer(overlay: overlay)
@@ -358,6 +425,7 @@ extension STPhotoMapView: MKMapViewDelegate {
 extension STPhotoMapView: PhotoAnnotationViewDelegate {
     func photoAnnotationView(view: PhotoAnnotationView?, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
         self.shouldSelectPhotoAnnotation(photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
+        self.shouldUpdateSelectedPhotoAnnotation(photoAnnotation)
         self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }
@@ -372,6 +440,7 @@ extension STPhotoMapView: MultiplePhotoClusterAnnotationViewDelegate {
     
     func multiplePhotoClusterAnnotationView(view: MultiplePhotoClusterAnnotationView?, with photoClusterAnnotation: MultiplePhotoClusterAnnotation, with photoAnnotation: PhotoAnnotation, didSelect photoImageView: PhotoImageView?) {
         self.shouldSelectPhotoClusterAnnotation(photoClusterAnnotation, photoAnnotation: photoAnnotation, previousPhotoAnnotation: self.annotationHandler?.selectedPhotoAnnotation)
+        self.shouldUpdateSelectedPhotoAnnotation(photoAnnotation)
         self.annotationHandler?.selectedPhotoAnnotation = photoAnnotation
     }
 }
@@ -395,6 +464,22 @@ extension STPhotoMapView {
     }
 }
 
+// MARK: - Actions
+
+extension STPhotoMapView: STActionMapViewDelegate {
+    func actionMapView(mapView: STActionMapView?, didSelect carouselOverlay: STCarouselOverlay, atLocation location: STLocation) {
+        self.interactor?.shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request(location: location, entityLevel: carouselOverlay.entityLevel()))
+    }
+    
+    func actionMapView(mapView: STActionMapView?, didSelect tileCoordinate: TileCoordinate, atLocation location: STLocation) {
+        self.interactor?.shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request(tileCoordinate: tileCoordinate, location: location))
+    }
+    
+    func actionMapView(mapView: STActionMapView?, didSelectCarouselPhoto photoId: String, atLocation location: STLocation) {
+        self.interactor?.shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request(photoId: photoId))
+    }
+}
+
 // MARK: - Subviews configuration
 
 extension STPhotoMapView {
@@ -404,9 +489,10 @@ extension STPhotoMapView {
     }
     
     private func setupMapView() {
-        let mapView = MKMapView()
+        let mapView = STActionMapView()
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.delegate = self
+        mapView.actionMapViewDelegate = self
         self.addSubview(mapView)
         self.mapView = mapView
     }

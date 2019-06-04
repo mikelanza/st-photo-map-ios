@@ -13,6 +13,11 @@ struct STPhoto: Codable {
     var createdAt: Date
     var user: STUser?
     
+    var imageUrl: String?
+    var image1200Url: String?
+    var image750Url: String?
+    var image650Url: String?
+    
     var text: String { return self._text ?? "" }
     private var _text: String?
     
@@ -30,5 +35,9 @@ struct STPhoto: Codable {
         case user = "owner"
         case _text = "descriptionText"
         case _fhUsername = "fhOwnerUsername"
+        case imageUrl = "imageOriginalURL"
+        case image1200Url = "imageWidth1200URL"
+        case image750Url = "imageWidth750URL"
+        case image650Url = "imageWidth650URL"
     }
 }

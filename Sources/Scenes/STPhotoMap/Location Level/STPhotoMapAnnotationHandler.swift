@@ -25,13 +25,16 @@ class STPhotoMapAnnotationHandler {
     }
     
     func addAnnotation(annotation: PhotoAnnotation) {
-        let savedAnnotation = self.annotations.first { (photoAnnotation) -> Bool in
-            photoAnnotation.model.photoId == annotation.model.photoId
-        }
-        
-        if savedAnnotation == nil {
+        if self.annotations.first(where: { $0.model.photoId == annotation.model.photoId }) == nil {
             self.annotations.append(annotation)
         }
+    }
+    
+    func updateAnnotation(annotation: PhotoAnnotation) {
+        if let index = self.annotations.firstIndex(where: { $0.model.photoId == annotation.model.photoId }) {
+            self.annotations.remove(at: index)
+        }
+        self.annotations.append(annotation)
     }
     
     func getVisibleAnnotations(mapRect: MKMapRect) -> [PhotoAnnotation] {

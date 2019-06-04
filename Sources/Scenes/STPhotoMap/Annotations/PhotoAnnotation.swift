@@ -47,6 +47,14 @@ class PhotoAnnotation: NSObject, MKAnnotation {
         }
     }
     
+    var clusterize: Bool = true {
+        didSet {
+            DispatchQueue.main.async {
+                self.interface?.setClusterize(clusterize: self.clusterize)
+            }
+        }
+    }
+    
     weak var interface: PhotoAnnotationInterface?
     
     init(id: String, coordinate: CLLocationCoordinate2D) {
@@ -59,6 +67,8 @@ class PhotoAnnotation: NSObject, MKAnnotation {
         self.interface = view
         view.setImage(image: self.image)
         view.setIsLoading(isLoading: self.isLoading)
+        view.setIsSelected(isSelected: self.isSelected)
+        view.setClusterize(clusterize: self.clusterize)
         return view
     }
 }

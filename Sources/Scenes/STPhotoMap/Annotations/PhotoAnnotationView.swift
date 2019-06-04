@@ -13,6 +13,7 @@ protocol PhotoAnnotationInterface: NSObjectProtocol {
     func setImage(image: UIImage?)
     func setIsLoading(isLoading: Bool)
     func setIsSelected(isSelected: Bool)
+    func setClusterize(clusterize: Bool)
 }
 
 protocol PhotoAnnotationViewDelegate: NSObjectProtocol {
@@ -96,6 +97,10 @@ extension PhotoAnnotationView: PhotoAnnotationInterface {
     
     func setIsSelected(isSelected: Bool) {
         self.photoImageView?.setSelected(selected: isSelected)
+    }
+    
+    func setClusterize(clusterize: Bool) {
+        self.clusteringIdentifier = clusterize ? self.reuseIdentifier : nil
     }
 }
 

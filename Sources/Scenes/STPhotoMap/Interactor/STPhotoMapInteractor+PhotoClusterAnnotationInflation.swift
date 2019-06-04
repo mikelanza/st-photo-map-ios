@@ -30,7 +30,7 @@ extension STPhotoMapInteractor {
             value.isLoading = true
             clusterAnnotation.interface?.setIsLoading(photoId: key, isLoading: true)
             
-            self.worker?.downloadImageForPhotoAnnotation(value, completion: { image in
+            self.worker?.getImageForPhotoAnnotation(value, completion: { image in
                 clusterAnnotation.interface?.setIsLoading(photoId: key, isLoading: false)
                 clusterAnnotation.interface?.setImage(photoId: key, image: image)
             })

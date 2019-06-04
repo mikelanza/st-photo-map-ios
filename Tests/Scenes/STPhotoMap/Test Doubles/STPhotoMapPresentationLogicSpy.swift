@@ -23,13 +23,23 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentDeselectPhotoAnnotationCalled: Bool = false
     var presentDeselectPhotoClusterAnnotationCalled: Bool = false
     var presentSelectPhotoClusterAnnotationCalled: Bool = false
+    var presentRemoveCarouselCalled: Bool = false
+    var presentNavigateToPhotoCollectionCalled: Bool = false
+    var presentNewCarouselCalled: Bool = false
+    var presentReloadCarouselCalled: Bool = false
+    var presentNewSelectedPhotoAnnotationCalled: Bool = false
+    
+    var presentLoadingStateCalledCount: Int = 0
+    var presentNotLoadingStateCalledCount: Int = 0
     
     func presentLoadingState() {
         self.presentLoadingStateCalled = true
+        self.presentLoadingStateCalledCount += 1
     }
     
     func presentNotLoadingState() {
         self.presentNotLoadingStateCalled = true
+        self.presentNotLoadingStateCalledCount += 1
     }
     
     func presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response) {
@@ -78,5 +88,25 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response) {
         self.presentSelectPhotoClusterAnnotationCalled = true
+    }
+    
+    func presentRemoveCarousel() {
+        self.presentRemoveCarouselCalled = true
+    }
+    
+    func presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response) {
+        self.presentNavigateToPhotoCollectionCalled = true
+    }
+    
+    func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response) {
+        self.presentNewCarouselCalled = true
+    }
+    
+    func presentReloadCarousel() {
+        self.presentReloadCarouselCalled = true
+    }
+    
+    func presentNewSelectedPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response) {
+        self.presentNewSelectedPhotoAnnotationCalled = true
     }
 }

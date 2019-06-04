@@ -11,23 +11,30 @@
 //
 
 import UIKit
+import MapKit
 
 protocol STPhotoMapBusinessLogic {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request)
+    func shouldUpdateVisibleMapRect(request: STPhotoMapModels.VisibleMapRect.Request)
+    func shouldUpdateSelectedPhotoAnnotation(request: STPhotoMapModels.SelectedPhotoAnnotation.Request)
     
     func shouldCacheGeojsonObjects()
     
     func shouldDetermineEntityLevel()
     func shouldDetermineLocationLevel()
+    func shouldDetermineCarousel()
+    func shouldDetermineSelectedPhotoAnnotation()
     
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request)
     
     func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request)
+    func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request)
     
     func shouldInflatePhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationInflation.Request)
     
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
     func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request)
+    func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request)
 }
 
 protocol STPhotoMapDataStore {
@@ -38,17 +45,25 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     var worker: STPhotoMapWorker?
     
     var visibleTiles: [TileCoordinate]
+    var visibleMapRect: MKMapRect
+    var selectedPhotoAnnotation: PhotoAnnotation?
+    
     var cacheHandler: STPhotoMapCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
     var locationLevelHandler: STPhotoMapLocationLevelHandler
+    let carouselHandler: STPhotoMapCarouselHandler
     
     init() {
         self.visibleTiles = []
+        self.visibleMapRect = MKMapRect()
         self.cacheHandler = STPhotoMapCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
         self.locationLevelHandler = STPhotoMapLocationLevelHandler()
+        self.carouselHandler = STPhotoMapCarouselHandler()
         self.worker = STPhotoMapWorker(delegate: self)
+        
         self.entityLevelHandler.delegate = self
+        self.carouselHandler.delegate = self
     }
     
     internal func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
@@ -66,15 +81,27 @@ extension STPhotoMapInteractor {
         self.visibleTiles = request.tiles
     }
     
+    func shouldUpdateVisibleMapRect(request: STPhotoMapModels.VisibleMapRect.Request) {
+        self.visibleMapRect = request.mapRect
+    }
+    
+    func shouldUpdateSelectedPhotoAnnotation(request: STPhotoMapModels.SelectedPhotoAnnotation.Request) {
+        self.selectedPhotoAnnotation = request.annotation
+    }
+    
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request) {
         if request.photoAnnotation.image == nil {
             request.photoAnnotation.isLoading = true
-            self.worker?.downloadImageForPhotoAnnotation(request.photoAnnotation)
+            self.worker?.getImageForPhotoAnnotation(request.photoAnnotation)
         }
     }
     
     func shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request) {
         self.presenter?.presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response(photoId: request.photoId))
+    }
+    
+    func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request) {
+        self.presenter?.presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response(location: request.location, entityLevel: request.entityLevel))
     }
 }
 
@@ -87,13 +114,17 @@ extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
         
         self.presenter?.presentRemoveLocationAnnotations()
         self.presenter?.presentRemoveLocationOverlay()
+        self.presenter?.presentRemoveCarousel()
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
+        self.shouldDetermineCarousel()
     }
     
     func photoMapEntityLevelHandler(location level: EntityLevel) {
         self.worker?.cancelAllGeojsonEntityLevelOperations()
         
+        self.presenter?.presentRemoveCarousel()
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
+        
         self.shouldDetermineLocationLevel()
     }
 }

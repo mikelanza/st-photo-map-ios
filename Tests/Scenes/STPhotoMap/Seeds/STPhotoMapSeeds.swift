@@ -27,6 +27,7 @@ class STPhotoMapSeeds: NSObject {
     ]
     
     static let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 50, longitude: 50)
+    static let location: STLocation = STLocation.from(coordinate: coordinate)
     
     static let photoTileOverlayModel = STPhotoTileOverlay.Model(url: "url")
     static let photoTileOverlay = STPhotoTileOverlay(model: STPhotoMapSeeds.photoTileOverlayModel)
@@ -97,11 +98,39 @@ class STPhotoMapSeeds: NSObject {
     
     func photo() -> STPhoto {
         var photo = STPhoto(id: "photo_id", createdAt: Date())
+        photo.imageUrl = "https://strtgrph.s3-us-west-1.amazonaws.com/processed/964d83ac70036166b4fb43c93516ab25_250_250.jpg"
         photo.user = self.user()
         return photo
     }
     
     func user() -> STUser {
         return STUser(id: "user_id")
+    }
+    
+
+    func geoEntity() throws -> GeoEntity {
+        let bundle = Bundle(for: type(of: self))
+        guard let path = bundle.path(forResource: "geo_entity", ofType: "json") else {
+            throw STPhotoMapSeedsError.noResourceAvailable
+        }
+        let url = URL(fileURLWithPath: path)
+        let data = try Data(contentsOf: url)
+    
+        let decoder = JSONDecoder()
+        let decodedResponse = try decoder.decode(GetGeoEntityOperationModel.DecodedResponse.self, from: data)
+        
+        let geoEntities: [GeoEntity] = try decodedResponse.result.map({ try $0.toGeoEntity()})
+        guard let geoEntity = geoEntities.first else {
+            throw STPhotoMapSeedsError.noObjectAvailable
+        }
+        return geoEntity
+    }
+    
+    func carouselOverlay() -> STCarouselOverlay {
+        return STCarouselOverlay(polygon: nil, polyline: nil, model: STCarouselOverlayModel())
+    }
+    
+    func carouselOverlays() -> [STCarouselOverlay] {
+        return [self.carouselOverlay()]
     }
 }
