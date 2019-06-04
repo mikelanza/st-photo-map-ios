@@ -26,8 +26,8 @@ class STPhotoMapWorkerSpy: STPhotoMapWorker {
     var shouldFailGetGeojsonForLocationLevel: Bool = false
     var getGeojsonLocationLevelCalled: Bool = false
     
-    var shouldFailDownloadImageForPhotoAnnotation: Bool = false
-    var downloadImageForPhotoAnnotationCalled: Bool = false
+    var shouldFailGetImageForPhotoAnnotation: Bool = false
+    var getImageForPhotoAnnotationCalled: Bool = false
     
     var shouldFailGetPhotoDetailsForPhotoAnnotation: Bool = false
     var getPhotoDetailsForPhotoAnnotationCalled: Bool = false
@@ -118,20 +118,20 @@ class STPhotoMapWorkerSpy: STPhotoMapWorker {
     
     // MARK: - Get image for photo annotation
     
-    override func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((UIImage?) -> Void)? = nil) {
-        self.downloadImageForPhotoAnnotationCalled = true
+    override func getImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((UIImage?) -> Void)? = nil) {
+        self.getImageForPhotoAnnotationCalled = true
         
         if self.delay == 0 {
-            self.didDownloadImageForPhotoAnnotation(photoAnnotation, completion: completion)
+            self.didGetImageForPhotoAnnotation(photoAnnotation, completion: completion)
         } else {
             DispatchQueue.global().asyncAfter(deadline: .now() + self.delay) {
-                self.didDownloadImageForPhotoAnnotation(photoAnnotation, completion: completion)
+                self.didGetImageForPhotoAnnotation(photoAnnotation, completion: completion)
             }
         }
     }
     
-    private func didDownloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((UIImage?) -> Void)? = nil) {
-        if self.shouldFailDownloadImageForPhotoAnnotation {
+    private func didGetImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((UIImage?) -> Void)? = nil) {
+        if self.shouldFailGetImageForPhotoAnnotation {
             photoAnnotation.isLoading = false
             photoAnnotation.image = nil
             completion?(nil)

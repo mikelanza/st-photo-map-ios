@@ -94,7 +94,7 @@ class STPhotoMapWorker {
         self.geojsonEntityLevelQueue.cancelAllOperations()
     }
     
-    func downloadImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((_ image: UIImage?) -> Void)? = nil) {
+    func getImageForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation, completion: ((_ image: UIImage?) -> Void)? = nil) {
         photoAnnotation.model.imageUrl?.downloadImage(result: { (image, error) in
             photoAnnotation.isLoading = false
             photoAnnotation.image = image

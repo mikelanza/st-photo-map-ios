@@ -124,7 +124,7 @@ class STPhotoMapInteractorTests: XCTestCase {
 
         XCTAssertNil(photoAnnotation.image)
         XCTAssertTrue(photoAnnotation.isLoading)
-        XCTAssertTrue(self.workerSpy.downloadImageForPhotoAnnotationCalled)
+        XCTAssertTrue(self.workerSpy.getImageForPhotoAnnotationCalled)
 
         self.waitForWorker(delay: self.workerDelay)
 
@@ -134,7 +134,7 @@ class STPhotoMapInteractorTests: XCTestCase {
 
     func testShouldDownloadImageForPhotoAnnotationWhenThereIsNoImageForFailureCase() {
         self.workerSpy.delay = self.workerDelay
-        self.workerSpy.shouldFailDownloadImageForPhotoAnnotation = true
+        self.workerSpy.shouldFailGetImageForPhotoAnnotation = true
 
         let photoAnnotation = STPhotoMapSeeds().photoAnnotation()
         photoAnnotation.image = nil
@@ -143,7 +143,7 @@ class STPhotoMapInteractorTests: XCTestCase {
 
         XCTAssertNil(photoAnnotation.image)
         XCTAssertTrue(photoAnnotation.isLoading)
-        XCTAssertTrue(self.workerSpy.downloadImageForPhotoAnnotationCalled)
+        XCTAssertTrue(self.workerSpy.getImageForPhotoAnnotationCalled)
 
         self.waitForWorker(delay: self.workerDelay)
 
@@ -156,7 +156,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let request = STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation)
         self.sut.shouldDownloadImageForPhotoAnnotation(request: request)
 
-        XCTAssertFalse(self.workerSpy.downloadImageForPhotoAnnotationCalled)
+        XCTAssertFalse(self.workerSpy.getImageForPhotoAnnotationCalled)
     }
 
     // MARK: - Caching geojson objects
@@ -850,7 +850,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let request = STPhotoMapModels.PhotoClusterAnnotationInflation.Request(clusterAnnotation: clusterAnnotation, previousClusterAnnotation: previousClusterAnnotation, zoomLevel: zoomLevel)
         self.sut.shouldInflatePhotoClusterAnnotation(request: request)
 
-        XCTAssertTrue(self.workerSpy.downloadImageForPhotoAnnotationCalled)
+        XCTAssertTrue(self.workerSpy.getImageForPhotoAnnotationCalled)
 
         XCTAssertTrue(previousClusterAnnotationInterfaceSpy.deflateCalled)
         XCTAssertTrue(clusterAnnotationInterfaceSpy.inflateCalled)
@@ -889,7 +889,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let request = STPhotoMapModels.PhotoClusterAnnotationInflation.Request(clusterAnnotation: clusterAnnotation, previousClusterAnnotation: previousClusterAnnotation, zoomLevel: zoomLevel)
         self.sut.shouldInflatePhotoClusterAnnotation(request: request)
 
-        XCTAssertTrue(self.workerSpy.downloadImageForPhotoAnnotationCalled)
+        XCTAssertTrue(self.workerSpy.getImageForPhotoAnnotationCalled)
 
         XCTAssertTrue(previousClusterAnnotationInterfaceSpy.deflateCalled)
         XCTAssertTrue(clusterAnnotationInterfaceSpy.inflateCalled)

@@ -84,7 +84,7 @@ extension STPhotoMapInteractor {
     func shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request) {
         if request.photoAnnotation.image == nil {
             request.photoAnnotation.isLoading = true
-            self.worker?.downloadImageForPhotoAnnotation(request.photoAnnotation)
+            self.worker?.getImageForPhotoAnnotation(request.photoAnnotation)
         }
     }
     
