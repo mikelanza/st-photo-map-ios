@@ -313,8 +313,8 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testDisplayLocationAnnotations() {
         self.loadView()
-        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
         
+        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
         self.sut.mapView.setCenter(photoAnnotations.first!.coordinate, animated: false)
         
         let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: photoAnnotations)
@@ -322,15 +322,21 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.waitForMainQueue()
         
+        XCTAssertEqual(self.sut.annotationHandler.annotations.count, photoAnnotations.count)
         XCTAssertEqual(self.sut.mapView.annotations.count, photoAnnotations.count)
     }
     
     func testDisplayRemoveLocationAnnotations() {
         self.loadView()
         
+        let annotation = STPhotoMapSeeds().photoAnnotation()
+        self.sut.mapView.addAnnotation(annotation)
+        self.sut.annotationHandler.addAnnotation(annotation: annotation)
+        
         self.sut.displayRemoveLocationAnnotations()
         self.waitForMainQueue()
         
+        XCTAssertTrue(self.sut.annotationHandler.annotations.isEmpty)
         XCTAssertTrue(self.sut.mapView.annotations.isEmpty)
     }
     

@@ -219,8 +219,8 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     // MARK: - Location annotations
     
     func displayLocationAnnotations(viewModel: STPhotoMapModels.LocationAnnotations.ViewModel) {
-        self.annotationHandler.addAnnotations(annotations: viewModel.annotations)
         DispatchQueue.main.async {
+            self.annotationHandler.addAnnotations(annotations: viewModel.annotations)
             let visibleAnnotations = self.annotationHandler.getVisibleAnnotations(mapRect: self.mapView.visibleMapRect)
             self.mapView?.addAnnotations(visibleAnnotations)
         }
@@ -228,9 +228,9 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     
     func displayRemoveLocationAnnotations() {
         DispatchQueue.main.async {
+            self.annotationHandler.removeAllAnnotations()
             self.mapView?.removeAnnotations(self.mapView?.annotations ?? [])
         }
-        self.annotationHandler.removeAllAnnotations()
     }
     
     // MARK: - Photo details navigation
