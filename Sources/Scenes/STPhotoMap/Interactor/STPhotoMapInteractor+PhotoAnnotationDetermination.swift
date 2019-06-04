@@ -31,8 +31,11 @@ extension STPhotoMapInteractor {
     private func determineSelectedPhotoAnnotation(from features: [GeoJSONFeature]) {
         if let bestAnnotation = self.bestAnnotation(features: features) {
             let newPhotoAnnotation = bestAnnotation.toPhotoAnnotation()
+            newPhotoAnnotation.clusterize = false
+            newPhotoAnnotation.isSelected = true
+            
             self.presenter?.presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response(photoAnnotation: self.selectedPhotoAnnotation))
-            self.presenter?.presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response(photoAnnotation: newPhotoAnnotation))
+            self.presenter?.presentNewSelectedPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response(photoAnnotation: newPhotoAnnotation))
             
             self.shouldGetPhotoDetailsFor(newPhotoAnnotation)
             
@@ -41,7 +44,7 @@ extension STPhotoMapInteractor {
     }
     
     internal func determineSelectedPhotoAnnotationForDownloadedLocationTile(features: [GeoJSONFeature] ) {
-        guard self.shouldChangePhotoAnnotation() else { return }        
+        guard self.shouldChangePhotoAnnotation() else { return }
         self.determineSelectedPhotoAnnotation(from: features)
     }
     
@@ -58,14 +61,5 @@ extension STPhotoMapInteractor {
     private func isSelectedPhotoAnnotationVisibleOnScreen() -> Bool {
         guard let coordinate = self.selectedPhotoAnnotation?.coordinate else { return false }
         return visibleMapRect.contains(MKMapPoint(coordinate))
-    }
-    
-    private func points(from features: [GeoJSONFeature]) -> [GeoJSONPoint] {
-        return features.compactMap({ (feature) -> GeoJSONPoint? in
-            if let _ = feature.idAsString, let point = feature.geometry as? GeoJSONPoint {
-                return point
-            }
-            return nil
-        })
     }
 }

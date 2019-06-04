@@ -539,7 +539,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
         
         XCTAssertTrue(self.presenterSpy.presentDeselectPhotoAnnotationCalled)
-        XCTAssertTrue(self.presenterSpy.presentSelectPhotoAnnotationCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewSelectedPhotoAnnotationCalled)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
@@ -622,7 +622,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
         
         XCTAssertTrue(self.presenterSpy.presentDeselectPhotoAnnotationCalled)
-        XCTAssertTrue(self.presenterSpy.presentSelectPhotoAnnotationCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewSelectedPhotoAnnotationCalled)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
@@ -688,7 +688,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
         
         XCTAssertTrue(self.presenterSpy.presentDeselectPhotoAnnotationCalled)
-        XCTAssertTrue(self.presenterSpy.presentSelectPhotoAnnotationCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewSelectedPhotoAnnotationCalled)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
@@ -1446,7 +1446,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.sut.shouldDetermineSelectedPhotoAnnotation()
         
         XCTAssertTrue(self.presenterSpy.presentDeselectPhotoAnnotationCalled)
-        XCTAssertTrue(self.presenterSpy.presentSelectPhotoAnnotationCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewSelectedPhotoAnnotationCalled)
         
         XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
