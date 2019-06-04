@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol STPhotoMapEntityLevelHandlerDelegate {
+protocol STPhotoMapEntityLevelHandlerDelegate: class {
     func photoMapEntityLevelHandler(newEntityLevel level: EntityLevel)
     func photoMapEntityLevelHandler(location level: EntityLevel)
 }
@@ -16,7 +16,7 @@ protocol STPhotoMapEntityLevelHandlerDelegate {
 class STPhotoMapEntityLevelHandler {
     var entityLevel: EntityLevel
     var activeDownloads: SynchronizedArray<String>
-    public var delegate: STPhotoMapEntityLevelHandlerDelegate?
+    weak var delegate: STPhotoMapEntityLevelHandlerDelegate?
     
     init() {
         self.entityLevel = EntityLevel.unknown

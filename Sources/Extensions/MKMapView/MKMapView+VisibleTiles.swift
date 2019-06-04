@@ -8,24 +8,6 @@
 
 import MapKit
 
-extension MKMapRect {
-    public var northEastCoordinate: CLLocationCoordinate2D {
-        return MKMapPoint(x: self.maxX, y: self.origin.y).coordinate
-    }
-    
-    public var northWestCoordinate: CLLocationCoordinate2D {
-        return MKMapPoint(x: self.minX, y: self.origin.y).coordinate
-    }
-    
-    public var southEastCoordinate: CLLocationCoordinate2D {
-        return MKMapPoint(x: self.maxX, y: self.maxY).coordinate
-    }
-    
-    public var southWestCoordinate: CLLocationCoordinate2D {
-        return MKMapPoint(x: self.origin.x, y: self.maxY).coordinate
-    }
-}
-
 extension MKMapView {
     public func zoomLevel(minZoom: Int = 0, maxZoom: Int = 20) -> Int {
         let zoom = Int(round(log2(360 * Double(self.frame.size.width) / (self.region.span.longitudeDelta * 128))))

@@ -20,6 +20,18 @@ enum STPhotoMapModels {
         }
     }
     
+    enum VisibleMapRect {
+        struct Request {
+            let mapRect: MKMapRect
+        }
+    }
+    
+    enum SelectedPhotoAnnotation {
+        struct Request {
+            let annotation: PhotoAnnotation?
+        }
+    }
+    
     enum EntityZoomLevel {
         struct Response {
             let entityLevel: EntityLevel
@@ -41,6 +53,10 @@ enum STPhotoMapModels {
             let pinAnnotation = PhotoAnnotation(id: id, coordinate: CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude))
             pinAnnotation.model.imageUrl = imageUrl
             return pinAnnotation
+        }
+        
+        func distance(from coordinate: CLLocationCoordinate2D) -> CLLocationDistance {
+            return CLLocationCoordinate2D(latitude: latitude, longitude: longitude).distance(from: coordinate)
         }
     }
     
@@ -160,6 +176,23 @@ enum STPhotoMapModels {
         }
     }
     
+    enum PhotoCollectionNavigation {
+        struct Request {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+        
+        struct Response {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+        
+        struct ViewModel {
+            let location: STLocation
+            let entityLevel: EntityLevel
+        }
+    }
+    
     enum CoordinateZoom {
         struct Response {
             let coordinate: CLLocationCoordinate2D
@@ -167,6 +200,23 @@ enum STPhotoMapModels {
         
         struct ViewModel {
             let coordinate: CLLocationCoordinate2D
+        }
+    }
+    
+    enum CarouselSelection {
+        struct Request {
+            let tileCoordinate: TileCoordinate
+            let location: STLocation
+        }
+    }
+    
+    enum NewCarousel {
+        struct Response {
+            let carousel: STCarousel
+        }
+        
+        struct ViewModel {
+            let overlays: [STCarouselOverlay]
         }
     }
 }

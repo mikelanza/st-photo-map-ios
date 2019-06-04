@@ -38,6 +38,14 @@ class STPhotoMapViewTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
+    private func waitForBackgroundQueue() {
+        let waitExpectation = expectation(description: "Waiting for background queue.")
+        DispatchQueue.global().async {
+            waitExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 1.0)
+    }
+    
     // MARK: - Test setup
     
     func setupSTPhotoMapView() {
@@ -104,6 +112,13 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(renderer is STPhotoTileOverlayRenderer)
     }
     
+    func testShouldReturnCarouselOverlayRendererForCarouselOverlay() {
+        self.loadView()
+        
+        let renderer = self.sut.mapView(self.sut.mapView, rendererFor: STPhotoMapSeeds().carouselOverlay())
+        XCTAssertTrue(renderer is STCarouselOverlayRenderer)
+    }
+    
     func testShouldReturnPhotoAnnotationViewForPhotoAnnotation() {
         self.loadView()
         
@@ -144,13 +159,23 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testShouldUpdateVisibleTilesWhenRegionDidChangeAnimated() {
         self.loadView()
+        self.waitForBackgroundQueue()
         
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
         XCTAssertTrue(self.interactorSpy.shouldUpdateVisibleTilesCalled)
     }
     
+    func testShouldUpdateVisibleMapRectWhenRegionDidChangeAnimated() {
+        self.loadView()
+        self.waitForBackgroundQueue()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertTrue(self.interactorSpy.shouldUpdateVisibleMapRect)
+    }
+    
     func testShouldCacheGeojsonObjectsWhenRegionDidChangeAnimated() {
         self.loadView()
+        self.waitForBackgroundQueue()
         
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
         XCTAssertTrue(self.interactorSpy.shouldCacheGeojsonObjectsCalled)
@@ -158,9 +183,34 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testShouldDetermineEntityLevelWhenRegionDidChangeAnimated() {
         self.loadView()
+        self.waitForBackgroundQueue()
         
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
         XCTAssertTrue(self.interactorSpy.shouldDetermineEntityLevelCalled)
+    }
+    
+    func testShouldDetermineLocationLevelWhenRegionDidChangeAnimated() {
+        self.loadView()
+        self.waitForBackgroundQueue()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertTrue(self.interactorSpy.shouldDetermineLocationLevelCalled)
+    }
+    
+    func testShouldDetermineCarouselWhenRegionDidChangeAnimated() {
+        self.loadView()
+        self.waitForBackgroundQueue()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertTrue(self.interactorSpy.shouldDetermineCarouselCalled)
+    }
+    
+    func testShouldDetermineSelectedPhotoAnnotationWhenRegionDidChangeAnimated() {
+        self.loadView()
+        self.waitForBackgroundQueue()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertTrue(self.interactorSpy.shouldDetermineSelectedPhotoAnnotationCalled)
     }
     
     func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {
@@ -179,6 +229,8 @@ class STPhotoMapViewTests: XCTestCase {
         self.sut.photoAnnotationView(view: view, with: annotation, didSelect: nil)
         
         XCTAssertTrue(self.interactorSpy.shouldSelectPhotoAnnotationCalled)
+        XCTAssertTrue(self.interactorSpy.shouldUpdateSelectedPhotoAnnotationCalled)
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, annotation)
     }
     
     func testShouldNavigateToPhotoDetailsWhenLocationOverlayViewIsTouchedUpInside() {
@@ -195,10 +247,13 @@ class STPhotoMapViewTests: XCTestCase {
         self.loadView()
         
         let clusterAnnotation = STPhotoMapSeeds().multiplePhotoClusterAnnotation(count: 5)
+        let photoAnnotation = clusterAnnotation.annotation(for: 0)!
         let view = MultiplePhotoClusterAnnotationView(annotation: clusterAnnotation, count: clusterAnnotation.photoIds.count)
-        self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, with: clusterAnnotation.annotation(for: 0)!, didSelect: nil)
+        self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, with: photoAnnotation, didSelect: nil)
         
         XCTAssertTrue(self.interactorSpy.shouldSelectPhotoClusterAnnotationCalled)
+        XCTAssertTrue(self.interactorSpy.shouldUpdateSelectedPhotoAnnotationCalled)
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, photoAnnotation)
     }
     
     func testShouldInflatePhotoClusterAnnotationWhenAPhotoClusterAnnotationIsTouchedUpInside() {
@@ -209,6 +264,30 @@ class STPhotoMapViewTests: XCTestCase {
         self.sut.multiplePhotoClusterAnnotationView(view: view, with: clusterAnnotation, didSelect: nil)
         
         XCTAssertTrue(self.interactorSpy.shouldInflatePhotoClusterAnnotationCalled)
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoClusterAnnotation, clusterAnnotation)
+    }
+    
+    func testShouldNavigateToPhotoDetailsWhenACarouselPhotoIsSelected() {
+        self.loadView()
+        
+        self.sut.actionMapView(mapView: self.sut.mapView, didSelectCarouselPhoto: STPhotoMapSeeds.photoId, atLocation: STPhotoMapSeeds.location)
+        XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoDetailsCalled)
+    }
+    
+    func testShouldNavigateToPhotoCollectionWhenACarouselOverlayIsSelected() {
+        self.loadView()
+        
+        let overlay = STCarouselOverlay(polygon: nil, polyline: nil, model: STCarouselOverlayModel())
+        self.sut.actionMapView(mapView: self.sut.mapView, didSelect: overlay, atLocation: STPhotoMapSeeds.location)
+        
+        XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoCollectionCalled)
+    }
+    
+    func testShouldSelectCarouselWhenATileOverlayIsSelected() {
+        self.loadView()
+        
+        self.sut.actionMapView(mapView: self.sut.mapView, didSelect: STPhotoMapSeeds.tileCoordinate, atLocation: STPhotoMapSeeds.location)
+        XCTAssertTrue(self.interactorSpy.shouldSelectCarouselCalled)
     }
     
     // MARK: - Test display logic
@@ -248,8 +327,8 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testDisplayLocationAnnotations() {
         self.loadView()
-        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
         
+        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
         self.sut.mapView.setCenter(photoAnnotations.first!.coordinate, animated: false)
         
         let viewModel = STPhotoMapModels.LocationAnnotations.ViewModel(annotations: photoAnnotations)
@@ -257,15 +336,21 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.waitForMainQueue()
         
+        XCTAssertEqual(self.sut.annotationHandler.annotations.count, photoAnnotations.count)
         XCTAssertEqual(self.sut.mapView.annotations.count, photoAnnotations.count)
     }
     
     func testDisplayRemoveLocationAnnotations() {
         self.loadView()
         
+        let annotation = STPhotoMapSeeds().photoAnnotation()
+        self.sut.mapView.addAnnotation(annotation)
+        self.sut.annotationHandler.addAnnotation(annotation: annotation)
+        
         self.sut.displayRemoveLocationAnnotations()
         self.waitForMainQueue()
         
+        XCTAssertTrue(self.sut.annotationHandler.annotations.isEmpty)
         XCTAssertTrue(self.sut.mapView.annotations.isEmpty)
     }
     
@@ -311,7 +396,7 @@ class STPhotoMapViewTests: XCTestCase {
     func testDisplayZoomToCoordinate() {
         self.loadView()
         
-        let mapViewSpy = MKMapViewSpy(frame: .zero)
+        let mapViewSpy = STActionMapViewSpy(frame: .zero)
         self.sut.mapView = mapViewSpy
         
         let viewModel = STPhotoMapModels.CoordinateZoom.ViewModel(coordinate: STPhotoMapSeeds.coordinate)
@@ -345,5 +430,98 @@ class STPhotoMapViewTests: XCTestCase {
         self.sut.displayDeselectPhotoAnnotation(viewModel: viewModel)
         
         XCTAssertFalse(photoAnnotation.isSelected)
+    }
+    
+    func testDisplayRemoveCarousel() {
+        self.loadView()
+        
+        self.sut.mapView.removeOverlays(self.sut.mapView.overlays)
+        
+        let overlay = STPhotoMapSeeds().carouselOverlay()
+        self.sut.carouselOverlays = [overlay]
+        self.sut.mapView.addOverlay(STPhotoMapSeeds().carouselOverlay())
+        
+        self.sut.displayRemoveCarousel()
+        
+        self.waitForMainQueue()
+        
+        for overlay in self.sut.mapView.overlays {
+            XCTAssertFalse(overlay is STCarouselOverlay)
+        }
+        
+        XCTAssertEqual(self.sut.carouselOverlays.count, 0)
+        XCTAssertEqual(self.sut.mapView.overlays.count, 0)
+    }
+    
+    func testDisplayNavigateToPhotoCollection() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.PhotoCollectionNavigation.ViewModel(location: STPhotoMapSeeds.location, entityLevel: EntityLevel.block)
+        self.sut.displayNavigateToPhotoCollection(viewModel: viewModel)
+        
+        XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToPhotoCollectionForLocationEntityLevelCalled)
+    }
+    
+    func testDisplayNewCarousel() {
+        self.loadView()
+        
+        self.sut.carouselOverlays.removeAll()
+        self.sut.mapView.removeOverlays(self.sut.mapView.overlays)
+        XCTAssertEqual(self.sut.mapView.overlays.count, 0)
+        
+        let viewModel = STPhotoMapModels.NewCarousel.ViewModel(overlays: STPhotoMapSeeds().carouselOverlays())
+        self.sut.displayNewCarousel(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        for overlay in self.sut.mapView.overlays {
+            XCTAssertTrue(overlay is STCarouselOverlay)
+        }
+        
+        XCTAssertEqual(self.sut.carouselOverlays.count, 1)
+        XCTAssertEqual(self.sut.mapView.overlays.count, 1)
+    }
+    
+    func testDisplayNewSelectedPhotoAnnotationWhenThereAreNoPhotoAnnotationsOnMap() {
+        self.loadView()
+        
+        let photoAnnotation = STPhotoMapSeeds().photoAnnotation()
+        self.sut.annotationHandler.removeAllAnnotations()
+        self.sut.mapView.removeAnnotations(self.sut.mapView.annotations)
+        
+        let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: photoAnnotation)
+        self.sut.displayNewSelectedPhotoAnnotation(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertEqual(self.sut.annotationHandler.annotations.count, 1)
+        XCTAssertEqual(self.sut.mapView.annotations.count, 1)
+        
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, photoAnnotation)
+    }
+    
+    func testDisplayNewSelectedPhotoAnnotationWhenThereArePhotoAnnotationsOnMap() {
+        self.loadView()
+        
+        let photoAnnotations = STPhotoMapSeeds().photoAnnotations()
+        let firstPhotoAnnotation = photoAnnotations.first!
+        let secondPhotoAnnotation = photoAnnotations.last!
+        
+        self.sut.annotationHandler.addAnnotation(annotation: firstPhotoAnnotation)
+        self.sut.mapView.addAnnotation(firstPhotoAnnotation)
+        
+        let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: secondPhotoAnnotation)
+        self.sut.displayNewSelectedPhotoAnnotation(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertEqual(self.sut.annotationHandler.annotations.count, 2)
+        XCTAssertEqual(self.sut.mapView.annotations.count, 2)
+        
+        let annotation = self.sut.annotationHandler.annotations.filter({ $0.model.photoId == secondPhotoAnnotation.model.photoId }).first
+        XCTAssertNotNil(annotation)
+        
+        XCTAssertEqual(annotation, secondPhotoAnnotation)
+        XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, secondPhotoAnnotation)
     }
 }

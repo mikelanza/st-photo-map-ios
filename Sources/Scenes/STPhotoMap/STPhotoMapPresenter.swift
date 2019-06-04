@@ -23,6 +23,7 @@ protocol STPhotoMapPresentationLogic {
     
     func presentNavigateToPhotoDetails(response: STPhotoMapModels.PhotoDetailsNavigation.Response)
     func presentNavigateToSpecificPhotos(response: STPhotoMapModels.SpecificPhotosNavigation.Response)
+    func presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response)
     
     func presentLocationOverlay(response: STPhotoMapModels.LocationOverlay.Response)
     func presentRemoveLocationOverlay()
@@ -34,6 +35,12 @@ protocol STPhotoMapPresentationLogic {
     
     func presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response)
     func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response)
+    
+    func presentRemoveCarousel()
+    func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response)
+    func presentReloadCarousel()
+    
+    func presentNewSelectedPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -130,6 +137,10 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         self.displayer?.displayNavigateToSpecificPhotos(viewModel: STPhotoMapModels.SpecificPhotosNavigation.ViewModel(photoIds: response.photoIds))
     }
     
+    func presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response) {
+        self.displayer?.displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel(location: response.location, entityLevel: response.entityLevel))
+    }
+    
     // MARK: - Zooming
     
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response) {
@@ -149,6 +160,11 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         self.displayer?.displayDeselectPhotoAnnotation(viewModel: viewModel)
     }
     
+    func presentNewSelectedPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response) {
+        let viewModel = STPhotoMapModels.PhotoAnnotationSelection.ViewModel(photoAnnotation: response.photoAnnotation)
+        self.displayer?.displayNewSelectedPhotoAnnotation(viewModel: viewModel)
+    }
+    
     // MARK: - Photo cluster annotation selection/deselection
     
     func presentDeselectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationDeselection.Response) {
@@ -159,5 +175,20 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     func presentSelectPhotoClusterAnnotation(response: STPhotoMapModels.PhotoClusterAnnotationSelection.Response) {
         let viewModel = STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel(photoAnnotation: response.photoAnnotation)
         self.displayer?.displaySelectPhotoClusterAnnotation(viewModel: viewModel)
+    }
+    
+    // MARK: - Carousel
+    
+    func presentRemoveCarousel() {
+        self.displayer?.displayRemoveCarousel()
+    }
+    
+    func presentNewCarousel(response: STPhotoMapModels.NewCarousel.Response) {
+        let viewModel = STPhotoMapModels.NewCarousel.ViewModel(overlays: response.carousel.overlays)
+        self.displayer?.displayNewCarousel(viewModel: viewModel)
+    }
+    
+    func presentReloadCarousel() {
+        self.displayer?.displayReloadCarousel()
     }
 }

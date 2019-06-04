@@ -23,6 +23,11 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     var displayDeselectPhotoAnnotationCalled: Bool = false
     var displayDeselectPhotoClusterAnnotationCalled: Bool = false
     var displaySelectPhotoClusterAnnotationCalled: Bool = false
+    var displayRemoveCarouselCalled: Bool = false
+    var displayNavigateToPhotoCollectionCalled: Bool = false
+    var displayNewCarouselCalled: Bool = false
+    var displayReloadCarouselCalled: Bool = false
+    var displayNewSelectedPhotoAnnotationCalled: Bool = false
     
     func displayLoadingState() {
         self.displayLoadingStateCalled = true
@@ -78,5 +83,25 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     
     func displaySelectPhotoClusterAnnotation(viewModel: STPhotoMapModels.PhotoClusterAnnotationSelection.ViewModel) {
         self.displaySelectPhotoClusterAnnotationCalled = true
+    }
+    
+    func displayRemoveCarousel() {
+        self.displayRemoveCarouselCalled = true
+    }
+    
+    func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel) {
+        self.displayNavigateToPhotoCollectionCalled = true
+    }
+    
+    func displayNewCarousel(viewModel: STPhotoMapModels.NewCarousel.ViewModel) {
+        self.displayNewCarouselCalled = true
+    }
+    
+    func displayReloadCarousel() {
+        self.displayReloadCarouselCalled = true
+    }
+    
+    func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel) {
+        self.displayNewSelectedPhotoAnnotationCalled = true
     }
 }

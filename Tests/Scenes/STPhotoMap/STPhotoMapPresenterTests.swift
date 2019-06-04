@@ -128,4 +128,32 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentSelectPhotoClusterAnnotation(response: response)
         XCTAssertTrue(self.displayerSpy.displaySelectPhotoClusterAnnotationCalled)
     }
+    
+    func testPresentRemoveCarousel() {
+        self.sut.presentRemoveCarousel()
+        XCTAssertTrue(self.displayerSpy.displayRemoveCarouselCalled)
+    }
+    
+    func testPresentNavigateToPhotoCollection() {
+        let response = STPhotoMapModels.PhotoCollectionNavigation.Response(location: STPhotoMapSeeds.location, entityLevel: EntityLevel.block)
+        self.sut.presentNavigateToPhotoCollection(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNavigateToPhotoCollectionCalled)
+    }
+    
+    func testPresentNewCarousel() {
+        let response = STPhotoMapModels.NewCarousel.Response(carousel: STCarousel())
+        self.sut.presentNewCarousel(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNewCarouselCalled)
+    }
+    
+    func testPresentReloadCarousel() {
+        self.sut.presentReloadCarousel()
+        XCTAssertTrue(self.displayerSpy.displayReloadCarouselCalled)
+    }
+    
+    func testPresentNewSelectedPhotoAnnotation() {
+        let response = STPhotoMapModels.PhotoAnnotationSelection.Response(photoAnnotation: STPhotoMapSeeds().photoAnnotation())
+        self.sut.presentNewSelectedPhotoAnnotation(response: response)
+        XCTAssertTrue(self.displayerSpy.displayNewSelectedPhotoAnnotationCalled)
+    }
 }
