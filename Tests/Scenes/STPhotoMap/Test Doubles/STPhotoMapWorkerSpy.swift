@@ -22,6 +22,7 @@ class STPhotoMapWorkerSpy: STPhotoMapWorker {
     
     var shouldFailGetGeojsonTileForEntityLevel: Bool = false
     var getGeojsonTileForEntityLevelCalled: Bool = false
+    var cancelAllGeojsonEntityLevelOperationsCalled = false
     
     var shouldFailGetGeojsonForLocationLevel: Bool = false
     var getGeojsonLocationLevelCalled: Bool = false
@@ -184,6 +185,10 @@ class STPhotoMapWorkerSpy: STPhotoMapWorker {
         } else {
             self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: self.geoEntity)
         }
+    }
+    
+    override func cancelAllGeojsonEntityLevelOperations() {
+        self.cancelAllGeojsonEntityLevelOperationsCalled = true
     }
     
     // MARK: - Geojson for carousel selection
