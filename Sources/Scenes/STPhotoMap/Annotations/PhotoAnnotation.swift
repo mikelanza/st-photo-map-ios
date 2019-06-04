@@ -67,16 +67,8 @@ class PhotoAnnotation: NSObject, MKAnnotation {
         self.interface = view
         view.setImage(image: self.image)
         view.setIsLoading(isLoading: self.isLoading)
+        view.setIsSelected(isSelected: self.isSelected)
         view.setClusterize(clusterize: self.clusterize)
         return view
-    }
-    
-    func updateFor(_ annotation: PhotoAnnotation) {
-        self.model.photoId = annotation.model.photoId
-        self.model.imageUrl = annotation.model.imageUrl
-        self.image = annotation.image
-        self.isLoading = annotation.isLoading
-        self.isSelected = annotation.isSelected
-        self.clusterize = annotation.clusterize
     }
 }

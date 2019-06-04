@@ -98,9 +98,8 @@ public class STActionMapView: MKMapView {
         }
         
         if let existentAnnotation = existentAnnotation {
-            existentAnnotation.updateFor(photoAnnotation)
-        } else {
-            self.addAnnotation(photoAnnotation)
+            self.removeAnnotation(existentAnnotation)
         }
+        self.addAnnotation(photoAnnotation)
     }
 }
