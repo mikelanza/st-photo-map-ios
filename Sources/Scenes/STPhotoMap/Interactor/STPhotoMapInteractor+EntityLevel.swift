@@ -12,6 +12,8 @@ import Foundation
 
 extension STPhotoMapInteractor {
     func shouldDetermineEntityLevel() {
+        self.cancelAllGeojsonEntityLevelOperations()
+        
         let cachedTiles = self.getVisibleCachedTiles()
         
         if cachedTiles.count > 0 {
@@ -63,6 +65,10 @@ extension STPhotoMapInteractor {
         } else {
             self.presenter?.presentNotLoadingState()
         }
+    }
+    
+    private func cancelAllGeojsonEntityLevelOperations() {
+        self.worker?.cancelAllGeojsonEntityLevelOperations()
     }
 }
 
