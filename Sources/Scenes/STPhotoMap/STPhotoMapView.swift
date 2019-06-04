@@ -374,6 +374,7 @@ extension STPhotoMapView: MKMapViewDelegate {
             self.interactor?.shouldDetermineEntityLevel()
             self.interactor?.shouldDetermineLocationLevel()
             self.interactor?.shouldDetermineCarousel()
+            self.interactor?.shouldDetermineSelectedPhotoAnnotation()
         }
     }
     

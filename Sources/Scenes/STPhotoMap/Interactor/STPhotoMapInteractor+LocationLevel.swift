@@ -44,7 +44,7 @@ extension STPhotoMapInteractor {
         return self.getAnnotations(from: geojsonObject.features())
     }
     
-    private func getAnnotations(from features: [GeoJSONFeature]) -> [STPhotoMapModels.Annotation] {
+    internal func getAnnotations(from features: [GeoJSONFeature]) -> [STPhotoMapModels.Annotation] {
         var annotations: [STPhotoMapModels.Annotation] = []
         for feature in features {
             if let annotation = self.annotation(from: feature) {
@@ -54,7 +54,7 @@ extension STPhotoMapInteractor {
         return annotations
     }
     
-    private func annotation(from feature: GeoJSONFeature) -> STPhotoMapModels.Annotation? {
+    internal func annotation(from feature: GeoJSONFeature) -> STPhotoMapModels.Annotation? {
         if let id = feature.idAsString, let point = feature.geometry as? GeoJSONPoint {
             return STPhotoMapModels.Annotation(id: id, imageUrl: feature.photoProperties?.image250Url,  latitude: point.latitude, longitude: point.longitude)
         }
@@ -89,6 +89,8 @@ extension STPhotoMapInteractor {
     func successDidGetGeojsonTileForLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
         self.locationLevelHandler.removeActiveDownload(keyUrl)
         self.didGetGeojsonTileForLocationLevel(geojsonObject: geojsonObject)
+        
+        self.determineSelectedPhotoAnnotationForDownloadedLocationTile(features: geojsonObject.features())
     }
     
     func failureDidGetGeojsonTileForLocationLevel(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError) {

@@ -54,6 +54,10 @@ enum STPhotoMapModels {
             pinAnnotation.model.imageUrl = imageUrl
             return pinAnnotation
         }
+        
+        func distance(from coordinate: CLLocationCoordinate2D) -> CLLocationDistance {
+            return CLLocationCoordinate2D(latitude: latitude, longitude: longitude).distance(from: coordinate)
+        }
     }
     
     enum LocationAnnotations {

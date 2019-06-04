@@ -205,6 +205,14 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldDetermineCarouselCalled)
     }
     
+    func testShouldDetermineSelectedPhotoAnnotationWhenRegionDidChangeAnimated() {
+        self.loadView()
+        self.waitForBackgroundQueue()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertTrue(self.interactorSpy.shouldDetermineSelectedPhotoAnnotationCalled)
+    }
+    
     func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {
         self.loadView()
         

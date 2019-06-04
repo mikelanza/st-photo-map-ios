@@ -23,6 +23,7 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     var shouldSelectCarouselCalled: Bool = false
     var shouldDetermineCarouselCalled: Bool = false
     var shouldUpdateSelectedPhotoAnnotationCalled: Bool = false
+    var shouldDetermineSelectedPhotoAnnotationCalled: Bool = false
 
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.shouldUpdateVisibleTilesCalled = true
@@ -78,5 +79,9 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     
     func shouldUpdateSelectedPhotoAnnotation(request: STPhotoMapModels.SelectedPhotoAnnotation.Request) {
         self.shouldUpdateSelectedPhotoAnnotationCalled = true
+    }
+    
+    func shouldDetermineSelectedPhotoAnnotation() {
+        self.shouldDetermineSelectedPhotoAnnotationCalled = true
     }
 }

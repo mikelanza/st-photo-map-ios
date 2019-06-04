@@ -10,8 +10,8 @@ import Foundation
 import MapKit
 
 extension CLLocationCoordinate2D {
-    func distance(from: CLLocationCoordinate2D) -> CLLocationDistance {
-        let destination=CLLocation(latitude:from.latitude,longitude:from.longitude)
+    func distance(from coordinate: CLLocationCoordinate2D) -> CLLocationDistance {
+        let destination = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         return CLLocation(latitude: latitude, longitude: longitude).distance(from: destination)
     }
 }
