@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import MapKit
 
 protocol STPhotoMapPresentationLogic {
     func presentLoadingState()
@@ -29,6 +30,7 @@ protocol STPhotoMapPresentationLogic {
     func presentRemoveLocationOverlay()
     
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response)
+    func presentCenterToCoordinate(response: STPhotoMapModels.CoordinateCenter.Response)
     
     func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
     func presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response)
@@ -146,6 +148,14 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response) {
         let viewModel = STPhotoMapModels.CoordinateZoom.ViewModel(coordinate: response.coordinate)
         self.displayer?.displayZoomToCoordinate(viewModel: viewModel)
+    }
+    
+    // MARK: - Centering
+    
+    func presentCenterToCoordinate(response: STPhotoMapModels.CoordinateCenter.Response) {
+        let region = MKCoordinateRegion(center: response.coordinate, span: response.entityLevel.coordinateSpan())
+        let viewModel = STPhotoMapModels.CoordinateCenter.ViewModel(region: region)
+        self.displayer?.displayCenterToCoordinate(viewModel: viewModel)
     }
     
     // MARK: - Photo annotation selection/deselection

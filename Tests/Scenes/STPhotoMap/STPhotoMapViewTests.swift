@@ -85,6 +85,16 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertNotNil(self.sut.mapView)
     }
     
+    func testIfPhotoMapViewContainsUserLocationButton() {
+        self.loadView()
+        XCTAssertNotNil(self.sut.userLocationButton)
+    }
+    
+    func testIfPhotoMapViewContainsDataSourcesButton() {
+        self.loadView()
+        XCTAssertNotNil(self.sut.dataSourcesButton)
+    }
+    
     func testIfPhotoMapViewConformsToMKMapViewDelegate() {
         self.loadView()
         XCTAssert(self.sut.conforms(to: MKMapViewDelegate.self), "The photo map view does not conform to MKMapViewDelegate protocol.")
@@ -288,6 +298,13 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.sut.actionMapView(mapView: self.sut.mapView, didSelect: STPhotoMapSeeds.tileCoordinate, atLocation: STPhotoMapSeeds.location)
         XCTAssertTrue(self.interactorSpy.shouldSelectCarouselCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenUserLocationButtonIsTouchedUpInside() {
+        self.loadView()
+        
+        self.sut.touchUpInsideUserLocationButton(button: nil)
+        XCTAssertTrue(self.interactorSpy.shouldAskForLocationPermissionsCalled)
     }
     
     // MARK: - Test display logic
@@ -523,5 +540,22 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertEqual(annotation, secondPhotoAnnotation)
         XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, secondPhotoAnnotation)
+    }
+    
+    func testDisplayCenterToCoordinate() {
+        self.loadView()
+        
+        self.sut.mapView.setRegion(MKCoordinateRegion(MKMapRect(origin: MKMapPoint(x: 0, y: 0), size: MKMapSize(width: 0, height: 0))), animated: false)
+        
+        let region = MKCoordinateRegion(center: STPhotoMapSeeds.coordinate, span: EntityLevel.block.coordinateSpan())
+        let viewModel = STPhotoMapModels.CoordinateCenter.ViewModel(region: region)
+        self.sut.displayCenterToCoordinate(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertEqual(round(self.sut.mapView.region.center.latitude), round(region.center.latitude))
+        XCTAssertEqual(round(self.sut.mapView.region.center.longitude), round(region.center.longitude))
+        XCTAssertEqual(round(self.sut.mapView.region.span.latitudeDelta), round(region.span.latitudeDelta))
+        XCTAssertEqual(round(self.sut.mapView.region.span.longitudeDelta), round(region.span.longitudeDelta))
     }
 }

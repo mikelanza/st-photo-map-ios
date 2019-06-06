@@ -36,6 +36,7 @@ protocol STPhotoMapDisplayLogic: class {
     func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel)
     
     func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel)
+    func displayCenterToCoordinate(viewModel: STPhotoMapModels.CoordinateCenter.ViewModel)
     
     func displaySelectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
     func displayDeselectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationDeselection.ViewModel)
@@ -60,6 +61,8 @@ public class STPhotoMapView: UIView {
     weak var progressView: UIProgressView!
     weak var entityLevelView: STEntityLevelView!
     weak var locationOverlayView: STLocationOverlayView!
+    weak var userLocationButton: UIButton!
+    weak var dataSourcesButton: UIButton!
     
     var photoTileOverlay: STPhotoTileOverlay?
     var carouselOverlays: [STCarouselOverlay] = []
@@ -298,6 +301,14 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         self.mapView?.setRegion(region, animated: true)
     }
     
+    // MARK: - Center to coordinate
+    
+    func displayCenterToCoordinate(viewModel: STPhotoMapModels.CoordinateCenter.ViewModel) {
+        DispatchQueue.main.async {
+            self.mapView?.setRegion(viewModel.region, animated: false)
+        }
+    }
+    
     // MARK: - Photo annotation selection/deselection
     
     func displaySelectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel) {
@@ -480,12 +491,24 @@ extension STPhotoMapView: STActionMapViewDelegate {
     }
 }
 
+extension STPhotoMapView {
+    @objc func touchUpInsideUserLocationButton(button: UIButton?) {
+        self.interactor?.shouldAskForLocationPermissions()
+    }
+    
+    @objc func touchUpInsideDataSourcesButton(button: UIButton?) {
+        
+    }
+}
+
 // MARK: - Subviews configuration
 
 extension STPhotoMapView {
     private func setupSubviews() {
         self.setupMapView()
         self.setupProgressView()
+        self.setupUserLocationButton()
+        self.setupDataSourcesButton()
     }
     
     private func setupMapView() {
@@ -522,6 +545,29 @@ extension STPhotoMapView {
         self.addSubview(view)
         self.locationOverlayView = view
     }
+    
+    private func setupUserLocationButton() {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(STPhotoMapStyle.shared.userLocationButtonModel.image, for: .normal)
+        button.addTarget(self, action: #selector(STPhotoMapView.touchUpInsideUserLocationButton(button:)), for: .touchUpInside)
+        self.addSubview(button)
+        self.userLocationButton = button
+    }
+    
+    private func setupDataSourcesButton() {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let text: String = ""
+        let title: NSMutableAttributedString = NSMutableAttributedString(string: text)
+        title.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, text.count))
+        title.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 9, weight: UIFont.Weight.medium), range: NSMakeRange(0, text.count))
+        title.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.darkGray, range: NSMakeRange(0, text.count))
+        button.setAttributedTitle(title, for: .normal)
+        button.addTarget(self, action: #selector(STPhotoMapView.touchUpInsideDataSourcesButton(button:)), for: .touchUpInside)
+        self.addSubview(button)
+        self.dataSourcesButton = button
+    }
 }
 
 // MARK: - Constraints configuration
@@ -530,6 +576,8 @@ extension STPhotoMapView {
     private func setupSubviewsConstraints() {
         self.setupMapViewConstraints()
         self.setupProgressViewConstraints()
+        self.setupUserLocationButtonConstraints()
+        self.setupDataSourcesButtonConstraints()
     }
     
     private func setupMapViewConstraints() {
@@ -556,5 +604,15 @@ extension STPhotoMapView {
         self.locationOverlayView?.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
         self.locationOverlayView?.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -75).isActive = true
         self.locationOverlayView?.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30).isActive = true
+    }
+    
+    private func setupUserLocationButtonConstraints() {
+        self.userLocationButton?.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+        self.userLocationButton?.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
+    }
+    
+    private func setupDataSourcesButtonConstraints() {
+        self.dataSourcesButton?.trailingAnchor.constraint(equalTo: self.userLocationButton.leadingAnchor, constant: -10).isActive = true
+        self.dataSourcesButton?.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -3).isActive = true
     }
 }

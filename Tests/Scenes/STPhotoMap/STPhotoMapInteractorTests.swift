@@ -18,6 +18,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     var sut: STPhotoMapInteractor!
     var presenterSpy: STPhotoMapPresentationLogicSpy!
     var workerSpy: STPhotoMapWorkerSpy!
+    var currentUserLocationHandlerSpy: STPhotoMapCurrentUserLocationHandlerSpy!
     
     var workerDelay: Double = 0.1
     var delay: Double = 0.05
@@ -43,6 +44,10 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.workerSpy = STPhotoMapWorkerSpy(delegate: self.sut)
         self.sut.worker = self.workerSpy
+        
+        self.currentUserLocationHandlerSpy = STPhotoMapCurrentUserLocationHandlerSpy()
+        self.currentUserLocationHandlerSpy.delegate = self.sut
+        self.sut.currentUserLocationHandler = self.currentUserLocationHandlerSpy
     }
     
     private func waitForSynchronization() {
@@ -1484,5 +1489,62 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertFalse(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
+    }
+    
+    // MARK: - Current user location
+    
+    func testShouldAskForLocationPermissionsWhenStatusIsAuthorizedAlways() {
+        self.currentUserLocationHandlerSpy.status = .authorizedAlways
+        
+        self.sut.shouldAskForLocationPermissions()
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenStatusIsAuthorizedWhenInUse() {
+        self.currentUserLocationHandlerSpy.status = .authorizedWhenInUse
+        
+        self.sut.shouldAskForLocationPermissions()
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenStatusIsNotDetermined() {
+        self.currentUserLocationHandlerSpy.status = .notDetermined
+        
+        self.sut.shouldAskForLocationPermissions()
+        XCTAssertTrue(self.currentUserLocationHandlerSpy.requestWhenInUseAuthorizationCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenChangingStatusForAuthorizedAlways() {
+        self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didChangeAuthorization: CLAuthorizationStatus.authorizedAlways)
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenChangingStatusForAuthorizedWhenInUse() {
+         self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didChangeAuthorization: CLAuthorizationStatus.authorizedWhenInUse)
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenLocationManagerDidUpdateLocations() {
+        let locations = [CLLocation(latitude: STPhotoMapSeeds.coordinate.latitude, longitude: STPhotoMapSeeds.coordinate.longitude)]
+        self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didUpdateLocations: locations)
+        
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+        XCTAssertTrue(self.currentUserLocationHandlerSpy.didZoomToUserLocation)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenLocationManagerDidUpdateLocationsWhenItDidZoomToUserLocation() {
+        self.currentUserLocationHandlerSpy.didZoomToUserLocation = true
+        
+        let locations = [CLLocation(latitude: STPhotoMapSeeds.coordinate.latitude, longitude: STPhotoMapSeeds.coordinate.longitude)]
+        self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didUpdateLocations: locations)
+        
+        XCTAssertFalse(self.presenterSpy.presentCenterToCoordinateCalled)
+        XCTAssertTrue(self.currentUserLocationHandlerSpy.didZoomToUserLocation)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenLocationManagerDidUpdateLocationsWhenThereAreNoLocations() {
+        self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didUpdateLocations: [])
+        XCTAssertFalse(self.presenterSpy.presentCenterToCoordinateCalled)
+        XCTAssertFalse(self.currentUserLocationHandlerSpy.didZoomToUserLocation)
     }
 }

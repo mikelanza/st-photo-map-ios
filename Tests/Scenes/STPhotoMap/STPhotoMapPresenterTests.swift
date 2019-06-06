@@ -156,4 +156,10 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentNewSelectedPhotoAnnotation(response: response)
         XCTAssertTrue(self.displayerSpy.displayNewSelectedPhotoAnnotationCalled)
     }
+    
+    func testPresentCenterToCoordinate() {
+        let response = STPhotoMapModels.CoordinateCenter.Response(coordinate: STPhotoMapSeeds.coordinate, entityLevel: EntityLevel.block)
+        self.sut.presentCenterToCoordinate(response: response)
+        XCTAssertTrue(self.displayerSpy.displayCenterToCoordinateCalled)
+    }
 }

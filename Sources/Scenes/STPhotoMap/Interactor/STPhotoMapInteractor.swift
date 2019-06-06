@@ -35,12 +35,14 @@ protocol STPhotoMapBusinessLogic {
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
     func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request)
     func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request)
+    
+    func shouldAskForLocationPermissions()
 }
 
 protocol STPhotoMapDataStore {
 }
 
-class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhotoMapWorkerDelegate {
+class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhotoMapWorkerDelegate {
     var presenter: STPhotoMapPresentationLogic?
     var worker: STPhotoMapWorker?
     
@@ -52,18 +54,23 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     var entityLevelHandler: STPhotoMapEntityLevelHandler
     var locationLevelHandler: STPhotoMapLocationLevelHandler
     let carouselHandler: STPhotoMapCarouselHandler
+    var currentUserLocationHandler: STPhotoMapCurrentUserLocationHandler
     
-    init() {
+    override init() {
         self.visibleTiles = []
         self.visibleMapRect = MKMapRect()
         self.cacheHandler = STPhotoMapCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
         self.locationLevelHandler = STPhotoMapLocationLevelHandler()
         self.carouselHandler = STPhotoMapCarouselHandler()
-        self.worker = STPhotoMapWorker(delegate: self)
+        self.currentUserLocationHandler = STPhotoMapCurrentUserLocationHandler()
         
+        super.init()
+        
+        self.worker = STPhotoMapWorker(delegate: self)
         self.entityLevelHandler.delegate = self
         self.carouselHandler.delegate = self
+        self.currentUserLocationHandler.delegate = self
     }
     
     internal func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
