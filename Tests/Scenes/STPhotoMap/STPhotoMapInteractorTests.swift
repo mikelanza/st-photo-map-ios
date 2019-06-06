@@ -1547,4 +1547,9 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentCenterToCoordinateCalled)
         XCTAssertFalse(self.currentUserLocationHandlerSpy.didZoomToUserLocation)
     }
+    
+    func testShouldOpenDataSourcesLink() {
+        self.sut.shouldOpenDataSourcesLink()
+        XCTAssertTrue(self.presenterSpy.presentOpenDataSourcesLinkCalled)
+    }
 }

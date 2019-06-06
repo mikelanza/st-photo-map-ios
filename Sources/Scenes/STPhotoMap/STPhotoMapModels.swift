@@ -230,4 +230,14 @@ enum STPhotoMapModels {
             let overlays: [STCarouselOverlay]
         }
     }
+    
+    enum OpenApplication {
+        struct Response {
+            let url: URL
+        }
+        
+        struct ViewModel {
+            let url: URL
+        }
+    }
 }

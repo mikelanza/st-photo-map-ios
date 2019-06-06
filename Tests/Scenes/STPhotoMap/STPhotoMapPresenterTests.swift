@@ -162,4 +162,9 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentCenterToCoordinate(response: response)
         XCTAssertTrue(self.displayerSpy.displayCenterToCoordinateCalled)
     }
+    
+    func testPresentOpenDataSourcesLink() {
+        self.sut.presentOpenDataSourcesLink()
+        XCTAssertTrue(self.displayerSpy.displayOpenDataSourcesLinkCalled)
+    }
 }

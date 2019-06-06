@@ -49,6 +49,8 @@ protocol STPhotoMapDisplayLogic: class {
     func displayReloadCarousel()
     
     func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
+    
+    func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -57,6 +59,7 @@ public class STPhotoMapView: UIView {
     public weak var delegate: STPhotoMapViewDelegate?
     
     var interactor: STPhotoMapBusinessLogic?
+    var router: STPhotoMapRoutingLogic?
     
     weak var progressView: UIProgressView!
     weak var entityLevelView: STEntityLevelView!
@@ -97,9 +100,14 @@ public class STPhotoMapView: UIView {
         let displayer = self
         let interactor = STPhotoMapInteractor()
         let presenter = STPhotoMapPresenter()
-        displayer.interactor = interactor
+        let router = STPhotoMapRouter()
+        
         interactor.presenter = presenter
         presenter.displayer = displayer
+        router.displayer = displayer
+        
+        displayer.interactor = interactor
+        displayer.router = router
     }
 }
 
@@ -369,6 +377,12 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel) {
         self.delegate?.photoMapView(self, navigateToPhotoCollectionFor: viewModel.location, entityLevel: viewModel.entityLevel)
     }
+    
+    // MARK: - Data sources
+    
+    func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
+        self.router?.navigateToSafari(url: viewModel.url)
+    }
 }
 
 // MARK: - MKMapView delegate methods
@@ -497,7 +511,7 @@ extension STPhotoMapView {
     }
     
     @objc func touchUpInsideDataSourcesButton(button: UIButton?) {
-        
+        self.interactor?.shouldOpenDataSourcesLink()
     }
 }
 
@@ -558,7 +572,7 @@ extension STPhotoMapView {
     private func setupDataSourcesButton() {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        let text: String = ""
+        let text: String = STPhotoMapLocalization.shared.dataSourcesTitle
         let title: NSMutableAttributedString = NSMutableAttributedString(string: text)
         title.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, text.count))
         title.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 9, weight: UIFont.Weight.medium), range: NSMakeRange(0, text.count))

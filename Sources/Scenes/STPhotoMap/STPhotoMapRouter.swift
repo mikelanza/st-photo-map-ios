@@ -11,9 +11,10 @@
 //
 
 import UIKit
+import SafariServices
 
 @objc protocol STPhotoMapRoutingLogic {
-    
+    func navigateToSafari(url: URL)
 }
 
 protocol STPhotoMapDataPassing {
@@ -25,4 +26,11 @@ class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic, STPhotoMapDataPassing 
     var dataStore: STPhotoMapDataStore?
     
     // MARK: Routing
+    
+    func navigateToSafari(url: URL) {
+        DispatchQueue.main.async {
+            let viewController = SFSafariViewController(url: url)
+            viewController.show()
+        }
+    }
 }

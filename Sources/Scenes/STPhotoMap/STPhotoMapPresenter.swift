@@ -43,6 +43,8 @@ protocol STPhotoMapPresentationLogic {
     func presentReloadCarousel()
     
     func presentNewSelectedPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
+    
+    func presentOpenDataSourcesLink()
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -200,5 +202,14 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     
     func presentReloadCarousel() {
         self.displayer?.displayReloadCarousel()
+    }
+    
+    // MARK: - Data sources
+    
+    func presentOpenDataSourcesLink() {
+        if let url = URL(string: "https://www.streetography.com/data-licensing") {
+            let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: url)
+            self.displayer?.displayOpenDataSourcesLink(viewModel: viewModel)
+        }
     }
 }

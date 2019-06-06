@@ -25,6 +25,7 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     var shouldUpdateSelectedPhotoAnnotationCalled: Bool = false
     var shouldDetermineSelectedPhotoAnnotationCalled: Bool = false
     var shouldAskForLocationPermissionsCalled: Bool = false
+    var shouldOpenDataSourcesLinkCalled: Bool = false
 
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.shouldUpdateVisibleTilesCalled = true
@@ -88,5 +89,9 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     
     func shouldAskForLocationPermissions() {
         self.shouldAskForLocationPermissionsCalled = true
+    }
+    
+    func shouldOpenDataSourcesLink() {
+        self.shouldOpenDataSourcesLinkCalled = true
     }
 }

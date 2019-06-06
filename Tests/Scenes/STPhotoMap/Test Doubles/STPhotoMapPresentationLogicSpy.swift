@@ -29,6 +29,7 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentReloadCarouselCalled: Bool = false
     var presentNewSelectedPhotoAnnotationCalled: Bool = false
     var presentCenterToCoordinateCalled: Bool = false
+    var presentOpenDataSourcesLinkCalled: Bool = false
     
     var presentLoadingStateCalledCount: Int = 0
     var presentNotLoadingStateCalledCount: Int = 0
@@ -113,5 +114,9 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentCenterToCoordinate(response: STPhotoMapModels.CoordinateCenter.Response) {
         self.presentCenterToCoordinateCalled = true
+    }
+    
+    func presentOpenDataSourcesLink() {
+        self.presentOpenDataSourcesLinkCalled = true
     }
 }

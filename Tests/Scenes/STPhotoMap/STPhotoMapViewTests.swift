@@ -9,10 +9,12 @@
 @testable import STPhotoMap
 import XCTest
 import MapKit
+import SafariServices
 
 class STPhotoMapViewTests: XCTestCase {
     var sut: STPhotoMapView!
     var interactorSpy: STPhotoMapBusinessLogicSpy!
+    var routerSpy: STPhotoMapRoutingLogicSpy!
     var delegateSpy: STPhotoMapViewDelegateSpy!
     var window: UIWindow!
     
@@ -54,6 +56,9 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.interactorSpy = STPhotoMapBusinessLogicSpy()
         self.sut.interactor = self.interactorSpy
+        
+        self.routerSpy = STPhotoMapRoutingLogicSpy()
+        self.sut.router = self.routerSpy
         
         self.delegateSpy = STPhotoMapViewDelegateSpy()
         self.sut.delegate = self.delegateSpy
@@ -307,6 +312,13 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldAskForLocationPermissionsCalled)
     }
     
+    func testShouldOpenDataSourcesLinkWhenDataSourcesButtonIsTouchedUpInside() {
+        self.loadView()
+        
+        self.sut.touchUpInsideDataSourcesButton(button: nil)
+        XCTAssertTrue(self.interactorSpy.shouldOpenDataSourcesLinkCalled)
+    }
+    
     // MARK: - Test display logic
     
     func testDisplayLoadingState() {
@@ -557,5 +569,17 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertEqual(round(self.sut.mapView.region.center.longitude), round(region.center.longitude))
         XCTAssertEqual(round(self.sut.mapView.region.span.latitudeDelta), round(region.span.latitudeDelta))
         XCTAssertEqual(round(self.sut.mapView.region.span.longitudeDelta), round(region.span.longitudeDelta))
+    }
+    
+    func testDisplayOpenDataSourcesLink() {
+        self.loadView()
+        
+        let url = URL(string: "https://streetography.com")!
+        let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: url)
+        self.sut.displayOpenDataSourcesLink(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(self.routerSpy.navigateToSafariCalled)
     }
 }

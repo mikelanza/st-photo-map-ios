@@ -29,6 +29,7 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     var displayReloadCarouselCalled: Bool = false
     var displayNewSelectedPhotoAnnotationCalled: Bool = false
     var displayCenterToCoordinateCalled: Bool = false
+    var displayOpenDataSourcesLinkCalled: Bool = false
     
     func displayLoadingState() {
         self.displayLoadingStateCalled = true
@@ -108,5 +109,9 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     
     func displayCenterToCoordinate(viewModel: STPhotoMapModels.CoordinateCenter.ViewModel) {
         self.displayCenterToCoordinateCalled = true
+    }
+    
+    func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
+        self.displayOpenDataSourcesLinkCalled = true
     }
 }

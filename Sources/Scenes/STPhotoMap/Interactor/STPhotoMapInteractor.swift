@@ -37,6 +37,8 @@ protocol STPhotoMapBusinessLogic {
     func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request)
     
     func shouldAskForLocationPermissions()
+    
+    func shouldOpenDataSourcesLink()
 }
 
 protocol STPhotoMapDataStore {
@@ -109,6 +111,10 @@ extension STPhotoMapInteractor {
     
     func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request) {
         self.presenter?.presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response(location: request.location, entityLevel: request.entityLevel))
+    }
+    
+    func shouldOpenDataSourcesLink() {
+        self.presenter?.presentOpenDataSourcesLink()
     }
 }
 
