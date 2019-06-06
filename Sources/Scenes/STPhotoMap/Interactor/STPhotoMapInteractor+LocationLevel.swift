@@ -29,7 +29,7 @@ extension STPhotoMapInteractor {
         return self.entityLevelHandler.entityLevel == EntityLevel.location
     }
     
-    private func presentPhotoAnnotationsForCached(tiles:  [STPhotoMapCache.Tile]) {
+    private func presentPhotoAnnotationsForCached(tiles:  [STPhotoMapGeojsonCache.Tile]) {
         var annotations = [STPhotoMapModels.Annotation]()
         for tile in tiles {
             let tileAnnotations = self.getAnnotations(from: tile.geojsonObject)

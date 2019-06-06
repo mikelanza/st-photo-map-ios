@@ -36,7 +36,7 @@ extension STPhotoMapInteractor {
 
 extension STPhotoMapInteractor {
     func successDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject) {
-        self.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.cacheHandler.removeActiveDownload(keyUrl)
     }
     
