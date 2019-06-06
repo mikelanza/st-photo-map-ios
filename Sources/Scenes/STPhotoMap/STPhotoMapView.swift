@@ -561,7 +561,7 @@ extension STPhotoMapView {
     }
     
     private func setupUserLocationButton() {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(STPhotoMapStyle.shared.userLocationButtonModel.image, for: .normal)
         button.addTarget(self, action: #selector(STPhotoMapView.touchUpInsideUserLocationButton(button:)), for: .touchUpInside)
