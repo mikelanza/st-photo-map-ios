@@ -63,6 +63,7 @@ public class STPhotoMapView: UIView {
     
     var photoTileOverlay: STPhotoTileOverlay?
     var carouselOverlays: [STCarouselOverlay] = []
+    var tileOverlayRenderer: STPhotoTileOverlayRenderer?
     var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
@@ -365,6 +366,7 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
 extension STPhotoMapView: MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let visibleTiles = mapView.visibleTiles()
+        let outerTiles = mapView.outerTiles()
         let visibleMapRect = mapView.visibleMapRect
         
         DispatchQueue.global().async {
@@ -375,12 +377,16 @@ extension STPhotoMapView: MKMapViewDelegate {
             self.interactor?.shouldDetermineLocationLevel()
             self.interactor?.shouldDetermineCarousel()
             self.interactor?.shouldDetermineSelectedPhotoAnnotation()
+    
+            self.predownload(outer: outerTiles)
         }
     }
     
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is STPhotoTileOverlay {
-            return STPhotoTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
+            let renderer = STPhotoTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
+            self.tileOverlayRenderer = renderer
+            return renderer
         }
         
         if overlay is STCarouselOverlay {
@@ -458,9 +464,18 @@ extension STPhotoMapView: STLocationOverlayViewDelegate {
 extension STPhotoMapView {
     private func setupTileOverlay() {
         let model = self.photoMapView(self, photoTileOverlayModelForUrl: "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg", parameters: Parameters.defaultParameters())
+        
         self.photoTileOverlay = STPhotoTileOverlay(model: model)
         self.photoTileOverlay?.canReplaceMapContent = true
         self.mapView?.addOverlay(self.photoTileOverlay!, level: .aboveLabels)
+    }
+}
+
+// MARK: - Predownload tiles
+
+extension STPhotoMapView {
+    private func predownload(outer tiles: [(MKMapRect, [TileCoordinate])]) {
+        self.tileOverlayRenderer?.predownload(model: self.photoTileOverlay?.model.clone(), outer: tiles)
     }
 }
 

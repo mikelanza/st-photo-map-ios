@@ -45,3 +45,10 @@ public extension STPhotoTileOverlay {
         self.model.parameters.append(parameter)
     }
 }
+
+
+public extension STPhotoTileOverlay.Model {
+    func clone() -> STPhotoTileOverlay.Model {
+        return STPhotoTileOverlay.Model(url: self.url, parameters: self.parameters)
+    }
+}

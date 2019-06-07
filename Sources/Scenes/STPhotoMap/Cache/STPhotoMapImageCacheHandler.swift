@@ -57,9 +57,9 @@ class STPhotoMapImageCacheHandler {
         }
     }
     
-    func downloadTile(keyUrl: String, downloadUrl: String, completion: @escaping () -> Void) {
+    func downloadTile(keyUrl: String, downloadUrl: String, completion: (() -> Void)? = nil) {
         guard self.hasActiveDownload(keyUrl) == false else {
-            completion()
+            completion?()
             return
         }
         self.addActiveDownload(keyUrl)
@@ -68,7 +68,7 @@ class STPhotoMapImageCacheHandler {
             if let imageData = data {
                 self?.cache.addTile(data: imageData, forUrl: downloadUrl, keyUrl: keyUrl)
             }
-            completion()
+            completion?()
         }
     }
 }

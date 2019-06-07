@@ -13,6 +13,8 @@ import MapKit
 class STPhotoMapViewTests: XCTestCase {
     var sut: STPhotoMapView!
     var interactorSpy: STPhotoMapBusinessLogicSpy!
+    var tileOverlayRendererSpy: STPhotoTileOverlayRendererSpy!
+
     var delegateSpy: STPhotoMapViewDelegateSpy!
     var window: UIWindow!
     
@@ -54,6 +56,9 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.interactorSpy = STPhotoMapBusinessLogicSpy()
         self.sut.interactor = self.interactorSpy
+        
+        self.tileOverlayRendererSpy = STPhotoTileOverlayRendererSpy(tileOverlay: MKTileOverlay())
+        self.sut.tileOverlayRenderer = self.tileOverlayRendererSpy
         
         self.delegateSpy = STPhotoMapViewDelegateSpy()
         self.sut.delegate = self.delegateSpy
@@ -211,6 +216,15 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
         XCTAssertTrue(self.interactorSpy.shouldDetermineSelectedPhotoAnnotationCalled)
+    }
+    
+    func testShouldPreloadImageTilesWhenRegionDidChangeAnimated() {
+        self.loadView()
+        self.waitForBackgroundQueue()
+        
+        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        XCTAssertNotNil(self.sut.tileOverlayRenderer)
+        XCTAssertTrue(tileOverlayRendererSpy.predownloadCalled)
     }
     
     func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {

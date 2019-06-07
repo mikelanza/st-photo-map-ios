@@ -30,6 +30,16 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
             self.imageCacheHandler.clearCache()
         }
     }
+    
+    func predownload(model: STPhotoTileOverlay.Model?, outer tiles: [(MKMapRect, [TileCoordinate])]) {
+        guard let model = model else { return }
+        tiles.forEach { (outerTile) in
+            outerTile.1.forEach({ (tileCoordinate) in
+                let tileUrls = self.prepareTileUrls(model: model, outer: (outerTile.0, tileCoordinate))
+                self.imageCacheHandler.downloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
+            })
+        }
+    }
 }
 
 // MARK: - Drawing methods
@@ -162,5 +172,20 @@ extension STPhotoTileOverlayRenderer {
         self.imageCacheHandler.downloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl, completion: {
             self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
         })
+    }
+}
+
+extension STPhotoTileOverlayRenderer {
+    private func prepareTileUrls(model: STPhotoTileOverlay.Model, outer tile: (MKMapRect, TileCoordinate)) -> (keyUrl: String, downloadUrl: String) {
+        self.update(model: model, parameter: KeyValue(Parameters.Keys.bbox, tile.0.boundingBox().description))
+        let downloadUrl = STPhotoMapUrlBuilder().tileUrl(template: model.url, z: tile.1.zoom, x: tile.1.x, y: tile.1.y, parameters: model.parameters)
+        
+        let keyUrl = downloadUrl.excludeParameter((Parameters.Keys.bbox, ""))
+        return (keyUrl.absoluteString, downloadUrl.absoluteString)
+    }
+    
+    private func update(model: STPhotoTileOverlay.Model, parameter: KeyValue) {
+        model.parameters.removeAll(where: { $0.key == parameter.key })
+        model.parameters.append(parameter)
     }
 }
