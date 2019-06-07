@@ -24,3 +24,7 @@
 
 "STPhotoMap.carousel.block.entity.title" = "%@ on \nthis block";
 "STPhotoMap.carousel.entity.title" = "%@ in \n%@";
+
+"STPhotoMap.location.access.denied.message" = "You have denied the use of location services for this app. If you want to enable it, go to Settings.";
+"STPhotoMap.location.access.denied.settings" = "Go to Settings";
+"STPhotoMap.location.access.denied.cancel" = "Cancel";

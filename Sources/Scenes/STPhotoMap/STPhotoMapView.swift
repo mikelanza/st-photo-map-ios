@@ -36,6 +36,7 @@ protocol STPhotoMapDisplayLogic: class {
     func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel)
     
     func displayZoomToCoordinate(viewModel: STPhotoMapModels.CoordinateZoom.ViewModel)
+    func displayCenterToCoordinate(viewModel: STPhotoMapModels.CoordinateCenter.ViewModel)
     
     func displaySelectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
     func displayDeselectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationDeselection.ViewModel)
@@ -48,6 +49,11 @@ protocol STPhotoMapDisplayLogic: class {
     func displayReloadCarousel()
     
     func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
+    
+    func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel)
+    func displayOpenApplication(viewModel: STPhotoMapModels.OpenApplication.ViewModel)
+    
+    func displayLocationAccessDeniedAlert(viewModel: STPhotoMapModels.LocationAccessDeniedAlert.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -56,10 +62,13 @@ public class STPhotoMapView: UIView {
     public weak var delegate: STPhotoMapViewDelegate?
     
     var interactor: STPhotoMapBusinessLogic?
+    var router: STPhotoMapRoutingLogic?
     
     weak var progressView: UIProgressView!
     weak var entityLevelView: STEntityLevelView!
     weak var locationOverlayView: STLocationOverlayView!
+    weak var userLocationButton: UIButton!
+    weak var dataSourcesButton: UIButton!
     
     var photoTileOverlay: STPhotoTileOverlay?
     var carouselOverlays: [STCarouselOverlay] = []
@@ -95,9 +104,14 @@ public class STPhotoMapView: UIView {
         let displayer = self
         let interactor = STPhotoMapInteractor()
         let presenter = STPhotoMapPresenter()
-        displayer.interactor = interactor
+        let router = STPhotoMapRouter()
+        
         interactor.presenter = presenter
         presenter.displayer = displayer
+        router.displayer = displayer
+        
+        displayer.interactor = interactor
+        displayer.router = router
     }
 }
 
@@ -299,6 +313,14 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
         self.mapView?.setRegion(region, animated: true)
     }
     
+    // MARK: - Center to coordinate
+    
+    func displayCenterToCoordinate(viewModel: STPhotoMapModels.CoordinateCenter.ViewModel) {
+        DispatchQueue.main.async {
+            self.mapView?.setRegion(viewModel.region, animated: false)
+        }
+    }
+    
     // MARK: - Photo annotation selection/deselection
     
     func displaySelectPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel) {
@@ -358,6 +380,32 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     
     func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel) {
         self.delegate?.photoMapView(self, navigateToPhotoCollectionFor: viewModel.location, entityLevel: viewModel.entityLevel)
+    }
+    
+    // MARK: - Data sources
+    
+    func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
+        self.router?.navigateToSafari(url: viewModel.url)
+    }
+    
+    // MARK: - Open application
+    
+    func displayOpenApplication(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
+        self.router?.navigateToApplication(url: viewModel.url)
+    }
+    
+    // MARK: - Location access denied alert
+    
+    func displayLocationAccessDeniedAlert(viewModel: STPhotoMapModels.LocationAccessDeniedAlert.ViewModel) {
+        let alertController = UIAlertController(title: viewModel.title, message: viewModel.message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: viewModel.cancelTitle, style: .cancel, handler: nil)
+        let settingsAction = UIAlertAction(title: viewModel.settingsTitle, style: .default, handler: { action in
+            self.interactor?.shouldOpenSettingsApplication()
+        })
+        alertController.addAction(cancelAction)
+        alertController.addAction(settingsAction)
+        
+        self.router?.navigateToLocationSettingsAlert(controller: alertController)
     }
 }
 
@@ -495,12 +543,24 @@ extension STPhotoMapView: STActionMapViewDelegate {
     }
 }
 
+extension STPhotoMapView {
+    @objc func touchUpInsideUserLocationButton(button: UIButton?) {
+        self.interactor?.shouldAskForLocationPermissions()
+    }
+    
+    @objc func touchUpInsideDataSourcesButton(button: UIButton?) {
+        self.interactor?.shouldOpenDataSourcesLink()
+    }
+}
+
 // MARK: - Subviews configuration
 
 extension STPhotoMapView {
     private func setupSubviews() {
         self.setupMapView()
         self.setupProgressView()
+        self.setupUserLocationButton()
+        self.setupDataSourcesButton()
     }
     
     private func setupMapView() {
@@ -537,6 +597,29 @@ extension STPhotoMapView {
         self.addSubview(view)
         self.locationOverlayView = view
     }
+    
+    private func setupUserLocationButton() {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(STPhotoMapStyle.shared.userLocationButtonModel.image, for: .normal)
+        button.addTarget(self, action: #selector(STPhotoMapView.touchUpInsideUserLocationButton(button:)), for: .touchUpInside)
+        self.addSubview(button)
+        self.userLocationButton = button
+    }
+    
+    private func setupDataSourcesButton() {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let text: String = STPhotoMapLocalization.shared.dataSourcesTitle
+        let title: NSMutableAttributedString = NSMutableAttributedString(string: text)
+        title.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, text.count))
+        title.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 9, weight: UIFont.Weight.medium), range: NSMakeRange(0, text.count))
+        title.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.darkGray, range: NSMakeRange(0, text.count))
+        button.setAttributedTitle(title, for: .normal)
+        button.addTarget(self, action: #selector(STPhotoMapView.touchUpInsideDataSourcesButton(button:)), for: .touchUpInside)
+        self.addSubview(button)
+        self.dataSourcesButton = button
+    }
 }
 
 // MARK: - Constraints configuration
@@ -545,6 +628,8 @@ extension STPhotoMapView {
     private func setupSubviewsConstraints() {
         self.setupMapViewConstraints()
         self.setupProgressViewConstraints()
+        self.setupUserLocationButtonConstraints()
+        self.setupDataSourcesButtonConstraints()
     }
     
     private func setupMapViewConstraints() {
@@ -571,5 +656,15 @@ extension STPhotoMapView {
         self.locationOverlayView?.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
         self.locationOverlayView?.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -75).isActive = true
         self.locationOverlayView?.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30).isActive = true
+    }
+    
+    private func setupUserLocationButtonConstraints() {
+        self.userLocationButton?.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+        self.userLocationButton?.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
+    }
+    
+    private func setupDataSourcesButtonConstraints() {
+        self.dataSourcesButton?.trailingAnchor.constraint(equalTo: self.userLocationButton.leadingAnchor, constant: -10).isActive = true
+        self.dataSourcesButton?.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -3).isActive = true
     }
 }

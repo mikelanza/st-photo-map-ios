@@ -36,7 +36,11 @@ class STPhotoMapLocalization {
         entitySelectionTutorial = "STPhotoMap.entity.selection.tutorial",
         
         carouselBlockEntityTitle = "STPhotoMap.carousel.block.entity.title",
-        carouselEntityTitle = "STPhotoMap.carousel.entity.title"
+        carouselEntityTitle = "STPhotoMap.carousel.entity.title",
+        
+        locationAccessDeniedMessage = "STPhotoMap.location.access.denied.message",
+        locationAccessDeniedSettings = "STPhotoMap.location.access.denied.settings",
+        locationAccessDeniedCancel = "STPhotoMap.location.access.denied.cancel"
     }
     
     let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized()
@@ -53,6 +57,10 @@ class STPhotoMapLocalization {
     let countryLevelTitle = LocalizedKey.countryLevel.localized()
     
     let photoDetailsTutorial = LocalizedKey.photoDetailsTutorial.localized()
+    
+    let locationAccessDeniedMessage = LocalizedKey.locationAccessDeniedMessage.localized()
+    let locationAccessDeniedSettings = LocalizedKey.locationAccessDeniedSettings.localized()
+    let locationAccessDeniedCancel = LocalizedKey.locationAccessDeniedCancel.localized()
     
     func photoCountTitle(_ count: Int) -> String {
         return String.localizedStringWithFormat(LocalizedKey.photoCount.localized(), count)

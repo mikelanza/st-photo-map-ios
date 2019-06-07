@@ -24,3 +24,7 @@
 
 "STPhotoMap.carousel.block.entity.title" = "%@ în \nacest bloc";
 "STPhotoMap.carousel.entity.title" = "%@ în \n%@";
+
+"STPhotoMap.location.access.denied.message" = "Ai refuzat accesul la serviciile de locație pentru această aplicație. Pentru a permite accesul, du-te la Setări.";
+"STPhotoMap.location.access.denied.settings" = "Du-te la Setări";
+"STPhotoMap.location.access.denied.cancel" = "Anulează";
