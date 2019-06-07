@@ -46,7 +46,7 @@ class STPhotoMapImageCacheHandler {
         return self.cache.optionalImageDataForUrl(url: url)
     }
     
-    func downloadImage(url: String?, completion: @escaping (Data?, Error?) -> Void) {
+    func downloadImage(url: String?, downloadPriority: Float, completion: @escaping (Data?, Error?) -> Void) {
         guard let urlString = url, let url = URL(string: urlString) else {
             completion(nil, STPhotoTileOverlayRendererError.invalidUrl)
             return
@@ -57,13 +57,13 @@ class STPhotoMapImageCacheHandler {
         }
     }
     
-    func downloadTile(keyUrl: String, downloadUrl: String, completion: (() -> Void)? = nil) {
+    func downloadTile(downloadPriority: Float = 1.0, keyUrl: String, downloadUrl: String, completion: (() -> Void)? = nil) {
         guard self.hasActiveDownload(keyUrl) == false else {
             completion?()
             return
         }
         self.addActiveDownload(keyUrl)
-        self.downloadImage(url: downloadUrl) { [weak self]  (data, error) in
+        self.downloadImage(url: downloadUrl, downloadPriority: downloadPriority) { [weak self]  (data, error) in
             self?.removeActiveDownload(keyUrl)
             if let imageData = data {
                 self?.cache.addTile(data: imageData, forUrl: downloadUrl, keyUrl: keyUrl)

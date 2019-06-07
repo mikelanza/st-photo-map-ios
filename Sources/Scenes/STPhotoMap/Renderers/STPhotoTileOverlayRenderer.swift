@@ -36,7 +36,7 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         tiles.forEach { (outerTile) in
             outerTile.1.forEach({ (tileCoordinate) in
                 let tileUrls = self.prepareTileUrls(model: model, outer: (outerTile.0, tileCoordinate))
-                self.imageCacheHandler.downloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
+                self.imageCacheHandler.downloadTile(downloadPriority: 0.5, keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
             })
         }
     }
