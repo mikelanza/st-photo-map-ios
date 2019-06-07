@@ -92,6 +92,8 @@ public class STPhotoMapView: UIView {
         
         self.annotationHandler = STPhotoMapAnnotationHandler()
         self.setupTileOverlay()
+        
+        self.addGestureRecognizer()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -143,6 +145,24 @@ extension STPhotoMapView {
             return dataSource.photoMapView(view, photoTileOverlayModelForUrl: url, parameters: parameters)
         }
         return STPhotoTileOverlay.Model(url: url, parameters: parameters)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate methods
+
+extension STPhotoMapView: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    private func addGestureRecognizer() {
+        self.addPanGestureRecognizer()
+    }
+    
+    private func addPanGestureRecognizer() {
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.mapViewDidPan(_:)))
+        panGesture.delegate = self
+        self.mapView.addGestureRecognizer(panGesture)
     }
 }
 
@@ -414,7 +434,6 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
 extension STPhotoMapView: MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let visibleTiles = mapView.visibleTiles()
-        let outerTiles = mapView.outerTiles()
         let visibleMapRect = mapView.visibleMapRect
         
         DispatchQueue.global().async {
@@ -425,8 +444,6 @@ extension STPhotoMapView: MKMapViewDelegate {
             self.interactor?.shouldDetermineLocationLevel()
             self.interactor?.shouldDetermineCarousel()
             self.interactor?.shouldDetermineSelectedPhotoAnnotation()
-    
-            self.predownload(outer: outerTiles)
         }
     }
     
@@ -522,8 +539,15 @@ extension STPhotoMapView {
 // MARK: - Predownload tiles
 
 extension STPhotoMapView {
-    private func predownload(outer tiles: [(MKMapRect, [TileCoordinate])]) {
+    private func predownloadOuterTiles() {
+        let tiles = self.mapView.outerTiles()
         self.tileOverlayRenderer?.predownload(model: self.photoTileOverlay?.model.clone(), outer: tiles)
+    }
+    
+    @objc func mapViewDidPan(_ sender: UIGestureRecognizer) {
+        if sender.state == .ended {
+            self.predownloadOuterTiles()
+        }
     }
 }
 

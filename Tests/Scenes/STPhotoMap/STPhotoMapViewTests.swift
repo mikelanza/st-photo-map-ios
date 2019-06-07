@@ -233,12 +233,14 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldDetermineSelectedPhotoAnnotationCalled)
     }
     
-    func testShouldPreloadImageTilesWhenRegionDidChangeAnimated() {
+    func testShouldPreloadImageTilesWhenMapDidPan() {
         self.loadView()
-        self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+
+        let gesture = UIPanGestureRecognizer()
+        gesture.state = .ended
         
-        self.waitForBackgroundQueue()
-        XCTAssertNotNil(self.sut.tileOverlayRenderer)
+        self.sut.mapViewDidPan(gesture)
+
         XCTAssertTrue(tileOverlayRendererSpy.predownloadCalled)
     }
     
