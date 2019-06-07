@@ -12,10 +12,7 @@ import Kingfisher
 extension URL {
     func downloadImage(downloadPriority: Float = 1.0, result: @escaping (Data?, Error?) -> Void) {
         DispatchQueue.global().async {
-            let downloadPriority = KingfisherOptionsInfoItem.downloadPriority(downloadPriority)
-            let options = KingfisherOptionsInfo(arrayLiteral: downloadPriority)
-            
-            KingfisherManager.shared.retrieveImage(with: self, options: options, progressBlock: nil, completionHandler: { imageResult in
+            KingfisherManager.shared.retrieveImage(with: self, options: [.downloadPriority(downloadPriority)], progressBlock: nil, completionHandler: { imageResult in
                 switch imageResult {
                 case .success(let value): result(value.image.jpegData(compressionQuality: 1.0), nil); break
                 case .failure(let error): result(nil, error); break

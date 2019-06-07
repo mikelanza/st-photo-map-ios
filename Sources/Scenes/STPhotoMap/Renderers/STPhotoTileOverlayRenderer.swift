@@ -36,7 +36,7 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         tiles.forEach { (outerTile) in
             outerTile.1.forEach({ (tileCoordinate) in
                 let tileUrls = self.prepareTileUrls(model: model, outer: (outerTile.0, tileCoordinate))
-                self.imageCacheHandler.downloadTile(downloadPriority: 0.5, keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
+                self.imageCacheHandler.downloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
             })
         }
     }
@@ -169,7 +169,7 @@ extension STPhotoTileOverlayRenderer {
         let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
         let tileUrls = try self.tileUrlsFor(path: path)
         
-        self.imageCacheHandler.downloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl, completion: {
+        self.imageCacheHandler.downloadTile(with: Operation.QueuePriority.veryHigh, keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl, completion: {
             self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
         })
     }

@@ -12,10 +12,14 @@ import MapKit
 class STPhotoMapImageCacheHandler {
     var cache: STPhotoMapImageCache
     private var activeDownloads: SynchronizedArray<String>
+    private var downloadImageOperationQueue: OperationQueue
     
     init() {
         self.cache = STPhotoMapImageCache()
         self.activeDownloads = SynchronizedArray<String>()
+        
+        self.downloadImageOperationQueue = OperationQueue()
+        self.downloadImageOperationQueue.maxConcurrentOperationCount = 30
     }
     
     func clearCache() {
@@ -42,28 +46,42 @@ class STPhotoMapImageCacheHandler {
         return self.activeDownloads.count
     }
     
+    func shouldPrepareImageTileForCaching(url: String) -> Bool {
+        if self.hasActiveDownload(url) {
+            return false
+        }
+        do {
+            let _ = try self.cache.getTile(for: url)
+            return false
+        } catch {
+            return true
+        }
+    }
+    
     func optionalImageDataForUrl(url: String) -> Data? {
         return self.cache.optionalImageDataForUrl(url: url)
     }
     
-    func downloadImage(url: String?, downloadPriority: Float, completion: @escaping (Data?, Error?) -> Void) {
-        guard let urlString = url, let url = URL(string: urlString) else {
-            completion(nil, STPhotoTileOverlayRendererError.invalidUrl)
-            return
+    private func downloadImage(url: String?, with priority: Operation.QueuePriority = .normal, completion: @escaping (Data?, Error?) -> Void) {
+        let model = DownloadImageOperationModel.Request(url: url)
+        let operation = DownloadImageOperation(model: model) { imageResult in
+            switch imageResult {
+            case .success(let value): completion(value.data, value.error); break
+            case .failure(let error): completion(nil, error); break
+            }
         }
         
-        url.downloadImage { (data, error) in
-            completion(data, error)
-        }
+        operation.queuePriority =  priority
+        self.downloadImageOperationQueue.addOperation(operation)
     }
     
-    func downloadTile(downloadPriority: Float = 1.0, keyUrl: String, downloadUrl: String, completion: (() -> Void)? = nil) {
-        guard self.hasActiveDownload(keyUrl) == false else {
+    func downloadTile(with priority: Operation.QueuePriority = .normal, keyUrl: String, downloadUrl: String, completion: (() -> Void)? = nil) {
+        guard self.shouldPrepareImageTileForCaching(url: keyUrl) == false else {
             completion?()
             return
         }
         self.addActiveDownload(keyUrl)
-        self.downloadImage(url: downloadUrl, downloadPriority: downloadPriority) { [weak self]  (data, error) in
+        self.downloadImage(url: downloadUrl, with: priority) { [weak self]  (data, error) in
             self?.removeActiveDownload(keyUrl)
             if let imageData = data {
                 self?.cache.addTile(data: imageData, forUrl: downloadUrl, keyUrl: keyUrl)

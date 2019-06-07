@@ -42,6 +42,13 @@ class STPhotoMapImageCache {
         }
     }
     
+    func getTile(for keyUrl: String) throws -> Tile {
+        guard let tile = self.tiles.first(where: { $0.keyUrl == keyUrl }) else {
+            throw STPhotoMapImageCacheError.noTileAvailable
+        }
+        return tile
+    }
+    
     func optionalImageDataForUrl(url: String) -> Data? {
         return self.tiles.first(where: { $0.keyUrl == url })?.data
     }
