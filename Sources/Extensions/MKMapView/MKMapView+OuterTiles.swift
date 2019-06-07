@@ -27,16 +27,16 @@ extension MKMapView {
         let bottomLeft = self.visibleMapRect.offsetBy(dx: -dx, dy: dy)
         
         var outerTiles = [(MKMapRect, [TileCoordinate])]()
-        outerTiles.append((topRight, topRight.tiles(zoom: zoom)))
-        outerTiles.append((topCenter, topCenter.tiles(zoom: zoom)))
-        outerTiles.append((topLeft, topLeft.tiles(zoom: zoom)))
+        outerTiles.append((topRight, topRight.tiles(from: topRight.westCenterEdgeCoordinate, to: topRight.southCenterEdgeCoordinate, zoom: zoom)))
+        outerTiles.append((topCenter, topCenter.tiles(from: topCenter.westCenterEdgeCoordinate, to: topCenter.southEastCoordinate, zoom: zoom)))
+        outerTiles.append((topLeft, topLeft.tiles(from: topLeft.westCenterEdgeCoordinate, to: topLeft.southEastCoordinate, zoom: zoom)))
         
-        outerTiles.append((centerRight, centerRight.tiles(zoom: zoom)))
-        outerTiles.append((centerLeft, centerLeft.tiles(zoom: zoom)))
+        outerTiles.append((centerRight, centerRight.tiles(from: centerRight.northWestCoordinate, to: centerRight.southCenterEdgeCoordinate, zoom: zoom)))
+        outerTiles.append((centerLeft, centerLeft.tiles(from: centerLeft.northCenterEdgeCoordinate, to: centerLeft.southEastCoordinate, zoom: zoom)))
         
-        outerTiles.append((bottomRight, bottomRight.tiles(zoom: zoom)))
-        outerTiles.append((bottomCenter, bottomCenter.tiles(zoom: zoom)))
-        outerTiles.append((bottomLeft, bottomLeft.tiles(zoom: zoom)))
+        outerTiles.append((bottomRight, bottomRight.tiles(from: bottomRight.northWestCoordinate, to: bottomRight.eastCenterEdgeCoordinate, zoom: zoom)))
+        outerTiles.append((bottomCenter, bottomCenter.tiles(from: bottomCenter.northWestCoordinate, to: bottomCenter.eastCenterEdgeCoordinate, zoom: zoom)))
+        outerTiles.append((bottomLeft, bottomLeft.tiles(from: bottomLeft.northCenterEdgeCoordinate, to: bottomLeft.eastCenterEdgeCoordinate, zoom: zoom)))
         
         return outerTiles
     }

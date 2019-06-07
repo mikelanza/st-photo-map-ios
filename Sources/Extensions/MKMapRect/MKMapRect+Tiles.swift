@@ -29,4 +29,25 @@ extension MKMapRect {
         
         return visibleTiles
     }
+    
+    func tiles(from northWestCoordinate: CLLocationCoordinate2D , to southEastCoordinate: CLLocationCoordinate2D, zoom: Int) -> [TileCoordinate] {
+        let northWestTileCoordinate = TileCoordinate(coordinate: northWestCoordinate, zoom: zoom)
+        let southEastTileCoordinate = TileCoordinate(coordinate: southEastCoordinate, zoom: zoom)
+        
+        let xMax = northWestTileCoordinate.maxX(relation: southEastTileCoordinate)
+        let xMin = northWestTileCoordinate.minX(relation: southEastTileCoordinate)
+        
+        let yMax = northWestTileCoordinate.maxY(relation: southEastTileCoordinate)
+        let yMin = northWestTileCoordinate.minY(relation: southEastTileCoordinate)
+        
+        var visibleTiles = [TileCoordinate]()
+        
+        for y in yMin...yMax {
+            for x in xMin...xMax {
+                visibleTiles.append(TileCoordinate(zoom: zoom, x: x, y: y))
+            }
+        }
+        
+        return visibleTiles
+    }
 }

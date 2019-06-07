@@ -11,6 +11,6 @@ import MapKit
 extension MKMapView {
     public func visibleTiles() -> [TileCoordinate] {
         let zoom = self.zoomLevel()
-        return self.visibleMapRect.tiles(zoom: zoom)
+        return self.visibleMapRect.spiralTiles(zoom: zoom)
     }
 }
