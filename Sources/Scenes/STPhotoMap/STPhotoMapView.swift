@@ -51,6 +51,9 @@ protocol STPhotoMapDisplayLogic: class {
     func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel)
     
     func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel)
+    func displayOpenApplication(viewModel: STPhotoMapModels.OpenApplication.ViewModel)
+    
+    func displayLocationAccessDeniedAlert(viewModel: STPhotoMapModels.LocationAccessDeniedAlert.ViewModel)
 }
 
 public class STPhotoMapView: UIView {
@@ -382,6 +385,26 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     
     func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
         self.router?.navigateToSafari(url: viewModel.url)
+    }
+    
+    // MARK: - Open application
+    
+    func displayOpenApplication(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
+        self.router?.navigateToApplication(url: viewModel.url)
+    }
+    
+    // MARK: - Location access denied alert
+    
+    func displayLocationAccessDeniedAlert(viewModel: STPhotoMapModels.LocationAccessDeniedAlert.ViewModel) {
+        let alertController = UIAlertController(title: viewModel.title, message: viewModel.message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: viewModel.cancelTitle, style: .cancel, handler: nil)
+        let settingsAction = UIAlertAction(title: viewModel.settingsTitle, style: .default, handler: { action in
+            self.interactor?.shouldOpenSettingsApplication()
+        })
+        alertController.addAction(cancelAction)
+        alertController.addAction(settingsAction)
+        
+        self.router?.navigateToLocationSettingsAlert(controller: alertController)
     }
 }
 

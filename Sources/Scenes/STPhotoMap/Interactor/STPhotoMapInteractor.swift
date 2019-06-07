@@ -39,6 +39,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldAskForLocationPermissions()
     
     func shouldOpenDataSourcesLink()
+    func shouldOpenSettingsApplication()
 }
 
 protocol STPhotoMapDataStore {
@@ -115,6 +116,13 @@ extension STPhotoMapInteractor {
     
     func shouldOpenDataSourcesLink() {
         self.presenter?.presentOpenDataSourcesLink()
+    }
+    
+    func shouldOpenSettingsApplication() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            let response = STPhotoMapModels.OpenApplication.Response(url: url)
+            self.presenter?.presentOpenApplication(response: response)
+        }
     }
 }
 

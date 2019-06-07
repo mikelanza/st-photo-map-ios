@@ -30,7 +30,7 @@ extension STPhotoMapInteractor {
     }
     
     private func handleDeniedLocationPermissions() {
-        
+        self.presenter?.presentLocationAccessDeniedAlert()
     }
     
     private func presentCenterToCoordinate(coordinate: CLLocationCoordinate2D) {

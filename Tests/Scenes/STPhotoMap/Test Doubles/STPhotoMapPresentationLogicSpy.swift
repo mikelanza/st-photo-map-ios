@@ -30,6 +30,8 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     var presentNewSelectedPhotoAnnotationCalled: Bool = false
     var presentCenterToCoordinateCalled: Bool = false
     var presentOpenDataSourcesLinkCalled: Bool = false
+    var presentLocationAccessDeniedAlertCalled: Bool = false
+    var presentOpenApplicationCalled: Bool = false
     
     var presentLoadingStateCalledCount: Int = 0
     var presentNotLoadingStateCalledCount: Int = 0
@@ -118,5 +120,13 @@ class STPhotoMapPresentationLogicSpy: STPhotoMapPresentationLogic {
     
     func presentOpenDataSourcesLink() {
         self.presentOpenDataSourcesLinkCalled = true
+    }
+    
+    func presentLocationAccessDeniedAlert() {
+        self.presentLocationAccessDeniedAlertCalled = true
+    }
+    
+    func presentOpenApplication(response: STPhotoMapModels.OpenApplication.Response) {
+        self.presentOpenApplicationCalled = true
     }
 }

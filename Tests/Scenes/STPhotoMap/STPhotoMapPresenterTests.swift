@@ -167,4 +167,15 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentOpenDataSourcesLink()
         XCTAssertTrue(self.displayerSpy.displayOpenDataSourcesLinkCalled)
     }
+    
+    func testPresentLocationAccessDeniedAlert() {
+        self.sut.presentLocationAccessDeniedAlert()
+        XCTAssertTrue(self.displayerSpy.displayLocationAccessDeniedAlertCalled)
+    }
+    
+    func testPresentOpenApplication() {
+        let response = STPhotoMapModels.OpenApplication.Response(url: URL(string: "https://streetography.com")!)
+        self.sut.presentOpenApplication(response: response)
+        XCTAssertTrue(self.displayerSpy.displayOpenApplicationCalled)
+    }
 }

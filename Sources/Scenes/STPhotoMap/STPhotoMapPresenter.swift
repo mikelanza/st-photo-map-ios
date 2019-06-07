@@ -45,6 +45,9 @@ protocol STPhotoMapPresentationLogic {
     func presentNewSelectedPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
     
     func presentOpenDataSourcesLink()
+    func presentOpenApplication(response: STPhotoMapModels.OpenApplication.Response)
+    
+    func presentLocationAccessDeniedAlert()
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -211,5 +214,22 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
             let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: url)
             self.displayer?.displayOpenDataSourcesLink(viewModel: viewModel)
         }
+    }
+    
+    // MARK: - Open application
+    
+    func presentOpenApplication(response: STPhotoMapModels.OpenApplication.Response) {
+        let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: response.url)
+        self.displayer?.displayOpenApplication(viewModel: viewModel)
+    }
+    
+    // MARK: - Location access denied alert
+    
+    func presentLocationAccessDeniedAlert() {
+        let message = STPhotoMapLocalization.shared.locationAccessDeniedMessage
+        let cancelTitle = STPhotoMapLocalization.shared.locationAccessDeniedCancel
+        let settingsTitle = STPhotoMapLocalization.shared.locationAccessDeniedSettings
+        let viewModel = STPhotoMapModels.LocationAccessDeniedAlert.ViewModel(title: nil, message: message, cancelTitle: cancelTitle, settingsTitle: settingsTitle)
+        self.displayer?.displayLocationAccessDeniedAlert(viewModel: viewModel)
     }
 }

@@ -240,4 +240,13 @@ enum STPhotoMapModels {
             let url: URL
         }
     }
+    
+    enum LocationAccessDeniedAlert {
+        struct ViewModel {
+            let title: String?
+            let message: String?
+            let cancelTitle: String?
+            let settingsTitle: String?
+        }
+    }
 }

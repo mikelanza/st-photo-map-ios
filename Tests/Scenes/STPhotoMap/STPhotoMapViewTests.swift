@@ -582,4 +582,26 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertTrue(self.routerSpy.navigateToSafariCalled)
     }
+    
+    func testDisplayLocationAccessDeniedAlert() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.LocationAccessDeniedAlert.ViewModel(title: nil, message: "message", cancelTitle: "cancel", settingsTitle: "settings")
+        self.sut.displayLocationAccessDeniedAlert(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(self.routerSpy.navigateToLocationSettingsAlertCalled)
+    }
+    
+    func testDisplayDisplayOpenApplication() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: URL(string: "https://streetography.com")!)
+        self.sut.displayOpenApplication(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(self.routerSpy.navigateToApplicationCalled)
+    }
 }

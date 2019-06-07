@@ -1514,6 +1514,13 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.currentUserLocationHandlerSpy.requestWhenInUseAuthorizationCalled)
     }
     
+    func testShouldAskForLocationPermissionsWhenStatusIsDenied() {
+        self.currentUserLocationHandlerSpy.status = .denied
+        
+        self.sut.shouldAskForLocationPermissions()
+        XCTAssertTrue(self.presenterSpy.presentLocationAccessDeniedAlertCalled)
+    }
+    
     func testShouldAskForLocationPermissionsWhenChangingStatusForAuthorizedAlways() {
         self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didChangeAuthorization: CLAuthorizationStatus.authorizedAlways)
         XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
@@ -1551,5 +1558,10 @@ class STPhotoMapInteractorTests: XCTestCase {
     func testShouldOpenDataSourcesLink() {
         self.sut.shouldOpenDataSourcesLink()
         XCTAssertTrue(self.presenterSpy.presentOpenDataSourcesLinkCalled)
+    }
+    
+    func testShouldOpenSettingsApplication() {
+        self.sut.shouldOpenSettingsApplication()
+        XCTAssertTrue(self.presenterSpy.presentOpenApplicationCalled)
     }
 }

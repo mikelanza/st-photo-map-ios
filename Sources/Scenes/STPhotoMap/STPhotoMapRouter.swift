@@ -15,6 +15,8 @@ import SafariServices
 
 @objc protocol STPhotoMapRoutingLogic {
     func navigateToSafari(url: URL)
+    func navigateToLocationSettingsAlert(controller: UIAlertController)
+    func navigateToApplication(url: URL)
 }
 
 protocol STPhotoMapDataPassing {
@@ -31,6 +33,20 @@ class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic, STPhotoMapDataPassing 
         DispatchQueue.main.async {
             let viewController = SFSafariViewController(url: url)
             viewController.show()
+        }
+    }
+        
+    func navigateToLocationSettingsAlert(controller: UIAlertController) {
+        DispatchQueue.main.async {
+            controller.show()
+        }
+    }
+    
+    func navigateToApplication(url: URL) {
+        DispatchQueue.main.async {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            }
         }
     }
 }
