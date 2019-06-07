@@ -203,6 +203,17 @@ enum STPhotoMapModels {
         }
     }
     
+    enum CoordinateCenter {
+        struct Response {
+            let coordinate: CLLocationCoordinate2D
+            let entityLevel: EntityLevel
+        }
+        
+        struct ViewModel {
+            let region: MKCoordinateRegion
+        }
+    }
+    
     enum CarouselSelection {
         struct Request {
             let tileCoordinate: TileCoordinate
@@ -217,6 +228,25 @@ enum STPhotoMapModels {
         
         struct ViewModel {
             let overlays: [STCarouselOverlay]
+        }
+    }
+    
+    enum OpenApplication {
+        struct Response {
+            let url: URL
+        }
+        
+        struct ViewModel {
+            let url: URL
+        }
+    }
+    
+    enum LocationAccessDeniedAlert {
+        struct ViewModel {
+            let title: String?
+            let message: String?
+            let cancelTitle: String?
+            let settingsTitle: String?
         }
     }
 }

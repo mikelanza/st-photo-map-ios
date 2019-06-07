@@ -18,6 +18,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     var sut: STPhotoMapInteractor!
     var presenterSpy: STPhotoMapPresentationLogicSpy!
     var workerSpy: STPhotoMapWorkerSpy!
+    var currentUserLocationHandlerSpy: STPhotoMapCurrentUserLocationHandlerSpy!
     
     var workerDelay: Double = 0.1
     var delay: Double = 0.05
@@ -43,6 +44,10 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.workerSpy = STPhotoMapWorkerSpy(delegate: self.sut)
         self.sut.worker = self.workerSpy
+        
+        self.currentUserLocationHandlerSpy = STPhotoMapCurrentUserLocationHandlerSpy()
+        self.currentUserLocationHandlerSpy.delegate = self.sut
+        self.sut.currentUserLocationHandler = self.currentUserLocationHandlerSpy
     }
     
     private func waitForSynchronization() {
@@ -213,7 +218,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
 
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
 
         self.waitForSynchronization()
@@ -234,7 +239,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
 
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
 
         self.waitForSynchronization()
@@ -292,7 +297,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.geojsonObject = geojsonObject
         
         self.sut.cacheHandler.addActiveDownload(activeDownloadUrl)
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = tileCoordinates
 
         self.waitForSynchronization()
@@ -314,7 +319,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
 
         self.sut.cacheHandler.addActiveDownload(activeDownloadUrl)
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = tileCoordinates
 
         self.waitForSynchronization()
@@ -418,7 +423,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.image = UIImage()
 
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.visibleMapRect = geoEntity.boundingBox.mapRect()
 
@@ -619,7 +624,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.photo = STPhotoMapSeeds().photo()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
 
         self.sut.entityLevelHandler.entityLevel = .location
@@ -643,7 +648,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
 
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
 
         self.sut.entityLevelHandler.entityLevel = .city
@@ -1107,7 +1112,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.waitForSynchronization()
@@ -1138,7 +1143,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.waitForSynchronization()
@@ -1218,7 +1223,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.visibleMapRect = MKMapRect(origin: MKMapPoint(coordinate), size: MKMapSize.init(width: 1000, height: 1000))
         
@@ -1240,7 +1245,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.visibleMapRect = geoEntity.boundingBox.mapRect()
         
@@ -1273,7 +1278,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.geoEntity = geoEntity
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
         
@@ -1393,7 +1398,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.sut.entityLevelHandler.entityLevel = .block
@@ -1415,7 +1420,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.sut.entityLevelHandler.entityLevel = .location
@@ -1443,7 +1448,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.sut.entityLevelHandler.entityLevel = .location
@@ -1484,5 +1489,79 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
         XCTAssertFalse(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
+    }
+    
+    // MARK: - Current user location
+    
+    func testShouldAskForLocationPermissionsWhenStatusIsAuthorizedAlways() {
+        self.currentUserLocationHandlerSpy.status = .authorizedAlways
+        
+        self.sut.shouldAskForLocationPermissions()
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenStatusIsAuthorizedWhenInUse() {
+        self.currentUserLocationHandlerSpy.status = .authorizedWhenInUse
+        
+        self.sut.shouldAskForLocationPermissions()
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenStatusIsNotDetermined() {
+        self.currentUserLocationHandlerSpy.status = .notDetermined
+        
+        self.sut.shouldAskForLocationPermissions()
+        XCTAssertTrue(self.currentUserLocationHandlerSpy.requestWhenInUseAuthorizationCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenStatusIsDenied() {
+        self.currentUserLocationHandlerSpy.status = .denied
+        
+        self.sut.shouldAskForLocationPermissions()
+        XCTAssertTrue(self.presenterSpy.presentLocationAccessDeniedAlertCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenChangingStatusForAuthorizedAlways() {
+        self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didChangeAuthorization: CLAuthorizationStatus.authorizedAlways)
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenChangingStatusForAuthorizedWhenInUse() {
+         self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didChangeAuthorization: CLAuthorizationStatus.authorizedWhenInUse)
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenLocationManagerDidUpdateLocations() {
+        let locations = [CLLocation(latitude: STPhotoMapSeeds.coordinate.latitude, longitude: STPhotoMapSeeds.coordinate.longitude)]
+        self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didUpdateLocations: locations)
+        
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+        XCTAssertTrue(self.currentUserLocationHandlerSpy.didZoomToUserLocation)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenLocationManagerDidUpdateLocationsWhenItDidZoomToUserLocation() {
+        self.currentUserLocationHandlerSpy.didZoomToUserLocation = true
+        
+        let locations = [CLLocation(latitude: STPhotoMapSeeds.coordinate.latitude, longitude: STPhotoMapSeeds.coordinate.longitude)]
+        self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didUpdateLocations: locations)
+        
+        XCTAssertFalse(self.presenterSpy.presentCenterToCoordinateCalled)
+        XCTAssertTrue(self.currentUserLocationHandlerSpy.didZoomToUserLocation)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenLocationManagerDidUpdateLocationsWhenThereAreNoLocations() {
+        self.sut.currentUserLocationHandler.locationManager(CLLocationManager(), didUpdateLocations: [])
+        XCTAssertFalse(self.presenterSpy.presentCenterToCoordinateCalled)
+        XCTAssertFalse(self.currentUserLocationHandlerSpy.didZoomToUserLocation)
+    }
+    
+    func testShouldOpenDataSourcesLink() {
+        self.sut.shouldOpenDataSourcesLink()
+        XCTAssertTrue(self.presenterSpy.presentOpenDataSourcesLinkCalled)
+    }
+    
+    func testShouldOpenSettingsApplication() {
+        self.sut.shouldOpenSettingsApplication()
+        XCTAssertTrue(self.presenterSpy.presentOpenApplicationCalled)
     }
 }

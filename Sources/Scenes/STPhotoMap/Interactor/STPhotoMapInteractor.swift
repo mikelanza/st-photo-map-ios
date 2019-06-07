@@ -35,12 +35,17 @@ protocol STPhotoMapBusinessLogic {
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request)
     func shouldSelectPhotoClusterAnnotation(request: STPhotoMapModels.PhotoClusterAnnotationSelection.Request)
     func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request)
+    
+    func shouldAskForLocationPermissions()
+    
+    func shouldOpenDataSourcesLink()
+    func shouldOpenSettingsApplication()
 }
 
 protocol STPhotoMapDataStore {
 }
 
-class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhotoMapWorkerDelegate {
+class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhotoMapWorkerDelegate {
     var presenter: STPhotoMapPresentationLogic?
     var worker: STPhotoMapWorker?
     
@@ -48,26 +53,31 @@ class STPhotoMapInteractor: STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhot
     var visibleMapRect: MKMapRect
     var selectedPhotoAnnotation: PhotoAnnotation?
     
-    var cacheHandler: STPhotoMapCacheHandler
+    var cacheHandler: STPhotoMapGeojsonCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
     var locationLevelHandler: STPhotoMapLocationLevelHandler
     let carouselHandler: STPhotoMapCarouselHandler
+    var currentUserLocationHandler: STPhotoMapCurrentUserLocationHandler
     
-    init() {
+    override init() {
         self.visibleTiles = []
         self.visibleMapRect = MKMapRect()
-        self.cacheHandler = STPhotoMapCacheHandler()
+        self.cacheHandler = STPhotoMapGeojsonCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
         self.locationLevelHandler = STPhotoMapLocationLevelHandler()
         self.carouselHandler = STPhotoMapCarouselHandler()
-        self.worker = STPhotoMapWorker(delegate: self)
+        self.currentUserLocationHandler = STPhotoMapCurrentUserLocationHandler()
         
+        super.init()
+        
+        self.worker = STPhotoMapWorker(delegate: self)
         self.entityLevelHandler.delegate = self
         self.carouselHandler.delegate = self
+        self.currentUserLocationHandler.delegate = self
     }
     
-    internal func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
-        return self.visibleTiles.compactMap({ tile -> STPhotoMapCache.Tile? in
+    internal func getVisibleCachedTiles() -> [STPhotoMapGeojsonCache.Tile] {
+        return self.visibleTiles.compactMap({ tile -> STPhotoMapGeojsonCache.Tile? in
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
             return try? self.cacheHandler.cache.getTile(for: url.keyUrl)
         })
@@ -102,6 +112,17 @@ extension STPhotoMapInteractor {
     
     func shouldNavigateToPhotoCollection(request: STPhotoMapModels.PhotoCollectionNavigation.Request) {
         self.presenter?.presentNavigateToPhotoCollection(response: STPhotoMapModels.PhotoCollectionNavigation.Response(location: request.location, entityLevel: request.entityLevel))
+    }
+    
+    func shouldOpenDataSourcesLink() {
+        self.presenter?.presentOpenDataSourcesLink()
+    }
+    
+    func shouldOpenSettingsApplication() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            let response = STPhotoMapModels.OpenApplication.Response(url: url)
+            self.presenter?.presentOpenApplication(response: response)
+        }
     }
 }
 

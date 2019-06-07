@@ -93,6 +93,6 @@ public class STPhotoMapStyle {
     
     public struct UserLocationButtonModel {
         public var show: Bool = true
-        public var image: UIImage?
+        public var image: UIImage? = UIImage(named: "st_current_user_location", in: Bundle.module, compatibleWith: nil)
     }
 }

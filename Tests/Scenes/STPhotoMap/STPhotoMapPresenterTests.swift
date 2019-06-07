@@ -156,4 +156,26 @@ class STPhotoMapPresenterTests: XCTestCase {
         self.sut.presentNewSelectedPhotoAnnotation(response: response)
         XCTAssertTrue(self.displayerSpy.displayNewSelectedPhotoAnnotationCalled)
     }
+    
+    func testPresentCenterToCoordinate() {
+        let response = STPhotoMapModels.CoordinateCenter.Response(coordinate: STPhotoMapSeeds.coordinate, entityLevel: EntityLevel.block)
+        self.sut.presentCenterToCoordinate(response: response)
+        XCTAssertTrue(self.displayerSpy.displayCenterToCoordinateCalled)
+    }
+    
+    func testPresentOpenDataSourcesLink() {
+        self.sut.presentOpenDataSourcesLink()
+        XCTAssertTrue(self.displayerSpy.displayOpenDataSourcesLinkCalled)
+    }
+    
+    func testPresentLocationAccessDeniedAlert() {
+        self.sut.presentLocationAccessDeniedAlert()
+        XCTAssertTrue(self.displayerSpy.displayLocationAccessDeniedAlertCalled)
+    }
+    
+    func testPresentOpenApplication() {
+        let response = STPhotoMapModels.OpenApplication.Response(url: URL(string: "https://streetography.com")!)
+        self.sut.presentOpenApplication(response: response)
+        XCTAssertTrue(self.displayerSpy.displayOpenApplicationCalled)
+    }
 }

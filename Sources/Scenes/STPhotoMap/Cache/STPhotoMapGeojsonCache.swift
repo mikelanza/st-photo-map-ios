@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum STPhotoMapCacheError: Error {
+enum STPhotoMapGeojsonCacheError: Error {
     case noTileAvailable
 }
 
-class STPhotoMapCache {
+class STPhotoMapGeojsonCache {
     struct Tile {
         var keyUrl: String
         var geojsonObject: GeoJSONObject
@@ -38,7 +38,7 @@ class STPhotoMapCache {
     
     func getTile(for keyUrl: String) throws -> Tile {
         guard let tile = self.tiles.first(where: { $0.keyUrl == keyUrl }) else {
-            throw STPhotoMapCacheError.noTileAvailable
+            throw STPhotoMapGeojsonCacheError.noTileAvailable
         }
         return tile
     }

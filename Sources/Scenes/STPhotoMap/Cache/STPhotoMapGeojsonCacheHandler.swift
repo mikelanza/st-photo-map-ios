@@ -8,12 +8,12 @@
 
 import Foundation
 
-class STPhotoMapCacheHandler {
-    var cache: STPhotoMapCache
+class STPhotoMapGeojsonCacheHandler {
+    var cache: STPhotoMapGeojsonCache
     private var activeDownloads: SynchronizedArray<String>
     
     init() {
-        self.cache = STPhotoMapCache()
+        self.cache = STPhotoMapGeojsonCache()
         self.activeDownloads = SynchronizedArray<String>()
     }
     

@@ -107,7 +107,6 @@ class STPhotoMapSeeds: NSObject {
         return STUser(id: "user_id")
     }
     
-
     func geoEntity() throws -> GeoEntity {
         let bundle = Bundle(for: type(of: self))
         guard let path = bundle.path(forResource: "geo_entity", ofType: "json") else {

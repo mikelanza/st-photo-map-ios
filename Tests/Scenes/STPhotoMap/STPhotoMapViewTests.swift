@@ -9,10 +9,14 @@
 @testable import STPhotoMap
 import XCTest
 import MapKit
+import SafariServices
 
 class STPhotoMapViewTests: XCTestCase {
     var sut: STPhotoMapView!
     var interactorSpy: STPhotoMapBusinessLogicSpy!
+    var routerSpy: STPhotoMapRoutingLogicSpy!
+    var tileOverlayRendererSpy: STPhotoTileOverlayRendererSpy!
+
     var delegateSpy: STPhotoMapViewDelegateSpy!
     var window: UIWindow!
     
@@ -55,6 +59,12 @@ class STPhotoMapViewTests: XCTestCase {
         self.interactorSpy = STPhotoMapBusinessLogicSpy()
         self.sut.interactor = self.interactorSpy
         
+        self.routerSpy = STPhotoMapRoutingLogicSpy()
+        self.sut.router = self.routerSpy
+        
+        self.tileOverlayRendererSpy = STPhotoTileOverlayRendererSpy(tileOverlay: MKTileOverlay())
+        self.sut.tileOverlayRenderer = self.tileOverlayRendererSpy
+        
         self.delegateSpy = STPhotoMapViewDelegateSpy()
         self.sut.delegate = self.delegateSpy
     }
@@ -83,6 +93,16 @@ class STPhotoMapViewTests: XCTestCase {
     func testIfPhotoMapViewContainsMapView() {
         self.loadView()
         XCTAssertNotNil(self.sut.mapView)
+    }
+    
+    func testIfPhotoMapViewContainsUserLocationButton() {
+        self.loadView()
+        XCTAssertNotNil(self.sut.userLocationButton)
+    }
+    
+    func testIfPhotoMapViewContainsDataSourcesButton() {
+        self.loadView()
+        XCTAssertNotNil(self.sut.dataSourcesButton)
     }
     
     func testIfPhotoMapViewConformsToMKMapViewDelegate() {
@@ -159,58 +179,69 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testShouldUpdateVisibleTilesWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldUpdateVisibleTilesCalled)
     }
     
     func testShouldUpdateVisibleMapRectWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldUpdateVisibleMapRect)
     }
     
     func testShouldCacheGeojsonObjectsWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldCacheGeojsonObjectsCalled)
     }
     
     func testShouldDetermineEntityLevelWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineEntityLevelCalled)
     }
     
     func testShouldDetermineLocationLevelWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineLocationLevelCalled)
     }
     
     func testShouldDetermineCarouselWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineCarouselCalled)
     }
     
     func testShouldDetermineSelectedPhotoAnnotationWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineSelectedPhotoAnnotationCalled)
+    }
+    
+    func testShouldPreloadImageTilesWhenMapDidPan() {
+        self.loadView()
+
+        let gesture = UIPanGestureRecognizer()
+        gesture.state = .ended
+        
+        self.sut.mapViewDidPan(gesture)
+
+        XCTAssertTrue(tileOverlayRendererSpy.predownloadCalled)
     }
     
     func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {
@@ -288,6 +319,20 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.sut.actionMapView(mapView: self.sut.mapView, didSelect: STPhotoMapSeeds.tileCoordinate, atLocation: STPhotoMapSeeds.location)
         XCTAssertTrue(self.interactorSpy.shouldSelectCarouselCalled)
+    }
+    
+    func testShouldAskForLocationPermissionsWhenUserLocationButtonIsTouchedUpInside() {
+        self.loadView()
+        
+        self.sut.touchUpInsideUserLocationButton(button: nil)
+        XCTAssertTrue(self.interactorSpy.shouldAskForLocationPermissionsCalled)
+    }
+    
+    func testShouldOpenDataSourcesLinkWhenDataSourcesButtonIsTouchedUpInside() {
+        self.loadView()
+        
+        self.sut.touchUpInsideDataSourcesButton(button: nil)
+        XCTAssertTrue(self.interactorSpy.shouldOpenDataSourcesLinkCalled)
     }
     
     // MARK: - Test display logic
@@ -523,5 +568,56 @@ class STPhotoMapViewTests: XCTestCase {
         
         XCTAssertEqual(annotation, secondPhotoAnnotation)
         XCTAssertEqual(self.sut.annotationHandler.selectedPhotoAnnotation, secondPhotoAnnotation)
+    }
+    
+    func testDisplayCenterToCoordinate() {
+        self.loadView()
+        
+        self.sut.mapView.setRegion(MKCoordinateRegion(MKMapRect(origin: MKMapPoint(x: 0, y: 0), size: MKMapSize(width: 0, height: 0))), animated: false)
+        
+        let region = MKCoordinateRegion(center: STPhotoMapSeeds.coordinate, span: EntityLevel.block.coordinateSpan())
+        let viewModel = STPhotoMapModels.CoordinateCenter.ViewModel(region: region)
+        self.sut.displayCenterToCoordinate(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertEqual(round(self.sut.mapView.region.center.latitude), round(region.center.latitude))
+        XCTAssertEqual(round(self.sut.mapView.region.center.longitude), round(region.center.longitude))
+        XCTAssertEqual(round(self.sut.mapView.region.span.latitudeDelta), round(region.span.latitudeDelta))
+        XCTAssertEqual(round(self.sut.mapView.region.span.longitudeDelta), round(region.span.longitudeDelta))
+    }
+    
+    func testDisplayOpenDataSourcesLink() {
+        self.loadView()
+        
+        let url = URL(string: "https://streetography.com")!
+        let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: url)
+        self.sut.displayOpenDataSourcesLink(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(self.routerSpy.navigateToSafariCalled)
+    }
+    
+    func testDisplayLocationAccessDeniedAlert() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.LocationAccessDeniedAlert.ViewModel(title: nil, message: "message", cancelTitle: "cancel", settingsTitle: "settings")
+        self.sut.displayLocationAccessDeniedAlert(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(self.routerSpy.navigateToLocationSettingsAlertCalled)
+    }
+    
+    func testDisplayDisplayOpenApplication() {
+        self.loadView()
+        
+        let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: URL(string: "https://streetography.com")!)
+        self.sut.displayOpenApplication(viewModel: viewModel)
+        
+        self.waitForMainQueue()
+        
+        XCTAssertTrue(self.routerSpy.navigateToApplicationCalled)
     }
 }

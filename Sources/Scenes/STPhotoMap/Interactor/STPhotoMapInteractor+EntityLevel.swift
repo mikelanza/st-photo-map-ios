@@ -25,7 +25,7 @@ extension STPhotoMapInteractor {
         self.handleLoadingStateForEntityLevel()
     }
     
-    private func calculateEntityLevelFor(cachedTiles: [STPhotoMapCache.Tile]) {
+    private func calculateEntityLevelFor(cachedTiles: [STPhotoMapGeojsonCache.Tile]) {
         let entityLevel = cachedTiles.first?.geojsonObject.entityLevel ?? .unknown
         self.entityLevelHandler.change(entityLevel: entityLevel)
     }
