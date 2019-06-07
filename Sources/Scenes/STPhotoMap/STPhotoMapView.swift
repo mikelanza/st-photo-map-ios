@@ -72,6 +72,7 @@ public class STPhotoMapView: UIView {
     
     var photoTileOverlay: STPhotoTileOverlay?
     var carouselOverlays: [STCarouselOverlay] = []
+    var tileOverlayRenderer: STPhotoTileOverlayRenderer?
     var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init(dataSource: STPhotoMapViewDataSource) {
@@ -91,6 +92,8 @@ public class STPhotoMapView: UIView {
         
         self.annotationHandler = STPhotoMapAnnotationHandler()
         self.setupTileOverlay()
+        
+        self.addGestureRecognizer()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -142,6 +145,24 @@ extension STPhotoMapView {
             return dataSource.photoMapView(view, photoTileOverlayModelForUrl: url, parameters: parameters)
         }
         return STPhotoTileOverlay.Model(url: url, parameters: parameters)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate methods
+
+extension STPhotoMapView: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    private func addGestureRecognizer() {
+        self.addPanGestureRecognizer()
+    }
+    
+    private func addPanGestureRecognizer() {
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.mapViewDidPan(_:)))
+        panGesture.delegate = self
+        self.mapView.addGestureRecognizer(panGesture)
     }
 }
 
@@ -428,7 +449,9 @@ extension STPhotoMapView: MKMapViewDelegate {
     
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is STPhotoTileOverlay {
-            return STPhotoTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
+            let renderer = STPhotoTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
+            self.tileOverlayRenderer = renderer
+            return renderer
         }
         
         if overlay is STCarouselOverlay {
@@ -506,9 +529,25 @@ extension STPhotoMapView: STLocationOverlayViewDelegate {
 extension STPhotoMapView {
     private func setupTileOverlay() {
         let model = self.photoMapView(self, photoTileOverlayModelForUrl: "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg", parameters: Parameters.defaultParameters())
+        
         self.photoTileOverlay = STPhotoTileOverlay(model: model)
         self.photoTileOverlay?.canReplaceMapContent = true
         self.mapView?.addOverlay(self.photoTileOverlay!, level: .aboveLabels)
+    }
+}
+
+// MARK: - Predownload tiles
+
+extension STPhotoMapView {
+    private func predownloadOuterTiles() {
+        let tiles = self.mapView.outerTiles()
+        self.tileOverlayRenderer?.predownload(model: self.photoTileOverlay?.model.clone(), outer: tiles)
+    }
+    
+    @objc func mapViewDidPan(_ sender: UIGestureRecognizer) {
+        if sender.state == .ended {
+            self.predownloadOuterTiles()
+        }
     }
 }
 

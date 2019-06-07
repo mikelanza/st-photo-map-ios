@@ -53,7 +53,7 @@ class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapDataSto
     var visibleMapRect: MKMapRect
     var selectedPhotoAnnotation: PhotoAnnotation?
     
-    var cacheHandler: STPhotoMapCacheHandler
+    var cacheHandler: STPhotoMapGeojsonCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
     var locationLevelHandler: STPhotoMapLocationLevelHandler
     let carouselHandler: STPhotoMapCarouselHandler
@@ -62,7 +62,7 @@ class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapDataSto
     override init() {
         self.visibleTiles = []
         self.visibleMapRect = MKMapRect()
-        self.cacheHandler = STPhotoMapCacheHandler()
+        self.cacheHandler = STPhotoMapGeojsonCacheHandler()
         self.entityLevelHandler = STPhotoMapEntityLevelHandler()
         self.locationLevelHandler = STPhotoMapLocationLevelHandler()
         self.carouselHandler = STPhotoMapCarouselHandler()
@@ -76,8 +76,8 @@ class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapDataSto
         self.currentUserLocationHandler.delegate = self
     }
     
-    internal func getVisibleCachedTiles() -> [STPhotoMapCache.Tile] {
-        return self.visibleTiles.compactMap({ tile -> STPhotoMapCache.Tile? in
+    internal func getVisibleCachedTiles() -> [STPhotoMapGeojsonCache.Tile] {
+        return self.visibleTiles.compactMap({ tile -> STPhotoMapGeojsonCache.Tile? in
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
             return try? self.cacheHandler.cache.getTile(for: url.keyUrl)
         })

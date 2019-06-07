@@ -15,6 +15,8 @@ class STPhotoMapViewTests: XCTestCase {
     var sut: STPhotoMapView!
     var interactorSpy: STPhotoMapBusinessLogicSpy!
     var routerSpy: STPhotoMapRoutingLogicSpy!
+    var tileOverlayRendererSpy: STPhotoTileOverlayRendererSpy!
+
     var delegateSpy: STPhotoMapViewDelegateSpy!
     var window: UIWindow!
     
@@ -59,6 +61,9 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.routerSpy = STPhotoMapRoutingLogicSpy()
         self.sut.router = self.routerSpy
+        
+        self.tileOverlayRendererSpy = STPhotoTileOverlayRendererSpy(tileOverlay: MKTileOverlay())
+        self.sut.tileOverlayRenderer = self.tileOverlayRendererSpy
         
         self.delegateSpy = STPhotoMapViewDelegateSpy()
         self.sut.delegate = self.delegateSpy
@@ -174,58 +179,69 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testShouldUpdateVisibleTilesWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldUpdateVisibleTilesCalled)
     }
     
     func testShouldUpdateVisibleMapRectWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldUpdateVisibleMapRect)
     }
     
     func testShouldCacheGeojsonObjectsWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldCacheGeojsonObjectsCalled)
     }
     
     func testShouldDetermineEntityLevelWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineEntityLevelCalled)
     }
     
     func testShouldDetermineLocationLevelWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineLocationLevelCalled)
     }
     
     func testShouldDetermineCarouselWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineCarouselCalled)
     }
     
     func testShouldDetermineSelectedPhotoAnnotationWhenRegionDidChangeAnimated() {
         self.loadView()
-        self.waitForBackgroundQueue()
-        
         self.sut.mapView(self.sut.mapView, regionDidChangeAnimated: true)
+        
+        self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineSelectedPhotoAnnotationCalled)
+    }
+    
+    func testShouldPreloadImageTilesWhenMapDidPan() {
+        self.loadView()
+
+        let gesture = UIPanGestureRecognizer()
+        gesture.state = .ended
+        
+        self.sut.mapViewDidPan(gesture)
+
+        XCTAssertTrue(tileOverlayRendererSpy.predownloadCalled)
     }
     
     func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {

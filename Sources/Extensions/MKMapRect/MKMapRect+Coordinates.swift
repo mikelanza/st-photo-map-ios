@@ -24,4 +24,20 @@ extension MKMapRect {
     public var southWestCoordinate: CLLocationCoordinate2D {
         return MKMapPoint(x: self.origin.x, y: self.maxY).coordinate
     }
+    
+    public var westCenterEdgeCoordinate: CLLocationCoordinate2D {
+        return MKMapPoint(x: self.minX, y: self.midY).coordinate
+    }
+    
+    public var northCenterEdgeCoordinate: CLLocationCoordinate2D {
+        return MKMapPoint(x: self.midX, y: self.minY).coordinate
+    }
+    
+    public var eastCenterEdgeCoordinate: CLLocationCoordinate2D {
+        return MKMapPoint(x: self.maxX, y: self.midY).coordinate
+    }
+    
+    public var southCenterEdgeCoordinate: CLLocationCoordinate2D {
+        return MKMapPoint(x: self.midX, y: self.maxY).coordinate
+    }
 }

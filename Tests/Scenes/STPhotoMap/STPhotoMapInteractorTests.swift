@@ -218,7 +218,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
 
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
 
         self.waitForSynchronization()
@@ -239,7 +239,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
 
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
 
         self.waitForSynchronization()
@@ -297,7 +297,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.geojsonObject = geojsonObject
         
         self.sut.cacheHandler.addActiveDownload(activeDownloadUrl)
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = tileCoordinates
 
         self.waitForSynchronization()
@@ -319,7 +319,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
 
         self.sut.cacheHandler.addActiveDownload(activeDownloadUrl)
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = tileCoordinates
 
         self.waitForSynchronization()
@@ -423,7 +423,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.image = UIImage()
 
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.visibleMapRect = geoEntity.boundingBox.mapRect()
 
@@ -624,7 +624,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.photo = STPhotoMapSeeds().photo()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
 
         self.sut.entityLevelHandler.entityLevel = .location
@@ -648,7 +648,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
 
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
 
         self.sut.entityLevelHandler.entityLevel = .city
@@ -1112,7 +1112,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.waitForSynchronization()
@@ -1143,7 +1143,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.waitForSynchronization()
@@ -1223,7 +1223,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.visibleMapRect = MKMapRect(origin: MKMapPoint(coordinate), size: MKMapSize.init(width: 1000, height: 1000))
         
@@ -1245,7 +1245,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().geojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.visibleMapRect = geoEntity.boundingBox.mapRect()
         
@@ -1278,7 +1278,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.geoEntity = geoEntity
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         self.sut.visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
         
@@ -1398,7 +1398,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.sut.entityLevelHandler.entityLevel = .block
@@ -1420,7 +1420,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.sut.entityLevelHandler.entityLevel = .location
@@ -1448,7 +1448,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
         
         self.sut.cacheHandler.removeAllActiveDownloads()
-        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
         self.sut.visibleTiles = [tileCoordinate]
         
         self.sut.entityLevelHandler.entityLevel = .location

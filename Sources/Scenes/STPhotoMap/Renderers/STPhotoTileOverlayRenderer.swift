@@ -18,20 +18,7 @@ enum STPhotoTileOverlayRendererError: LocalizedError {
 }
 
 public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
-    private class Tile: NSObject {
-        var data: Data
-        var keyUrl: String
-        var downloadUrl: String
-        
-        init(data: Data, keyUrl: String, downloadUrl: String) {
-            self.data = data
-            self.keyUrl = keyUrl
-            self.downloadUrl = downloadUrl
-        }
-    }
-    
-    private var activeDownloads = SynchronizedArray<String>()
-    private var tiles: SynchronizedArray<Tile> = SynchronizedArray()
+    private var imageCacheHandler = STPhotoMapImageCacheHandler()
     
     init(tileOverlay: MKTileOverlay) {
         super.init(overlay: tileOverlay)
@@ -40,7 +27,17 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     
     private func setupObservers() {
         NotificationCenter.default.addObserver(forName: UIApplication.didReceiveMemoryWarningNotification, object: UIApplication.shared, queue: nil) { (_) in
-            self.tiles.removeAll()
+            self.imageCacheHandler.clearCache()
+        }
+    }
+    
+    func predownload(model: STPhotoTileOverlay.Model?, outer tiles: [(MKMapRect, [TileCoordinate])]) {
+        guard let model = model else { return }
+        tiles.forEach { (outerTile) in
+            outerTile.1.forEach({ (tileCoordinate) in
+                let tileUrls = self.prepareTileUrls(model: model, outer: (outerTile.0, tileCoordinate))
+                self.imageCacheHandler.downloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
+            })
         }
     }
 }
@@ -53,10 +50,9 @@ extension STPhotoTileOverlayRenderer {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
             let tileUrls = try self.tileUrlsFor(path: path)
             
-            if let _ = self.optionalImageDataForUrl(url: tileUrls.keyUrl) {
+            if let _ = self.imageCacheHandler.optionalImageDataForUrl(url: tileUrls.keyUrl) {
                 return true
             }
-            
             try self.downloadTile(mapRect: mapRect, zoomScale: zoomScale)
         } catch {
             self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
@@ -126,7 +122,7 @@ extension STPhotoTileOverlayRenderer {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
             let tileUrls = try self.tileUrlsFor(path: path)
             
-            if let _ = self.optionalImageDataForUrl(url: tileUrls.keyUrl) {
+            if let _ = self.imageCacheHandler.optionalImageDataForUrl(url: tileUrls.keyUrl) {
                 self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
                 return
             }
@@ -147,18 +143,8 @@ extension STPhotoTileOverlayRenderer {
 // MARK: - Image methods
 
 extension STPhotoTileOverlayRenderer {
-    private func addImageData(data: Data, forUrl downloadUrl: String, keyUrl: String) {
-        if self.tiles.filter({ $0.keyUrl == keyUrl }).count == 0 {
-            self.tiles.append(Tile(data: data, keyUrl: keyUrl, downloadUrl: downloadUrl))
-        }
-    }
-    
-    private func optionalImageDataForUrl(url: String) -> Data? {
-        return self.tiles.first(where: { $0.keyUrl == url })?.data
-    }
-    
     private func imageDataForUrl(url: String) throws -> Data {
-        guard let data = self.optionalImageDataForUrl(url: url) else {
+        guard let data = self.imageCacheHandler.optionalImageDataForUrl(url: url) else {
             throw STPhotoTileOverlayRendererError.noDataAvailableForUrl(url: url)
         }
         return data
@@ -176,47 +162,30 @@ extension STPhotoTileOverlayRenderer {
     }
 }
 
-// MARK: - Download methods
+// MARK: - Download
 
 extension STPhotoTileOverlayRenderer {
-    private func downloadImage(url: String?, completion: @escaping (Data?, Error?) -> Void) {
-        guard let urlString = url, let url = URL(string: urlString) else {
-            completion(nil, STPhotoTileOverlayRendererError.invalidUrl)
-            return
-        }
-        
-        url.downloadImage { (data, error) in
-            completion(data, error)
-        }
-    }
-    
     private func downloadTile(mapRect: MKMapRect, zoomScale: MKZoomScale) throws {
         let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
         let tileUrls = try self.tileUrlsFor(path: path)
         
-        if !self.isDownloadingTile(url: tileUrls.keyUrl) {
-            self.addDownloadTile(url: tileUrls.keyUrl)
-            self.downloadImage(url: tileUrls.downloadUrl) { [weak self]  (data, error) in
-                self?.removeDownloadTile(url: tileUrls.keyUrl)
-                if let imageData = data {
-                    self?.addImageData(data: imageData, forUrl: tileUrls.downloadUrl, keyUrl: tileUrls.keyUrl)
-                }
-                self?.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
-            }
-        } else {
+        self.imageCacheHandler.downloadTile(with: Operation.QueuePriority.veryHigh, keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl, completion: {
             self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
-        }
+        })
+    }
+}
+
+extension STPhotoTileOverlayRenderer {
+    private func prepareTileUrls(model: STPhotoTileOverlay.Model, outer tile: (MKMapRect, TileCoordinate)) -> (keyUrl: String, downloadUrl: String) {
+        self.update(model: model, parameter: KeyValue(Parameters.Keys.bbox, tile.0.boundingBox().description))
+        let downloadUrl = STPhotoMapUrlBuilder().tileUrl(template: model.url, z: tile.1.zoom, x: tile.1.x, y: tile.1.y, parameters: model.parameters)
+        
+        let keyUrl = downloadUrl.excludeParameter((Parameters.Keys.bbox, ""))
+        return (keyUrl.absoluteString, downloadUrl.absoluteString)
     }
     
-    private func isDownloadingTile(url: String) -> Bool {
-        return self.activeDownloads.contains(url)
-    }
-    
-    private func addDownloadTile(url: String) {
-        self.activeDownloads.append(url)
-    }
-    
-    private func removeDownloadTile(url: String) {
-        self.activeDownloads.remove(where: { $0 == url })
+    private func update(model: STPhotoTileOverlay.Model, parameter: KeyValue) {
+        model.parameters.removeAll(where: { $0.key == parameter.key })
+        model.parameters.append(parameter)
     }
 }

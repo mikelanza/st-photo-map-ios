@@ -25,7 +25,7 @@ extension STPhotoMapInteractor {
         }
     }
     
-    private func prepareTilesForDeterminingCarousel(cachedTiles: [STPhotoMapCache.Tile]) -> [TileCoordinate]  {
+    private func prepareTilesForDeterminingCarousel(cachedTiles: [STPhotoMapGeojsonCache.Tile]) -> [TileCoordinate]  {
         let notCachedTile = self.getVisibleNotCachedTiles()
         return notCachedTile.filter({
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: $0)
