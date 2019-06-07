@@ -28,6 +28,10 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     var displayNewCarouselCalled: Bool = false
     var displayReloadCarouselCalled: Bool = false
     var displayNewSelectedPhotoAnnotationCalled: Bool = false
+    var displayCenterToCoordinateCalled: Bool = false
+    var displayOpenDataSourcesLinkCalled: Bool = false
+    var displayLocationAccessDeniedAlertCalled: Bool = false
+    var displayOpenApplicationCalled: Bool = false
     
     func displayLoadingState() {
         self.displayLoadingStateCalled = true
@@ -103,5 +107,21 @@ class STPhotoMapDisplayLogicSpy: STPhotoMapDisplayLogic {
     
     func displayNewSelectedPhotoAnnotation(viewModel: STPhotoMapModels.PhotoAnnotationSelection.ViewModel) {
         self.displayNewSelectedPhotoAnnotationCalled = true
+    }
+    
+    func displayCenterToCoordinate(viewModel: STPhotoMapModels.CoordinateCenter.ViewModel) {
+        self.displayCenterToCoordinateCalled = true
+    }
+    
+    func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
+        self.displayOpenDataSourcesLinkCalled = true
+    }
+    
+    func displayLocationAccessDeniedAlert(viewModel: STPhotoMapModels.LocationAccessDeniedAlert.ViewModel) {
+        self.displayLocationAccessDeniedAlertCalled = true
+    }
+    
+    func displayOpenApplication(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
+        self.displayOpenApplicationCalled = true
     }
 }

@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import MapKit
 
 protocol STPhotoMapPresentationLogic {
     func presentLoadingState()
@@ -29,6 +30,7 @@ protocol STPhotoMapPresentationLogic {
     func presentRemoveLocationOverlay()
     
     func presentZoomToCoordinate(response: STPhotoMapModels.CoordinateZoom.Response)
+    func presentCenterToCoordinate(response: STPhotoMapModels.CoordinateCenter.Response)
     
     func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
     func presentDeselectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationDeselection.Response)
@@ -41,6 +43,11 @@ protocol STPhotoMapPresentationLogic {
     func presentReloadCarousel()
     
     func presentNewSelectedPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response)
+    
+    func presentOpenDataSourcesLink()
+    func presentOpenApplication(response: STPhotoMapModels.OpenApplication.Response)
+    
+    func presentLocationAccessDeniedAlert()
 }
 
 class STPhotoMapPresenter: STPhotoMapPresentationLogic {
@@ -148,6 +155,14 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
         self.displayer?.displayZoomToCoordinate(viewModel: viewModel)
     }
     
+    // MARK: - Centering
+    
+    func presentCenterToCoordinate(response: STPhotoMapModels.CoordinateCenter.Response) {
+        let region = MKCoordinateRegion(center: response.coordinate, span: response.entityLevel.coordinateSpan())
+        let viewModel = STPhotoMapModels.CoordinateCenter.ViewModel(region: region)
+        self.displayer?.displayCenterToCoordinate(viewModel: viewModel)
+    }
+    
     // MARK: - Photo annotation selection/deselection
     
     func presentSelectPhotoAnnotation(response: STPhotoMapModels.PhotoAnnotationSelection.Response) {
@@ -190,5 +205,31 @@ class STPhotoMapPresenter: STPhotoMapPresentationLogic {
     
     func presentReloadCarousel() {
         self.displayer?.displayReloadCarousel()
+    }
+    
+    // MARK: - Data sources
+    
+    func presentOpenDataSourcesLink() {
+        if let url = URL(string: "https://www.streetography.com/data-licensing") {
+            let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: url)
+            self.displayer?.displayOpenDataSourcesLink(viewModel: viewModel)
+        }
+    }
+    
+    // MARK: - Open application
+    
+    func presentOpenApplication(response: STPhotoMapModels.OpenApplication.Response) {
+        let viewModel = STPhotoMapModels.OpenApplication.ViewModel(url: response.url)
+        self.displayer?.displayOpenApplication(viewModel: viewModel)
+    }
+    
+    // MARK: - Location access denied alert
+    
+    func presentLocationAccessDeniedAlert() {
+        let message = STPhotoMapLocalization.shared.locationAccessDeniedMessage
+        let cancelTitle = STPhotoMapLocalization.shared.locationAccessDeniedCancel
+        let settingsTitle = STPhotoMapLocalization.shared.locationAccessDeniedSettings
+        let viewModel = STPhotoMapModels.LocationAccessDeniedAlert.ViewModel(title: nil, message: message, cancelTitle: cancelTitle, settingsTitle: settingsTitle)
+        self.displayer?.displayLocationAccessDeniedAlert(viewModel: viewModel)
     }
 }
