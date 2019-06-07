@@ -46,7 +46,7 @@ class STPhotoMapImageCacheHandler {
         return self.activeDownloads.count
     }
     
-    func shouldPrepareImageTileForCaching(url: String) -> Bool {
+    func shouldDownloadImageTile(url: String) -> Bool {
         if self.hasActiveDownload(url) {
             return false
         }
@@ -76,7 +76,7 @@ class STPhotoMapImageCacheHandler {
     }
     
     func downloadTile(with priority: Operation.QueuePriority = .normal, keyUrl: String, downloadUrl: String, completion: (() -> Void)? = nil) {
-        guard self.shouldPrepareImageTileForCaching(url: keyUrl) == false else {
+        guard self.shouldDownloadImageTile(url: keyUrl) else {
             completion?()
             return
         }
