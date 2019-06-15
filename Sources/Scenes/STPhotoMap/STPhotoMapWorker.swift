@@ -40,12 +40,12 @@ protocol STPhotoMapWorkerDelegate: class {
 
 class STPhotoMapWorker {
     public var delegate: STPhotoMapWorkerDelegate?
-    private var geojsonTileCachingQueue: OperationQueue
-    private var geojsonEntityLevelQueue: OperationQueue
-    private var geojsonLocationLevelQueue: OperationQueue
-    private var geojsonTileCarouselDeterminationQueue: OperationQueue
-    private var geoEntityQueue: OperationQueue
-    private var geojsonTileCarouselSelectionQueue: OperationQueue
+    var geojsonTileCachingQueue: OperationQueue
+    var geojsonEntityLevelQueue: OperationQueue
+    var geojsonLocationLevelQueue: OperationQueue
+    var geojsonTileCarouselDeterminationQueue: OperationQueue
+    var geoEntityQueue: OperationQueue
+    var geojsonTileCarouselSelectionQueue: OperationQueue
     
     init(delegate: STPhotoMapWorkerDelegate? = nil) {
         self.delegate = delegate

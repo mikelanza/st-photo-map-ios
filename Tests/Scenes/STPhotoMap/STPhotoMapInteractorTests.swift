@@ -271,6 +271,8 @@ class STPhotoMapInteractorTests: XCTestCase {
     }
 
     func testShouldCacheGeojsonObjectsWhenCacheIsEmptyAndThereAreActiveDownloadsForFailureCase() {
+        self.workerSpy.shouldFailGetGeojsonTileForCaching = true
+        
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
 
