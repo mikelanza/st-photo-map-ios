@@ -36,6 +36,7 @@ protocol STPhotoMapWorkerDelegate: class {
     func failureDidGetGeojsonTileForCarouselDetermination(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, error: OperationError)
     
     func successDidGetImageForPhoto(photo: STPhoto, image: UIImage?)
+    func failureDidGetImageForPhoto(photo: STPhoto, error: OperationError)
 }
 
 class STPhotoMapWorker {
@@ -46,6 +47,8 @@ class STPhotoMapWorker {
     var geojsonTileCarouselDeterminationQueue: OperationQueue
     var geoEntityQueue: OperationQueue
     var geojsonTileCarouselSelectionQueue: OperationQueue
+    var photoDetailsQueue: OperationQueue
+    var getImageForPhotoQueue: OperationQueue
     
     init(delegate: STPhotoMapWorkerDelegate? = nil) {
         self.delegate = delegate
@@ -66,6 +69,12 @@ class STPhotoMapWorker {
         
         self.geojsonTileCarouselDeterminationQueue = OperationQueue()
         self.geojsonTileCarouselDeterminationQueue.maxConcurrentOperationCount = 12
+        
+        self.photoDetailsQueue = OperationQueue()
+        self.photoDetailsQueue.maxConcurrentOperationCount = 1
+        
+        self.getImageForPhotoQueue = OperationQueue()
+        self.getImageForPhotoQueue.maxConcurrentOperationCount = 1
     }
     
     func getGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String) {
@@ -133,18 +142,14 @@ class STPhotoMapWorker {
     }
     
     func getPhotoDetailsForPhotoAnnotation(_ photoAnnotation: PhotoAnnotation) {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        
         let model = GetPhotoOperationModel.Request(photoId: photoAnnotation.model.photoId)
         let operation = GetPhotoOperation(model: model) { result in
             switch result {
-                case .success(let value): self.delegate?.successDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, photo: value.photo); break
-                case .failure(let error): self.delegate?.failureDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, error: error); break
+            case .success(let value): self.delegate?.successDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, photo: value.photo); break
+            case .failure(let error): self.delegate?.failureDidGetPhotoForPhotoAnnotation(photoAnnotation: photoAnnotation, error: error); break
             }
         }
-        
-        queue.addOperation(operation)
+        self.photoDetailsQueue.addOperation(operation)
     }
     
     func getGeoEntityForEntity(_ entityId: String, entityLevel: EntityLevel) {
@@ -179,8 +184,13 @@ class STPhotoMapWorker {
     
     func getImageForPhoto(photo: STPhoto) {
         let url = photo.image650Url ?? photo.image750Url ?? photo.image1200Url ?? photo.imageUrl
-        url?.downloadImage(result: { (image, _) in
-            self.delegate?.successDidGetImageForPhoto(photo: photo, image: image)
-        })
+        let model = DownloadImageOperationModel.Request(url: url)
+        let operation = DownloadImageOperation(model: model) { result in
+            switch result {
+                case .success(let value): self.delegate?.successDidGetImageForPhoto(photo: photo, image: value.image); break
+                case .failure(let error): self.delegate?.failureDidGetImageForPhoto(photo: photo, error: error); break
+            }
+        }
+        self.getImageForPhotoQueue.addOperation(operation)
     }
 }

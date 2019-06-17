@@ -6,7 +6,7 @@
 //  Copyright © 2019 mikelanza. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Kingfisher
 
 class DownloadImageOperation: AsynchronousOperation {
@@ -27,7 +27,7 @@ class DownloadImageOperation: AsynchronousOperation {
 
         KingfisherManager.shared.retrieveImage(with: url, options: [.downloadPriority(self.model.priority)], progressBlock: nil, completionHandler: { imageResult in
             switch imageResult {
-                case .success(let value): self.successBlock(data: value.image.jpegData(compressionQuality: 1.0), error: nil); break
+                case .success(let value): self.successBlock(data: value.image.jpegData(compressionQuality: 1.0), image: value.image, error: nil); break
                 case .failure(let error): self.responseErrorBlock(error: error); break
             }
         })
@@ -44,8 +44,8 @@ class DownloadImageOperation: AsynchronousOperation {
     
     // MARK: - Success
     
-    private func successBlock(data: Data?, error: Error?) {
-        let value = DownloadImageOperationModel.Response(data: data, error: error)
+    private func successBlock(data: Data?, image: UIImage, error: Error?) {
+        let value = DownloadImageOperationModel.Response(data: data, image: image, error: error)
         self.operationCompletionHandler?(Result.success(value))
         self.completeOperation()
     }

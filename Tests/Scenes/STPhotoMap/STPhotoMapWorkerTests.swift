@@ -106,4 +106,14 @@ class STPhotoMapWorkerTests: XCTestCase {
         self.sut.cancelAllGeojsonTileForCarouselDeterminationOperations()
         XCTAssertTrue(operationQueueSpy.cancelAllOperationsCalled)
     }
+    
+    func testGetImageForPhoto() {
+        self.sut.getImageForPhoto(photo: STPhotoMapSeeds().photo())
+        XCTAssertEqual(self.sut.getImageForPhotoQueue.operationCount, 1)
+    }
+    
+    func testGetPhotoDetailsForPhotoAnnotation() {
+        self.sut.getPhotoDetailsForPhotoAnnotation(STPhotoMapSeeds().photoAnnotation())
+        XCTAssertEqual(self.sut.photoDetailsQueue.operationCount, 1)
+    }
 }
