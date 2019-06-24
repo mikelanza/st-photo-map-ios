@@ -76,7 +76,7 @@ extension STPhotoTileOverlayRenderer {
         }
     }
     
-    public func reloadTiles() {
+    public func reload() {
         DispatchQueue.main.async {
             self.setNeedsDisplay()
         }

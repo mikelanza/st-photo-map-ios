@@ -77,13 +77,17 @@ extension STPhotoMapView {
         STPhotoMapParametersHandler.shared.update(parameter: parameter)
     }
     
-    public func reloadTiles() {
+    public func reloadCarousel() {
+        self.interactor?.shouldDetermineCarousel()
+    }
+    
+    public func setNeedsDisplayTiles() {
         if let overlay = self.photoTileOverlay, let renderer = self.mapView?.renderer(for: overlay) as? STPhotoTileOverlayRenderer {
-            renderer.reloadTiles()
+            renderer.reload()
         }
     }
     
-    public func reloadCarouselOverlays() {
+    public func setNeedsDisplayCarousel() {
         if let overlay = self.carouselOverlays.first, let renderer = self.mapView?.renderer(for: overlay) as? STCarouselOverlayRenderer {
             renderer.reload()
         }

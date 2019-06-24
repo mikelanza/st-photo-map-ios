@@ -246,7 +246,7 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     
     func displayReloadCarousel() {
         DispatchQueue.main.async {
-            self.reloadCarouselOverlays()
+            self.setNeedsDisplayCarousel()
         }
     }
     
