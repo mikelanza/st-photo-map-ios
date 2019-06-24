@@ -12,7 +12,7 @@ import MapKit
 class STPhotoTileOverlayRendererSpy: STPhotoTileOverlayRenderer {
     var predownloadCalled: Bool = false
     
-    override func predownload(model: STPhotoTileOverlay.Model?, outer tiles: [(MKMapRect, [TileCoordinate])]) {
+    override func predownload(outer tiles: [(MKMapRect, [TileCoordinate])]) {
         self.predownloadCalled = true
     }
 }

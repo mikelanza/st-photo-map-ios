@@ -157,12 +157,12 @@ class STPhotoMapViewTests: XCTestCase {
     func testUpdateParameter() {
         XCTAssertNotNil(self.sut.photoTileOverlay)
         
-        let defaultParameters = Parameters.defaultParameters()
+        let defaultParameters = STPhotoMapParametersHandler.shared.defaultParameters()
         self.sut.updateParameter(parameter: ("bbox", "50,50,50,50"))
-        XCTAssertEqual(self.sut.photoTileOverlay?.model.parameters.count, defaultParameters.count + 1)
+        XCTAssertEqual(STPhotoMapParametersHandler.shared.parameters.count, defaultParameters.count + 1)
         
         self.sut.updateParameter(parameter: ("bbox", "60,60,60,60"))
-        XCTAssertEqual(self.sut.photoTileOverlay?.model.parameters.count, defaultParameters.count + 1)
+        XCTAssertEqual(STPhotoMapParametersHandler.shared.parameters.count, defaultParameters.count + 1)
     }
     
     func testShouldUpdateVisibleTilesWhenRegionDidChangeAnimated() {

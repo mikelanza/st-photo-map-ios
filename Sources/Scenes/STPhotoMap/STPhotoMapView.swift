@@ -9,10 +9,6 @@
 import UIKit
 import MapKit
 
-public protocol STPhotoMapViewDataSource: NSObjectProtocol {
-    func photoMapView(_ view: STPhotoMapView?, photoTileOverlayModelForUrl url: String, parameters: [KeyValue]?) -> STPhotoTileOverlay.Model
-}
-
 public protocol STPhotoMapViewDelegate: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?)
     func photoMapView(_ view: STPhotoMapView?, navigateToSpecificPhotosFor photoIds: [String])
@@ -58,7 +54,6 @@ protocol STPhotoMapDisplayLogic: class {
 
 public class STPhotoMapView: UIView {
     public weak var mapView: STActionMapView!
-    public weak var dataSource: STPhotoMapViewDataSource?
     public weak var delegate: STPhotoMapViewDelegate?
     
     var interactor: STPhotoMapBusinessLogic?
@@ -74,11 +69,6 @@ public class STPhotoMapView: UIView {
     var carouselOverlays: [STCarouselOverlay] = []
     var tileOverlayRenderer: STPhotoTileOverlayRenderer?
     var annotationHandler: STPhotoMapAnnotationHandler!
-    
-    public convenience init(dataSource: STPhotoMapViewDataSource) {
-        self.init()
-        self.dataSource = dataSource
-    }
     
     public convenience init() {
         self.init(frame: .zero)
@@ -121,7 +111,7 @@ public class STPhotoMapView: UIView {
 
 extension STPhotoMapView {
     public func updateParameter(parameter: KeyValue) {
-        self.photoTileOverlay?.update(parameter: parameter)
+        STPhotoMapParametersHandler.shared.update(parameter: parameter)
     }
     
     public func reloadTiles() {
@@ -134,17 +124,6 @@ extension STPhotoMapView {
         if let overlay = self.carouselOverlays.first, let renderer = self.mapView?.renderer(for: overlay) as? STCarouselOverlayRenderer {
             renderer.reload()
         }
-    }
-}
-
-// MARK: - Data Source
-
-extension STPhotoMapView {
-    public func photoMapView(_ view: STPhotoMapView?, photoTileOverlayModelForUrl url: String, parameters: [KeyValue]?) -> STPhotoTileOverlay.Model {
-        if let dataSource = self.dataSource {
-            return dataSource.photoMapView(view, photoTileOverlayModelForUrl: url, parameters: parameters)
-        }
-        return STPhotoTileOverlay.Model(url: url, parameters: parameters)
     }
 }
 
@@ -462,7 +441,7 @@ extension STPhotoMapView: MKMapViewDelegate {
     }
     
     public func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-        self.photoTileOverlay?.update(parameter: KeyValue(Parameters.Keys.bbox, mapView.boundingBox().description))
+        STPhotoMapParametersHandler.shared.update(parameter: KeyValue(Parameters.Keys.bbox, mapView.boundingBox().description))
     }
     
     public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -528,9 +507,7 @@ extension STPhotoMapView: STLocationOverlayViewDelegate {
 
 extension STPhotoMapView {
     private func setupTileOverlay() {
-        let model = self.photoMapView(self, photoTileOverlayModelForUrl: "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg", parameters: Parameters.defaultParameters())
-        
-        self.photoTileOverlay = STPhotoTileOverlay(model: model)
+        self.photoTileOverlay = STPhotoTileOverlay()
         self.photoTileOverlay?.canReplaceMapContent = true
         self.mapView?.addOverlay(self.photoTileOverlay!, level: .aboveLabels)
     }
@@ -541,7 +518,7 @@ extension STPhotoMapView {
 extension STPhotoMapView {
     private func predownloadOuterTiles() {
         let tiles = self.mapView.outerTiles()
-        self.tileOverlayRenderer?.predownload(model: self.photoTileOverlay?.model.clone(), outer: tiles)
+        self.tileOverlayRenderer?.predownload(outer: tiles)
     }
     
     @objc func mapViewDidPan(_ sender: UIGestureRecognizer) {
