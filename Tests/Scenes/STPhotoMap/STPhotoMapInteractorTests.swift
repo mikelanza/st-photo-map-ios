@@ -271,6 +271,8 @@ class STPhotoMapInteractorTests: XCTestCase {
     }
 
     func testShouldCacheGeojsonObjectsWhenCacheIsEmptyAndThereAreActiveDownloadsForFailureCase() {
+        self.workerSpy.shouldFailGetGeojsonTileForCaching = true
+        
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
 
@@ -1364,6 +1366,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.workerSpy.delay = self.workerDelay
         self.workerSpy.geojsonObject = try! STPhotoMapSeeds().geojsonObject()
         self.workerSpy.geoEntity = try! STPhotoMapSeeds().geoEntity()
+        self.workerSpy.image = UIImage()
         
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         self.sut.cacheHandler.removeAllActiveDownloads()

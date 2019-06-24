@@ -6,7 +6,7 @@
 //  Copyright © 2019 mikelanza. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum DownloadImageOperationModel {
     struct Request {
@@ -16,6 +16,7 @@ enum DownloadImageOperationModel {
     
     struct Response {
         let data: Data?
+        let image: UIImage
         let error: Error?
     }
 }
