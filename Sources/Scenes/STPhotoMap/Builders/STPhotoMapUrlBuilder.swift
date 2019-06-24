@@ -9,21 +9,15 @@
 import Foundation
 
 class STPhotoMapUrlBuilder {
-    var geojsonUrl = "https://tilesdev.streetography.com/tile/%d/%d/%d.geojson"
-    var jpegUrl = "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg"
+    private var geojsonUrl = "https://tilesdev.streetography.com/tile/%d/%d/%d.geojson"
+    private var jpegUrl = "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg"
     
     init() {
         
     }
     
     func geojsonTileUrl(tileCoordinate: TileCoordinate, parameters: [KeyValue] = STPhotoMapParametersHandler.shared.parameters) -> (keyUrl: String, downloadUrl: String) {
-        let template = "https://tilesdev.streetography.com/tile/%d/%d/%d.geojson"
-        return self.tileUrl(template: template, tileCoordinate: tileCoordinate, parameters: parameters)
-    }
-    
-    func jpegTileUrl(tileCoordinate: TileCoordinate, parameters: [KeyValue] = STPhotoMapParametersHandler.shared.parameters) -> (keyUrl: String, downloadUrl: String) {
-        let template = "https://tilesdev.streetography.com/tile/%d/%d/%d.jpeg"
-        return self.tileUrl(template: template, tileCoordinate: tileCoordinate, parameters: parameters)
+        return self.tileUrl(template: self.geojsonUrl, tileCoordinate: tileCoordinate, parameters: parameters)
     }
     
     private func tileUrl(template: String, tileCoordinate: TileCoordinate, parameters: [KeyValue] = STPhotoMapParametersHandler.shared.parameters) -> (keyUrl: String, downloadUrl: String) {
@@ -32,7 +26,11 @@ class STPhotoMapUrlBuilder {
         return (keyUrl.absoluteString, downloadUrl.absoluteString)
     }
     
-    func tileUrl(template: String, z: Int, x: Int, y: Int, parameters: [KeyValue] = STPhotoMapParametersHandler.shared.parameters) -> URL {
+    func jpegTileUrl(z: Int, x: Int, y: Int, parameters: [KeyValue] = STPhotoMapParametersHandler.shared.parameters) -> URL {
+        return self.tileUrl(template: self.jpegUrl, z: z, x: x, y: y)
+    }
+    
+    private func tileUrl(template: String, z: Int, x: Int, y: Int, parameters: [KeyValue] = STPhotoMapParametersHandler.shared.parameters) -> URL {
         let urlString = String(format: template, z, x, y)
         let url = URL(string: urlString)!
         return url.addParameters(parameters)

@@ -177,7 +177,7 @@ extension STPhotoTileOverlayRenderer {
 extension STPhotoTileOverlayRenderer {
     private func prepareTileUrls(outer tile: (MKMapRect, TileCoordinate)) -> (keyUrl: String, downloadUrl: String) {
         let newParameters = self.update(newParameter: KeyValue(Parameters.Keys.bbox, tile.0.boundingBox().description))
-        let downloadUrl = STPhotoMapUrlBuilder().tileUrl(template: STPhotoMapUrlBuilder().jpegUrl, z: tile.1.zoom, x: tile.1.x, y: tile.1.y, parameters: newParameters)
+        let downloadUrl = STPhotoMapUrlBuilder().jpegTileUrl(z: tile.1.zoom, x: tile.1.x, y: tile.1.y, parameters: newParameters)
         
         let keyUrl = downloadUrl.excludeParameter((Parameters.Keys.bbox, ""))
         return (keyUrl.absoluteString, downloadUrl.absoluteString)

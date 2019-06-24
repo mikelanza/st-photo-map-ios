@@ -15,7 +15,7 @@ public class STPhotoTileOverlay: MKTileOverlay {
     }
     
     override public func url(forTilePath path: MKTileOverlayPath) -> URL {
-        return STPhotoMapUrlBuilder().tileUrl(template: STPhotoMapUrlBuilder().jpegUrl, z: path.z, x: path.x, y: path.y, parameters: STPhotoMapParametersHandler.shared.parameters)
+        return STPhotoMapUrlBuilder().jpegTileUrl(z: path.z, x: path.x, y: path.y, parameters: STPhotoMapParametersHandler.shared.parameters)
     }
     
     override public func loadTile(at path: MKTileOverlayPath, result: @escaping (Data?, Error?) -> Void) {
