@@ -77,6 +77,10 @@ extension STPhotoMapView {
         STPhotoMapParametersHandler.shared.update(parameter: parameter)
     }
     
+    public func resetParameters() {
+        STPhotoMapParametersHandler.shared.reset()
+    }
+    
     public func reloadCarousel() {
         self.interactor?.shouldDetermineCarousel()
     }
