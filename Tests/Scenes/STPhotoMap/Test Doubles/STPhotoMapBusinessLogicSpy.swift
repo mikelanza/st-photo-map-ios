@@ -27,6 +27,7 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     var shouldAskForLocationPermissionsCalled: Bool = false
     var shouldOpenDataSourcesLinkCalled: Bool = false
     var shouldOpenSettingsApplicationCalled: Bool = false
+    var shouldReloadCarouselCalled: Bool = false
 
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request) {
         self.shouldUpdateVisibleTilesCalled = true
@@ -98,5 +99,9 @@ class STPhotoMapBusinessLogicSpy: STPhotoMapBusinessLogic {
     
     func shouldOpenSettingsApplication() {
         self.shouldOpenSettingsApplicationCalled = true
+    }
+    
+    func shouldReloadCarousel() {
+        self.shouldReloadCarouselCalled = true
     }
 }

@@ -82,7 +82,7 @@ extension STPhotoMapView {
     }
     
     public func reloadCarousel() {
-        self.interactor?.shouldDetermineCarousel()
+        self.interactor?.shouldReloadCarousel()
     }
     
     public func setNeedsDisplayTiles() {

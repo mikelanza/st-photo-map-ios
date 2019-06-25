@@ -40,6 +40,8 @@ protocol STPhotoMapBusinessLogic {
     
     func shouldOpenDataSourcesLink()
     func shouldOpenSettingsApplication()
+    
+    func shouldReloadCarousel()
 }
 
 protocol STPhotoMapDataStore {
@@ -123,6 +125,13 @@ extension STPhotoMapInteractor {
             let response = STPhotoMapModels.OpenApplication.Response(url: url)
             self.presenter?.presentOpenApplication(response: response)
         }
+    }
+    
+    func shouldReloadCarousel() {
+        self.carouselHandler.removeAllActiveDownloads()
+        self.carouselHandler.resetCarousel()
+        self.presenter?.presentRemoveCarousel()
+        self.shouldPrepareConditionsForDeterminingCarousel()
     }
 }
 
