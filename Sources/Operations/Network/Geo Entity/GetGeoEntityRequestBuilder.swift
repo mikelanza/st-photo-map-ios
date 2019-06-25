@@ -45,9 +45,11 @@ class GetGeoEntityRequestBuilder {
         self.parameters = [:]
         parameters?[Parameters.APIKey] = "k9f2Hje7DM03Jyhf73hJ"
         parameters?[Parameters.EntityId] = model.entityId
-        parameters?[Parameters.EntityLevel] =  model.entity.rawValue
-        parameters?[Parameters.Page] =  model.page
-        parameters?[Parameters.Limit] =  model.limit
+        parameters?[Parameters.EntityLevel] = model.entity.rawValue
+        parameters?[Parameters.Page] = model.page
+        parameters?[Parameters.Limit] = model.limit
+        parameters?[Parameters.UserId] = model.userId
+        parameters?[Parameters.CollectionId] = model.collectionId
     }
     
     private struct Parameters {
@@ -57,7 +59,10 @@ class GetGeoEntityRequestBuilder {
         EntityId = "entityId",
         
         Page = "page",
-        Limit = "pageLimit"
+        Limit = "pageLimit",
+        
+        UserId = "userId",
+        CollectionId = "collectionId"
     }
     
 }

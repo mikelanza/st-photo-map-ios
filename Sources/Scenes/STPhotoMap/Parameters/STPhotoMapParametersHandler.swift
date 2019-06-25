@@ -36,4 +36,12 @@ class STPhotoMapParametersHandler {
     func reset() {
         self.parameters = self.defaultParameters()
     }
+    
+    func userId() -> String? {
+        return self.parameters.first(where: { $0.key == Parameters.Keys.userId })?.value
+    }
+    
+    func collectionId() -> String? {
+        return self.parameters.first(where: { $0.key == Parameters.Keys.collectionId })?.value
+    }
 }
