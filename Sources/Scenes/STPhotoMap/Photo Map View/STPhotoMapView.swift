@@ -85,6 +85,10 @@ extension STPhotoMapView {
         self.interactor?.shouldReloadCarousel()
     }
     
+    public func reloadLocationLevel() {
+        self.interactor?.shouldDetermineLocationLevel()
+    }
+    
     public func setNeedsDisplayTiles() {
         if let overlay = self.photoTileOverlay, let renderer = self.mapView?.renderer(for: overlay) as? STPhotoTileOverlayRenderer {
             renderer.reload()
