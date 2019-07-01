@@ -11,17 +11,6 @@ import Foundation
 public typealias KeyValue = (key: String, value: String)
 
 public class Parameters {
-    public static func defaultParameters() -> [KeyValue] {
-        return [
-            (Keys.basemap, "yes"),
-            (Keys.shadow, "yes"),
-            (Keys.sort, "popular"),
-            (Keys.tileSize, "256"),
-            (Keys.pinOptimize, "4")
-            // TODO - Add sessionId parameter only for the current session!!! (Keys.sessionId, UUID().uuidString)
-        ]
-    }
-    
     public struct Keys {
         static let
         basemap = "basemap",

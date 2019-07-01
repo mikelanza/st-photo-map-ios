@@ -74,4 +74,8 @@ extension STPhotoMapInteractor {
     func successDidGetImageForPhoto(photo: STPhoto, image: UIImage?) {
         self.carouselHandler.addDownloadedCarouselPhoto(STCarousel.Photo(id: photo.id, image: image))
     }
+    
+    func failureDidGetImageForPhoto(photo: STPhoto, error: OperationError) {
+        
+    }
 }

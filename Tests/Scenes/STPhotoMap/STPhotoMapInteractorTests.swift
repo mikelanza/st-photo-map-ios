@@ -271,6 +271,8 @@ class STPhotoMapInteractorTests: XCTestCase {
     }
 
     func testShouldCacheGeojsonObjectsWhenCacheIsEmptyAndThereAreActiveDownloadsForFailureCase() {
+        self.workerSpy.shouldFailGetGeojsonTileForCaching = true
+        
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
 
@@ -1327,7 +1329,7 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
     }
     
-    func testShouldDetermineCarouselWhenCacheIsEmptyAndThereAreNoActiveDownloadsAndFeatureNoFulfillOverlapConditions() throws {
+    func testShouldDetermineCarouselWhenCacheIsEmptyAndThereAreNoActiveDownloadsAndFeatureDoesNotFulfillOverlapConditions() throws {
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         self.sut.cacheHandler.removeAllActiveDownloads()
         self.sut.visibleTiles = [tileCoordinate]
@@ -1360,10 +1362,11 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
     }
     
-    func testShouldDetermineCarouselWhenCacheIsEmptyAndThereAreNoActiveDownloadsAndFeatureFulfillOverlapConditions() throws {
+    func testShouldDetermineCarouselWhenCacheIsEmptyAndThereAreNoActiveDownloadsAndFeatureFulfillsOverlapConditions() throws {
         self.workerSpy.delay = self.workerDelay
         self.workerSpy.geojsonObject = try! STPhotoMapSeeds().geojsonObject()
         self.workerSpy.geoEntity = try! STPhotoMapSeeds().geoEntity()
+        self.workerSpy.image = UIImage()
         
         let tileCoordinate = STPhotoMapSeeds.tileCoordinate
         self.sut.cacheHandler.removeAllActiveDownloads()
@@ -1374,6 +1377,177 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.sut.shouldDetermineCarousel()
     
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselDeterminationCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertTrue(self.workerSpy.cancelAllGeojsonCarouselDeterminationOperationsCalled)
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertTrue(self.workerSpy.getGeoEntityForEntityCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    // MARK: - Carousel reloading
+    
+    func testShouldReloadCarouselWhenEntityLevelIsLocation() {
+        self.sut.entityLevelHandler.entityLevel = .location
+        
+        self.workerSpy.delay = self.workerDelay
+        
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.visibleTiles = [tileCoordinate]
+        self.sut.visibleMapRect = MKMapRect(origin: MKMapPoint(coordinate), size: MKMapSize.init(width: 1000, height: 1000))
+        
+        self.sut.shouldReloadCarousel()
+        
+        let carousel = self.sut.carouselHandler.carousel
+        XCTAssertEqual(carousel.entityId, -1)
+        XCTAssertEqual(carousel.entityLevel, .unknown)
+        XCTAssertNil(carousel.currentPhoto)
+        XCTAssertEqual(carousel.name, "")
+        XCTAssertEqual(carousel.overlays.count, 0)
+        XCTAssertEqual(carousel.photoCount, 0)
+        XCTAssertEqual(carousel.photos.count, 0)
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        
+        XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testShouldReloadCarouselWhenCacheIsNotEmptyAndCurrentCarouselShouldBeChanged() {
+        let geoEntity = try! STPhotoMapSeeds().geoEntity()
+        self.sut.carouselHandler.updateCarouselFor(geoEntity: geoEntity)
+        
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
+        
+        self.workerSpy.delay = self.workerDelay
+        self.workerSpy.geoEntity = geoEntity
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.visibleTiles = [tileCoordinate]
+        self.sut.visibleMapRect = geoEntity.boundingBox.mapRect().offsetBy(dx: 10000, dy: 10000)
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldReloadCarousel()
+        
+        let carousel = self.sut.carouselHandler.carousel
+        XCTAssertEqual(carousel.entityId, -1)
+        XCTAssertEqual(carousel.entityLevel, .unknown)
+        XCTAssertNil(carousel.currentPhoto)
+        XCTAssertEqual(carousel.name, "")
+        XCTAssertEqual(carousel.overlays.count, 0)
+        XCTAssertEqual(carousel.photoCount, 0)
+        XCTAssertEqual(carousel.photos.count, 0)
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertTrue(self.workerSpy.getGeoEntityForEntityCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testShouldReloadCarouselWhenCacheIsEmptyAndThereAreNoActiveDownloadsAndFeatureDoesNotFulfillOverlapConditions() {
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
+        let geojsonObjectMapRect = geojsonObject.objectBoundingBox!.mapRect()
+        let visibleMapRect = geojsonObjectMapRect.offsetBy(dx: geojsonObjectMapRect.maxX, dy: geojsonObjectMapRect.maxY)
+        self.sut.visibleMapRect = visibleMapRect
+        
+        self.workerSpy.delay = self.workerDelay
+        self.workerSpy.geojsonObject = geojsonObject
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldReloadCarousel()
+        
+        let carousel = self.sut.carouselHandler.carousel
+        XCTAssertEqual(carousel.entityId, -1)
+        XCTAssertEqual(carousel.entityLevel, .unknown)
+        XCTAssertNil(carousel.currentPhoto)
+        XCTAssertEqual(carousel.name, "")
+        XCTAssertEqual(carousel.overlays.count, 0)
+        XCTAssertEqual(carousel.photoCount, 0)
+        XCTAssertEqual(carousel.photos.count, 0)
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        
+        XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselDeterminationCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertFalse(self.workerSpy.cancelAllGeojsonCarouselDeterminationOperationsCalled)
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+        XCTAssertFalse(self.workerSpy.getGeoEntityForEntityCalled)
+        
+        self.wait(delay: self.workerDelay + self.delay)
+        
+        XCTAssertFalse(self.presenterSpy.presentNotLoadingStateCalled)
+        XCTAssertFalse(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testShouldReloadCarouselWhenCacheIsEmptyAndThereAreActiveDownloadsAndFeatureFulfillsOverlapConditions() {
+        let geoEntity = try! STPhotoMapSeeds().geoEntity()
+        let geojsonObject = try! STPhotoMapSeeds().geojsonObject()
+        
+        self.workerSpy.delay = self.workerDelay
+        self.workerSpy.geojsonObject = geojsonObject
+        self.workerSpy.geoEntity = geoEntity
+        self.workerSpy.image = UIImage()
+        
+        self.sut.carouselHandler.updateCarouselFor(geoEntity: geoEntity)
+        
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.visibleTiles = [tileCoordinate]
+        self.sut.carouselHandler.addActiveDownload(keyUrl)
+        self.sut.visibleMapRect = geojsonObject.objectBoundingBox!.mapRect()
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldReloadCarousel()
+        
+        let carousel = self.sut.carouselHandler.carousel
+        XCTAssertEqual(carousel.entityId, -1)
+        XCTAssertEqual(carousel.entityLevel, .unknown)
+        XCTAssertNil(carousel.currentPhoto)
+        XCTAssertEqual(carousel.name, "")
+        XCTAssertEqual(carousel.overlays.count, 0)
+        XCTAssertEqual(carousel.photoCount, 0)
+        XCTAssertEqual(carousel.photos.count, 0)
+                
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+        
         XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselDeterminationCalled)
         
         self.wait(delay: self.workerDelay + self.delay)
@@ -1563,5 +1737,152 @@ class STPhotoMapInteractorTests: XCTestCase {
     func testShouldOpenSettingsApplication() {
         self.sut.shouldOpenSettingsApplication()
         XCTAssertTrue(self.presenterSpy.presentOpenApplicationCalled)
+    }
+    
+    // MARK: - Reload location level
+    
+    func testShouldReloadLocationLevelWhenCacheIsNotEmptyAndEntityLevelIsLocation() throws {
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try! STPhotoMapSeeds().locationGeojsonObject()
+        
+        self.workerSpy.geojsonObject = geojsonObject
+        self.workerSpy.photo = STPhotoMapSeeds().photo()
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.sut.entityLevelHandler.entityLevel = .location
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldReloadLocationLevel()
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationOverlayCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentDeselectPhotoAnnotationCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewSelectedPhotoAnnotationCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
+    }
+    
+    func testShouldReloadLocationLevelWhenCacheIsNotEmptyAndEntityLevelIsNotLocation() throws {
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.cacheHandler.cache.addTile(tile: STPhotoMapGeojsonCache.Tile(keyUrl: keyUrl, geojsonObject: geojsonObject))
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.sut.entityLevelHandler.entityLevel = .city
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldReloadLocationLevel()
+        
+        XCTAssertNil(self.sut.selectedPhotoAnnotation)
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationOverlayCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
+        
+        XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
+    }
+    
+    func testShouldReloadLocationLevelWhenCacheIsEmptyAndEntityLevelIsLocationAndThereAreActiveDownloads() throws {
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tileCoordinate).keyUrl
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.sut.locationLevelHandler.addActiveDownload(keyUrl)
+        
+        self.sut.entityLevelHandler.entityLevel = .location
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldReloadLocationLevel()
+        
+        XCTAssertNil(self.sut.selectedPhotoAnnotation)
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationOverlayCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
+        
+        XCTAssertFalse(self.workerSpy.getGeojsonLocationLevelCalled)
+        XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
+    }
+    
+    func testShouldReloadLocationLevelWhenCacheIsEmptyAndEntityLevelIsLocationAfterTileIsDownloadedForSuccessCase() {
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        
+        self.workerSpy.geojsonObject = try! STPhotoMapSeeds().locationGeojsonObject()
+        self.workerSpy.photo = STPhotoMapSeeds().photo()
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.locationLevelHandler.removeAllActiveDownloads()
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.sut.entityLevelHandler.entityLevel = .location
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldReloadLocationLevel()
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationOverlayCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
+        
+        XCTAssertTrue(self.workerSpy.getGeojsonLocationLevelCalled)
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentDeselectPhotoAnnotationCalled)
+        XCTAssertTrue(self.presenterSpy.presentNewSelectedPhotoAnnotationCalled)
+        
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
+    }
+    
+    func testShouldReloadLocationLevelWhenCacheIsEmptyAndEntityLevelIsNotLocationAfterTileDownload() {
+        self.workerSpy.delay = self.workerDelay
+        self.workerSpy.geojsonObject = try! STPhotoMapSeeds().locationGeojsonObject()
+        self.workerSpy.photo = STPhotoMapSeeds().photo()
+        
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        
+        self.sut.cacheHandler.removeAllActiveDownloads()
+        self.sut.locationLevelHandler.removeAllActiveDownloads()
+        self.sut.visibleTiles = [tileCoordinate]
+        
+        self.sut.entityLevelHandler.entityLevel = .location
+        
+        self.waitForSynchronization()
+        
+        self.sut.shouldReloadLocationLevel()
+        
+        XCTAssertNil(self.sut.selectedPhotoAnnotation)
+        
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationOverlayCalled)
+        XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
+        
+        self.sut.entityLevelHandler.entityLevel = .city
+        
+        self.waitForWorker(delay: self.workerDelay)
+        
+        XCTAssertTrue(self.workerSpy.getGeojsonLocationLevelCalled)
+        XCTAssertFalse(self.presenterSpy.presentLocationAnnotationsCalled)
+        
+        XCTAssertFalse(self.presenterSpy.presentDeselectPhotoAnnotationCalled)
+        XCTAssertFalse(self.presenterSpy.presentSelectPhotoAnnotationCalled)
+        
+        XCTAssertFalse(self.presenterSpy.presentLoadingStateCalled)
+        XCTAssertFalse(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
     }
 }

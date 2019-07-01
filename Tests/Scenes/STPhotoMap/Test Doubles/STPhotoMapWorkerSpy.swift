@@ -251,7 +251,7 @@ class STPhotoMapWorkerSpy: STPhotoMapWorker {
     
     private func didGetImageForPhoto(photo: STPhoto) {
         if self.shouldFailGetImageForPhoto {
-            self.delegate?.successDidGetImageForPhoto(photo: photo, image: nil)
+            self.delegate?.failureDidGetImageForPhoto(photo: photo, error: OperationError.noDataAvailable)
         } else {
             self.delegate?.successDidGetImageForPhoto(photo: photo, image: self.image)
         }

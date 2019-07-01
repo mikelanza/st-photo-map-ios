@@ -62,6 +62,10 @@ class STPhotoMapCarouselHandler {
     func removeAllActiveDownloads() {
         self.activeDownloads.removeAll()
     }
+    
+    func resetCarousel() {
+        self.carousel = STCarousel()
+    }
 }
 
 // MARK: - Update biggest carousel overlay

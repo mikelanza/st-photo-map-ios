@@ -31,11 +31,10 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
         }
     }
     
-    func predownload(model: STPhotoTileOverlay.Model?, outer tiles: [(MKMapRect, [TileCoordinate])]) {
-        guard let model = model else { return }
+    func predownload(outer tiles: [(MKMapRect, [TileCoordinate])]) {
         tiles.forEach { (outerTile) in
             outerTile.1.forEach({ (tileCoordinate) in
-                let tileUrls = self.prepareTileUrls(model: model, outer: (outerTile.0, tileCoordinate))
+                let tileUrls = self.prepareTileUrls(outer: (outerTile.0, tileCoordinate))
                 self.imageCacheHandler.downloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
             })
         }
@@ -77,7 +76,7 @@ extension STPhotoTileOverlayRenderer {
         }
     }
     
-    public func reloadTiles() {
+    public func reload() {
         DispatchQueue.main.async {
             self.setNeedsDisplay()
         }
@@ -176,16 +175,18 @@ extension STPhotoTileOverlayRenderer {
 }
 
 extension STPhotoTileOverlayRenderer {
-    private func prepareTileUrls(model: STPhotoTileOverlay.Model, outer tile: (MKMapRect, TileCoordinate)) -> (keyUrl: String, downloadUrl: String) {
-        self.update(model: model, parameter: KeyValue(Parameters.Keys.bbox, tile.0.boundingBox().description))
-        let downloadUrl = STPhotoMapUrlBuilder().tileUrl(template: model.url, z: tile.1.zoom, x: tile.1.x, y: tile.1.y, parameters: model.parameters)
+    private func prepareTileUrls(outer tile: (MKMapRect, TileCoordinate)) -> (keyUrl: String, downloadUrl: String) {
+        let newParameters = self.update(newParameter: KeyValue(Parameters.Keys.bbox, tile.0.boundingBox().description))
+        let downloadUrl = STPhotoMapUrlBuilder().jpegTileUrl(z: tile.1.zoom, x: tile.1.x, y: tile.1.y, parameters: newParameters)
         
         let keyUrl = downloadUrl.excludeParameter((Parameters.Keys.bbox, ""))
         return (keyUrl.absoluteString, downloadUrl.absoluteString)
     }
     
-    private func update(model: STPhotoTileOverlay.Model, parameter: KeyValue) {
-        model.parameters.removeAll(where: { $0.key == parameter.key })
-        model.parameters.append(parameter)
+    private func update(newParameter: KeyValue) -> [KeyValue] {
+        var newParameters = STPhotoMapParametersHandler.shared.parameters
+        newParameters.removeAll(where: { $0.key == newParameter.key })
+        newParameters.append(newParameter)
+        return newParameters
     }
 }
