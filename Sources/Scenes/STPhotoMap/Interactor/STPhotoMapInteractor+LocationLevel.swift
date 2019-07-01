@@ -85,9 +85,13 @@ extension STPhotoMapInteractor {
     }
     
     func shouldReloadLocationLevel() {
+        self.selectedPhotoAnnotation = nil
+        
         self.presenter?.presentRemoveLocationOverlay()
         self.presenter?.presentRemoveLocationAnnotations()
+        
         self.shouldDetermineLocationLevel()
+        self.shouldDetermineSelectedPhotoAnnotation()
     }
 }
 

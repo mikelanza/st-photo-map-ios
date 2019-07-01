@@ -1786,6 +1786,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.sut.shouldReloadLocationLevel()
         
+        XCTAssertNil(self.sut.selectedPhotoAnnotation)
+        
         XCTAssertTrue(self.presenterSpy.presentRemoveLocationOverlayCalled)
         XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
         
@@ -1806,6 +1808,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.waitForSynchronization()
         
         self.sut.shouldReloadLocationLevel()
+        
+        XCTAssertNil(self.sut.selectedPhotoAnnotation)
         
         XCTAssertTrue(self.presenterSpy.presentRemoveLocationOverlayCalled)
         XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
@@ -1862,6 +1866,8 @@ class STPhotoMapInteractorTests: XCTestCase {
         self.waitForSynchronization()
         
         self.sut.shouldReloadLocationLevel()
+        
+        XCTAssertNil(self.sut.selectedPhotoAnnotation)
         
         XCTAssertTrue(self.presenterSpy.presentRemoveLocationOverlayCalled)
         XCTAssertTrue(self.presenterSpy.presentRemoveLocationAnnotationsCalled)
