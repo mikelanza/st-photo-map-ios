@@ -20,6 +20,8 @@ enum GetGeoEntityOperationModel {
         var entity: EntityLevel
         var page: Int
         var limit: Int
+        var userId: String?
+        var collectionId: String?
     }
     
     struct Response {

@@ -312,6 +312,16 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldOpenDataSourcesLinkCalled)
     }
     
+    func testReloadCarousel() {
+        self.sut.reloadCarousel()
+        XCTAssertTrue(self.interactorSpy.shouldReloadCarouselCalled)
+    }
+    
+    func testReloadLocationLevel() {
+        self.sut.reloadLocationLevel()
+        XCTAssertTrue(self.interactorSpy.shouldReloadLocationLevelCalled)
+    }
+    
     // MARK: - Test display logic
     
     func testDisplayLoadingState() {

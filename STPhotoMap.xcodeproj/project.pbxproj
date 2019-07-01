@@ -66,6 +66,10 @@
 		289F27A8228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27A5228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift */; };
 		289F27AA228DBAF100741CF7 /* ClusterLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27A9228DBAF100741CF7 /* ClusterLabelView.swift */; };
 		289F27AC228DBEDF00741CF7 /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27AB228DBEDF00741CF7 /* ClusterAnnotationView.swift */; };
+		28BD51F822C1127800968BB8 /* STPhotoMapView+DisplayLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD51F722C1127800968BB8 /* STPhotoMapView+DisplayLogic.swift */; };
+		28BD51FA22C1137200968BB8 /* STPhotoMapView+Subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD51F922C1137200968BB8 /* STPhotoMapView+Subviews.swift */; };
+		28BD51FC22C113F300968BB8 /* STPhotoMapView+MKMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD51FB22C113F300968BB8 /* STPhotoMapView+MKMapView.swift */; };
+		28BD51FE22C1142600968BB8 /* STPhotoMapView+BusinessLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD51FD22C1142600968BB8 /* STPhotoMapView+BusinessLogic.swift */; };
 		28CAAC8622608B47000C0200 /* STPhotoMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8522608B47000C0200 /* STPhotoMapView.swift */; };
 		28CAAC8E22608F52000C0200 /* STPhotoMapInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */; };
 		28CAAC8F22608F52000C0200 /* STPhotoMapWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */; };
@@ -247,6 +251,10 @@
 		289F27A5228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiplePhotoClusterAnnotationView.swift; sourceTree = "<group>"; };
 		289F27A9228DBAF100741CF7 /* ClusterLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusterLabelView.swift; sourceTree = "<group>"; };
 		289F27AB228DBEDF00741CF7 /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
+		28BD51F722C1127800968BB8 /* STPhotoMapView+DisplayLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapView+DisplayLogic.swift"; sourceTree = "<group>"; };
+		28BD51F922C1137200968BB8 /* STPhotoMapView+Subviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapView+Subviews.swift"; sourceTree = "<group>"; };
+		28BD51FB22C113F300968BB8 /* STPhotoMapView+MKMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapView+MKMapView.swift"; sourceTree = "<group>"; };
+		28BD51FD22C1142600968BB8 /* STPhotoMapView+BusinessLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapView+BusinessLogic.swift"; sourceTree = "<group>"; };
 		28CAAC8522608B47000C0200 /* STPhotoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapView.swift; sourceTree = "<group>"; };
 		28CAAC8A22608F52000C0200 /* STPhotoMapInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapInteractorTests.swift; sourceTree = "<group>"; };
 		28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapWorkerTests.swift; sourceTree = "<group>"; };
@@ -689,6 +697,18 @@
 				289F27A5228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift */,
 			);
 			path = "Cluster Annotations";
+			sourceTree = "<group>";
+		};
+		28BD51F622C1125600968BB8 /* Photo Map View */ = {
+			isa = PBXGroup;
+			children = (
+				28CAAC8522608B47000C0200 /* STPhotoMapView.swift */,
+				28BD51F722C1127800968BB8 /* STPhotoMapView+DisplayLogic.swift */,
+				28BD51F922C1137200968BB8 /* STPhotoMapView+Subviews.swift */,
+				28BD51FB22C113F300968BB8 /* STPhotoMapView+MKMapView.swift */,
+				28BD51FD22C1142600968BB8 /* STPhotoMapView+BusinessLogic.swift */,
+			);
+			path = "Photo Map View";
 			sourceTree = "<group>";
 		};
 		28CAAC8422608B35000C0200 /* Views */ = {
@@ -1142,6 +1162,7 @@
 		85F07412226062F1006DA073 /* STPhotoMap */ = {
 			isa = PBXGroup;
 			children = (
+				28BD51F622C1125600968BB8 /* Photo Map View */,
 				8579EA8022BD0B470094C829 /* Parameters */,
 				28E4A12B22A9274400422D53 /* Current User Location */,
 				28628952229635020033AFD3 /* Carousel */,
@@ -1161,7 +1182,6 @@
 				85F074142260630E006DA073 /* STPhotoMapWorker.swift */,
 				85F074152260630E006DA073 /* STPhotoMapRouter.swift */,
 				85F074162260630E006DA073 /* STPhotoMapModels.swift */,
-				28CAAC8522608B47000C0200 /* STPhotoMapView.swift */,
 			);
 			path = STPhotoMap;
 			sourceTree = "<group>";
@@ -1506,6 +1526,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2862896322963A890033AFD3 /* MKOverlay+MapPoint.swift in Sources */,
+				28BD51FA22C1137200968BB8 /* STPhotoMapView+Subviews.swift in Sources */,
 				85F9DC4C22AA897C00B614F6 /* DownloadImageOperation.swift in Sources */,
 				85E29DCA22A940010024399A /* MKMapView+OuterTiles.swift in Sources */,
 				85538D332267107C007D4A15 /* GetGeojsonTileOperationRequestBuilder.swift in Sources */,
@@ -1557,6 +1578,7 @@
 				28DC7FB0228EAC10007C8DC8 /* String+DownloadImage.swift in Sources */,
 				85538D17226703D9007D4A15 /* GeoJSON.swift in Sources */,
 				85F0741A2260630E006DA073 /* STPhotoMapWorker.swift in Sources */,
+				28BD51F822C1127800968BB8 /* STPhotoMapView+DisplayLogic.swift in Sources */,
 				288D2C042296E95B008D568C /* STPhotoMapCarouselHandler.swift in Sources */,
 				289F27A1228DB88300741CF7 /* DefaultReuseIdentifier.swift in Sources */,
 				289F27A6228DBA6100741CF7 /* MultiplePhotoCalloutView.swift in Sources */,
@@ -1569,6 +1591,7 @@
 				2831D675228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift in Sources */,
 				8558E0E822855F8B00EF9085 /* STPhotoMapGeojsonCache.swift in Sources */,
 				288D2C072296F277008D568C /* RepeatingTimer.swift in Sources */,
+				28BD51FE22C1142600968BB8 /* STPhotoMapView+BusinessLogic.swift in Sources */,
 				289F279E228DB7BA00741CF7 /* PhotoImageView.swift in Sources */,
 				85F0741E2260630E006DA073 /* STPhotoMapInteractor.swift in Sources */,
 				8547A676229BA58F00BBF0C5 /* Tokenizer.swift in Sources */,
@@ -1603,6 +1626,7 @@
 				28833D7022940EDD0098A833 /* MKClusterAnnotation+SameCoordinate.swift in Sources */,
 				8547A68D229BCD4000BBF0C5 /* GeoJSONGeometry+ContainsLocation.swift in Sources */,
 				2862896522963B350033AFD3 /* STCarouselOverlayRenderer.swift in Sources */,
+				28BD51FC22C113F300968BB8 /* STPhotoMapView+MKMapView.swift in Sources */,
 				851864A5226E6E7500A5C44D /* MKMapView+VisibleTiles.swift in Sources */,
 				8579EA8222BD0C670094C829 /* STPhotoMapParametersHandler.swift in Sources */,
 				854AE1A9228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift in Sources */,

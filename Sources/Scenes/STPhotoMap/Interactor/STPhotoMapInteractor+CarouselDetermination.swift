@@ -13,19 +13,24 @@ import MapKit
 
 extension STPhotoMapInteractor {
     func shouldDetermineCarousel() {
-        guard entityLevelHandler.entityLevel != .location else { return }
         guard self.carouselHandler.carousel.shouldChange(mapRect: self.visibleMapRect) == true else { return }
+        
+        self.shouldPrepareConditionsForDeterminingCarousel()
+    }
+    
+    func shouldPrepareConditionsForDeterminingCarousel() {
+        guard entityLevelHandler.entityLevel != .location else { return }
         
         let cachedTiles = self.getVisibleCachedTiles()
         let geojsonObjects = cachedTiles.compactMap({ $0.geojsonObject })
         if let feature = self.bestFeature(mapRect: self.visibleMapRect, geojsonObjects: geojsonObjects) {
             self.shouldGetGeoEntityForFeature(feature)
         } else {
-            self.geojsonObjectsForDeterminingCarousel(tiles: self.prepareTilesForDeterminingCarousel(cachedTiles: cachedTiles))
+            self.geojsonObjectsForDeterminingCarousel(tiles: self.prepareTilesForDeterminingCarousel())
         }
     }
     
-    private func prepareTilesForDeterminingCarousel(cachedTiles: [STPhotoMapGeojsonCache.Tile]) -> [TileCoordinate]  {
+    private func prepareTilesForDeterminingCarousel() -> [TileCoordinate]  {
         let notCachedTile = self.getVisibleNotCachedTiles()
         return notCachedTile.filter({
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: $0)

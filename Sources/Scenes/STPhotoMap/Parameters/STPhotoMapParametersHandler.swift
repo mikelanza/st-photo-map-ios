@@ -11,7 +11,7 @@ import Foundation
 class STPhotoMapParametersHandler {
     public static let shared = STPhotoMapParametersHandler()
     
-    var parameters:  [KeyValue] = []
+    var parameters: [KeyValue] = []
     
     private init() {
         self.parameters = self.defaultParameters()
@@ -31,5 +31,17 @@ class STPhotoMapParametersHandler {
     func update(parameter: KeyValue) {
         parameters.removeAll(where: { $0.key == parameter.key })
         parameters.append(parameter)
+    }
+    
+    func reset() {
+        self.parameters = self.defaultParameters()
+    }
+    
+    func userId() -> String? {
+        return self.parameters.first(where: { $0.key == Parameters.Keys.userId })?.value
+    }
+    
+    func collectionId() -> String? {
+        return self.parameters.first(where: { $0.key == Parameters.Keys.collectionId })?.value
     }
 }

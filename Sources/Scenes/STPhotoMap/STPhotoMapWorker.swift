@@ -153,7 +153,9 @@ class STPhotoMapWorker {
     }
     
     func getGeoEntityForEntity(_ entityId: String, entityLevel: EntityLevel) {
-        let model = GetGeoEntityOperationModel.Request(entityId: entityId, entity: entityLevel, page: 0, limit: 10)
+        let userId = STPhotoMapParametersHandler.shared.userId()
+        let collectionId = STPhotoMapParametersHandler.shared.collectionId()
+        let model = GetGeoEntityOperationModel.Request(entityId: entityId, entity: entityLevel, page: 0, limit: 10, userId: userId, collectionId: collectionId)
         let operation = GetGeoEntityOperation(model: model) { result in
             switch result {
                 case .success(let value): self.delegate?.successDidGetGeoEntityForEntity(entityId: entityId, entityLevel: entityLevel, geoEntity: value.geoEntity); break
