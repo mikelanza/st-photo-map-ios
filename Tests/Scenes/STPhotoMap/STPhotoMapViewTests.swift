@@ -319,7 +319,7 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testReloadLocationLevel() {
         self.sut.reloadLocationLevel()
-        XCTAssertTrue(self.interactorSpy.shouldDetermineLocationLevelCalled)
+        XCTAssertTrue(self.interactorSpy.shouldReloadLocationLevelCalled)
     }
     
     // MARK: - Test display logic

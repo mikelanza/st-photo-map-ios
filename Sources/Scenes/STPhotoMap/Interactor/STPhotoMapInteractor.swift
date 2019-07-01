@@ -42,6 +42,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldOpenSettingsApplication()
     
     func shouldReloadCarousel()
+    func shouldReloadLocationLevel()
 }
 
 protocol STPhotoMapDataStore {

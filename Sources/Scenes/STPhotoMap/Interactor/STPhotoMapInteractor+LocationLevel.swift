@@ -83,6 +83,12 @@ extension STPhotoMapInteractor {
         let annotations = self.getAnnotations(from: geojsonObject)
         self.presentLocationAnnotations(annotations: annotations)
     }
+    
+    func shouldReloadLocationLevel() {
+        self.presenter?.presentRemoveLocationOverlay()
+        self.presenter?.presentRemoveLocationAnnotations()
+        self.shouldDetermineLocationLevel()
+    }
 }
 
 extension STPhotoMapInteractor {

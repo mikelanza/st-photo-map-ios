@@ -86,7 +86,7 @@ extension STPhotoMapView {
     }
     
     public func reloadLocationLevel() {
-        self.interactor?.shouldDetermineLocationLevel()
+        self.interactor?.shouldReloadLocationLevel()
     }
     
     public func setNeedsDisplayTiles() {
