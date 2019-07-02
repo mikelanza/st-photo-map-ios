@@ -21,6 +21,9 @@ extension STPhotoMapView {
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.delegate = self
         mapView.actionMapViewDelegate = self
+        mapView.isRotateEnabled = false
+        mapView.showsUserLocation = true
+        mapView.isPitchEnabled = false
         self.addSubview(mapView)
         self.mapView = mapView
     }

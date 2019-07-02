@@ -25,13 +25,13 @@ public class STActionMapView: MKMapView {
         let touchLocation = touch.location(in: self)
         let coordinate = self.convert(touchLocation, toCoordinateFrom: self)
         
-        if let overlay = self.carouselOverlayFor(coordinate, with: false) {
+        if let overlay = self.carouselOverlayFor(coordinate, shouldDrawEntityButton: false) {
             return self.touchesEnded(touches, with: event, block: {
                 self.didSelectCarouselPhoto(overlay, atLocation: STLocation.from(coordinate: coordinate))
             })
         }
         
-        if let overlay = self.carouselOverlayWith(true), let renderer = self.renderer(for: overlay) as? STCarouselOverlayRenderer {
+        if let overlay = self.carouselOverlayWith(shouldDrawEntityButton: true), let renderer = self.renderer(for: overlay) as? STCarouselOverlayRenderer {
             if renderer.didSelectEntityButtonAtCoordinate(coordinate) {
                 return self.touchesEnded(touches, with: event, block: {
                     self.didSelectCarouselOverlay(overlay)
@@ -54,7 +54,7 @@ public class STActionMapView: MKMapView {
         return
     }
     
-    private func carouselOverlayFor(_ coordinate: CLLocationCoordinate2D, with shouldDrawEntityButton: Bool) -> STCarouselOverlay? {
+    private func carouselOverlayFor(_ coordinate: CLLocationCoordinate2D, shouldDrawEntityButton: Bool) -> STCarouselOverlay? {
         return self.overlays.first(where: { overlay -> Bool in
             if let carouselOverlay = overlay as? STCarouselOverlay, carouselOverlay.containsCoordinate(coordinate: coordinate) {
                 return carouselOverlay.model.shouldDrawEntityButton == shouldDrawEntityButton
@@ -63,7 +63,7 @@ public class STActionMapView: MKMapView {
         }) as? STCarouselOverlay
     }
     
-    private func carouselOverlayWith(_ shouldDrawEntityButton: Bool) -> STCarouselOverlay? {
+    private func carouselOverlayWith(shouldDrawEntityButton: Bool) -> STCarouselOverlay? {
         return self.overlays.first(where: { overlay -> Bool in
             if let carouselOverlay = overlay as? STCarouselOverlay {
                 return carouselOverlay.model.shouldDrawEntityButton == shouldDrawEntityButton
