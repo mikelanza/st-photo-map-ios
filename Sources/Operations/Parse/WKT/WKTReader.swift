@@ -71,6 +71,10 @@ extension WKTReader {
 
 public class WKTReader {
     
+    public init() {        
+    }
+
+    
     ///
     /// Parse a WKT String into Geometry objects.
     ///
