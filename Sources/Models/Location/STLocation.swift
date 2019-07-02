@@ -13,6 +13,11 @@ public struct STLocation {
     public var latitude: Double
     public var longitude: Double
     
+    public init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+    
     public static func from(location: CLLocation) -> STLocation {
         return STLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
     }
