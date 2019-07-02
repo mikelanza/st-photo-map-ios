@@ -29,8 +29,12 @@ class STPhotoMapParametersHandler {
     }
     
     func update(parameter: KeyValue) {
-        parameters.removeAll(where: { $0.key == parameter.key })
-        parameters.append(parameter)
+        self.parameters.removeAll(where: { $0.key == parameter.key })
+        self.parameters.append(parameter)
+    }
+    
+    func remove(parameter: KeyValue) {
+        self.parameters.removeAll(where: { $0.key == parameter.key })
     }
     
     func reset() {

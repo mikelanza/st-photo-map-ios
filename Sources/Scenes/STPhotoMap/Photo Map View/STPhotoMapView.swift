@@ -77,6 +77,10 @@ extension STPhotoMapView {
         STPhotoMapParametersHandler.shared.update(parameter: parameter)
     }
     
+    public func removeParameter(parameter: KeyValue) {
+        STPhotoMapParametersHandler.shared.remove(parameter: parameter)
+    }
+    
     public func resetParameters() {
         STPhotoMapParametersHandler.shared.reset()
     }
