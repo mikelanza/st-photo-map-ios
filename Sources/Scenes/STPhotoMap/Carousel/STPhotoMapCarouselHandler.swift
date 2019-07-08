@@ -104,6 +104,11 @@ extension STPhotoMapCarouselHandler {
             } else {
                 overlay.model.shouldDrawLabel = self.carousel.entityLevel != .block
             }
+            
+            if let photo = self.carousel.currentPhoto {
+                overlay.model.photoId = photo.id
+                overlay.model.photoImage = photo.image
+            }
         }
     }
 }
