@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
      ss.dependency "Kingfisher", "~> 5.0"
      ss.framework = "Foundation"
      ss.pod_target_xcconfig = {
-         'INFOPLIST_FILE' => '$(POD_TARGET_SRCROOT)/Sources/Info.plist'
+         'INFOPLIST_FILE' => '$(PODS_ROOT)/Sources/Info.plist'
      }
  end
 
