@@ -760,6 +760,7 @@
 		28DAC16C22D4B02C00F34B49 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
+				28690A9722D5D1EE00C24FB8 /* Info.plist */,
 				28DAC16E22D4B03F00F34B49 /* Production */,
 				28DAC16D22D4B03600F34B49 /* Development */,
 			);
@@ -884,7 +885,6 @@
 		3549BB541DA38A4000C63030 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				28690A9722D5D1EE00C24FB8 /* Info.plist */,
 				3549BB181DA3890B00C63030 /* STPhotoMap.h */,
 				3549BB551DA38A5E00C63030 /* Info-tvOS.plist */,
 			);
@@ -1884,7 +1884,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1923,7 +1923,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -2002,7 +2002,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
@@ -2086,7 +2086,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2123,7 +2123,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -2198,7 +2198,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
@@ -2346,7 +2346,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2371,7 +2371,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2393,7 +2393,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
@@ -2417,7 +2417,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
@@ -2440,7 +2440,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -2463,7 +2463,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
