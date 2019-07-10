@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>BBOXMONGO_URL</key>
-	<string>$(BBOXMONGO_URL)</string>
+	<string>https://tiles.streetography.com/bboxmongo</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(MODULE_BUNDLE_ID)</string>
+	<string>com.streetography.st.photo.map.ios.STPhotoMap</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(MODULE_NAME)</string>
+	<string>STPhotoMap</string>
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
@@ -21,7 +21,7 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GET_PHOTO_URL</key>
-	<string>$(GET_PHOTO_URL)</string>
+	<string>https://prod.streetography.com/v1/photos/%@</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We use your location to show photos near you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -29,8 +29,8 @@
 	<key>NSPrincipalClass</key>
 	<string></string>
 	<key>TILES_GEOJSON_URL</key>
-	<string>$(TILES_GEOJSON_URL)</string>
+	<string>https://tiles.streetography.com/tile/%d/%d/%d.geojson</string>
 	<key>TILES_JPEG_URL</key>
-	<string>$(TILES_JPEG_URL)</string>
+	<string>https://tiles.streetography.com/tile/%d/%d/%d.jpeg</string>
 </dict>
 </plist>
