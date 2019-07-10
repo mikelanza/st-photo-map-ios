@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
  s.default_subspec = "Core"
  s.subspec "Core" do |ss|
      ss.source_files  = "Sources/**/*.swift"
-     ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets}"] }
+     ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets,plist}"] }
      ss.dependency "Kingfisher", "~> 5.0"
      ss.framework  = "Foundation"
  end
