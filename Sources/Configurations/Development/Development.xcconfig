@@ -1,0 +1,18 @@
+//
+//  Development.xcconfig
+//  STPhotoMap
+//
+//  Created by Dimitri Strauneanu on 10/07/2019.
+//  Copyright © 2019 mikelanza. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+GET_PHOTO_URL = https:/$()/prod.streetography.com/v1/photos/%@
+BBOXMONGO_URL = https:/$()/tilesdev.streetography.com/bboxmongo
+TILES_GEOJSON_URL = https:/$()/tilesdev.streetography.com/tile/%d/%d/%d.geojson
+TILES_JPEG_URL = https:/$()/tilesdev.streetography.com/tile/%d/%d/%d.jpeg
+
+MODULE_NAME = STPhotoMap (dev)
+MODULE_BUNDLE_ID = com.streetography.st.photo.map.ios.STPhotoMap.dev

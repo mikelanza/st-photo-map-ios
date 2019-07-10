@@ -43,8 +43,6 @@
 		2862896722963E780033AFD3 /* STCarouselOverlayGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2862896622963E780033AFD3 /* STCarouselOverlayGenerator.swift */; };
 		286289692296422A0033AFD3 /* STActionMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286289682296422A0033AFD3 /* STActionMapView.swift */; };
 		2862896B229647230033AFD3 /* STActionMapViewSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2862896A229647230033AFD3 /* STActionMapViewSpy.swift */; };
-		28690A9422D5C9C500C24FB8 /* Info-Production.plist in Resources */ = {isa = PBXBuildFile; fileRef = 28690A9322D5C9C500C24FB8 /* Info-Production.plist */; };
-		28690A9622D5CA4900C24FB8 /* Info-Development.plist in Resources */ = {isa = PBXBuildFile; fileRef = 28690A9522D5CA4900C24FB8 /* Info-Development.plist */; };
 		28833D7022940EDD0098A833 /* MKClusterAnnotation+SameCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28833D6F22940EDD0098A833 /* MKClusterAnnotation+SameCoordinate.swift */; };
 		28833D7322940F9B0098A833 /* CLLocationCoordinate2D+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28833D7222940F9B0098A833 /* CLLocationCoordinate2D+Equatable.swift */; };
 		28833D7522941A9B0098A833 /* STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28833D7422941A9B0098A833 /* STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift */; };
@@ -231,8 +229,9 @@
 		2862896622963E780033AFD3 /* STCarouselOverlayGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayGenerator.swift; sourceTree = "<group>"; };
 		286289682296422A0033AFD3 /* STActionMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STActionMapView.swift; sourceTree = "<group>"; };
 		2862896A229647230033AFD3 /* STActionMapViewSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STActionMapViewSpy.swift; sourceTree = "<group>"; };
-		28690A9322D5C9C500C24FB8 /* Info-Production.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Production.plist"; sourceTree = "<group>"; };
-		28690A9522D5CA4900C24FB8 /* Info-Development.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Development.plist"; sourceTree = "<group>"; };
+		28690A9722D5D1EE00C24FB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28690A9922D5D26100C24FB8 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
+		28690A9A22D5D27A00C24FB8 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
 		28833D6F22940EDD0098A833 /* MKClusterAnnotation+SameCoordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKClusterAnnotation+SameCoordinate.swift"; sourceTree = "<group>"; };
 		28833D7222940F9B0098A833 /* CLLocationCoordinate2D+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Equatable.swift"; sourceTree = "<group>"; };
 		28833D7422941A9B0098A833 /* STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift"; sourceTree = "<group>"; };
@@ -763,6 +762,7 @@
 			children = (
 				28DAC16E22D4B03F00F34B49 /* Production */,
 				28DAC16D22D4B03600F34B49 /* Development */,
+				28690A9722D5D1EE00C24FB8 /* Info.plist */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -770,7 +770,7 @@
 		28DAC16D22D4B03600F34B49 /* Development */ = {
 			isa = PBXGroup;
 			children = (
-				28690A9522D5CA4900C24FB8 /* Info-Development.plist */,
+				28690A9A22D5D27A00C24FB8 /* Development.xcconfig */,
 			);
 			path = Development;
 			sourceTree = "<group>";
@@ -778,7 +778,7 @@
 		28DAC16E22D4B03F00F34B49 /* Production */ = {
 			isa = PBXGroup;
 			children = (
-				28690A9322D5C9C500C24FB8 /* Info-Production.plist */,
+				28690A9922D5D26100C24FB8 /* Production.xcconfig */,
 			);
 			path = Production;
 			sourceTree = "<group>";
@@ -1495,11 +1495,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28690A9622D5CA4900C24FB8 /* Info-Development.plist in Resources */,
 				854BE3B022940B8800CA3BE0 /* Assets.xcassets in Resources */,
 				289B174C226712F800B09F7A /* Localizable.strings in Resources */,
 				282CA12E22A28BB7008003AA /* Localizable.stringsdict in Resources */,
-				28690A9422D5C9C500C24FB8 /* Info-Production.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1810,6 +1808,7 @@
 /* Begin XCBuildConfiguration section */
 		28DAC17122D4B38000F34B49 /* Debug (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1874,6 +1873,7 @@
 		};
 		28DAC17222D4B38000F34B49 /* Debug (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -1884,7 +1884,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Sources/Configurations/Production/Info-Production.plist";
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1898,6 +1898,7 @@
 		};
 		28DAC17322D4B38000F34B49 /* Debug (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -1913,6 +1914,7 @@
 		};
 		28DAC17422D4B38000F34B49 /* Debug (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1935,6 +1937,7 @@
 		};
 		28DAC17522D4B38000F34B49 /* Debug (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1951,6 +1954,7 @@
 		};
 		28DAC17622D4B38000F34B49 /* Debug (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1973,6 +1977,7 @@
 		};
 		28DAC17722D4B38000F34B49 /* Debug (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1988,6 +1993,7 @@
 		};
 		28DAC17822D4B38000F34B49 /* Debug (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -2011,6 +2017,7 @@
 		};
 		28DAC17922D4B38A00F34B49 /* Release (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2068,6 +2075,7 @@
 		};
 		28DAC17A22D4B38A00F34B49 /* Release (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -2078,7 +2086,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Sources/Configurations/Production/Info-Production.plist";
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2091,6 +2099,7 @@
 		};
 		28DAC17B22D4B38A00F34B49 /* Release (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -2105,6 +2114,7 @@
 		};
 		28DAC17C22D4B38A00F34B49 /* Release (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2126,6 +2136,7 @@
 		};
 		28DAC17D22D4B38A00F34B49 /* Release (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2141,6 +2152,7 @@
 		};
 		28DAC17E22D4B38A00F34B49 /* Release (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2162,6 +2174,7 @@
 		};
 		28DAC17F22D4B38A00F34B49 /* Release (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2176,6 +2189,7 @@
 		};
 		28DAC18022D4B38A00F34B49 /* Release (Production) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9922D5D26100C24FB8 /* Production.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -2198,6 +2212,7 @@
 		};
 		3549BB0B1DA387DB00C63030 /* Debug (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2262,6 +2277,7 @@
 		};
 		3549BB0C1DA387DB00C63030 /* Release (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2319,6 +2335,7 @@
 		};
 		3549BB271DA389CD00C63030 /* Debug (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -2329,7 +2346,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Sources/Configurations/Development/Info-Development.plist";
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2343,6 +2360,7 @@
 		};
 		3549BB281DA389CD00C63030 /* Release (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -2353,7 +2371,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Sources/Configurations/Development/Info-Development.plist";
+				INFOPLIST_FILE = Sources/Configurations/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2366,6 +2384,7 @@
 		};
 		3549BB341DA389DB00C63030 /* Debug (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -2389,6 +2408,7 @@
 		};
 		3549BB351DA389DB00C63030 /* Release (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -2411,6 +2431,7 @@
 		};
 		3549BB411DA389E800C63030 /* Debug (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2433,6 +2454,7 @@
 		};
 		3549BB421DA389E800C63030 /* Release (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2454,6 +2476,7 @@
 		};
 		3549BB4E1DA389F300C63030 /* Debug (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2476,6 +2499,7 @@
 		};
 		3549BB4F1DA389F300C63030 /* Release (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2497,6 +2521,7 @@
 		};
 		3549BB6A1DA38ADB00C63030 /* Debug (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -2512,6 +2537,7 @@
 		};
 		3549BB6B1DA38ADB00C63030 /* Release (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -2526,6 +2552,7 @@
 		};
 		3549BB791DA38AEF00C63030 /* Debug (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2541,6 +2568,7 @@
 		};
 		3549BB7A1DA38AEF00C63030 /* Release (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2555,6 +2583,7 @@
 		};
 		3549BB881DA38B0000C63030 /* Debug (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2571,6 +2600,7 @@
 		};
 		3549BB891DA38B0000C63030 /* Release (Development) */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28690A9A22D5D27A00C24FB8 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
