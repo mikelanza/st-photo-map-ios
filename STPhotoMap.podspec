@@ -19,9 +19,9 @@ Pod::Spec.new do |s|
 
  end
 
- s.resources = 'Resources/Info.plist'
+ s.resources = 'Sources/Info.plist'
  s.pod_target_xcconfig = {
-     'INFOPLIST_FILE' => '$(POD_TARGET_SRCROOT)/Resources/Info.plist'
+     'INFOPLIST_FILE' => '$(POD_TARGET_SRCROOT)/Sources/Info.plist'
  }
 
 end
