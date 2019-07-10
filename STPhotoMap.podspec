@@ -16,6 +16,12 @@ Pod::Spec.new do |s|
      ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets}"] }
      ss.dependency "Kingfisher", "~> 5.0"
      ss.framework = "Foundation"
+
  end
+
+ s.preserve_paths = '${PODS_TARGET_SRCROOT}/Sources/Info.plist'
+ s.pod_target_xcconfig = {
+     'INFOPLIST_FILE' => '${PODS_TARGET_SRCROOT}/Sources/Info.plist'
+ }
 
 end
