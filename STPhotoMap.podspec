@@ -13,15 +13,12 @@ Pod::Spec.new do |s|
  s.default_subspec = "Core"
  s.subspec "Core" do |ss|
      ss.source_files = "Sources/**/*.swift"
-     ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets}"] }
+     ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets,plist}"] }
      ss.dependency "Kingfisher", "~> 5.0"
      ss.framework = "Foundation"
-
+     ss.pod_target_xcconfig = {
+         'INFOPLIST_FILE' => '$(POD_TARGET_SRCROOT)/Core/Resources/Info.plist'
+     }
  end
-
- s.resources = 'Sources/Info.plist'
- s.pod_target_xcconfig = {
-     'INFOPLIST_FILE' => '$(POD_TARGET_SRCROOT)/Resources/Info.plist'
- }
 
 end
