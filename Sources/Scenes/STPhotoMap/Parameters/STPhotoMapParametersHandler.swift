@@ -24,6 +24,7 @@ class STPhotoMapParametersHandler {
             (Parameters.Keys.sort, "popular"),
             (Parameters.Keys.tileSize, "256"),
             (Parameters.Keys.pinOptimize, "4"),
+            (Parameters.Keys.client, "iOS"),
             (Parameters.Keys.sessionId, UUID().uuidString)
         ]
     }
