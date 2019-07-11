@@ -21,6 +21,7 @@ public class Parameters {
         sessionId = "sessionID",
         bbox = "bbox",
         userId = "userId",
-        collectionId = "collectionId"
+        collectionId = "collectionId",
+        client = "client"
     }
 }

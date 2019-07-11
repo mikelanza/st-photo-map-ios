@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
  s.name = 'STPhotoMap'
- s.version = '0.0.7'
+ s.version = '0.0.8'
  s.license = { :type => "MIT", :file => "LICENSE" }
  s.summary = 'A map that displays photos'
  s.homepage = 'https://github.com/mikelanza/st-photo-map-ios.git'
