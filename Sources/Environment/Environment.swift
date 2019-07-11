@@ -16,33 +16,33 @@ public enum Environment {
         static let tilesJpegURL = "TILES_JPEG_URL"
     }
     
-    private static let infoDictionary: [String: Any] = {
-        guard let dictionary = Bundle.module.infoDictionary else {
-            fatalError("Info.plist file not found.")
+    private static let infoDictionary: [String: Any]? = {
+        guard let dictionary = Bundle.main.infoDictionary else {
+            return nil
         }
         return dictionary
     }()
     
-    private static func urlStringFor(_ key: String) -> String {
-        guard let urlString = Environment.infoDictionary[key] as? String else {
-            fatalError("\(key) is not set in plist for this environment.")
+    private static func urlStringFor(_ key: String) -> String? {
+        guard let urlString = Environment.infoDictionary?[key] as? String else {
+            return nil
         }
         return urlString
     }
     
     public static let getPhotoURL: String = {
-        return Environment.urlStringFor(Keys.getPhotoURL)
+        return Environment.urlStringFor(Keys.getPhotoURL) ?? "https://prod.streetography.com/v1/photos/%@"
     }()
     
     public static let bboxmongoURL: String = {
-        return Environment.urlStringFor(Keys.bboxmongoURL)
+        return Environment.urlStringFor(Keys.bboxmongoURL) ?? "https://tiles.streetography.com/bboxmongo"
     }()
     
     public static let tilesGeojsonURL: String = {
-        return Environment.urlStringFor(Keys.tilesGeojsonURL)
+        return Environment.urlStringFor(Keys.tilesGeojsonURL) ?? "https://tiles.streetography.com/tile/%d/%d/%d.geojson"
     }()
     
     public static let tilesJpegURL: String = {
-        return Environment.urlStringFor(Keys.tilesJpegURL)
+        return Environment.urlStringFor(Keys.tilesJpegURL) ?? "https://tiles.streetography.com/tile/%d/%d/%d.jpeg"
     }()
 }

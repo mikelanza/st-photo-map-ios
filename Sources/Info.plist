@@ -2,33 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BBOXMONGO_URL</key>
-	<string>$(BBOXMONGO_URL)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(MODULE_BUNDLE_ID)</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(MODULE_BUNDLE_NAME)</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.0.6</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>GET_PHOTO_URL</key>
-	<string>$(GET_PHOTO_URL)</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We use your location to show photos near you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to show photos near you.</string>
-	<key>TILES_GEOJSON_URL</key>
-	<string>$(TILES_GEOJSON_URL)</string>
-	<key>TILES_JPEG_URL</key>
-	<string>$(TILES_JPEG_URL)</string>
 </dict>
 </plist>
