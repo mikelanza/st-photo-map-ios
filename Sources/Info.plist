@@ -22,7 +22,5 @@
 	<string>We use your location to show photos near you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to show photos near you.</string>
-	<key>NSPrincipalClass</key>
-	<string></string>
 </dict>
 </plist>

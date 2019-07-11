@@ -16,7 +16,7 @@ class GetPhotoOperationRequestBuilder {
     }
     
     public func request() -> URLRequest? {
-        let urlString = String(format: "https://prod.streetography.com/v1/photos/%@", self.model.photoId)
+        let urlString = String(format: Environment.getPhotoURL, self.model.photoId)
         guard var urlComponents = URLComponents(string: urlString) else {
             return nil
         }

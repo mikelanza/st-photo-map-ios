@@ -13,8 +13,7 @@ enum GetGeoEntityRequestBuilderError: LocalizedError {
 }
 
 class GetGeoEntityRequestBuilder {
-    
-    let urlString = "https://tiles.streetography.com/bboxmongo"
+    let urlString = Environment.bboxmongoURL
     var parameters: [String: Any]?
     let httpMethod: String
     
