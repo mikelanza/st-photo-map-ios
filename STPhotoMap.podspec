@@ -12,9 +12,10 @@ Pod::Spec.new do |s|
 
  s.default_subspec = "Core"
  s.subspec "Core" do |ss|
-     ss.source_files  = "Sources/**/*.swift"
+     ss.source_files = "Sources/**/*.swift"
      ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets}"] }
      ss.dependency "Kingfisher", "~> 5.0"
-     ss.framework  = "Foundation"
+     ss.framework = "Foundation"
  end
+
 end
