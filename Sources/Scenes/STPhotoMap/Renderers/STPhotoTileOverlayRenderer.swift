@@ -32,12 +32,13 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     }
     
     func predownload(outer tiles: [(MKMapRect, [TileCoordinate])]) {
-        tiles.forEach { (outerTile) in
-            outerTile.1.forEach({ (tileCoordinate) in
-                let tileUrls = self.prepareTileUrls(outer: (outerTile.0, tileCoordinate))
-                self.imageCacheHandler.downloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
-            })
-        }
+//        self.imageCacheHandler.cancelAllPreloadingOperation()
+//        tiles.forEach { (outerTile) in
+//            outerTile.1.forEach({ (tileCoordinate) in
+//                let tileUrls = self.prepareTileUrls(outer: (outerTile.0, tileCoordinate))
+//                self.imageCacheHandler.predownloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
+//            })
+//        }
     }
 }
 
@@ -64,10 +65,11 @@ extension STPhotoTileOverlayRenderer {
         do {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
             let tileUrls = try self.tileUrlsFor(path: path)
+            let tile = try self.imageCacheHandler.getTile(url: tileUrls.keyUrl)
             
             let imageRef = try self.imageForUrl(url: tileUrls.keyUrl)
             let image = UIImage(cgImage: imageRef)
-            let rect = self.rect(for: mapRect)
+            let rect = self.rect(for: tile.mapRect)
             UIGraphicsPushContext(context)
             image.draw(in: rect)
             UIGraphicsPopContext()
@@ -168,7 +170,7 @@ extension STPhotoTileOverlayRenderer {
         let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
         let tileUrls = try self.tileUrlsFor(path: path)
         
-        self.imageCacheHandler.downloadTile(with: Operation.QueuePriority.veryHigh, keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl, completion: {
+        self.imageCacheHandler.downloadTile(with: Operation.QueuePriority.veryHigh, mapRect: mapRect, keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl, completion: {
             self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
         })
     }

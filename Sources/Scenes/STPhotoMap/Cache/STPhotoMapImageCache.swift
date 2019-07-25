@@ -15,11 +15,13 @@ enum STPhotoMapImageCacheError: Error {
 
 class STPhotoMapImageCache {
     class Tile: NSObject {
+        var mapRect: MKMapRect
         var data: Data
         var keyUrl: String
         var downloadUrl: String
         
-        init(data: Data, keyUrl: String, downloadUrl: String) {
+        init(mapRect: MKMapRect, data: Data, keyUrl: String, downloadUrl: String) {
+            self.mapRect = mapRect
             self.data = data
             self.keyUrl = keyUrl
             self.downloadUrl = downloadUrl
@@ -36,9 +38,9 @@ class STPhotoMapImageCache {
         self.tiles.removeAll()
     }
     
-    func addTile(data: Data, forUrl downloadUrl: String, keyUrl: String) {
+    func addTile(mapRect: MKMapRect, data: Data, forUrl downloadUrl: String, keyUrl: String) {
         if self.tiles.filter({ $0.keyUrl == keyUrl }).count == 0 {
-            self.tiles.append(Tile(data: data, keyUrl: keyUrl, downloadUrl: downloadUrl))
+            self.tiles.append(Tile(mapRect: mapRect,data: data, keyUrl: keyUrl, downloadUrl: downloadUrl))
         }
     }
     
