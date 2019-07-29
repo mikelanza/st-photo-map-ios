@@ -188,18 +188,18 @@ extension STPhotoTileOverlayRenderer {
     }
 }
 
-// MARK: Draw old tiles
+// MARK: - Draw old tiles
 
 extension STPhotoTileOverlayRenderer {
     private func drawCachedTile(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) throws {
         let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
         
         if zoomActivity == .zoomOut {
-            let childrenPaths = try getChildrenPaths(path: path)
-            try self.drawChildrenTiles(paths: childrenPaths, mapRect: mapRect, zoomScale: zoomScale, context: context)
+            let childrenPaths = self.getChildrenPaths(path: path)
+            self.drawTilePaths(childrenPaths, mapRect: mapRect, context: context)
         } else {
-            let parentsPaths = try getParentsPaths(path: path)
-            try self.drawParentsTiles(paths: parentsPaths, mapRect: mapRect, zoomScale: zoomScale, context: context)
+            let parentsPaths = self.getParentsPaths(path: path)
+            self.drawTilePaths(parentsPaths, mapRect: mapRect, context: context)
         }
     }
     
@@ -210,17 +210,7 @@ extension STPhotoTileOverlayRenderer {
         UIGraphicsPopContext()
     }
     
-    private func drawParentsTiles(paths: [MKTileOverlayPath], mapRect: MKMapRect, zoomScale: MKZoomScale, context: CGContext) throws {
-        for path in paths {
-            do {
-                try self.drawImageTile(path: path, context: context)
-            } catch {
-                self.drawEmptyTile(mapRect, in: context)
-            }
-        }
-    }
-    
-    private func drawChildrenTiles(paths: [MKTileOverlayPath], mapRect: MKMapRect, zoomScale: MKZoomScale, context: CGContext) throws {
+    private func drawTilePaths(_ paths: [MKTileOverlayPath], mapRect: MKMapRect, context: CGContext) {
         for path in paths {
             do {
                 try self.drawImageTile(path: path, context: context)
@@ -254,49 +244,49 @@ extension STPhotoTileOverlayRenderer {
         self.zoom = newZoom <= 20 ? newZoom : 20
     }
     
-    private func getParentsPaths(path: MKTileOverlayPath) throws -> [MKTileOverlayPath] {
+    private func getParentsPaths(path: MKTileOverlayPath) -> [MKTileOverlayPath] {
         var firstPath = MKTileOverlayPath()
-        firstPath.x = Int(floor(Double(path.x/2)))
-        firstPath.y = Int(floor(Double(path.y/2)))
+        firstPath.x = Int(floor(Double(path.x / 2)))
+        firstPath.y = Int(floor(Double(path.y / 2)))
         firstPath.z = Int(path.z - 1)
         
         var secondPath = MKTileOverlayPath()
-        secondPath.x = Int(floor(Double(path.x/2) - 1))
-        secondPath.y = Int(floor(Double(path.y/2)))
+        secondPath.x = Int(floor(Double(path.x / 2) - 1))
+        secondPath.y = Int(floor(Double(path.y / 2)))
         secondPath.z = Int(path.z - 1)
         
         var thirdPath = MKTileOverlayPath()
-        thirdPath.x = Int(floor(Double(path.x/2)))
-        thirdPath.y = Int(floor(Double(path.y/2) - 1))
+        thirdPath.x = Int(floor(Double(path.x / 2)))
+        thirdPath.y = Int(floor(Double(path.y / 2) - 1))
         thirdPath.z = Int(path.z - 1)
         
         var fourthPath = MKTileOverlayPath()
-        fourthPath.x = Int(floor(Double(path.x/2) - 1))
-        fourthPath.y = Int(floor(Double(path.y/2) - 1))
+        fourthPath.x = Int(floor(Double(path.x / 2) - 1))
+        fourthPath.y = Int(floor(Double(path.y / 2) - 1))
         fourthPath.z = Int(path.z - 1)
         
         return [firstPath, secondPath, thirdPath, fourthPath]
     }
     
-    private func getChildrenPaths(path: MKTileOverlayPath) throws -> [MKTileOverlayPath] {
+    private func getChildrenPaths(path: MKTileOverlayPath) -> [MKTileOverlayPath] {
         var firstPath = MKTileOverlayPath()
-        firstPath.x = Int(floor(Double(path.x*2)))
-        firstPath.y = Int(floor(Double(path.y*2)))
+        firstPath.x = Int(floor(Double(path.x * 2)))
+        firstPath.y = Int(floor(Double(path.y * 2)))
         firstPath.z = Int(path.z + 1)
         
         var secondPath = MKTileOverlayPath()
-        secondPath.x = Int(floor(Double(path.x*2) + 1))
-        secondPath.y = Int(floor(Double(path.y*2)))
+        secondPath.x = Int(floor(Double(path.x * 2) + 1))
+        secondPath.y = Int(floor(Double(path.y * 2)))
         secondPath.z = Int(path.z + 1)
         
         var thirdPath = MKTileOverlayPath()
-        thirdPath.x = Int(floor(Double(path.x*2)))
-        thirdPath.y = Int(floor(Double(path.y*2) + 1))
+        thirdPath.x = Int(floor(Double(path.x * 2)))
+        thirdPath.y = Int(floor(Double(path.y * 2) + 1))
         thirdPath.z = Int(path.z + 1)
         
         var fourthPath = MKTileOverlayPath()
-        fourthPath.x = Int(floor(Double(path.x*2) + 1))
-        fourthPath.y = Int(floor(Double(path.y*2) + 1))
+        fourthPath.x = Int(floor(Double(path.x * 2) + 1))
+        fourthPath.y = Int(floor(Double(path.y * 2) + 1))
         fourthPath.z = Int(path.z + 1)
         
         return [firstPath, secondPath, thirdPath, fourthPath]
