@@ -195,11 +195,9 @@ extension STPhotoTileOverlayRenderer {
         let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
         
         if zoomActivity == .zoomOut {
-            let childrenPaths = self.getChildrenPaths(path: path)
-            self.drawTilePaths(childrenPaths, mapRect: mapRect, context: context)
+            self.drawTilePaths(path.childrenPaths(), mapRect: mapRect, context: context)
         } else {
-            let parentsPaths = self.getParentsPaths(path: path)
-            self.drawTilePaths(parentsPaths, mapRect: mapRect, context: context)
+            self.drawTilePaths(path.parentsPaths(), mapRect: mapRect, context: context)
         }
     }
     
@@ -242,53 +240,5 @@ extension STPhotoTileOverlayRenderer {
         }
         
         self.zoom = newZoom <= 20 ? newZoom : 20
-    }
-    
-    private func getParentsPaths(path: MKTileOverlayPath) -> [MKTileOverlayPath] {
-        var firstPath = MKTileOverlayPath()
-        firstPath.x = Int(floor(Double(path.x / 2)))
-        firstPath.y = Int(floor(Double(path.y / 2)))
-        firstPath.z = Int(path.z - 1)
-        
-        var secondPath = MKTileOverlayPath()
-        secondPath.x = Int(floor(Double(path.x / 2) - 1))
-        secondPath.y = Int(floor(Double(path.y / 2)))
-        secondPath.z = Int(path.z - 1)
-        
-        var thirdPath = MKTileOverlayPath()
-        thirdPath.x = Int(floor(Double(path.x / 2)))
-        thirdPath.y = Int(floor(Double(path.y / 2) - 1))
-        thirdPath.z = Int(path.z - 1)
-        
-        var fourthPath = MKTileOverlayPath()
-        fourthPath.x = Int(floor(Double(path.x / 2) - 1))
-        fourthPath.y = Int(floor(Double(path.y / 2) - 1))
-        fourthPath.z = Int(path.z - 1)
-        
-        return [firstPath, secondPath, thirdPath, fourthPath]
-    }
-    
-    private func getChildrenPaths(path: MKTileOverlayPath) -> [MKTileOverlayPath] {
-        var firstPath = MKTileOverlayPath()
-        firstPath.x = Int(floor(Double(path.x * 2)))
-        firstPath.y = Int(floor(Double(path.y * 2)))
-        firstPath.z = Int(path.z + 1)
-        
-        var secondPath = MKTileOverlayPath()
-        secondPath.x = Int(floor(Double(path.x * 2) + 1))
-        secondPath.y = Int(floor(Double(path.y * 2)))
-        secondPath.z = Int(path.z + 1)
-        
-        var thirdPath = MKTileOverlayPath()
-        thirdPath.x = Int(floor(Double(path.x * 2)))
-        thirdPath.y = Int(floor(Double(path.y * 2) + 1))
-        thirdPath.z = Int(path.z + 1)
-        
-        var fourthPath = MKTileOverlayPath()
-        fourthPath.x = Int(floor(Double(path.x * 2) + 1))
-        fourthPath.y = Int(floor(Double(path.y * 2) + 1))
-        fourthPath.z = Int(path.z + 1)
-        
-        return [firstPath, secondPath, thirdPath, fourthPath]
     }
 }
