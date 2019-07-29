@@ -195,10 +195,10 @@ extension STPhotoTileOverlayRenderer {
         let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
         
         if zoomActivity == .zoomOut {
-            let childrenPaths = try getChildrenPaths(path: path)
+            let childrenPaths = self.getChildrenPaths(path: path)
             try self.drawChildrenTiles(paths: childrenPaths, mapRect: mapRect, zoomScale: zoomScale, context: context)
         } else {
-            let parentsPaths = try getParentsPaths(path: path)
+            let parentsPaths = self.getParentsPaths(path: path)
             try self.drawParentsTiles(paths: parentsPaths, mapRect: mapRect, zoomScale: zoomScale, context: context)
         }
     }
@@ -254,7 +254,7 @@ extension STPhotoTileOverlayRenderer {
         self.zoom = newZoom <= 20 ? newZoom : 20
     }
     
-    private func getParentsPaths(path: MKTileOverlayPath) throws -> [MKTileOverlayPath] {
+    private func getParentsPaths(path: MKTileOverlayPath) -> [MKTileOverlayPath] {
         var firstPath = MKTileOverlayPath()
         firstPath.x = Int(floor(Double(path.x/2)))
         firstPath.y = Int(floor(Double(path.y/2)))
@@ -278,7 +278,7 @@ extension STPhotoTileOverlayRenderer {
         return [firstPath, secondPath, thirdPath, fourthPath]
     }
     
-    private func getChildrenPaths(path: MKTileOverlayPath) throws -> [MKTileOverlayPath] {
+    private func getChildrenPaths(path: MKTileOverlayPath) -> [MKTileOverlayPath] {
         var firstPath = MKTileOverlayPath()
         firstPath.x = Int(floor(Double(path.x*2)))
         firstPath.y = Int(floor(Double(path.y*2)))
