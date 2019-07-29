@@ -25,7 +25,6 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     enum ZoomActivity {
         case zoomIn
         case zoomOut
-        case pan
     }
     
     var zoomActivity: ZoomActivity = .zoomOut
@@ -57,7 +56,7 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
 extension STPhotoTileOverlayRenderer {
     override public func canDraw(_ mapRect: MKMapRect, zoomScale: MKZoomScale) -> Bool {
         self.setZoomActivity(zoomScale: zoomScale)
-        return false
+        return true
     }
     
     override public func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
@@ -250,8 +249,6 @@ extension STPhotoTileOverlayRenderer {
             self.zoomActivity = ZoomActivity.zoomIn
         } else if self.zoom > newZoom {
             self.zoomActivity = ZoomActivity.zoomOut
-        } else {
-            self.zoomActivity = ZoomActivity.pan
         }
         
         self.zoom = newZoom <= 20 ? newZoom : 20
