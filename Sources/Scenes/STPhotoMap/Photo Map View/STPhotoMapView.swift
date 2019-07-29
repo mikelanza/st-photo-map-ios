@@ -162,6 +162,7 @@ extension STPhotoMapView: STLocationOverlayViewDelegate {
 extension STPhotoMapView {
     private func setupTileOverlay() {
         self.photoTileOverlay = STPhotoTileOverlay()
+        self.photoTileOverlay?.maximumZ = 20
         self.photoTileOverlay?.canReplaceMapContent = true
         self.mapView?.addOverlay(self.photoTileOverlay!, level: .aboveLabels)
     }
@@ -171,8 +172,6 @@ extension STPhotoMapView {
 
 extension STPhotoMapView {
     private func predownloadOuterTiles() {
-        let tiles = self.mapView.outerTiles()
-        self.tileOverlayRenderer?.predownload(outer: tiles)
     }
     
     @objc func mapViewDidPan(_ sender: UIGestureRecognizer) {

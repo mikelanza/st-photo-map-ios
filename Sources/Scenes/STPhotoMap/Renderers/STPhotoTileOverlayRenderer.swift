@@ -41,13 +41,6 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     }
     
     func predownload(outer tiles: [(MKMapRect, [TileCoordinate])]) {
-//        self.imageCacheHandler.cancelAllPreloadingOperation()
-//        tiles.forEach { (outerTile) in
-//            outerTile.1.forEach({ (tileCoordinate) in
-//                let tileUrls = self.prepareTileUrls(outer: (outerTile.0, tileCoordinate))
-//                self.imageCacheHandler.predownloadTile(keyUrl: tileUrls.keyUrl, downloadUrl: tileUrls.downloadUrl)
-//            })
-//        }
     }
 }
 
@@ -197,7 +190,7 @@ extension STPhotoTileOverlayRenderer {
         if zoomActivity == .zoomOut {
             self.drawTilePaths(path.childrenPaths(), mapRect: mapRect, context: context)
         } else {
-            self.drawTilePaths(path.parentsPaths(), mapRect: mapRect, context: context)
+            try self.drawImageTile(path: path.parentPath(), context: context)
         }
     }
     
