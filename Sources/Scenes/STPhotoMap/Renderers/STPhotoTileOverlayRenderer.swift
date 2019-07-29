@@ -20,6 +20,16 @@ enum STPhotoTileOverlayRendererError: LocalizedError {
 public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
     private var imageCacheHandler = STPhotoMapImageCacheHandler()
     
+    private var zoom: Int = 0
+    
+    enum ZoomActivity {
+        case zoomIn
+        case zoomOut
+        case pan
+    }
+    
+    var zoomActivity: ZoomActivity = .zoomOut
+    
     init(tileOverlay: MKTileOverlay) {
         super.init(overlay: tileOverlay)
         self.setupObservers()
@@ -46,34 +56,20 @@ public class STPhotoTileOverlayRenderer: MKOverlayRenderer {
 
 extension STPhotoTileOverlayRenderer {
     override public func canDraw(_ mapRect: MKMapRect, zoomScale: MKZoomScale) -> Bool {
-        do {
-            let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
-            let tileUrls = try self.tileUrlsFor(path: path)
-            
-            if let _ = self.imageCacheHandler.optionalImageDataForUrl(url: tileUrls.keyUrl) {
-                return true
-            }
-            try self.downloadTile(mapRect: mapRect, zoomScale: zoomScale)
-        } catch {
-            self.setNeedsDisplayInMainThread(mapRect, zoomScale: zoomScale)
-        }
-        
+        self.setZoomActivity(zoomScale: zoomScale)
         return false
     }
     
     override public func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
         do {
             let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
-            let tileUrls = try self.tileUrlsFor(path: path)
-            let tile = try self.imageCacheHandler.getTile(url: tileUrls.keyUrl)
-            
-            let imageRef = try self.imageForUrl(url: tileUrls.keyUrl)
-            let image = UIImage(cgImage: imageRef)
-            let rect = self.rect(for: tile.mapRect)
-            UIGraphicsPushContext(context)
-            image.draw(in: rect)
-            UIGraphicsPopContext()
+            try self.drawImageTile(path: path, context: context)
         } catch {
+            do {
+                try self.drawCachedTile(mapRect, zoomScale: zoomScale, in: context)
+            } catch {
+                self.drawEmptyTile(mapRect, in: context)
+            }
             self.loadTile(mapRect, zoomScale: zoomScale, in: context)
         }
     }
@@ -190,5 +186,122 @@ extension STPhotoTileOverlayRenderer {
         newParameters.removeAll(where: { $0.key == newParameter.key })
         newParameters.append(newParameter)
         return newParameters
+    }
+}
+
+// MARK: Draw old tiles
+
+extension STPhotoTileOverlayRenderer {
+    private func drawCachedTile(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) throws {
+        let path = try self.pathForMapRect(mapRect: mapRect, zoomScale: zoomScale)
+        
+        if zoomActivity == .zoomOut {
+            let childrenPaths = try getChildrenPaths(path: path)
+            try self.drawChildrenTiles(paths: childrenPaths, mapRect: mapRect, zoomScale: zoomScale, context: context)
+        } else {
+            let parentsPaths = try getParentsPaths(path: path)
+            try self.drawParentsTiles(paths: parentsPaths, mapRect: mapRect, zoomScale: zoomScale, context: context)
+        }
+    }
+    
+    private func drawEmptyTile(_ mapRect: MKMapRect, in context: CGContext) {
+        UIGraphicsPushContext(context)
+        context.setFillColor(UIColor(displayP3Red: 0.88, green: 0.88, blue: 0.86, alpha: 1.0).cgColor)
+        context.fill(self.rect(for: mapRect))
+        UIGraphicsPopContext()
+    }
+    
+    private func drawParentsTiles(paths: [MKTileOverlayPath], mapRect: MKMapRect, zoomScale: MKZoomScale, context: CGContext) throws {
+        for path in paths {
+            do {
+                try self.drawImageTile(path: path, context: context)
+            } catch {
+                self.drawEmptyTile(mapRect, in: context)
+            }
+        }
+    }
+    
+    private func drawChildrenTiles(paths: [MKTileOverlayPath], mapRect: MKMapRect, zoomScale: MKZoomScale, context: CGContext) throws {
+        for path in paths {
+            do {
+                try self.drawImageTile(path: path, context: context)
+            } catch {
+                self.drawEmptyTile(mapRect, in: context)
+            }
+        }
+    }
+    
+    private func drawImageTile(path: MKTileOverlayPath, context: CGContext) throws {
+        let tileUrls = try self.tileUrlsFor(path: path)
+        let tile = try self.imageCacheHandler.getTile(url: tileUrls.keyUrl)
+        
+        let imageRef = try self.imageForUrl(url: tileUrls.keyUrl)
+        let image = UIImage(cgImage: imageRef)
+        let rect = self.rect(for: tile.mapRect)
+        UIGraphicsPushContext(context)
+        image.draw(in: rect)
+        UIGraphicsPopContext()
+    }
+    
+    private func setZoomActivity(zoomScale: MKZoomScale) {
+        let newZoom = Int(log2(zoomScale) + 20)
+        
+        if self.zoom < newZoom {
+            self.zoomActivity = ZoomActivity.zoomIn
+        } else if self.zoom > newZoom {
+            self.zoomActivity = ZoomActivity.zoomOut
+        } else {
+            self.zoomActivity = ZoomActivity.pan
+        }
+        
+        self.zoom = newZoom <= 20 ? newZoom : 20
+    }
+    
+    private func getParentsPaths(path: MKTileOverlayPath) throws -> [MKTileOverlayPath] {
+        var firstPath = MKTileOverlayPath()
+        firstPath.x = Int(floor(Double(path.x/2)))
+        firstPath.y = Int(floor(Double(path.y/2)))
+        firstPath.z = Int(path.z - 1)
+        
+        var secondPath = MKTileOverlayPath()
+        secondPath.x = Int(floor(Double(path.x/2) - 1))
+        secondPath.y = Int(floor(Double(path.y/2)))
+        secondPath.z = Int(path.z - 1)
+        
+        var thirdPath = MKTileOverlayPath()
+        thirdPath.x = Int(floor(Double(path.x/2)))
+        thirdPath.y = Int(floor(Double(path.y/2) - 1))
+        thirdPath.z = Int(path.z - 1)
+        
+        var fourthPath = MKTileOverlayPath()
+        fourthPath.x = Int(floor(Double(path.x/2) - 1))
+        fourthPath.y = Int(floor(Double(path.y/2) - 1))
+        fourthPath.z = Int(path.z - 1)
+        
+        return [firstPath, secondPath, thirdPath, fourthPath]
+    }
+    
+    private func getChildrenPaths(path: MKTileOverlayPath) throws -> [MKTileOverlayPath] {
+        var firstPath = MKTileOverlayPath()
+        firstPath.x = Int(floor(Double(path.x*2)))
+        firstPath.y = Int(floor(Double(path.y*2)))
+        firstPath.z = Int(path.z + 1)
+        
+        var secondPath = MKTileOverlayPath()
+        secondPath.x = Int(floor(Double(path.x*2) + 1))
+        secondPath.y = Int(floor(Double(path.y*2)))
+        secondPath.z = Int(path.z + 1)
+        
+        var thirdPath = MKTileOverlayPath()
+        thirdPath.x = Int(floor(Double(path.x*2)))
+        thirdPath.y = Int(floor(Double(path.y*2) + 1))
+        thirdPath.z = Int(path.z + 1)
+        
+        var fourthPath = MKTileOverlayPath()
+        fourthPath.x = Int(floor(Double(path.x*2) + 1))
+        fourthPath.y = Int(floor(Double(path.y*2) + 1))
+        fourthPath.z = Int(path.z + 1)
+        
+        return [firstPath, secondPath, thirdPath, fourthPath]
     }
 }
