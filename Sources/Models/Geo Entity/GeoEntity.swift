@@ -9,20 +9,20 @@
 import Foundation
 
 public struct GeoEntity {
-    var id: Int
-    var name: String?
-    var entityLevel: EntityLevel = .unknown
-    var boundingBox: BoundingBox
-    var center: Coordinate?
-    var geoJSONPolygons = Array<GeoJSONPolygon>()
-    var area: Double = 0
+    public var id: Int
+    public var name: String?
+    public var entityLevel: EntityLevel = .unknown
+    public var boundingBox: BoundingBox
+    public var center: Coordinate?
+    public var geoJSONPolygons = Array<GeoJSONPolygon>()
+    public var area: Double = 0
     
-    var geoJSONObject: GeoJSONObject?
-    var photoCount: Int = 0
-    var photos: [STPhoto] = []
-    var label: GeoLabel?
+    public var geoJSONObject: GeoJSONObject?
+    public var photoCount: Int = 0
+    public var photos: [STPhoto] = []
+    public var label: GeoLabel?
     
-    init(id: Int, boundingBox: BoundingBox) {
+    public init(id: Int, boundingBox: BoundingBox) {
         self.id = id
         self.boundingBox = boundingBox
     }

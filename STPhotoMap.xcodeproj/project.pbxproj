@@ -67,6 +67,7 @@
 		289F27A8228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27A5228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift */; };
 		289F27AA228DBAF100741CF7 /* ClusterLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27A9228DBAF100741CF7 /* ClusterLabelView.swift */; };
 		289F27AC228DBEDF00741CF7 /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F27AB228DBEDF00741CF7 /* ClusterAnnotationView.swift */; };
+		28BAB11D22EEFC8E00DAD432 /* MKTileOverlayPath+Subtiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BAB11C22EEFC8E00DAD432 /* MKTileOverlayPath+Subtiles.swift */; };
 		28BD51F822C1127800968BB8 /* STPhotoMapView+DisplayLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD51F722C1127800968BB8 /* STPhotoMapView+DisplayLogic.swift */; };
 		28BD51FA22C1137200968BB8 /* STPhotoMapView+Subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD51F922C1137200968BB8 /* STPhotoMapView+Subviews.swift */; };
 		28BD51FC22C113F300968BB8 /* STPhotoMapView+MKMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD51FB22C113F300968BB8 /* STPhotoMapView+MKMapView.swift */; };
@@ -255,6 +256,7 @@
 		289F27A5228DBA6100741CF7 /* MultiplePhotoClusterAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiplePhotoClusterAnnotationView.swift; sourceTree = "<group>"; };
 		289F27A9228DBAF100741CF7 /* ClusterLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusterLabelView.swift; sourceTree = "<group>"; };
 		289F27AB228DBEDF00741CF7 /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
+		28BAB11C22EEFC8E00DAD432 /* MKTileOverlayPath+Subtiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKTileOverlayPath+Subtiles.swift"; sourceTree = "<group>"; };
 		28BD51F722C1127800968BB8 /* STPhotoMapView+DisplayLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapView+DisplayLogic.swift"; sourceTree = "<group>"; };
 		28BD51F922C1137200968BB8 /* STPhotoMapView+Subviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapView+Subviews.swift"; sourceTree = "<group>"; };
 		28BD51FB22C113F300968BB8 /* STPhotoMapView+MKMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapView+MKMapView.swift"; sourceTree = "<group>"; };
@@ -711,6 +713,14 @@
 			path = "Cluster Annotations";
 			sourceTree = "<group>";
 		};
+		28BAB11B22EEFC8600DAD432 /* MKTileOverlayPath */ = {
+			isa = PBXGroup;
+			children = (
+				28BAB11C22EEFC8E00DAD432 /* MKTileOverlayPath+Subtiles.swift */,
+			);
+			path = MKTileOverlayPath;
+			sourceTree = "<group>";
+		};
 		28BD51F622C1125600968BB8 /* Photo Map View */ = {
 			isa = PBXGroup;
 			children = (
@@ -910,6 +920,7 @@
 		8529E5632264813500E7CCE5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				28BAB11B22EEFC8600DAD432 /* MKTileOverlayPath */,
 				28524D5922CB786F0052423B /* MKPolyline */,
 				28524D5622CB77D80052423B /* MKPolygon */,
 				28E4A13022A941E100422D53 /* UIViewController */,
@@ -1575,6 +1586,7 @@
 				2858AE0122928DC200A01C4E /* STPhoto.swift in Sources */,
 				289B174422670D1F00B09F7A /* STPhotoMapStyle.swift in Sources */,
 				8533DA7D22A66192006D1567 /* CLLocationCoordinate2D+Distance.swift in Sources */,
+				28BAB11D22EEFC8E00DAD432 /* MKTileOverlayPath+Subtiles.swift in Sources */,
 				28833D7522941A9B0098A833 /* STPhotoMapInteractor+PhotoClusterAnnotationSelection.swift in Sources */,
 				85538D21226703D9007D4A15 /* GeoJSONMultiPolygon.swift in Sources */,
 				2858AE0A229291C600A01C4E /* GetPhotoOperationRequestBuilder.swift in Sources */,

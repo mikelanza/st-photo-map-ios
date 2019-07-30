@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct GeoLabel {
-    var latitude: Double
-    var longitude: Double
-    var radius: Double
+public struct GeoLabel {
+    public var latitude: Double
+    public var longitude: Double
+    public var radius: Double
 }
