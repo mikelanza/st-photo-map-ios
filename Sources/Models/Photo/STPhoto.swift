@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct STPhoto: Codable {
+public struct STPhoto: Codable {
     var id: String
     var createdAt: Date
     var user: STUser?

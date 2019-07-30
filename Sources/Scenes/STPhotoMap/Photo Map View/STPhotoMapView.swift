@@ -172,6 +172,7 @@ extension STPhotoMapView {
 
 extension STPhotoMapView {
     private func predownloadOuterTiles() {
+        self.tileOverlayRenderer?.predownload(outer: [])
     }
     
     @objc func mapViewDidPan(_ sender: UIGestureRecognizer) {
