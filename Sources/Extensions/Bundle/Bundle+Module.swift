@@ -9,8 +9,10 @@
 import Foundation
 
 extension Bundle {
+    private class STPhotoMapModule { }
+    
     static var module: Bundle {
-        let bundle = Bundle(for: STPhotoMapView.self)
+        let bundle = Bundle(for: STPhotoMapModule.self)
         guard let url = bundle.url(forResource: "STPhotoMap", withExtension: "bundle") else { return bundle }
         return Bundle(url: url) ?? bundle
     }
