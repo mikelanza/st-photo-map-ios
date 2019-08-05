@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 extension STPhotoMapInteractor {
     func shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request) {

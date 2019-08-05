@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 public class STPhotoMapUrlBuilder {
     init() {

@@ -12,6 +12,7 @@
 
 @testable import STPhotoMap
 import XCTest
+import STPhotoCore
 
 class STPhotoMapPresenterTests: XCTestCase {
     // MARK: Subject under test

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 // MARK: - Location level logic
 

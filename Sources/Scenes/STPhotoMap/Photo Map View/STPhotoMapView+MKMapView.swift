@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 extension STPhotoMapView: MKMapViewDelegate {
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {

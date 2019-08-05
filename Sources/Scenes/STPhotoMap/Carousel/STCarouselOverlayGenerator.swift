@@ -7,6 +7,7 @@
 //
 
 import MapKit
+import STPhotoCore
 
 struct STCarouselOverlayGenerator {
     func overlayForPolygon(polygon: GeoJSONPolygon) -> MKPolygon {

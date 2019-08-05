@@ -7,6 +7,7 @@
 //
 
 import MapKit
+import STPhotoCore
 
 class ClusterAnnotationView: MKAnnotationView, DefaultReuseIdentifier {
     private let count: Int

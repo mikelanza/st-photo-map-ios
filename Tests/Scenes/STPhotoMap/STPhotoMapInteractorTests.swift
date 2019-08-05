@@ -13,6 +13,7 @@
 @testable import STPhotoMap
 import XCTest
 import MapKit
+import STPhotoCore
 
 class STPhotoMapInteractorTests: XCTestCase {
     var sut: STPhotoMapInteractor!

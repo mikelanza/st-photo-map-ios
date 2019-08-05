@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 public protocol STPhotoMapViewDelegate: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?)

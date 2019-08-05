@@ -12,6 +12,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 enum STPhotoMapModels {
     enum VisibleTiles {

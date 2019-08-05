@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 extension GeoEntity {
     func toCarousel() -> STCarousel {

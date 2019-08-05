@@ -9,6 +9,7 @@
 @testable import STPhotoMap
 import UIKit
 import MapKit
+import STPhotoCore
 
 class STPhotoMapWorkerSpy: STPhotoMapWorker {
     var delay: Double = 0

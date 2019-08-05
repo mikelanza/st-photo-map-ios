@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 class STPhotoMapLocalization {
     static let shared = STPhotoMapLocalization()
@@ -43,38 +44,38 @@ class STPhotoMapLocalization {
         locationAccessDeniedCancel = "STPhotoMap.location.access.denied.cancel"
     }
     
-    let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized()
-    let noInternetConnectionTitle = LocalizedKey.noInternetConnection.localized()
+    let noDataAvailableTitle = LocalizedKey.noDataAvailable.localized(in: Bundle.module)
+    let noInternetConnectionTitle = LocalizedKey.noInternetConnection.localized(in: Bundle.module)
     
-    let dataSourcesTitle = LocalizedKey.dataSources.localized()
+    let dataSourcesTitle = LocalizedKey.dataSources.localized(in: Bundle.module)
     
-    let locationLevelTitle = LocalizedKey.locationLevel.localized()
-    let blockLevelTitle = LocalizedKey.blockLevel.localized()
-    let neighborhoodLevelTitle = LocalizedKey.neighborhoodLevel.localized()
-    let cityLevelTitle = LocalizedKey.cityLevel.localized()
-    let countyLevelTitle = LocalizedKey.countyLevel.localized()
-    let stateLevelTitle = LocalizedKey.stateLevel.localized()
-    let countryLevelTitle = LocalizedKey.countryLevel.localized()
+    let locationLevelTitle = LocalizedKey.locationLevel.localized(in: Bundle.module)
+    let blockLevelTitle = LocalizedKey.blockLevel.localized(in: Bundle.module)
+    let neighborhoodLevelTitle = LocalizedKey.neighborhoodLevel.localized(in: Bundle.module)
+    let cityLevelTitle = LocalizedKey.cityLevel.localized(in: Bundle.module)
+    let countyLevelTitle = LocalizedKey.countyLevel.localized(in: Bundle.module)
+    let stateLevelTitle = LocalizedKey.stateLevel.localized(in: Bundle.module)
+    let countryLevelTitle = LocalizedKey.countryLevel.localized(in: Bundle.module)
     
-    let photoDetailsTutorial = LocalizedKey.photoDetailsTutorial.localized()
+    let photoDetailsTutorial = LocalizedKey.photoDetailsTutorial.localized(in: Bundle.module)
     
-    let locationAccessDeniedMessage = LocalizedKey.locationAccessDeniedMessage.localized()
-    let locationAccessDeniedSettings = LocalizedKey.locationAccessDeniedSettings.localized()
-    let locationAccessDeniedCancel = LocalizedKey.locationAccessDeniedCancel.localized()
+    let locationAccessDeniedMessage = LocalizedKey.locationAccessDeniedMessage.localized(in: Bundle.module)
+    let locationAccessDeniedSettings = LocalizedKey.locationAccessDeniedSettings.localized(in: Bundle.module)
+    let locationAccessDeniedCancel = LocalizedKey.locationAccessDeniedCancel.localized(in: Bundle.module)
     
     func photoCountTitle(_ count: Int) -> String {
-        return String.localizedStringWithFormat(LocalizedKey.photoCount.localized(), count)
+        return String.localizedStringWithFormat(LocalizedKey.photoCount.localized(in: Bundle.module), count)
     }
     
     func entitySelectionTutorial(entityLevel: String) -> String {
-        return String.localizedStringWithFormat(LocalizedKey.entitySelectionTutorial.localized(), entityLevel)
+        return String.localizedStringWithFormat(LocalizedKey.entitySelectionTutorial.localized(in: Bundle.module), entityLevel)
     }
     
     func carouselBlockEntityTitle(photoCountTitle: String) -> String {
-        return String(format: LocalizedKey.carouselBlockEntityTitle.localized(), photoCountTitle)
+        return String(format: LocalizedKey.carouselBlockEntityTitle.localized(in: Bundle.module), photoCountTitle)
     }
     
     func carouselEntityTitle(photoCountTitle: String, entityName: String) -> String {
-        return String(format: LocalizedKey.carouselEntityTitle.localized(), photoCountTitle, entityName)
+        return String(format: LocalizedKey.carouselEntityTitle.localized(in: Bundle.module), photoCountTitle, entityName)
     }
 }

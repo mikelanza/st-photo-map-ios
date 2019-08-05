@@ -10,6 +10,7 @@
 import XCTest
 import MapKit
 import SafariServices
+import STPhotoCore
 
 class STPhotoMapViewTests: XCTestCase {
     var sut: STPhotoMapView!

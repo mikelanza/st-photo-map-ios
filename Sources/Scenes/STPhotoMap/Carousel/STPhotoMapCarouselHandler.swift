@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 protocol STPhotoMapCarouselHandlerDelegate: class {
     func carouselHandler(handler: STPhotoMapCarouselHandler?, reloadCarousel carousel: STCarousel)

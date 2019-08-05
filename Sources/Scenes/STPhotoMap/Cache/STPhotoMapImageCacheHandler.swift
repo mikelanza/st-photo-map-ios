@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import STPhotoCore
 
 class STPhotoMapImageCacheHandler {
     var cache: STPhotoMapImageCache

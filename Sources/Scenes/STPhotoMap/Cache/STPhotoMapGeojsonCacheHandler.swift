@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 class STPhotoMapGeojsonCacheHandler {
     var cache: STPhotoMapGeojsonCache

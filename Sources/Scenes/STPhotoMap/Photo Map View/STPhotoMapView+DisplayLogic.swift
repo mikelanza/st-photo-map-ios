@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 protocol STPhotoMapDisplayLogic: class {
     func displayLoadingState()

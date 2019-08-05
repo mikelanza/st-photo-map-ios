@@ -8,6 +8,7 @@
 
 @testable import STPhotoMap
 import MapKit
+import STPhotoCore
 
 class STPhotoTileOverlayRendererSpy: STPhotoTileOverlayRenderer {
     var predownloadCalled: Bool = false
