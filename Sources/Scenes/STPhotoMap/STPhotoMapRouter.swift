@@ -17,36 +17,33 @@ import SafariServices
     func navigateToSafari(url: URL)
     func navigateToLocationSettingsAlert(controller: UIAlertController)
     func navigateToApplication(url: URL)
+    func navigateToPhotoDetails(photoId: String)
+    
+    weak var viewController: UIViewController? { get set }
 }
 
-protocol STPhotoMapDataPassing {
-    var dataStore: STPhotoMapDataStore? { get }
-}
-
-class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic, STPhotoMapDataPassing {
+class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic {
     weak var displayer: STPhotoMapDisplayLogic?
-    var dataStore: STPhotoMapDataStore?
+    weak var viewController: UIViewController?
     
     // MARK: Routing
     
     func navigateToSafari(url: URL) {
-        DispatchQueue.main.async {
-            let viewController = SFSafariViewController(url: url)
-            viewController.show()
-        }
+        let safariViewController = SFSafariViewController(url: url)
+        self.viewController?.present(safariViewController, animated: true, completion: nil)
     }
         
     func navigateToLocationSettingsAlert(controller: UIAlertController) {
-        DispatchQueue.main.async {
-            controller.show()
-        }
+        self.viewController?.present(controller, animated: true, completion: nil)
     }
     
     func navigateToApplication(url: URL) {
-        DispatchQueue.main.async {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
         }
+    }
+    
+    func navigateToPhotoDetails(photoId: String) {
+        
     }
 }

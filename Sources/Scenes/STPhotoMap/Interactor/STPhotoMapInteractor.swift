@@ -46,10 +46,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldReloadLocationLevel()
 }
 
-protocol STPhotoMapDataStore {
-}
-
-class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhotoMapWorkerDelegate {
+class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapWorkerDelegate {
     var presenter: STPhotoMapPresentationLogic?
     var worker: STPhotoMapWorker?
     
