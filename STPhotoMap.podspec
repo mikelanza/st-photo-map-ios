@@ -3,11 +3,11 @@ Pod::Spec.new do |s|
  s.version = '0.0.9'
  s.license = { :type => "MIT", :file => "LICENSE" }
  s.summary = 'A map that displays photos'
- s.homepage = 'https://github.com/mikelanza/st-photo-map-ios.git'
- s.social_media_url = 'https://twitter.com/ '
+ s.homepage = 'https://streetography.com'
+ s.social_media_url = 'https://streetography.com'
  s.authors = { "Streetography" => "mike@lanza.net" }
- s.source = { :git => "https://github.com/mikelanza/STPhotoMap.git", :tag => "v"+s.version.to_s }
- s.platforms = { :ios => "11.0", :osx => "10.10", :tvos => "9.0", :watchos => "2.0" }
+ s.source = { :git => "https://github.com/mikelanza/st-photo-map-ios.git", :tag => s.version.to_s }
+ s.platforms = { :ios => "11.0" }
  s.requires_arc = true
 
  s.default_subspec = "Core"
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
      ss.source_files = "Sources/**/*.swift"
      ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets}"] }
      ss.dependency "Kingfisher", "~> 5.0"
-     ss.dependency "STPhotoCore", "~> 0.0.7"
+     ss.dependency "STPhotoCore", "~> 0.0.9"
      ss.framework = "Foundation"
  end
 
