@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import STPhotoCore
 
 class STPhotoMapImageCacheHandler {
     var cache: STPhotoMapImageCache
@@ -139,7 +140,7 @@ class STPhotoMapImageCacheHandler {
         self.addPreloadingActiveDownload(keyUrl)
         self.predownloadImage(url: downloadUrl, with: priority) { [weak self]  (data, error) in
             self?.removePreloadingActiveDownload(keyUrl)
-            if let imageData = data {
+            if let _ = data {
                 //self?.cache.addTile(data: imageData, forUrl: downloadUrl, keyUrl: keyUrl)
             }
             completion?()

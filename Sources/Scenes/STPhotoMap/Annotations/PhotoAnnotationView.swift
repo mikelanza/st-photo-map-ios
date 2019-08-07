@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import STPhotoCore
 
 protocol PhotoAnnotationInterface: NSObjectProtocol {
     func setImage(image: UIImage?)

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 class STPhotoMapParametersHandler {
     public static let shared = STPhotoMapParametersHandler()

@@ -7,6 +7,7 @@
 //
 
 @testable import STPhotoMap
+import STPhotoCore
 
 class STPhotoMapViewDelegateSpy: NSObject, STPhotoMapViewDelegate {
     var photoMapViewNavigateToPhotoDetailsForPhotoIdCalled: Bool = false

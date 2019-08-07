@@ -7,6 +7,7 @@
 //
 
 import MapKit
+import STPhotoCore
 
 protocol MultiplePhotoClusterAnnotationInterface: NSObjectProtocol {
     func setImage(photoId: String, image: UIImage?)

@@ -12,6 +12,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 protocol STPhotoMapBusinessLogic {
     func shouldUpdateVisibleTiles(request: STPhotoMapModels.VisibleTiles.Request)
@@ -45,10 +46,7 @@ protocol STPhotoMapBusinessLogic {
     func shouldReloadLocationLevel()
 }
 
-protocol STPhotoMapDataStore {
-}
-
-class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapDataStore, STPhotoMapWorkerDelegate {
+class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapWorkerDelegate {
     var presenter: STPhotoMapPresentationLogic?
     var worker: STPhotoMapWorker?
     

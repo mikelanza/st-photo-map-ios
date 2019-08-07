@@ -7,6 +7,7 @@
 //
 
 import MapKit
+import STPhotoCore
 
 enum STCarouselOverlayRendererError: LocalizedError {
     case noOverlayPathAvailable

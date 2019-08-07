@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 public protocol STPhotoMapViewDelegate: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?)
@@ -18,6 +19,11 @@ public protocol STPhotoMapViewDelegate: NSObjectProtocol {
 public class STPhotoMapView: UIView {
     public weak var mapView: STActionMapView!
     public weak var delegate: STPhotoMapViewDelegate?
+    public weak var viewController: UIViewController? {
+        didSet {
+            self.router?.viewController = self.viewController
+        }
+    }
     
     var interactor: STPhotoMapBusinessLogic?
     var router: STPhotoMapRoutingLogic?

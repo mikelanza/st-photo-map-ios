@@ -12,6 +12,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 protocol STPhotoMapPresentationLogic {
     func presentLoadingState()

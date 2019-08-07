@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 protocol STPhotoMapDisplayLogic: class {
     func displayLoadingState()
@@ -129,7 +130,13 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     // MARK: - Photo details navigation
     
     func displayNavigateToPhotoDetails(viewModel: STPhotoMapModels.PhotoDetailsNavigation.ViewModel) {
-        self.delegate?.photoMapView(self, navigateToPhotoDetailsFor: viewModel.photoId)
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.photoMapView(self, navigateToPhotoDetailsFor: viewModel.photoId)
+            } else {
+                self.router?.navigateToPhotoDetails(photoId: viewModel.photoId)
+            }
+        }
     }
     
     // MARK: - Location overlay
@@ -259,26 +266,32 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     // MARK: - Data sources
     
     func displayOpenDataSourcesLink(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
-        self.router?.navigateToSafari(url: viewModel.url)
+        DispatchQueue.main.async {
+            self.router?.navigateToSafari(url: viewModel.url)
+        }
     }
     
     // MARK: - Open application
     
     func displayOpenApplication(viewModel: STPhotoMapModels.OpenApplication.ViewModel) {
-        self.router?.navigateToApplication(url: viewModel.url)
+        DispatchQueue.main.async {
+            self.router?.navigateToApplication(url: viewModel.url)
+        }
     }
     
     // MARK: - Location access denied alert
     
     func displayLocationAccessDeniedAlert(viewModel: STPhotoMapModels.LocationAccessDeniedAlert.ViewModel) {
-        let alertController = UIAlertController(title: viewModel.title, message: viewModel.message, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: viewModel.cancelTitle, style: .cancel, handler: nil)
-        let settingsAction = UIAlertAction(title: viewModel.settingsTitle, style: .default, handler: { action in
-            self.interactor?.shouldOpenSettingsApplication()
-        })
-        alertController.addAction(cancelAction)
-        alertController.addAction(settingsAction)
-        
-        self.router?.navigateToLocationSettingsAlert(controller: alertController)
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: viewModel.title, message: viewModel.message, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: viewModel.cancelTitle, style: .cancel, handler: nil)
+            let settingsAction = UIAlertAction(title: viewModel.settingsTitle, style: .default, handler: { action in
+                self.interactor?.shouldOpenSettingsApplication()
+            })
+            alertController.addAction(cancelAction)
+            alertController.addAction(settingsAction)
+            
+            self.router?.navigateToLocationSettingsAlert(controller: alertController)
+        }
     }
 }

@@ -13,6 +13,9 @@ class STPhotoMapRoutingLogicSpy: STPhotoMapRoutingLogic {
     var navigateToSafariCalled: Bool = false
     var navigateToLocationSettingsAlertCalled: Bool = false
     var navigateToApplicationCalled: Bool = false
+    var navigateToPhotoDetailsCalled: Bool = false
+    
+    weak var viewController: UIViewController?
     
     func navigateToSafari(url: URL) {
         self.navigateToSafariCalled = true
@@ -24,5 +27,9 @@ class STPhotoMapRoutingLogicSpy: STPhotoMapRoutingLogic {
     
     func navigateToApplication(url: URL) {
         self.navigateToApplicationCalled = true
+    }
+    
+    func navigateToPhotoDetails(photoId: String) {
+        self.navigateToPhotoDetailsCalled = true
     }
 }

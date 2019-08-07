@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import STPhotoCore
 
 extension STPhotoMapInteractor {
     func shouldSelectCarousel(request: STPhotoMapModels.CarouselSelection.Request) {

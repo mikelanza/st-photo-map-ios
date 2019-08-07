@@ -10,6 +10,7 @@
 import XCTest
 import MapKit
 import SafariServices
+import STPhotoCore
 
 class STPhotoMapViewTests: XCTestCase {
     var sut: STPhotoMapView!
@@ -393,11 +394,19 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.sut.mapView.annotations.isEmpty)
     }
     
-    func testDisplayNavigateToPhotoDetails() {
+    func testDisplayNavigateToPhotoDetailsWhenPhotoMapViewDelegateIsNotNull() {
         let viewModel = STPhotoMapModels.PhotoDetailsNavigation.ViewModel(photoId: STPhotoMapSeeds.photoId)
         self.sut.displayNavigateToPhotoDetails(viewModel: viewModel)
-        
+        self.waitForMainQueue()
         XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToPhotoDetailsForPhotoIdCalled)
+    }
+    
+    func testDisplayNavigateToPhotoDetailsWhenPhotoMapViewDelegateIsNull() {
+        self.sut.delegate = nil
+        let viewModel = STPhotoMapModels.PhotoDetailsNavigation.ViewModel(photoId: STPhotoMapSeeds.photoId)
+        self.sut.displayNavigateToPhotoDetails(viewModel: viewModel)
+        self.waitForMainQueue()
+        XCTAssertTrue(self.routerSpy.navigateToPhotoDetailsCalled)
     }
     
     func testDisplayLocationOverlay() {

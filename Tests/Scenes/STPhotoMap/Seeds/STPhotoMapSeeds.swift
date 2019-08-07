@@ -8,6 +8,7 @@
 
 @testable import STPhotoMap
 import MapKit
+import STPhotoCore
 
 enum STPhotoMapSeedsError: Error {
     case noResourceAvailable

@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import STPhotoCore
 
 // MARK: - Determine carousel
 

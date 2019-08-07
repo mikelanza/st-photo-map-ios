@@ -12,6 +12,7 @@
 
 import UIKit
 import MapKit
+import STPhotoCore
 
 protocol STPhotoMapWorkerDelegate: class {
     func successDidGetGeojsonTileForCaching(tileCoordinate: TileCoordinate, keyUrl: String, downloadUrl: String, geojsonObject: GeoJSONObject)

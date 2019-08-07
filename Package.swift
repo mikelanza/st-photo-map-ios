@@ -12,10 +12,7 @@ import PackageDescription
 let package = Package(
     name: "STPhotoMap",
     platforms: [
-        .iOS(.v11),
-        .macOS(.v10_10),
-        .tvOS(.v9),
-        .watchOS(.v2),
+        .iOS(.v11)
     ],
     products: [
         .library(
@@ -26,7 +23,8 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "5.0"))
+        .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "5.0")),
+        .package(url: "https://github.com/mikelanza/st-photo-core-ios.git", .upToNextMajor(from: "0.0.9"))
     ],
     targets: [
         .target(

@@ -7,6 +7,7 @@
 //
 
 import MapKit
+import STPhotoCore
 
 protocol STActionMapViewDelegate: NSObjectProtocol {
     func actionMapView(mapView: STActionMapView?, didSelect carouselOverlay: STCarouselOverlay, atLocation location: STLocation)

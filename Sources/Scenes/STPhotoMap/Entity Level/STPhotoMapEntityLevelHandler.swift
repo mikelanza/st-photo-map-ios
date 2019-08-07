@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import STPhotoCore
 
 protocol STPhotoMapEntityLevelHandlerDelegate: class {
     func photoMapEntityLevelHandler(newEntityLevel level: EntityLevel)

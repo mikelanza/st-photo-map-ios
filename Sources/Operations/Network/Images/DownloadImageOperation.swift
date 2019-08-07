@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import STPhotoCore
 
 class DownloadImageOperation: AsynchronousOperation {
     private let model: DownloadImageOperationModel.Request
