@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
  s.source = { :git => "https://github.com/mikelanza/st-photo-map-ios.git", :tag => s.version.to_s }
  s.platforms = { :ios => "11.0" }
  s.requires_arc = true
+ s.swift_versions = ['5.0']
 
  s.default_subspec = "Core"
  s.subspec "Core" do |ss|
