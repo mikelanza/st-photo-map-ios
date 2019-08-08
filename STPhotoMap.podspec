@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
      ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets}"] }
      ss.dependency "Kingfisher", "~> 5.0"
      ss.dependency "STPhotoCore", "~> 0.1.0"
-     ss.dependency "STPhotoDetails", "~> 0.0.4"
+     ss.dependency "STPhotoDetails", "~> 0.0.5"
      ss.framework = "Foundation"
  end
 
