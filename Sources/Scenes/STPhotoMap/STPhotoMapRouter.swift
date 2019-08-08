@@ -12,6 +12,7 @@
 
 import UIKit
 import SafariServices
+import STPhotoDetails
 
 @objc protocol STPhotoMapRoutingLogic {
     func navigateToSafari(url: URL)
@@ -44,6 +45,11 @@ class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic {
     }
     
     func navigateToPhotoDetails(photoId: String) {
-        
+        let photoDetailsViewController = STPhotoDetailsViewController(photoId: photoId)
+        if let controller = self.viewController as? UINavigationController {
+            controller.pushViewController(photoDetailsViewController, animated: true)
+        } else {
+            self.viewController?.present(photoDetailsViewController, animated: true, completion: nil)
+        }
     }
 }

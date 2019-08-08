@@ -24,7 +24,8 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "5.0")),
-        .package(url: "https://github.com/mikelanza/st-photo-core-ios.git", .upToNextMajor(from: "0.0.9"))
+        .package(url: "https://github.com/mikelanza/st-photo-core-ios.git", .upToNextMajor(from: "0.0.9")),
+        .package(url: "https://github.com/mikelanza/st-photo-details-ios.git", .upToNextMajor(from: "0.0.3"))
     ],
     targets: [
         .target(

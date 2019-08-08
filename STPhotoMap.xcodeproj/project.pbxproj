@@ -19,6 +19,10 @@
 		2828E93A228D5DD100EAB0B6 /* URL+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2828E939228D5DD100EAB0B6 /* URL+DownloadImage.swift */; };
 		282C1083228D52FB0045A123 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282C1082228D52FB0045A123 /* Kingfisher.framework */; };
 		282CA12E22A28BB7008003AA /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 282CA13022A28BB7008003AA /* Localizable.stringsdict */; };
+		282FC0DA22FC2FE80016BECA /* STPhotoDetails.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282FC0D922FC2FE80016BECA /* STPhotoDetails.framework */; };
+		282FC0DC22FC30A50016BECA /* STPhotoMapRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282FC0DB22FC30A50016BECA /* STPhotoMapRouterTests.swift */; };
+		282FC0DE22FC31800016BECA /* UIViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282FC0DD22FC31800016BECA /* UIViewControllerSpy.swift */; };
+		282FC0E022FC32960016BECA /* UINavigationControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282FC0DF22FC32960016BECA /* UINavigationControllerSpy.swift */; };
 		2831D673228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2831D672228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift */; };
 		2831D675228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2831D674228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift */; };
 		284616A2228571E200482303 /* STPhotoMapUrlBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284616A1228571E200482303 /* STPhotoMapUrlBuilder.swift */; };
@@ -136,6 +140,10 @@
 		282C1082228D52FB0045A123 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		282CA12F22A28BB7008003AA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		282CA13122A28BB9008003AA /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ro; path = ro.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		282FC0D922FC2FE80016BECA /* STPhotoDetails.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = STPhotoDetails.framework; path = Carthage/Build/iOS/STPhotoDetails.framework; sourceTree = "<group>"; };
+		282FC0DB22FC30A50016BECA /* STPhotoMapRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapRouterTests.swift; sourceTree = "<group>"; };
+		282FC0DD22FC31800016BECA /* UIViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerSpy.swift; sourceTree = "<group>"; };
+		282FC0DF22FC32960016BECA /* UINavigationControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerSpy.swift; sourceTree = "<group>"; };
 		2831D672228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+GeojsonCache.swift"; sourceTree = "<group>"; };
 		2831D674228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+EntityLevel.swift"; sourceTree = "<group>"; };
 		284616A1228571E200482303 /* STPhotoMapUrlBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapUrlBuilder.swift; sourceTree = "<group>"; };
@@ -225,6 +233,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				282FC0DA22FC2FE80016BECA /* STPhotoDetails.framework in Frameworks */,
 				28CAA78C22F8476200C1B69F /* STPhotoCore.framework in Frameworks */,
 				282C1083228D52FB0045A123 /* Kingfisher.framework in Frameworks */,
 			);
@@ -301,6 +310,8 @@
 				28E4A13322A948AE00422D53 /* STPhotoMapRoutingLogicSpy.swift */,
 				8501FBAC22AA2B9D00F1A7E3 /* STPhotoTileOverlayRendererSpy.swift */,
 				281B915E22B4E704008E7AA5 /* OperationQueueSpy.swift */,
+				282FC0DD22FC31800016BECA /* UIViewControllerSpy.swift */,
+				282FC0DF22FC32960016BECA /* UINavigationControllerSpy.swift */,
 			);
 			path = "Test Doubles";
 			sourceTree = "<group>";
@@ -462,6 +473,7 @@
 				28CAAC8B22608F52000C0200 /* STPhotoMapWorkerTests.swift */,
 				28CAAC8C22608F52000C0200 /* STPhotoMapPresenterTests.swift */,
 				2810E6A722852DA100D491C2 /* STPhotoMapViewTests.swift */,
+				282FC0DB22FC30A50016BECA /* STPhotoMapRouterTests.swift */,
 			);
 			path = STPhotoMap;
 			sourceTree = "<group>";
@@ -560,6 +572,7 @@
 		357D954B1DA3F2B400AEC55F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				282FC0D922FC2FE80016BECA /* STPhotoDetails.framework */,
 				28CAA78B22F8476200C1B69F /* STPhotoCore.framework */,
 				282C1082228D52FB0045A123 /* Kingfisher.framework */,
 			);
@@ -997,12 +1010,14 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/STPhotoCore.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/STPhotoDetails.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/STPhotoCore.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/STPhotoDetails.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1122,6 +1137,7 @@
 				2810E6AF2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift in Sources */,
 				2862896B229647230033AFD3 /* STActionMapViewSpy.swift in Sources */,
 				2810E6A822852DA100D491C2 /* STPhotoMapViewTests.swift in Sources */,
+				282FC0E022FC32960016BECA /* UINavigationControllerSpy.swift in Sources */,
 				28E4A13422A948AE00422D53 /* STPhotoMapRoutingLogicSpy.swift in Sources */,
 				281B915F22B4E704008E7AA5 /* OperationQueueSpy.swift in Sources */,
 				28CAAC8E22608F52000C0200 /* STPhotoMapInteractorTests.swift in Sources */,
@@ -1129,12 +1145,14 @@
 				28CAAC8F22608F52000C0200 /* STPhotoMapWorkerTests.swift in Sources */,
 				28CAAC9022608F52000C0200 /* STPhotoMapPresenterTests.swift in Sources */,
 				2810E6AB22852FAE00D491C2 /* STPhotoMapPresentationLogicSpy.swift in Sources */,
+				282FC0DC22FC30A50016BECA /* STPhotoMapRouterTests.swift in Sources */,
 				28F5457D2285972800081475 /* STPhotoMapWorkerSpy.swift in Sources */,
 				28833D79229420920098A833 /* MultiplePhotoClusterAnnotationInterfaceSpy.swift in Sources */,
 				28FA365D228AD628000A9E3D /* STPhotoMapSeeds.swift in Sources */,
 				2810E6AD228530DE00D491C2 /* STPhotoMapDisplayLogicSpy.swift in Sources */,
 				8501FBAE22AA2BB400F1A7E3 /* STPhotoTileOverlayRendererSpy.swift in Sources */,
 				28E9DD0F2290297700FC2CA7 /* STPhotoMapViewDelegateSpy.swift in Sources */,
+				282FC0DE22FC31800016BECA /* UIViewControllerSpy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
