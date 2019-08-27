@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
  s.name = 'STPhotoMap'
- s.version = '0.0.9'
+ s.version = '0.1.1'
  s.license = { :type => "MIT", :file => "LICENSE" }
  s.summary = 'A map that displays photos'
  s.homepage = 'https://streetography.com'
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
      ss.source_files = "Sources/**/*.swift"
      ss.resource_bundles = { "STPhotoMap" => ["Sources/**/*.{lproj,xcassets}"] }
      ss.dependency "Kingfisher", "~> 5.0"
-     ss.dependency "STPhotoCore", "~> 0.0.9"
+     ss.dependency "STPhotoCore", "~> 0.1.1"
      ss.framework = "Foundation"
  end
 
