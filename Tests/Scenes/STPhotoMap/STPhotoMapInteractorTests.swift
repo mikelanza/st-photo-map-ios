@@ -513,6 +513,18 @@ class STPhotoMapInteractorTests: XCTestCase {
         XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
     }
     
+    func testShouldDetermineEntityLevelWhenEntityLevelIsChangedShouldAskTheInteractorToResetCurrentCarousel() {
+        let carousel = STCarousel()
+        carousel.entityId = 100
+        carousel.entityLevel = .block
+        self.sut.carouselHandler.carousel = carousel
+        
+        self.sut.photoMapEntityLevelHandler(newEntityLevel: EntityLevel.country)
+        
+        XCTAssertEqual(self.sut.carouselHandler.carousel.entityId, STCarousel().entityId)
+        XCTAssertEqual(self.sut.carouselHandler.carousel.entityLevel, STCarousel().entityLevel)
+    }
+    
     func testShouldDetermineEntityLevelWhenNewEntityLevelIsLocation() throws {
         workerSpy.geojsonObject = try! STPhotoMapSeeds().locationGeojsonObject()
         workerSpy.photo = STPhotoMapSeeds().photo()

@@ -145,6 +145,7 @@ extension STPhotoMapInteractor: STPhotoMapEntityLevelHandlerDelegate {
         self.presenter?.presentRemoveLocationOverlay()
         self.presenter?.presentRemoveCarousel()
         self.presenter?.presentEntityLevel(response: STPhotoMapModels.EntityZoomLevel.Response(entityLevel: level))
+        self.carouselHandler.resetCarousel()
         self.shouldDetermineCarousel()
     }
     
