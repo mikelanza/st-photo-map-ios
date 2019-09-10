@@ -13,19 +13,24 @@
 import UIKit
 import SafariServices
 import STPhotoDetails
+import STPhotoCore
+import STPhotoCollection
 
-@objc protocol STPhotoMapRoutingLogic {
+protocol STPhotoMapRoutingLogic: AnyObject {
     func navigateToSafari(url: URL)
     func navigateToLocationSettingsAlert(controller: UIAlertController)
     func navigateToApplication(url: URL)
     func navigateToPhotoDetails(photoId: String)
+    func navigateToPhotoCollection(location: STLocation, entityLevel: EntityLevel, userId: String?, collectionId: String?)
     
-    weak var viewController: UIViewController? { get set }
+    var viewController: UIViewController? { get set }
+    var photoMapView: STPhotoMapView? { get set }
 }
 
 class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic {
     weak var displayer: STPhotoMapDisplayLogic?
     weak var viewController: UIViewController?
+    weak var photoMapView: STPhotoMapView?
     
     // MARK: Routing
     
@@ -50,6 +55,18 @@ class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic {
             controller.pushViewController(photoDetailsViewController, animated: true)
         } else {
             self.viewController?.present(photoDetailsViewController, animated: true, completion: nil)
+        }
+    }
+    
+    func navigateToPhotoCollection(location: STLocation, entityLevel: EntityLevel, userId: String?, collectionId: String?) {
+        let entity = STPhotoCollection.EntityModel(location: location, level: entityLevel)
+        let filters = STPhotoCollection.FilterModel(userId: userId, collectionId: collectionId)
+        let photoCollectionViewController = STPhotoCollectionViewController(model: STPhotoCollection.Model(entityModel: entity, filterModel: filters))
+        photoCollectionViewController.delegate = self.photoMapView
+        if let controller = self.viewController as? UINavigationController {
+            controller.pushViewController(photoCollectionViewController, animated: true)
+        } else {
+            self.viewController?.present(photoCollectionViewController, animated: true, completion: nil)
         }
     }
 }

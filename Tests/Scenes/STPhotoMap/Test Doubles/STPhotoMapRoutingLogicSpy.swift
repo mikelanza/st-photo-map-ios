@@ -8,14 +8,17 @@
 
 @testable import STPhotoMap
 import UIKit
+import STPhotoCore
 
 class STPhotoMapRoutingLogicSpy: STPhotoMapRoutingLogic {
     var navigateToSafariCalled: Bool = false
     var navigateToLocationSettingsAlertCalled: Bool = false
     var navigateToApplicationCalled: Bool = false
     var navigateToPhotoDetailsCalled: Bool = false
+    var navigateToPhotoCollectionCalled: Bool = false
     
     weak var viewController: UIViewController?
+    weak var photoMapView: STPhotoMapView?
     
     func navigateToSafari(url: URL) {
         self.navigateToSafariCalled = true
@@ -31,5 +34,9 @@ class STPhotoMapRoutingLogicSpy: STPhotoMapRoutingLogic {
     
     func navigateToPhotoDetails(photoId: String) {
         self.navigateToPhotoDetailsCalled = true
+    }
+    
+    func navigateToPhotoCollection(location: STLocation, entityLevel: EntityLevel, userId: String?, collectionId: String?) {
+        self.navigateToPhotoCollectionCalled = true
     }
 }

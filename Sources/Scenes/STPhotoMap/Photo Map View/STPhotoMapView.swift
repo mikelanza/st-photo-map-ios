@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import STPhotoCore
+import STPhotoCollection
 
 public protocol STPhotoMapViewDelegate: NSObjectProtocol {
     func photoMapView(_ view: STPhotoMapView?, navigateToPhotoDetailsFor photoId: String?)
@@ -211,5 +212,11 @@ extension STPhotoMapView {
     
     @objc func touchUpInsideDataSourcesButton(button: UIButton?) {
         self.interactor?.shouldOpenDataSourcesLink()
+    }
+}
+
+extension STPhotoMapView: STPhotoCollectionViewControllerDelegate {
+    public func photoCollectionViewController(_ viewController: STPhotoCollectionViewController?, navigateToPhotoDetailsFor photoId: String?) {
+        self.interactor?.shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request(photoId: photoId ?? ""))
     }
 }

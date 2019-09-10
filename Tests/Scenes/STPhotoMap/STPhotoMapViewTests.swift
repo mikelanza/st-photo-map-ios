@@ -328,6 +328,11 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertTrue(self.interactorSpy.shouldOpenDataSourcesLinkCalled)
     }
     
+    func testShouldNavigateToPhotoDetailsWhenPhotoCollectionViewControllerDelegateSendNavigateToPhotoDetailsForId() {
+        self.sut.photoCollectionViewController(nil, navigateToPhotoDetailsFor: "uuid")
+        XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoDetailsCalled)
+    }
+    
     func testReloadCarousel() {
         self.sut.reloadCarousel()
         XCTAssertTrue(self.interactorSpy.shouldReloadCarouselCalled)
@@ -485,10 +490,10 @@ class STPhotoMapViewTests: XCTestCase {
         XCTAssertEqual(self.sut.mapView.overlays.count, 0)
     }
     
-    func testDisplayNavigateToPhotoCollection() {
+    func testDisplayNavigateToPhotoCollectionWhenDelegateIsNull() {
         let viewModel = STPhotoMapModels.PhotoCollectionNavigation.ViewModel(location: STPhotoMapSeeds.location, entityLevel: EntityLevel.block)
         self.sut.displayNavigateToPhotoCollection(viewModel: viewModel)
-        
+        self.waitForMainQueue()
         XCTAssertTrue(self.delegateSpy.photoMapViewNavigateToPhotoCollectionForLocationEntityLevelCalled)
     }
     

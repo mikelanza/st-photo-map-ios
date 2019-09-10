@@ -81,6 +81,7 @@
 		850CAD4922926C32001435E8 /* STPhotoMapAnnotationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850CAD4822926C32001435E8 /* STPhotoMapAnnotationHandler.swift */; };
 		8529E5272263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8529E5262263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift */; };
 		8533DA7B22A63B2B006D1567 /* STPhotoMapInteractor+PhotoAnnotationDetermination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8533DA7A22A63B2B006D1567 /* STPhotoMapInteractor+PhotoAnnotationDetermination.swift */; };
+		853BEB4523278C08008891F6 /* STPhotoCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853BEB4423278C08008891F6 /* STPhotoCollection.framework */; };
 		854AE1A9228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854AE1A8228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift */; };
 		854AE1AB228E93B200C44F1C /* geojson_object_location.json in Resources */ = {isa = PBXBuildFile; fileRef = 854AE1AA228E93B100C44F1C /* geojson_object_location.json */; };
 		854AE1B1228EC7D200C44F1C /* STPhotoMapLocationLevelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854AE1B0228EC7D200C44F1C /* STPhotoMapLocationLevelHandler.swift */; };
@@ -207,6 +208,7 @@
 		850CAD4822926C32001435E8 /* STPhotoMapAnnotationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapAnnotationHandler.swift; sourceTree = "<group>"; };
 		8529E5262263BCD600E7CCE5 /* STPhotoTileOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoTileOverlayRenderer.swift; sourceTree = "<group>"; };
 		8533DA7A22A63B2B006D1567 /* STPhotoMapInteractor+PhotoAnnotationDetermination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+PhotoAnnotationDetermination.swift"; sourceTree = "<group>"; };
+		853BEB4423278C08008891F6 /* STPhotoCollection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = STPhotoCollection.framework; path = Carthage/Build/iOS/STPhotoCollection.framework; sourceTree = "<group>"; };
 		854AE1A8228E77AE00C44F1C /* STPhotoMapInteractor+LocationLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+LocationLevel.swift"; sourceTree = "<group>"; };
 		854AE1AA228E93B100C44F1C /* geojson_object_location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geojson_object_location.json; sourceTree = "<group>"; };
 		854AE1B0228EC7D200C44F1C /* STPhotoMapLocationLevelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapLocationLevelHandler.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				853BEB4523278C08008891F6 /* STPhotoCollection.framework in Frameworks */,
 				282FC0DA22FC2FE80016BECA /* STPhotoDetails.framework in Frameworks */,
 				28CAA78C22F8476200C1B69F /* STPhotoCore.framework in Frameworks */,
 				282C1083228D52FB0045A123 /* Kingfisher.framework in Frameworks */,
@@ -572,6 +575,7 @@
 		357D954B1DA3F2B400AEC55F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				853BEB4423278C08008891F6 /* STPhotoCollection.framework */,
 				282FC0D922FC2FE80016BECA /* STPhotoDetails.framework */,
 				28CAA78B22F8476200C1B69F /* STPhotoCore.framework */,
 				282C1082228D52FB0045A123 /* Kingfisher.framework */,
@@ -1011,6 +1015,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/STPhotoCore.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/STPhotoDetails.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/STPhotoCollection.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -1018,6 +1023,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/STPhotoCore.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/STPhotoDetails.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/STPhotoCollection.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

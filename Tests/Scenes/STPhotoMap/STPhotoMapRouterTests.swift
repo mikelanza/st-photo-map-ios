@@ -8,6 +8,7 @@
 
 @testable import STPhotoMap
 import XCTest
+import STPhotoCore
 
 class STPhotoMapRouterTests: XCTestCase {
     var sut: STPhotoMapRouter!
@@ -60,6 +61,20 @@ class STPhotoMapRouterTests: XCTestCase {
         let viewControllerSpy = UIViewControllerSpy()
         self.sut.viewController = viewControllerSpy
         self.sut.navigateToPhotoDetails(photoId: "photoId")
+        XCTAssertTrue(viewControllerSpy.presentCalled)
+    }
+    
+    func testNavigateToPhotoCollectionWhenViewControllerIsNavigationController() {
+        let viewControllerSpy = UINavigationControllerSpy(rootViewController: UIViewController())
+        self.sut.viewController = viewControllerSpy
+        self.sut.navigateToPhotoCollection(location: STLocation(latitude: 50.0, longitude: 50.0), entityLevel: EntityLevel(rawValue: "block")!, userId: nil, collectionId: nil)
+        XCTAssertTrue(viewControllerSpy.pushViewControllerCalled)
+    }
+
+    func testNavigateToPhotoCollectionWhenViewControllerIsNotNavigationController() {
+        let viewControllerSpy = UIViewControllerSpy()
+        self.sut.viewController = viewControllerSpy
+        self.sut.navigateToPhotoCollection(location: STLocation(latitude: 50.0, longitude: 50.0), entityLevel: EntityLevel(rawValue: "block")!, userId: nil, collectionId: nil)
         XCTAssertTrue(viewControllerSpy.presentCalled)
     }
 }

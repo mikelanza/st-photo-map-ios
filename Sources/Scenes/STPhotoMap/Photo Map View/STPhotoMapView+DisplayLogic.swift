@@ -260,7 +260,13 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
     // MARK: - Photo collection navigation
     
     func displayNavigateToPhotoCollection(viewModel: STPhotoMapModels.PhotoCollectionNavigation.ViewModel) {
-        self.delegate?.photoMapView(self, navigateToPhotoCollectionFor: viewModel.location, entityLevel: viewModel.entityLevel)
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.photoMapView(self, navigateToPhotoCollectionFor: viewModel.location, entityLevel: viewModel.entityLevel)
+            } else {
+                self.router?.navigateToPhotoCollection(location: viewModel.location, entityLevel: viewModel.entityLevel, userId: nil, collectionId: nil)
+            }
+        }
     }
     
     // MARK: - Data sources
