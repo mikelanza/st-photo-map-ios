@@ -1,2 +1,3 @@
 github "onevcat/Kingfisher" ~> 5.0
 github "mikelanza/st-photo-core-ios" ~> 0.1.2
+github "mikelanza/st-photo-details-ios" ~> 0.0.8
