@@ -66,7 +66,7 @@ class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic {
         if let controller = self.viewController as? UINavigationController {
             controller.pushViewController(photoCollectionViewController, animated: true)
         } else {
-            self.viewController?.present(photoCollectionViewController, animated: true, completion: nil)
+            self.viewController?.present(UINavigationController(rootViewController: photoCollectionViewController), animated: true, completion: nil)
         }
     }
 }
