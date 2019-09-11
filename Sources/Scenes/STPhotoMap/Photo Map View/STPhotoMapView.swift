@@ -67,6 +67,7 @@ public class STPhotoMapView: UIView {
         let interactor = STPhotoMapInteractor()
         let presenter = STPhotoMapPresenter()
         let router = STPhotoMapRouter()
+        router.photoMapView = self
         
         interactor.presenter = presenter
         presenter.displayer = displayer

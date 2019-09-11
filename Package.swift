@@ -26,7 +26,7 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "5.0")),
         .package(url: "https://github.com/mikelanza/st-photo-core-ios.git", .upToNextMajor(from: "0.1.2")),
         .package(url: "https://github.com/mikelanza/st-photo-details-ios.git", .upToNextMajor(from: "0.0.8"))
-        .package(url: "https://github.com/mikelanza/st-photo-collection-ios.git", .upToNextMajor(from: "0.0.5"))
+        .package(url: "https://github.com/mikelanza/st-photo-collection-ios.git", .upToNextMajor(from: "0.0.6"))
     ],
     targets: [
         .target(
