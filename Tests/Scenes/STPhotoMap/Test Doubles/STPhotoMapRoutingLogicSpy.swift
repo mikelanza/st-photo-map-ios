@@ -32,7 +32,7 @@ class STPhotoMapRoutingLogicSpy: STPhotoMapRoutingLogic {
         self.navigateToApplicationCalled = true
     }
     
-    func navigateToPhotoDetails(photoId: String) {
+    func navigateToPhotoDetails(viewController: UIViewController?, photoId: String) {
         self.navigateToPhotoDetailsCalled = true
     }
     

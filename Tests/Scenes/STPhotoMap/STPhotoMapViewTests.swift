@@ -330,7 +330,7 @@ class STPhotoMapViewTests: XCTestCase {
     
     func testShouldNavigateToPhotoDetailsWhenPhotoCollectionViewControllerDelegateSendNavigateToPhotoDetailsForId() {
         self.sut.photoCollectionViewController(nil, navigateToPhotoDetailsFor: "uuid")
-        XCTAssertTrue(self.interactorSpy.shouldNavigateToPhotoDetailsCalled)
+        XCTAssertTrue(self.routerSpy.navigateToPhotoDetailsCalled)
     }
     
     func testReloadCarousel() {

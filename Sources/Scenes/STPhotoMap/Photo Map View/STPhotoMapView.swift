@@ -217,7 +217,7 @@ extension STPhotoMapView {
 }
 
 extension STPhotoMapView: STPhotoCollectionViewControllerDelegate {
-    public func photoCollectionViewController(_ viewController: STPhotoCollectionViewController?, navigateToPhotoDetailsFor photoId: String?) {
-        self.interactor?.shouldNavigateToPhotoDetails(request: STPhotoMapModels.PhotoDetailsNavigation.Request(photoId: photoId ?? ""))
+    public func photoCollectionViewController(_ viewController: STPhotoCollectionViewController?, navigateToPhotoDetailsFor photoId: String) {
+        self.router?.navigateToPhotoDetails(viewController: viewController, photoId: photoId)
     }
 }

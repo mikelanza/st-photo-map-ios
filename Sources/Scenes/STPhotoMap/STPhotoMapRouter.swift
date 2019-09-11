@@ -20,7 +20,7 @@ protocol STPhotoMapRoutingLogic: AnyObject {
     func navigateToSafari(url: URL)
     func navigateToLocationSettingsAlert(controller: UIAlertController)
     func navigateToApplication(url: URL)
-    func navigateToPhotoDetails(photoId: String)
+    func navigateToPhotoDetails(viewController: UIViewController?, photoId: String)
     func navigateToPhotoCollection(location: STLocation, entityLevel: EntityLevel, userId: String?, collectionId: String?)
     
     var viewController: UIViewController? { get set }
@@ -49,12 +49,12 @@ class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic {
         }
     }
     
-    func navigateToPhotoDetails(photoId: String) {
+    func navigateToPhotoDetails(viewController: UIViewController?, photoId: String) {
         let photoDetailsViewController = STPhotoDetailsViewController(photoId: photoId)
-        if let controller = self.viewController as? UINavigationController {
+        if let controller = viewController as? UINavigationController {
             controller.pushViewController(photoDetailsViewController, animated: true)
         } else {
-            self.viewController?.present(photoDetailsViewController, animated: true, completion: nil)
+            viewController?.present(photoDetailsViewController, animated: true, completion: nil)
         }
     }
     

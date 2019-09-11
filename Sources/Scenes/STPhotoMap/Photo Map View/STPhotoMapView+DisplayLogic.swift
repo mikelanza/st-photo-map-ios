@@ -134,7 +134,7 @@ extension STPhotoMapView: STPhotoMapDisplayLogic {
             if let delegate = self.delegate {
                 delegate.photoMapView(self, navigateToPhotoDetailsFor: viewModel.photoId)
             } else {
-                self.router?.navigateToPhotoDetails(photoId: viewModel.photoId)
+                self.router?.navigateToPhotoDetails(viewController: self.viewController, photoId: viewModel.photoId)
             }
         }
     }

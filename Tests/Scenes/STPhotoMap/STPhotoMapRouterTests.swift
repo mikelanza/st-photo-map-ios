@@ -53,14 +53,14 @@ class STPhotoMapRouterTests: XCTestCase {
     func testNavigateToPhotoDetailsWhenViewControllerIsNavigationController() {
         let viewControllerSpy = UINavigationControllerSpy(rootViewController: UIViewController())
         self.sut.viewController = viewControllerSpy
-        self.sut.navigateToPhotoDetails(photoId: "photoId")
+        self.sut.navigateToPhotoDetails(viewController: viewControllerSpy, photoId: "photoId")
         XCTAssertTrue(viewControllerSpy.pushViewControllerCalled)
     }
     
     func testNavigateToPhotoDetailsWhenViewControllerIsNotNavigationController() {
         let viewControllerSpy = UIViewControllerSpy()
         self.sut.viewController = viewControllerSpy
-        self.sut.navigateToPhotoDetails(photoId: "photoId")
+        self.sut.navigateToPhotoDetails(viewController: viewControllerSpy, photoId: "photoId")
         XCTAssertTrue(viewControllerSpy.presentCalled)
     }
     
