@@ -51,8 +51,8 @@ class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic {
     
     func navigateToPhotoDetails(viewController: UIViewController?, photoId: String) {
         let photoDetailsViewController = STPhotoDetailsViewController(photoId: photoId)
-        if let controller = viewController as? UINavigationController {
-            controller.pushViewController(photoDetailsViewController, animated: true)
+        if let navigationController = viewController?.navigationController {
+            navigationController.pushViewController(photoDetailsViewController, animated: true)
         } else {
             viewController?.present(photoDetailsViewController, animated: true, completion: nil)
         }
@@ -63,8 +63,8 @@ class STPhotoMapRouter: NSObject, STPhotoMapRoutingLogic {
         let filters = STPhotoCollection.FilterModel(userId: userId, collectionId: collectionId)
         let photoCollectionViewController = STPhotoCollectionViewController(model: STPhotoCollection.Model(entityModel: entity, filterModel: filters))
         photoCollectionViewController.delegate = self.photoMapView
-        if let controller = self.viewController as? UINavigationController {
-            controller.pushViewController(photoCollectionViewController, animated: true)
+        if let navigationController = viewController?.navigationController {
+            navigationController.pushViewController(photoCollectionViewController, animated: true)
         } else {
             self.viewController?.present(UINavigationController(rootViewController: photoCollectionViewController), animated: true, completion: nil)
         }
