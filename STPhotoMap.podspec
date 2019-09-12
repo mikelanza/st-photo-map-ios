@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
      ss.dependency "Kingfisher", "~> 5.0"
      ss.dependency "STPhotoCore", "~> 0.1.3"
      ss.dependency "STPhotoDetails", "~> 0.0.9"
-     ss.dependency "STPhotoCollection", "~> 0.1.0"
+     ss.dependency "STPhotoCollection", "~> 0.1.1"
      ss.framework = "Foundation"
  end
 
