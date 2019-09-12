@@ -11,7 +11,7 @@ import STPhotoCore
 
 class STPhotoMapGeojsonCacheHandler {
     var cache: STPhotoMapGeojsonCache
-    private var activeDownloads: SynchronizedArray<String>
+    var activeDownloads: SynchronizedArray<String>
     
     init() {
         self.cache = STPhotoMapGeojsonCache()
