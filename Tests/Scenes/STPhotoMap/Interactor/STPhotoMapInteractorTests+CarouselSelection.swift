@@ -133,4 +133,49 @@ class STPhotoMapInteractorCarouselSelectionTests: XCTestCase {
         self.sut.shouldSelectCarousel(request: request)
         XCTAssertTrue(self.workerSpy.getGeojsonTileForCarouselSelectionCalled)
     }
+    
+    func testSuccessDidGetGeojsonTileForCarouselSelectionShouldAskThePresenterToPresentNotLoadingState() throws {
+        self.sut.worker = nil
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        self.sut.successDidGetGeojsonTileForCarouselSelection(tileCoordinate: STPhotoMapSeeds.tileCoordinate, location: STPhotoMapSeeds.location, keyUrl: "keyUrl", downloadUrl: "downloadUrl", geojsonObject: geojsonObject)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+    }
+    
+    func testSuccessDidGetGeojsonTileForCarouselSelectionShouldAskThePresenterToPresentLoadingState() throws {
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        self.sut.worker = nil
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        self.sut.successDidGetGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: STLocation.from(coordinate: coordinate), keyUrl: "keyUrl", downloadUrl: "downloadUrl", geojsonObject: geojsonObject)
+        XCTAssertTrue(self.presenterSpy.presentLoadingStateCalled)
+    }
+    
+    func testSuccessDidGetGeojsonTileForCarouselSelectionShouldAskTheWorkerToCancelAllGeoEntityOperations() throws {
+        self.workerSpy.geoEntity = try STPhotoMapSeeds().geoEntity()
+        
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        self.sut.successDidGetGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: STLocation.from(coordinate: coordinate), keyUrl: "keyUrl", downloadUrl: "downloadUrl", geojsonObject: geojsonObject)
+        XCTAssertTrue(self.workerSpy.cancelAllGeoEntityOperationsCalled)
+    }
+    
+    func testSuccessDidGetGeojsonTileForCarouselSelectionShouldAskTheWorkerToGetGeoEntityForEntity() throws {
+        self.workerSpy.geoEntity = try STPhotoMapSeeds().geoEntity()
+        
+        let coordinate = CLLocationCoordinate2D(latitude: 37.896175586962535, longitude: -122.5092990375)
+        let tileCoordinate = TileCoordinate(coordinate: coordinate, zoom: 13)
+        
+        let geojsonObject = try STPhotoMapSeeds().geojsonObject()
+        self.sut.successDidGetGeojsonTileForCarouselSelection(tileCoordinate: tileCoordinate, location: STLocation.from(coordinate: coordinate), keyUrl: "keyUrl", downloadUrl: "downloadUrl", geojsonObject: geojsonObject)
+        XCTAssertTrue(self.workerSpy.getGeoEntityForEntityCalled)
+    }
+    
+    func testFailureDidGetGeojsonTileForCarouselSelectionShouldAskThePresenterToPresentNotLoadingState() {
+        self.sut.worker = nil
+        self.sut.failureDidGetGeojsonTileForCarouselSelection(tileCoordinate: STPhotoMapSeeds.tileCoordinate, location: STPhotoMapSeeds.location, keyUrl: "keyUrl", downloadUrl: "downloadUrl", error: OperationError.noDataAvailable)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+    }
 }

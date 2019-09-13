@@ -103,4 +103,9 @@ class STPhotoMapInteractorCurrentUserLocationTests: XCTestCase {
         XCTAssertFalse(self.presenterSpy.presentCenterToCoordinateCalled)
         XCTAssertFalse(self.currentUserLocationHandlerSpy.didZoomToUserLocation)
     }
+    
+    func testCurrentUserLocationHandlerCenterToCoordinateShouldAskThePresenterToPresentCenterToCoordinate() {
+        self.sut.currentUserLocationHandler(handler: nil, centerToCoordinate: CLLocationCoordinate2D(latitude: 30, longitude: 30))
+        XCTAssertTrue(self.presenterSpy.presentCenterToCoordinateCalled)
+    }
 }

@@ -92,4 +92,20 @@ class STPhotoMapInteractorPhotoAnnotationSelectionTests: XCTestCase {
         self.sut.shouldSelectPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationSelection.Request(photoAnnotation: photoAnnotation, previousPhotoAnnotation: nil))
         XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
     }
+    
+    func testSuccessDidGetPhotoForPhotoAnnotationShouldAskThePresenterToPresentNotLoadingState() {
+        self.sut.successDidGetPhotoForPhotoAnnotation(photoAnnotation: STPhotoMapSeeds().photoAnnotation(), photo: STPhotoMapSeeds().photo())
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+    }
+    
+    func testSuccessDidGetPhotoForPhotoAnnotationShouldAskThePresenterToPresentLocationOverlayWhenEntityLevelIsLocation() {
+        self.sut.entityLevelHandler.entityLevel = .location
+        self.sut.successDidGetPhotoForPhotoAnnotation(photoAnnotation: STPhotoMapSeeds().photoAnnotation(), photo: STPhotoMapSeeds().photo())
+        XCTAssertTrue(self.presenterSpy.presentLocationOverlayCalled)
+    }
+    
+    func testFailureDidGetPhotoForPhotoAnnotationShouldAskThePresenterToPresentNotLoadingState() {
+        self.sut.failureDidGetPhotoForPhotoAnnotation(photoAnnotation: STPhotoMapSeeds().photoAnnotation(), error: OperationError.noDataAvailable)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+    }
 }

@@ -117,7 +117,7 @@ class STPhotoMapInteractorPhotoClusterAnnotationInflationTests: XCTestCase {
     }
     
     func testShouldInflatePhotoClusterAnnotationShouldUpdateClusterAnnotationModelsBeforeGettingImagesWhenZoomLevelIsMaximumAndThereAreUnder15ClusterPhotosWithTheSameLocation() {
-        self.workerSpy.delay = 1
+        self.sut.worker = nil
         let zoomLevel = 20
         
         let clusterAnnotationInterfaceSpy = MultiplePhotoClusterAnnotationInterfaceSpy()
@@ -212,7 +212,7 @@ class STPhotoMapInteractorPhotoClusterAnnotationInflationTests: XCTestCase {
     }
     
     func testShouldInflatePhotoClusterAnnotationShouldUpdateClusterAnnotationModelsBeforeGettingImagesWhenZoomLevelIsNotMaximumAndThereAreUnder15ClusterPhotosWithTheSameLocation() {
-        self.workerSpy.delay = 1
+        self.sut.worker = nil
         let zoomLevel = 17
         
         let clusterAnnotationInterfaceSpy = MultiplePhotoClusterAnnotationInterfaceSpy()

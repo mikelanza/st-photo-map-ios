@@ -19,10 +19,6 @@ class STPhotoMapInteractorTests: XCTestCase {
     var sut: STPhotoMapInteractor!
     var presenterSpy: STPhotoMapPresentationLogicSpy!
     var workerSpy: STPhotoMapWorkerSpy!
-    var currentUserLocationHandlerSpy: STPhotoMapCurrentUserLocationHandlerSpy!
-    
-    var workerDelay: Double = 0.1
-    var delay: Double = 0.05
   
     // MARK: - Test lifecycle
   
@@ -45,37 +41,6 @@ class STPhotoMapInteractorTests: XCTestCase {
         
         self.workerSpy = STPhotoMapWorkerSpy(delegate: self.sut)
         self.sut.worker = self.workerSpy
-        
-        self.currentUserLocationHandlerSpy = STPhotoMapCurrentUserLocationHandlerSpy()
-        self.currentUserLocationHandlerSpy.delegate = self.sut
-        self.sut.currentUserLocationHandler = self.currentUserLocationHandlerSpy
-    }
-    
-    private func waitForSynchronization() {
-        let waitExpectation = expectation(description: "Waiting for the synchronization.")
-        let queue = DispatchQueue(label: "queue", attributes: .concurrent)
-        queue.async {
-            waitExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 1.0)
-    }
-    
-    private func waitForWorker(delay: Double) {
-        let waitExpectation = expectation(description: "Waiting for the worker.")
-        let queue = DispatchQueue.global()
-        queue.asyncAfter(deadline: .now() + delay) {
-            waitExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 1.0)
-    }
-    
-    private func wait(delay: Double) {
-        let waitExpectation = expectation(description: "Waiting.")
-        let queue = DispatchQueue.global()
-        queue.asyncAfter(deadline: .now() + delay) {
-            waitExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 1.0)
     }
     
     // MARK: - Tests
@@ -140,7 +105,7 @@ class STPhotoMapInteractorTests: XCTestCase {
     // MARK: - Download image for photo annotation
     
     func testShouldDownloadImageForPhotoAnnotationShouldUpdateLoadingTrueForPhotoAnnotation() {
-        self.workerSpy.delay = self.workerDelay
+        self.sut.worker = nil
         let photoAnnotation = STPhotoMapSeeds().photoAnnotation()
         photoAnnotation.image = nil
         self.sut.shouldDownloadImageForPhotoAnnotation(request: STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation))
@@ -174,5 +139,57 @@ class STPhotoMapInteractorTests: XCTestCase {
         let request = STPhotoMapModels.PhotoAnnotationImageDownload.Request(photoAnnotation: photoAnnotation)
         self.sut.shouldDownloadImageForPhotoAnnotation(request: request)
         XCTAssertFalse(self.workerSpy.getImageForPhotoAnnotationCalled)
+    }
+    
+    // MARK: - Carousel handler delegate
+    
+    func testCarouselHandlerReloadCarouselShouldAskThePresenterToReloadCarousel() {
+        self.sut.carouselHandler(handler: nil, reloadCarousel: STCarousel())
+        XCTAssertTrue(self.presenterSpy.presentReloadCarouselCalled)
+    }
+    
+    func testSuccessDidGetImageForPhotoShouldAddDownloadedPhotoForCarousel() {
+        let spy = STPhotoMapCarouselHandlerSpy()
+        self.sut.carouselHandler = spy
+        self.sut.successDidGetImageForPhoto(photo: STPhotoMapSeeds().photo(), image: UIImage())
+        XCTAssertTrue(spy.addDownloadedCarouselPhotoCalled)
+    }
+    
+    func testSuccessDidGetGeoEntityForEntityShouldAskThePresenterToPresentNotLoadingState() throws {
+        let geoEntity = try STPhotoMapSeeds().geoEntity()
+        self.sut.successDidGetGeoEntityForEntity(entityId: "\(geoEntity.id)", entityLevel: geoEntity.entityLevel, geoEntity: geoEntity)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
+    }
+    
+    func testSuccessDidGetGeoEntityForEntityShouldAskThePresenterToPresentRemoveCarousel() throws {
+        let geoEntity = try STPhotoMapSeeds().geoEntity()
+        self.sut.successDidGetGeoEntityForEntity(entityId: "\(geoEntity.id)", entityLevel: geoEntity.entityLevel, geoEntity: geoEntity)
+        XCTAssertTrue(self.presenterSpy.presentRemoveCarouselCalled)
+    }
+    
+    func testSuccessDidGetGeoEntityForEntityShouldUpdateCarouselForGeoEntity() throws {
+        let geoEntity = try STPhotoMapSeeds().geoEntity()
+        let spy = STPhotoMapCarouselHandlerSpy()
+        self.sut.carouselHandler = spy
+        self.sut.successDidGetGeoEntityForEntity(entityId: "\(geoEntity.id)", entityLevel: geoEntity.entityLevel, geoEntity: geoEntity)
+        XCTAssertTrue(spy.updateCarouselForCalled)
+    }
+    
+    func testSuccessDidGetGeoEntityForEntityShouldAskTheWorkerToGetImageForPhoto() throws {
+        let geoEntity = try STPhotoMapSeeds().geoEntity()
+        self.sut.successDidGetGeoEntityForEntity(entityId: "\(geoEntity.id)", entityLevel: geoEntity.entityLevel, geoEntity: geoEntity)
+        XCTAssertTrue(self.workerSpy.getImageForPhotoCalled)
+    }
+    
+    func testSuccessDidGetGeoEntityForEntityShouldAskThePresenterToPresentNewCarousel() throws {
+        let geoEntity = try STPhotoMapSeeds().geoEntity()
+        self.sut.successDidGetGeoEntityForEntity(entityId: "\(geoEntity.id)", entityLevel: geoEntity.entityLevel, geoEntity: geoEntity)
+        XCTAssertTrue(self.presenterSpy.presentNewCarouselCalled)
+    }
+    
+    func testFailureDidGetGeoEntityForEntityShouldAskThePresenterToPresentNotLoadingState() throws {
+        let geoEntity = try STPhotoMapSeeds().geoEntity()
+        self.sut.failureDidGetGeoEntityForEntity(entityId: "\(geoEntity.id)", entityLevel: geoEntity.entityLevel, error: OperationError.noDataAvailable)
+        XCTAssertTrue(self.presenterSpy.presentNotLoadingStateCalled)
     }
 }
