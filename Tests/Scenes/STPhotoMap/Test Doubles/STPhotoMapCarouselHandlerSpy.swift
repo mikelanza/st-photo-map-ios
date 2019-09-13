@@ -12,6 +12,7 @@ class STPhotoMapCarouselHandlerSpy: STPhotoMapCarouselHandler {
     var addActiveDownloadCalled: Bool = false
     var removeActiveDownloadCalled: Bool = false
     var removeAllActiveDownloadsCalled: Bool = false
+    var resetCarouselCalled: Bool = false
     
     override func addActiveDownload(_ url: String) {
         self.addActiveDownloadCalled = true
@@ -23,5 +24,9 @@ class STPhotoMapCarouselHandlerSpy: STPhotoMapCarouselHandler {
     
     override func removeAllActiveDownloads() {
         self.removeAllActiveDownloadsCalled = true
+    }
+    
+    override func resetCarousel() {
+        self.resetCarouselCalled = true
     }
 }
