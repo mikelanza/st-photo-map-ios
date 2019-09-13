@@ -57,7 +57,7 @@ class STPhotoMapInteractor: NSObject, STPhotoMapBusinessLogic, STPhotoMapWorkerD
     var cacheHandler: STPhotoMapGeojsonCacheHandler
     var entityLevelHandler: STPhotoMapEntityLevelHandler
     var locationLevelHandler: STPhotoMapLocationLevelHandler
-    let carouselHandler: STPhotoMapCarouselHandler
+    var carouselHandler: STPhotoMapCarouselHandler
     var currentUserLocationHandler: STPhotoMapCurrentUserLocationHandler
     
     override init() {

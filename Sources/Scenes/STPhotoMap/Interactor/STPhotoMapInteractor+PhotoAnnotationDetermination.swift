@@ -61,6 +61,6 @@ extension STPhotoMapInteractor {
     
     private func isSelectedPhotoAnnotationVisibleOnScreen() -> Bool {
         guard let coordinate = self.selectedPhotoAnnotation?.coordinate else { return false }
-        return visibleMapRect.contains(MKMapPoint(coordinate))
+        return self.visibleMapRect.contains(MKMapPoint(coordinate))
     }
 }

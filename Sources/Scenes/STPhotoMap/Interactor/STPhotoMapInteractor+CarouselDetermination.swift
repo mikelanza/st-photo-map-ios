@@ -27,7 +27,7 @@ extension STPhotoMapInteractor {
         if let feature = self.bestFeature(mapRect: self.visibleMapRect, geojsonObjects: geojsonObjects) {
             self.shouldGetGeoEntityForFeature(feature)
         } else {
-            self.geojsonObjectsForDeterminingCarousel(tiles: self.prepareTilesForDeterminingCarousel())
+            self.getGeojsonObjectsForDeterminingCarousel(tiles: self.prepareTilesForDeterminingCarousel())
         }
     }
     
@@ -39,11 +39,11 @@ extension STPhotoMapInteractor {
         })
     }
     
-    private func geojsonObjectsForDeterminingCarousel(tiles: [TileCoordinate]) {
-        tiles.forEach({ self.geojsonObjectForDeterminingCarousel(tile: $0) })
+    private func getGeojsonObjectsForDeterminingCarousel(tiles: [TileCoordinate]) {
+        tiles.forEach({ self.getGeojsonObjectForDeterminingCarousel(tile: $0) })
     }
     
-    private func geojsonObjectForDeterminingCarousel(tile: TileCoordinate) {
+    private func getGeojsonObjectForDeterminingCarousel(tile: TileCoordinate) {
         let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: tile)
         self.carouselHandler.addActiveDownload(url.keyUrl)
         self.worker?.getGeojsonTileForCarouselDetermination(tileCoordinate: tile, keyUrl: url.keyUrl, downloadUrl: url.downloadUrl)
@@ -76,7 +76,7 @@ extension STPhotoMapInteractor {
         return self.visibleTiles.filter({
             let url = STPhotoMapUrlBuilder().geojsonTileUrl(tileCoordinate: $0)
             let cachedTile = try? self.cacheHandler.cache.getTile(for: url.keyUrl)
-            return cachedTile == nil ? true : false
+            return cachedTile == nil
         })
     }
     

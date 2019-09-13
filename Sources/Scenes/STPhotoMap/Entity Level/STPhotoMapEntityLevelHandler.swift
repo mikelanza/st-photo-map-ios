@@ -48,7 +48,6 @@ class STPhotoMapEntityLevelHandler {
                 case .location: self.delegate?.photoMapEntityLevelHandler(location: .location); break
                 default: self.delegate?.photoMapEntityLevelHandler(newEntityLevel: self.entityLevel);
             }
-            
         }
     }
 }

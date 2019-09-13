@@ -47,9 +47,8 @@ class STPhotoMapWorkerSpy: STPhotoMapWorker {
     var getImageForPhotoCalled: Bool = false
     
     var cancelAllGeoEntityOperationsCalled: Bool = false
-    
+    var cancelAllGeojsonLocationLevelOperationsCalled: Bool = false
     var cancelAllGeojsonCarouselSelectionOperationsCalled: Bool = false
-    
     var cancelAllGeojsonCarouselDeterminationOperationsCalled: Bool = false
     
     // MARK: - Geojson tile for caching
@@ -262,6 +261,10 @@ class STPhotoMapWorkerSpy: STPhotoMapWorker {
     
     override func cancelAllGeoEntityOperations() {
         self.cancelAllGeoEntityOperationsCalled = true
+    }
+    
+    override func cancelAllGeojsonLocationLevelOperations() {
+        self.cancelAllGeojsonLocationLevelOperationsCalled = true
     }
     
     override func cancelAllGeojsonCarouselSelectionOperations() {
