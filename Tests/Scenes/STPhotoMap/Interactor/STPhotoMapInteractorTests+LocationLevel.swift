@@ -105,45 +105,6 @@ class STPhotoMapInteractorLocationLevelTests: XCTestCase {
         XCTAssertFalse(self.workerSpy.getGeojsonLocationLevelCalled)
     }
     
-    func testSuccessDidGetGeojsonTileForLocationLevelShouldRemoveLocationLevelActiveDownload() throws {
-        self.sut.locationLevelHandler.removeAllActiveDownloads()
-        
-        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
-        let keyUrl = "keyUrl"
-        let downloadUrl = "downloadUrl"
-        let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
-        self.sut.locationLevelHandler.addActiveDownload(keyUrl)
-        self.sut.successDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
-        
-        XCTAssertEqual(self.sut.locationLevelHandler.activeDownloads.count, 0)
-    }
-    
-    func testSuccessDidGetGeojsonTileForLocationLevelShouldAskThePresenterToPresentLocationAnnotations() throws {
-        self.sut.entityLevelHandler.entityLevel = .location
-        
-        self.workerSpy.photo = STPhotoMapSeeds().photo()
-        
-        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
-        let keyUrl = "keyUrl"
-        let downloadUrl = "downloadUrl"
-        let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
-        self.sut.successDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
-        
-        XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
-    }
-    
-    func testFailureDidGetGeojsonTileForLocationLevelShouldRemoveLocationLevelActiveDownload() throws {
-        self.sut.locationLevelHandler.removeAllActiveDownloads()
-        
-        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
-        let keyUrl = "keyUrl"
-        let downloadUrl = "downloadUrl"
-        self.sut.locationLevelHandler.addActiveDownload(keyUrl)
-        self.sut.failureDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.noDataAvailable)
-        
-        XCTAssertEqual(self.sut.locationLevelHandler.activeDownloads.count, 0)
-    }
-
     func testShouldDetermineLocationLevelShouldAskThePresenterToPresentDeselectPhotoAnnotation() throws {
         self.sut.entityLevelHandler.entityLevel = .location
         
@@ -206,5 +167,44 @@ class STPhotoMapInteractorLocationLevelTests: XCTestCase {
         
         self.sut.shouldDetermineLocationLevel()
         XCTAssertTrue(self.workerSpy.getPhotoDetailsForPhotoAnnotationCalled)
+    }
+    
+    func testSuccessDidGetGeojsonTileForLocationLevelShouldRemoveLocationLevelActiveDownload() throws {
+        self.sut.locationLevelHandler.removeAllActiveDownloads()
+        
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = "keyUrl"
+        let downloadUrl = "downloadUrl"
+        let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
+        self.sut.locationLevelHandler.addActiveDownload(keyUrl)
+        self.sut.successDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+        
+        XCTAssertEqual(self.sut.locationLevelHandler.activeDownloads.count, 0)
+    }
+    
+    func testSuccessDidGetGeojsonTileForLocationLevelShouldAskThePresenterToPresentLocationAnnotations() throws {
+        self.sut.entityLevelHandler.entityLevel = .location
+        
+        self.workerSpy.photo = STPhotoMapSeeds().photo()
+        
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = "keyUrl"
+        let downloadUrl = "downloadUrl"
+        let geojsonObject = try STPhotoMapSeeds().locationGeojsonObject()
+        self.sut.successDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, geojsonObject: geojsonObject)
+        
+        XCTAssertTrue(self.presenterSpy.presentLocationAnnotationsCalled)
+    }
+    
+    func testFailureDidGetGeojsonTileForLocationLevelShouldRemoveLocationLevelActiveDownload() throws {
+        self.sut.locationLevelHandler.removeAllActiveDownloads()
+        
+        let tileCoordinate = STPhotoMapSeeds.tileCoordinate
+        let keyUrl = "keyUrl"
+        let downloadUrl = "downloadUrl"
+        self.sut.locationLevelHandler.addActiveDownload(keyUrl)
+        self.sut.failureDidGetGeojsonTileForLocationLevel(tileCoordinate: tileCoordinate, keyUrl: keyUrl, downloadUrl: downloadUrl, error: OperationError.noDataAvailable)
+        
+        XCTAssertEqual(self.sut.locationLevelHandler.activeDownloads.count, 0)
     }
 }
