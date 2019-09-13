@@ -83,6 +83,7 @@
 		28FDE1E7232B7F8E0009C2F9 /* STPhotoMapInteractorTests+CarouselReloading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE1E6232B7F8E0009C2F9 /* STPhotoMapInteractorTests+CarouselReloading.swift */; };
 		28FDE1E9232B83A10009C2F9 /* STPhotoMapInteractorTests+LocationLevelReloading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE1E8232B83A10009C2F9 /* STPhotoMapInteractorTests+LocationLevelReloading.swift */; };
 		28FDE1EB232B89BE0009C2F9 /* STPhotoMapInteractorTests+CarouselSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE1EA232B89BE0009C2F9 /* STPhotoMapInteractorTests+CarouselSelection.swift */; };
+		28FDE1ED232B91210009C2F9 /* STPhotoMapInteractorTests+PhotoAnnotationSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDE1EC232B91210009C2F9 /* STPhotoMapInteractorTests+PhotoAnnotationSelection.swift */; };
 		3549BB501DA38A2000C63030 /* STPhotoMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 3549BB181DA3890B00C63030 /* STPhotoMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3549BB511DA38A2000C63030 /* STPhotoMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 3549BB181DA3890B00C63030 /* STPhotoMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3549BB521DA38A2100C63030 /* STPhotoMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 3549BB181DA3890B00C63030 /* STPhotoMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -219,6 +220,7 @@
 		28FDE1E6232B7F8E0009C2F9 /* STPhotoMapInteractorTests+CarouselReloading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractorTests+CarouselReloading.swift"; sourceTree = "<group>"; };
 		28FDE1E8232B83A10009C2F9 /* STPhotoMapInteractorTests+LocationLevelReloading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractorTests+LocationLevelReloading.swift"; sourceTree = "<group>"; };
 		28FDE1EA232B89BE0009C2F9 /* STPhotoMapInteractorTests+CarouselSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractorTests+CarouselSelection.swift"; sourceTree = "<group>"; };
+		28FDE1EC232B91210009C2F9 /* STPhotoMapInteractorTests+PhotoAnnotationSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractorTests+PhotoAnnotationSelection.swift"; sourceTree = "<group>"; };
 		3549BB181DA3890B00C63030 /* STPhotoMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPhotoMap.h; sourceTree = "<group>"; };
 		3549BB211DA389CD00C63030 /* STPhotoMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = STPhotoMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3549BB2E1DA389DB00C63030 /* STPhotoMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = STPhotoMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -550,6 +552,7 @@
 				28FDE1E6232B7F8E0009C2F9 /* STPhotoMapInteractorTests+CarouselReloading.swift */,
 				28FDE1E8232B83A10009C2F9 /* STPhotoMapInteractorTests+LocationLevelReloading.swift */,
 				28FDE1EA232B89BE0009C2F9 /* STPhotoMapInteractorTests+CarouselSelection.swift */,
+				28FDE1EC232B91210009C2F9 /* STPhotoMapInteractorTests+PhotoAnnotationSelection.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -1188,6 +1191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2810E6AF2285313800D491C2 /* STPhotoMapBusinessLogicSpy.swift in Sources */,
+				28FDE1ED232B91210009C2F9 /* STPhotoMapInteractorTests+PhotoAnnotationSelection.swift in Sources */,
 				28FDE1D4232A4D890009C2F9 /* STPhotoMapGeojsonCacheHandlerSpy.swift in Sources */,
 				28FDE1DC232A7B730009C2F9 /* STPhotoMapEntityLevelHandlerSpy.swift in Sources */,
 				28FDE1E5232B7ABD0009C2F9 /* STPhotoMapInteractorTests+PhotoAnnotationDetermination.swift in Sources */,
