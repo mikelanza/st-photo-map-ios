@@ -3,7 +3,7 @@
 //  STPhotoMapTests-iOS
 //
 //  Created by Dimitri Strauneanu on 08/08/2019.
-//  Copyright © 2019 mikelanza. All rights reserved.
+//  Copyright © 2019 Streetography. All rights reserved.
 //
 
 @testable import STPhotoMap

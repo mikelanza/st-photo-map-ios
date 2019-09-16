@@ -3,7 +3,7 @@
 //  STPhotoMap
 //
 //  Created by Dimitri Strauneanu on 16/05/2019.
-//  Copyright © 2019 mikelanza. All rights reserved.
+//  Copyright © 2019 Streetography. All rights reserved.
 //
 
 import Foundation
