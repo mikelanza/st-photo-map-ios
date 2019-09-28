@@ -120,7 +120,6 @@ class STPhotoMapViewTests: XCTestCase {
         self.loadView()
         XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:regionDidChangeAnimated:))), "The photo map view does not implement mapView(_:regionDidChangeAnimated:).")
         XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:rendererFor:))), "The photo map view does not implement mapView(_:rendererFor:).")
-        XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:viewFor:))), "The photo map view does not implement mapView(_:viewFor:).")
         XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:clusterAnnotationForMemberAnnotations:))), "The photo map view does not implement mapView(_:clusterAnnotationForMemberAnnotations:).")
     }
     

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -26,6 +26,7 @@
 		2831D673228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2831D672228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift */; };
 		2831D675228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2831D674228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift */; };
 		284616A2228571E200482303 /* STPhotoMapUrlBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284616A1228571E200482303 /* STPhotoMapUrlBuilder.swift */; };
+		286091C3233FC57700E08089 /* KingfisherSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286091C2233FC57700E08089 /* KingfisherSwiftUI.framework */; platformFilter = ios; };
 		28628956229637790033AFD3 /* STCarouselOverlayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28628955229637790033AFD3 /* STCarouselOverlayLabel.swift */; };
 		28628958229637F70033AFD3 /* STCarouselOverlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28628957229637F70033AFD3 /* STCarouselOverlayButton.swift */; };
 		2862896522963B350033AFD3 /* STCarouselOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2862896422963B350033AFD3 /* STCarouselOverlayRenderer.swift */; };
@@ -165,6 +166,7 @@
 		2831D672228C6AAB00C88215 /* STPhotoMapInteractor+GeojsonCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+GeojsonCache.swift"; sourceTree = "<group>"; };
 		2831D674228C6BF900C88215 /* STPhotoMapInteractor+EntityLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPhotoMapInteractor+EntityLevel.swift"; sourceTree = "<group>"; };
 		284616A1228571E200482303 /* STPhotoMapUrlBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STPhotoMapUrlBuilder.swift; sourceTree = "<group>"; };
+		286091C2233FC57700E08089 /* KingfisherSwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KingfisherSwiftUI.framework; path = Carthage/Build/iOS/KingfisherSwiftUI.framework; sourceTree = "<group>"; };
 		28628955229637790033AFD3 /* STCarouselOverlayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayLabel.swift; sourceTree = "<group>"; };
 		28628957229637F70033AFD3 /* STCarouselOverlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayButton.swift; sourceTree = "<group>"; };
 		2862896422963B350033AFD3 /* STCarouselOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STCarouselOverlayRenderer.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				282FC0DA22FC2FE80016BECA /* STPhotoDetails.framework in Frameworks */,
 				28CAA78C22F8476200C1B69F /* STPhotoCore.framework in Frameworks */,
 				282C1083228D52FB0045A123 /* Kingfisher.framework in Frameworks */,
+				286091C3233FC57700E08089 /* KingfisherSwiftUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,6 +637,7 @@
 		357D954B1DA3F2B400AEC55F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				286091C2233FC57700E08089 /* KingfisherSwiftUI.framework */,
 				853BEB4423278C08008891F6 /* STPhotoCollection.framework */,
 				282FC0D922FC2FE80016BECA /* STPhotoDetails.framework */,
 				28CAA78B22F8476200C1B69F /* STPhotoCore.framework */,
@@ -1075,6 +1079,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/STPhotoCore.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/STPhotoDetails.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/STPhotoCollection.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/KingfisherSwiftUI.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -1083,6 +1088,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/STPhotoCore.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/STPhotoDetails.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/STPhotoCollection.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KingfisherSwiftUI.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1342,7 +1348,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1367,7 +1374,11 @@
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
 				SKIP_INSTALL = YES;
@@ -1385,7 +1396,11 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1404,7 +1419,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
@@ -1420,7 +1439,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1439,7 +1462,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Sources/Info-tvOS.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
 				SDKROOT = appletvos;
@@ -1455,7 +1482,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1475,7 +1506,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
 				SDKROOT = watchos;
@@ -1565,7 +1600,11 @@
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
 				SKIP_INSTALL = YES;
@@ -1586,7 +1625,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
 				SDKROOT = watchos;
@@ -1609,7 +1652,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
@@ -1630,7 +1677,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Sources/Info-tvOS.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
 				SDKROOT = appletvos;
@@ -1651,7 +1702,11 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1665,7 +1720,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1681,7 +1740,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
