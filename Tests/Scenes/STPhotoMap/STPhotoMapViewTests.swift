@@ -63,9 +63,6 @@ class STPhotoMapViewTests: XCTestCase {
         self.routerSpy = STPhotoMapRoutingLogicSpy()
         self.sut.router = self.routerSpy
         
-        self.tileOverlayRendererSpy = STPhotoTileOverlayRendererSpy(tileOverlay: MKTileOverlay())
-        self.sut.tileOverlayRenderer = self.tileOverlayRendererSpy
-        
         self.delegateSpy = STPhotoMapViewDelegateSpy()
         self.sut.delegate = self.delegateSpy
     }
@@ -125,9 +122,9 @@ class STPhotoMapViewTests: XCTestCase {
     
     // MARK: - Test map view logic
     
-    func testShouldReturnPhotoTileOverlayRendererForPhotoTileOverlay() {
+    func testShouldReturnMKTileOverlayRendererForPhotoTileOverlay() {
         let renderer = self.sut.mapView(self.sut.mapView, rendererFor: STPhotoMapSeeds.photoTileOverlay)
-        XCTAssertTrue(renderer is STPhotoTileOverlayRenderer)
+        XCTAssertTrue(renderer is MKTileOverlayRenderer)
     }
     
     func testShouldReturnCarouselOverlayRendererForCarouselOverlay() {
@@ -241,17 +238,6 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineSelectedPhotoAnnotationCalled)
-    }
-    
-    func testShouldPreloadImageTilesWhenMapDidPan() {
-        self.loadView()
-        
-        let gesture = UIPanGestureRecognizer()
-        gesture.state = .ended
-        
-        self.sut.mapViewDidPan(gesture)
-
-        XCTAssertTrue(tileOverlayRendererSpy.predownloadCalled)
     }
     
     func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {

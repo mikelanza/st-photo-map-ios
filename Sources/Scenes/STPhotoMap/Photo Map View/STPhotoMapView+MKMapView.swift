@@ -28,7 +28,7 @@ extension STPhotoMapView: MKMapViewDelegate {
     
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is STPhotoTileOverlay {
-            let renderer = STPhotoTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
+            let renderer = MKTileOverlayRenderer(tileOverlay: overlay as! STPhotoTileOverlay)
             self.tileOverlayRenderer = renderer
             return renderer
         }
