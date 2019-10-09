@@ -37,7 +37,7 @@ public class STPhotoMapView: UIView {
     
     var photoTileOverlay: STPhotoTileOverlay?
     var carouselOverlays: [STCarouselOverlay] = []
-    var tileOverlayRenderer: STPhotoTileOverlayRenderer?
+    var tileOverlayRenderer: MKTileOverlayRenderer?
     var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init() {
@@ -52,8 +52,6 @@ public class STPhotoMapView: UIView {
         
         self.annotationHandler = STPhotoMapAnnotationHandler()
         self.setupTileOverlay()
-        
-        self.addGestureRecognizer()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -102,33 +100,19 @@ extension STPhotoMapView {
     }
     
     public func setNeedsDisplayTiles() {
-        if let overlay = self.photoTileOverlay, let renderer = self.mapView?.renderer(for: overlay) as? STPhotoTileOverlayRenderer {
-            renderer.reload()
+        DispatchQueue.main.async {
+            if let overlay = self.photoTileOverlay, let renderer = self.mapView?.renderer(for: overlay) as? MKTileOverlayRenderer {
+                renderer.setNeedsDisplay()
+            }
         }
     }
     
     public func setNeedsDisplayCarousel() {
-        if let overlay = self.carouselOverlays.first, let renderer = self.mapView?.renderer(for: overlay) as? STCarouselOverlayRenderer {
-            renderer.reload()
+        DispatchQueue.main.async {
+            if let overlay = self.carouselOverlays.first, let renderer = self.mapView?.renderer(for: overlay) as? STCarouselOverlayRenderer {
+                renderer.reload()
+            }
         }
-    }
-}
-
-// MARK: - UIGestureRecognizerDelegate methods
-
-extension STPhotoMapView: UIGestureRecognizerDelegate {
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
-    private func addGestureRecognizer() {
-        self.addPanGestureRecognizer()
-    }
-    
-    private func addPanGestureRecognizer() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.mapViewDidPan(_:)))
-        panGesture.delegate = self
-        self.mapView?.addGestureRecognizer(panGesture)
     }
 }
 
@@ -173,20 +157,6 @@ extension STPhotoMapView {
         self.photoTileOverlay?.maximumZ = 20
         self.photoTileOverlay?.canReplaceMapContent = true
         self.mapView?.addOverlay(self.photoTileOverlay!, level: .aboveLabels)
-    }
-}
-
-// MARK: - Predownload tiles
-
-extension STPhotoMapView {
-    private func predownloadOuterTiles() {
-        self.tileOverlayRenderer?.predownload(outer: [])
-    }
-    
-    @objc func mapViewDidPan(_ sender: UIGestureRecognizer) {
-        if sender.state == .ended {
-            self.predownloadOuterTiles()
-        }
     }
 }
 

@@ -1,4 +1,4 @@
 github "mikelanza/st-photo-collection-ios" "0.1.2"
 github "mikelanza/st-photo-core-ios" "0.1.4"
 github "mikelanza/st-photo-details-ios" "0.1.0"
-github "onevcat/Kingfisher" "5.7.1"
+github "onevcat/Kingfisher" "5.8.1"

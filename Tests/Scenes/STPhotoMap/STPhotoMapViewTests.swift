@@ -63,9 +63,6 @@ class STPhotoMapViewTests: XCTestCase {
         self.routerSpy = STPhotoMapRoutingLogicSpy()
         self.sut.router = self.routerSpy
         
-        self.tileOverlayRendererSpy = STPhotoTileOverlayRendererSpy(tileOverlay: MKTileOverlay())
-        self.sut.tileOverlayRenderer = self.tileOverlayRendererSpy
-        
         self.delegateSpy = STPhotoMapViewDelegateSpy()
         self.sut.delegate = self.delegateSpy
     }
@@ -120,15 +117,14 @@ class STPhotoMapViewTests: XCTestCase {
         self.loadView()
         XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:regionDidChangeAnimated:))), "The photo map view does not implement mapView(_:regionDidChangeAnimated:).")
         XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:rendererFor:))), "The photo map view does not implement mapView(_:rendererFor:).")
-        XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:viewFor:))), "The photo map view does not implement mapView(_:viewFor:).")
         XCTAssert(self.sut.responds(to: #selector(MKMapViewDelegate.mapView(_:clusterAnnotationForMemberAnnotations:))), "The photo map view does not implement mapView(_:clusterAnnotationForMemberAnnotations:).")
     }
     
     // MARK: - Test map view logic
     
-    func testShouldReturnPhotoTileOverlayRendererForPhotoTileOverlay() {
+    func testShouldReturnMKTileOverlayRendererForPhotoTileOverlay() {
         let renderer = self.sut.mapView(self.sut.mapView, rendererFor: STPhotoMapSeeds.photoTileOverlay)
-        XCTAssertTrue(renderer is STPhotoTileOverlayRenderer)
+        XCTAssertTrue(renderer is MKTileOverlayRenderer)
     }
     
     func testShouldReturnCarouselOverlayRendererForCarouselOverlay() {
@@ -242,17 +238,6 @@ class STPhotoMapViewTests: XCTestCase {
         
         self.waitForBackgroundQueue()
         XCTAssertTrue(self.interactorSpy.shouldDetermineSelectedPhotoAnnotationCalled)
-    }
-    
-    func testShouldPreloadImageTilesWhenMapDidPan() {
-        self.loadView()
-        
-        let gesture = UIPanGestureRecognizer()
-        gesture.state = .ended
-        
-        self.sut.mapViewDidPan(gesture)
-
-        XCTAssertTrue(tileOverlayRendererSpy.predownloadCalled)
     }
     
     func testShouldDownloadImageForPhotoAnnotationWhenAPhotoAnnotationViewIsReturned() {

@@ -1,22 +1,27 @@
-# STPhotoMap
+# STPhotoMap - iOS
 
-[![Platforms](https://img.shields.io/cocoapods/p/STPhotoMap.svg)](https://cocoapods.org/pods/STPhotoMap)
-[![License](https://img.shields.io/cocoapods/l/STPhotoMap.svg)](https://raw.githubusercontent.com/mikelanza/st-photo-map-ios/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mikelanza/st-photo-map-ios/blob/master/LICENSE)
 
 [![Swift Package Manager](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![CocoaPods compatible](https://img.shields.io/cocoapods/v/STPhotoMap.svg)](https://cocoapods.org/pods/STPhotoMap)
 
-[![Travis](https://img.shields.io/travis/mikelanza/st-photo-map-ios/master.svg)](https://travis-ci.org/mikelanza/st-photo-map-ios/branches)
-[![SwiftFrameworkTemplate](https://img.shields.io/badge/SwiftFramework-Template-red.svg)](http://github.com/RahulKatariya/SwiftFrameworkTemplate)
-
+**STPhotoMap** is an iOS framework designed to display photos from [Streetography](https://streetography.com) on the native map, `MKMapView`.
 A map that displays photos
 
+- [Screenshots](#screenshots)
 - [Requirements](#requirements)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Issues](#issues)
 - [License](#license)
+
+## Screenshots
+
+<img src="https://user-images.githubusercontent.com/6670019/66469972-7aa06400-ea91-11e9-8a6a-6eb863a4630a.png" width="23%"></img> 
+<img src="https://user-images.githubusercontent.com/6670019/66470046-9441ab80-ea91-11e9-8b47-49670c9970db.png" width="23%"></img> 
+<img src="https://user-images.githubusercontent.com/6670019/65866031-d7f33180-e37c-11e9-92be-f756da25ca52.png" width="23%"></img> 
+<img src="https://user-images.githubusercontent.com/6670019/65861801-9dd26180-e375-11e9-97bb-292ea710d797.png" width="23%"></img> 
 
 ## Requirements
 
@@ -39,14 +44,14 @@ A map that displays photos
 $ gem install cocoapods
 ```
 
-To integrate STPhotoMap into your Xcode project using CocoaPods, specify it in your `Podfile`:
+To integrate **STPhotoMap** into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '10.0'
 use_frameworks!
 
-pod 'STPhotoMap', '~> 0.0.1'
+pod 'STPhotoMap', '~> 0.1.4'
 ```
 
 Then, run the following command:
@@ -69,10 +74,10 @@ $ brew update
 $ brew install carthage
 ```
 
-To integrate STPhotoMap into your Xcode project using Carthage, specify it in your `Cartfile`:
+To integrate **STPhotoMap** into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "mikelanza/st-photo-map-ios" ~> 0.0.1
+github "mikelanza/st-photo-map-ios" ~> 0.1.4
 ```
 
 </details>
@@ -80,7 +85,7 @@ github "mikelanza/st-photo-map-ios" ~> 0.0.1
 <details>
   <summary><strong>Swift Package Manager</strong></summary>
 
-To use STPhotoMap as a [Swift Package Manager](https://swift.org/package-manager/) package just add the following in your Package.swift file.
+To use **STPhotoMap** as a [Swift Package Manager](https://swift.org/package-manager/) package just add the following in your Package.swift file.
 
 ``` swift
 // swift-tools-version:4.2
@@ -90,7 +95,7 @@ import PackageDescription
 let package = Package(
     name: "HelloSTPhotoMap",
     dependencies: [
-        .package(url: "https://github.com/mikelanza/st-photo-map-ios.git", .upToNextMajor(from: "0.0.1"))
+    .package(url: "https://github.com/mikelanza/st-photo-map-ios.git", .upToNextMajor(from: "0.1.4"))
     ],
     targets: [
         .target(name: "HelloSTPhotoMap", dependencies: ["STPhotoMap"])
@@ -101,7 +106,7 @@ let package = Package(
 
 ### Manually
 
-If you prefer not to use either of the aforementioned dependency managers, you can integrate STPhotoMap into your project manually.
+If you prefer not to use either of the aforementioned dependency managers, you can integrate **STPhotoMap** into your project manually.
 
 <details>
   <summary><strong>Git Submodules</strong></summary><p>
@@ -112,7 +117,7 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 $ git init
 ```
 
-- Add STPhotoMap as a git [submodule](http://git-scm.com/docs/git-submodule) by running the following command:
+- Add **STPhotoMap** as a git [submodule](http://git-scm.com/docs/git-submodule) by running the following command:
 
 ```bash
 $ git submodule add https://github.com/mikelanza/st-photo-map-ios.git
@@ -153,14 +158,20 @@ $ git submodule update --init --recursive
 
 ## Usage
 
+See the [STPhotoMap - iOS Examples](https://github.com/mikelanza/st-photo-map-ios-examples) project for usage.
+
+## Issues
+
+∙ Starting with `iOS 13`, the custom tile renderer `STPhotoTileOverlayRenderer` is not displaying correctly the image tiles on the map. For this reason, it was replaced with the native renderer `MKTileOverlayRenderer`.
+
 ## Contributing
 
 Issues and pull requests are welcome!
 
 ## Author
 
-Streetography [@Streetography](https://streetography.com/)
+[Streetography](https://streetography.com/)
 
 ## License
 
-STPhotoMap is released under the MIT license. See [LICENSE](https://github.com/mikelanza/st-photo-map-ios/blob/master/LICENSE) for details.
+**STPhotoMap** is released under the MIT license. See [LICENSE](https://github.com/mikelanza/st-photo-map-ios/blob/master/LICENSE) for details.
