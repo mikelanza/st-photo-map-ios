@@ -1379,6 +1379,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
 				SKIP_INSTALL = YES;
@@ -1605,6 +1606,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.streetography.st.photo.map.ios.STPhotoMap;
 				PRODUCT_NAME = STPhotoMap;
 				SKIP_INSTALL = YES;
