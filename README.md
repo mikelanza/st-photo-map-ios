@@ -161,7 +161,7 @@ See the [STPhotoMap - iOS Examples](https://github.com/mikelanza/st-photo-map-io
 
 ## Issues
 
-∙ Starting with `iOS 13`, the custom tile renderer `STPhotoTileOverlayRenderer` is not displaying correctly the image tiles on the map. For this reason, it was replaced with the native renderer `MKTileOverlayRenderer`.
+∙ Starting with `iOS 13`, the custom tile renderer `STPhotoTileOverlayRenderer` is not displaying correctly the image tiles on the map. This needs to be fixed.
 
 ## Contributing
 
