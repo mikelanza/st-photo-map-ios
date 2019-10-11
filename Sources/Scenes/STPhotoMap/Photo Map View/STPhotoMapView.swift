@@ -37,7 +37,7 @@ public class STPhotoMapView: UIView {
     
     var photoTileOverlay: STPhotoTileOverlay?
     var carouselOverlays: [STCarouselOverlay] = []
-    var tileOverlayRenderer: MKTileOverlayRenderer?
+    var tileOverlayRenderer: STPhotoTileOverlayRenderer?
     var annotationHandler: STPhotoMapAnnotationHandler!
     
     public convenience init() {
@@ -101,8 +101,8 @@ extension STPhotoMapView {
     
     public func setNeedsDisplayTiles() {
         DispatchQueue.main.async {
-            if let overlay = self.photoTileOverlay, let renderer = self.mapView?.renderer(for: overlay) as? MKTileOverlayRenderer {
-                renderer.setNeedsDisplay()
+            if let overlay = self.photoTileOverlay, let renderer = self.mapView?.renderer(for: overlay) as? STPhotoTileOverlayRenderer {
+                renderer.reload()
             }
         }
     }
