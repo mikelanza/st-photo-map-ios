@@ -63,6 +63,9 @@ class STPhotoMapViewTests: XCTestCase {
         self.routerSpy = STPhotoMapRoutingLogicSpy()
         self.sut.router = self.routerSpy
         
+        self.tileOverlayRendererSpy = STPhotoTileOverlayRendererSpy(tileOverlay: MKTileOverlay())
+        self.sut.tileOverlayRenderer = self.tileOverlayRendererSpy
+        
         self.delegateSpy = STPhotoMapViewDelegateSpy()
         self.sut.delegate = self.delegateSpy
     }
@@ -122,9 +125,9 @@ class STPhotoMapViewTests: XCTestCase {
     
     // MARK: - Test map view logic
     
-    func testShouldReturnMKTileOverlayRendererForPhotoTileOverlay() {
+    func testShouldReturnPhotoTileOverlayRendererForPhotoTileOverlay() {
         let renderer = self.sut.mapView(self.sut.mapView, rendererFor: STPhotoMapSeeds.photoTileOverlay)
-        XCTAssertTrue(renderer is MKTileOverlayRenderer)
+        XCTAssertTrue(renderer is STPhotoTileOverlayRenderer)
     }
     
     func testShouldReturnCarouselOverlayRendererForCarouselOverlay() {
