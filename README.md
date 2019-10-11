@@ -6,7 +6,6 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 **STPhotoMap** is an iOS framework designed to display photos from [Streetography](https://streetography.com) on the native map, `MKMapView`.
-A map that displays photos
 
 - [Screenshots](#screenshots)
 - [Requirements](#requirements)
